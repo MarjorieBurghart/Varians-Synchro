@@ -681,4 +681,6 @@
   <string key="alignment.stale.revalidated">Подтверждено заново групп: {count}</string>
   <string key="alignment.stale.extend">Эта группа устарела: её строки изменились с момента сохранения. Сначала подтвердите её заново или разъедините.</string>
   <string key="alignment.stale.vanished">Одной из строк этой группы больше нет: разъедините её, а не подтверждайте заново.</string>
+  <string key="ui.pages.htr.wait">Экспорт изображений для HTR: {current}/{total}</string>
+  <string key="ui.pages.htr.cancelled">Экспорт отменён. Неполный архив не записан.</string>
 </translations>

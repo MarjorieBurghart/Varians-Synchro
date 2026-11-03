@@ -1337,6 +1337,30 @@ def make_guided_window(legacy_window_type=None):
             except Exception as exc:
                 self.done.emit('failed', 0, str(exc))
 
+    class HTRExportThread(QThread):
+        """Export of IIIF images for an external HTR, off the interface
+        thread (it downloads every page: the window froze for minutes)."""
+        progressed = Signal(int, int)
+        done = Signal(str, int, str)   # success | cancelled | failed
+
+        def __init__(self, witness, selected, path, cancellation, parent=None):
+            super().__init__(parent)
+            self.witness, self.selected, self.path = witness, tuple(selected), path
+            self.cancellation = cancellation
+
+        def run(self):
+            try:
+                from .imaging import export_iiif_htr_zip
+                count = export_iiif_htr_zip(
+                    self.witness, list(self.selected), self.path,
+                    cancelled=self.cancellation.is_set,
+                    progress=lambda done, total: self.progressed.emit(done, total))
+                self.done.emit('success', count, '')
+            except InterruptedError as exc:
+                self.done.emit('cancelled', 0, str(exc))
+            except Exception as exc:
+                self.done.emit('failed', 0, str(exc))
+
     class PagesDialog(QDialog):
         """Direct, image-backed page order editor and independent XML binding.
 
@@ -1670,11 +1694,48 @@ def make_guided_window(legacy_window_type=None):
                 QMessageBox.information(self,tr('Export'),tr('Sélectionnez des pages IIIF dans la liste.'));return
             path,_ = QFileDialog.getSaveFileName(self,tr('ui.images.pour.traitement.externe'),
                                                  self.witness['id']+'_HTR.zip','ZIP (*.zip)')
-            if path:
+            if not path or getattr(self, '_htr_export_thread', None) is not None:
+                return
+            import threading
+            cancel = threading.Event()
+            progress = QProgressDialog(tr('ui.pages.htr.wait', current=0, total=len(selected)),
+                                       tr('common.cancel'), 0, len(selected), self)
+            progress.setWindowTitle(tr('Export IIIF'))
+            progress.setMinimumDuration(0)
+            progress.setWindowModality(Qt.WindowModality.WindowModal)
+            progress.setAutoClose(False)
+            progress.setAutoReset(False)
+            thread = HTRExportThread(self.witness, selected, path, cancel, self)
+            self._htr_export_thread = thread
+            self._htr_export_progress = progress
+            progress.canceled.connect(cancel.set)
+            def updated(done, total):
+                if not cancel.is_set():
+                    progress.setValue(done)
+                    progress.setLabelText(tr('ui.pages.htr.wait', current=done, total=total))
+            def complete(status, count, error):
                 try:
-                    count = export_iiif_htr_zip(self.witness,selected,path)
-                    QMessageBox.information(self,tr('Export terminé'),tr('release.images_exported', count=count))
-                except Exception as exc:QMessageBox.critical(self,tr('Export IIIF'),str(exc))
+                    progress.canceled.disconnect(cancel.set)
+                except (RuntimeError, TypeError):
+                    pass
+                progress.hide()
+                if status == 'success':
+                    QMessageBox.information(self, tr('Export terminé'),
+                                            tr('release.images_exported', count=count))
+                elif status == 'cancelled':
+                    QMessageBox.information(self, tr('Export IIIF'), tr('ui.pages.htr.cancelled'))
+                else:
+                    QMessageBox.critical(self, tr('Export IIIF'), error)
+                progress.deleteLater()
+            thread.progressed.connect(updated)
+            thread.done.connect(complete)
+            def released():
+                thread.deleteLater()
+                self._htr_export_thread = None
+                self._htr_export_progress = None
+            thread.finished.connect(released)
+            thread.start()
+            progress.show()
 
         def download_hd(self):
             """Download only explicitly selected IIIF canvases, without mutating .vsynch."""

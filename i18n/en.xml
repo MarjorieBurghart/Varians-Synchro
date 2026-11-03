@@ -688,4 +688,6 @@ Warning: the batch could not be registered in the project ({error}). Use “Atta
   <string key="alignment.stale.revalidated">Groups revalidated: {count}</string>
   <string key="alignment.stale.extend">This group is stale: its lines have changed since it was recorded. Revalidate or unlink it first.</string>
   <string key="alignment.stale.vanished">A line of this group no longer exists: unlink it instead of revalidating.</string>
+  <string key="ui.pages.htr.wait">Exporting images for HTR: {current}/{total}</string>
+  <string key="ui.pages.htr.cancelled">Export cancelled. No partial archive was written.</string>
 </translations>
