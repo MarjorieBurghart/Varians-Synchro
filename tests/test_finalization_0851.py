@@ -62,7 +62,10 @@ def test_project_export_validates_and_preserves_tei_sources(tmp_path):
     witness = config.find('witnesses/witness')
     assert witness.get('id') == 'Mu'
     assert witness.find('images').get('type') == 'files'
-    assert witness.find('alto').get('type') == 'files'
+    # Pas de <alto> : le JSON porte déjà lignes, géométrie et texte ; des
+    # fichiers ALTO/PAGE déclarés seraient superposés au JSON par Varians
+    # (lignes hors périmètre réintroduites ; voir test_varians_094_compat).
+    assert witness.find('alto') is None
     assert (dest/'xml'/'edition.xml').read_bytes() == Path(project['text_resources'][0]['path']).read_bytes()
     mapping = json.loads((dest/'alignments'/'Mu.json').read_text())
     assert verify_export_payloads({'Mu':mapping},'Mu')['all_base_keys_resolve']

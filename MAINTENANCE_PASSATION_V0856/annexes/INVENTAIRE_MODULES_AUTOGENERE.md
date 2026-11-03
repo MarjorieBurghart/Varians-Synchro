@@ -169,12 +169,12 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `core`, `physical_alignment`, `reading_stream`, `tei_binding`, `varians_export`
 **Fonctions au premier niveau** : `_item` (l.17), `audit_project` (l.26)
 
-## `varians_synchro/varians_export.py` (406 lignes)
-**Objet (docstring source)** : Export physical-line sessions to the actual Varians 0.8.5.2 alignment JSON schema. One explicit technical reference witness is used for these export files. This DOES NOT magically create an editorial TEI line mapping. The TEI XML <lb/> line IDs must still be reconciled with the physical reference's page::ordinal keys before manuscript-to-edition synchronization is guaranteed. No network, Qt, or local source-image files are required for the export.
-**Dépendances internes observées** : `imaging`, `page_order`, `physical_alignment`
-**Fonctions au premier niveau** : `_get_witness` (l.27), `_image_block` (l.31), `_build_witness_cache` (l.48), `_line_fingerprint` (l.92), `_shared_pero_uuid` (l.99), `_safe_same_segmentation_after_format_change` (l.112), `_reference_health` (l.142), `_pair_for_base` (l.154), `make_varians_alignments` (l.162), `inspect_varians_export` (l.257), `verify_export_payloads` (l.304), `export_varians_alignments` (l.348)
+## `varians_synchro/varians_export.py` (421 lignes)
+**Objet (docstring source)** : Export physical-line sessions to the Varians alignment JSON schema. Opening the exported project in Varians 0.9.4.0 is checked by tests/test_varians_094_compat.py (the real Varians code reads it). Lines are written in the witness's reading order (reading_stream). One explicit technical reference witness is used for these export files. This DOES NOT magically create an editorial TEI line mapping. The TEI XML <lb/> line IDs must still be reconciled with the physical reference's page::ordinal keys before manuscript-to-edition synchronization is guaranteed. No network, Qt, or local source-image files are required for the export.
+**Dépendances internes observées** : `imaging`, `page_order`, `physical_alignment`, `reading_stream`
+**Fonctions au premier niveau** : `_get_witness` (l.32), `_image_block` (l.36), `_build_witness_cache` (l.53), `_line_fingerprint` (l.107), `_shared_pero_uuid` (l.114), `_safe_same_segmentation_after_format_change` (l.127), `_reference_health` (l.157), `_pair_for_base` (l.169), `make_varians_alignments` (l.177), `inspect_varians_export` (l.272), `verify_export_payloads` (l.319), `export_varians_alignments` (l.363)
 
-## `varians_synchro/varians_project_export.py` (282 lignes)
+## `varians_synchro/varians_project_export.py` (289 lignes)
 **Objet (docstring source)** : Build a directly openable Varians project.xml bundle from Synchro resources. Target syntax: Varians's documented teiManuscriptProject format with one TEI edition. This is a physical mapping export; it does NOT assert that line links have been reconciled with TEI <lb/> unless the editor independently confirms it. The caller must run a final integration test against their installed Varians.
 **Dépendances internes observées** : `core`, `hd_registry`, `varians_export`
 **Fonctions au premier niveau** : `_varians_safe_id` (l.23), `_source_path` (l.28), `_relative_or_absolute` (l.35), `_cache_varians_manifest` (l.41), `export_varians_project` (l.85)
