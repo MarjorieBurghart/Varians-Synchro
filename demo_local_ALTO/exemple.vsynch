@@ -1,0 +1,175 @@
+{
+  "format": "varians-synchro-project",
+  "version": 1,
+  "name": "Exemple de deux témoins ALTO sans TEI",
+  "created": "2026-10-10T20:40:44.403686+00:00",
+  "witnesses": [
+    {
+      "id": "A",
+      "label": "A",
+      "image_sources": [
+        {
+          "id": "12b636a7-221a-44ba-9972-590091556406",
+          "kind": "local",
+          "reference": "/mnt/data/_inspect_v0614/Varians-Synchro_v0.6.14/demo_local_ALTO/A.png",
+          "status": "not_inspected"
+        }
+      ],
+      "alto_sources": [
+        {
+          "kind": "alto",
+          "path": "/mnt/data/_inspect_v0614/Varians-Synchro_v0.6.14/demo_local_ALTO/A.xml",
+          "source_sha256": "75acf2e0eaf8e31d9cf188ddcb299a99e9f35fc0fb622b965264b13e30766f77",
+          "source_size": 555,
+          "source_mtime_ns": 1791664844537743154,
+          "pages": [
+            {
+              "alto_page_id": "page1",
+              "width": "580",
+              "height": "440",
+              "line_count": 3,
+              "htr_line_count": 3,
+              "lines": [
+                {
+                  "alto_id": "line1",
+                  "text": "Beatus Germanus in hac vita",
+                  "bbox": {
+                    "HPOS": "60",
+                    "VPOS": "70",
+                    "WIDTH": "480",
+                    "HEIGHT": "16"
+                  }
+                },
+                {
+                  "alto_id": "line2",
+                  "text": "multis miraculis claruit",
+                  "bbox": {
+                    "HPOS": "60",
+                    "VPOS": "155",
+                    "WIDTH": "480",
+                    "HEIGHT": "16"
+                  }
+                },
+                {
+                  "alto_id": "line3",
+                  "text": "et populum docuit",
+                  "bbox": {
+                    "HPOS": "60",
+                    "VPOS": "240",
+                    "WIDTH": "480",
+                    "HEIGHT": "16"
+                  }
+                }
+              ]
+            }
+          ],
+          "page_count": 1,
+          "line_count": 3,
+          "htr_line_count": 3,
+          "id": "b0894757-2005-4a53-bcde-cd8f86531677"
+        }
+      ],
+      "pages": [
+        {
+          "id": "12b636a7-221a-44ba-9972-590091556406",
+          "label": "A",
+          "image_kind": "local",
+          "image_source_id": "12b636a7-221a-44ba-9972-590091556406",
+          "image_path": "/mnt/data/_inspect_v0614/Varians-Synchro_v0.6.14/demo_local_ALTO/A.png",
+          "alto_binding": {
+            "source_id": "b0894757-2005-4a53-bcde-cd8f86531677",
+            "page_index": 0,
+            "verified": false
+          }
+        }
+      ],
+      "ignored_line_ids": []
+    },
+    {
+      "id": "B",
+      "label": "B",
+      "image_sources": [
+        {
+          "id": "87b8ce21-1446-49b2-a329-62679c399bb4",
+          "kind": "local",
+          "reference": "/mnt/data/_inspect_v0614/Varians-Synchro_v0.6.14/demo_local_ALTO/B.png",
+          "status": "not_inspected"
+        }
+      ],
+      "alto_sources": [
+        {
+          "kind": "alto",
+          "path": "/mnt/data/_inspect_v0614/Varians-Synchro_v0.6.14/demo_local_ALTO/B.xml",
+          "source_sha256": "1e0e3726daf12300b2e7ea88190b8b7ee4836fae1ec7c84ab295ba523d562508",
+          "source_size": 555,
+          "source_mtime_ns": 1791664844681059104,
+          "pages": [
+            {
+              "alto_page_id": "page1",
+              "width": "580",
+              "height": "440",
+              "line_count": 3,
+              "htr_line_count": 3,
+              "lines": [
+                {
+                  "alto_id": "line1",
+                  "text": "Beatus Germanus in",
+                  "bbox": {
+                    "HPOS": "60",
+                    "VPOS": "70",
+                    "WIDTH": "480",
+                    "HEIGHT": "16"
+                  }
+                },
+                {
+                  "alto_id": "line2",
+                  "text": "hac vita multis miraculis",
+                  "bbox": {
+                    "HPOS": "60",
+                    "VPOS": "155",
+                    "WIDTH": "480",
+                    "HEIGHT": "16"
+                  }
+                },
+                {
+                  "alto_id": "line3",
+                  "text": "claruit et populum docuit",
+                  "bbox": {
+                    "HPOS": "60",
+                    "VPOS": "240",
+                    "WIDTH": "480",
+                    "HEIGHT": "16"
+                  }
+                }
+              ]
+            }
+          ],
+          "page_count": 1,
+          "line_count": 3,
+          "htr_line_count": 3,
+          "id": "8f9fffa2-63c5-4136-a4b7-72b50c6da1d7"
+        }
+      ],
+      "pages": [
+        {
+          "id": "87b8ce21-1446-49b2-a329-62679c399bb4",
+          "label": "B",
+          "image_kind": "local",
+          "image_source_id": "87b8ce21-1446-49b2-a329-62679c399bb4",
+          "image_path": "/mnt/data/_inspect_v0614/Varians-Synchro_v0.6.14/demo_local_ALTO/B.png",
+          "alto_binding": {
+            "source_id": "8f9fffa2-63c5-4136-a4b7-72b50c6da1d7",
+            "page_index": 0,
+            "verified": false
+          }
+        }
+      ],
+      "ignored_line_ids": []
+    }
+  ],
+  "text_resources": [],
+  "notes": "",
+  "alignment_sessions": [],
+  "pair_sessions": [],
+  "workflow_preference": "alto_only"
+}

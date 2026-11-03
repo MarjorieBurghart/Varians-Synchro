@@ -1,0 +1,34 @@
+# Interface PySide6 et internationalisation
+
+## Composition UI
+
+`gui.main()` crée l'application Qt et instancie `guided_ui.make_guided_window()`, qui construit une hiérarchie locale de composants et de dialogues Qt. `viewer.py` fournit des widgets de visualisation et de sélection de lignes, zoom et chargement d'images ; `qt_lifecycle.py` encapsule le cycle de vie. `QSettings('Varians', 'Varians-Synchro')` conserve la langue de l'application. Le projet courant, son chemin et les modifications non sauvegardées sont des **données du document**, pas une préférence QSettings.
+
+Le code de `guided_ui.py` est particulièrement dense : préserver les frontières « lecture → prévisualisation → confirmation → mutation → sauvegarde » lors de tout découpage en classes. Éviter d'importer PySide6 dans les modules métier ; cela permet audits et tests sans serveur graphique.
+
+## Contrats ergonomiques
+
+- Créer un projet et l'enregistrer immédiatement, sans demander de configuration TEI ou de Manifests.
+- La fiche témoin doit rester transactionnelle : fermeture/annulation sans mutation partielle.
+- À l'ouverture d'un nouveau projet, **ne pas** écraser `self.project` tant que lecture et validation n'ont pas réussi. À la création, ne pas remplacer le document courant si le dialogue est annulé. Régressions traitées historiquement en v0.8.1.2.
+- Le changement de langue reconstruit l'interface mais **ne remplace pas le projet actif**. Vérifier les modifications non enregistrées et les sélections.
+- Une sélection de lignes comporte le clic exclusif simple, Ctrl+clic additif et Maj+clic plage selon l'ordre réel ; l'état de surlignage ne doit pas changer les liens enregistrés.
+- Les interactions de téléchargement/réseau ne doivent pas bloquer le fil UI ; signaler annulation et téléchargement achevé distinctement.
+
+## Catalogues XML
+
+Sept catalogues : `i18n/fr.xml`, `en.xml`, `de.xml`, `cs.xml`, `it.xml`, `ru.xml`, `ja.xml`. Dans v0.8.5.5 et v0.8.5.6 : **653 clés remplies par langue**, paramètres de format conservés. `i18n.py` contrôle balise racine, unicité/présence des clés, égalité des ensembles de clés et ensembles de paramètres `{variable}` ; `tr(key,**values)` ne modifie jamais les entrées métier inconnues. `translate_template` délègue à `tr`. Les valeurs françaises historiques peuvent servir d'alias pour les appels anciens.
+
+En cas d'ajout d'une chaîne : créer une clé stable, ajouter sept valeurs, conserver exactement les mêmes paramètres de format et faire passer `tests/test_i18n.py`, `test_i18n_xml_catalogs.py` et `test_i18n_full_0855.py`. Ne pas localiser JSON persisté, identifiants, sigles, chemins ni noms de balises/attributs XML.
+
+## À ne pas confondre
+
+- 653/653 **entrées présentes** n'implique pas 653 traductions **validées par locuteur natif**.
+- Les traductions japonaises ecdotiques, les distinctions « absence / omission » et les pluriels tchèques/russes méritent une validation humaine ciblée. Voir `docs/I18N_NATIVE_REVIEW_V0855.md`.
+- Le moteur vérifie la conformité **syntaxique des catalogues** et des placeholders, pas la clarté de l'interface lorsque des étiquettes sont longues ou coupées. Tester sous toutes les langues avec Qt.
+
+## Précautions Spyder
+
+`run.py` teste `spyder_launch.in_spyder_kernel` puis peut lancer l'application dans un autre processus pour éviter le conflit entre bindings Qt/plugins de Spyder. Conserver l'interpréteur choisi et filtrer soigneusement les variables d'environnement Qt ; ne pas « corriger » un crash natif en faisant passer artificiellement les tests. Si PySide6 est absent : installer dans le **même** environnement Python que celui qui lance réellement l'application.
+
+**Tests clés** : `tests/test_qt_lifecycle.py`, `test_spyder_launch.py`, `test_project_open_creation_regression_0812.py`, `test_unsaved_changes.py`, `test_selection_gui_qt_0842.py`, `test_i18n_full_0855.py`.

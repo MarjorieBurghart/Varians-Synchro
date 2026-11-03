@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#">
+<Layout><Page ID="page1" WIDTH="580" HEIGHT="440"><PrintSpace>
+<TextLine ID="line1" HPOS="60" VPOS="70" WIDTH="480" HEIGHT="16"><String CONTENT="Beatus Germanus in"/></TextLine>
+<TextLine ID="line2" HPOS="60" VPOS="155" WIDTH="480" HEIGHT="16"><String CONTENT="hac vita multis miraculis"/></TextLine>
+<TextLine ID="line3" HPOS="60" VPOS="240" WIDTH="480" HEIGHT="16"><String CONTENT="claruit et populum docuit"/></TextLine>
+</PrintSpace></Page></Layout></alto>
