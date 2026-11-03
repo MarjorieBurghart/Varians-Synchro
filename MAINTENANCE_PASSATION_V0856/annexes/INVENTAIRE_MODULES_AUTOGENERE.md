@@ -49,10 +49,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `guided_ui`, `i18n`, `qt_lifecycle`
 **Fonctions au premier niveau** : `main` (l.17)
 
-## `varians_synchro/guided_ui.py` (3187 lignes)
+## `varians_synchro/guided_ui.py` (3233 lignes)
 **Objet (docstring source)** : Witness-centered PySide6 GUI; the V0.7 physical alignment engine is preserved.
 **Dépendances internes observées** : `bulk_binding`, `core`, `correspondence_navigation`, `exceptions`, `hd_registry`, `i18n`, `imaging`, `interpolation`, `line_scope`, `overlay_filters`, `page_management`, `page_order`, `physical_alignment`, `project_state`, `rapid_review`, `reading_stream`, `residual_alignment`, `resource_workflow`, `tei_binding`, `tei_visual`, `textual_progress`, `validation`, `varians_export`, `varians_project_export`, `viewer`
-**Fonctions au premier niveau** : `make_guided_window` (l.29)
+**Fonctions au premier niveau** : `make_guided_window` (l.30)
 
 ## `varians_synchro/hd_registry.py` (159 lignes)
 **Objet (docstring source)** : Durable, source-bound IIIF HD downloads linked to manuscript Canvas IDs. No network requests. The registry stores where successful downloads live; it never turns an image into a new manuscript page or replaces an IIIF source. The original ``images.json`` remains the authoritative download receipt.
@@ -101,10 +101,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `alto_geometry`
 **Fonctions au premier niveau** : `_name` (l.18), `_direct` (l.22), `_line_text` (l.26), `_region_order` (l.44), `_baseline_points` (l.59), `_line_info` (l.78), `inspect_page_xml` (l.102)
 
-## `varians_synchro/physical_alignment.py` (576 lignes)
+## `varians_synchro/physical_alignment.py` (590 lignes)
 **Objet (docstring source)** : Alignment between physical ALTO lines without TEI or TXT. These sessions have no editorial base: `reference_witness_id` is a reversible technical display/comparison choice, not an assertion about the edition. Original ALTO and images are never edited. Legacy TEI sessions remain separate.
 **Dépendances internes observées** : `alignment`, `automatic`, `imaging`, `page_order`
-**Fonctions au premier niveau** : `_now` (l.21), `_hash` (l.25), `line_uid` (l.30), `physical_lines` (l.36), `_witness` (l.69), `create_pair_session` (l.73), `pair_indices` (l.96), `link_is_stale` (l.105), `stale_link_ids` (l.121), `revalidate_pair_link` (l.130), `page_links_impact` (l.162), `add_pair_link` (l.185), `extend_pair_link` (l.222), `detach_pair_lines` (l.296), `is_revisable_automatic` (l.356), `replace_revisable_pair_proposals` (l.368), `remove_pair_link` (l.433), `set_pair_link_states` (l.440), `pair_progress` (l.457), `verify_pair_sessions` (l.488), `suggest_htr_pair_alignment` (l.502), `apply_pair_proposals` (l.562)
+**Fonctions au premier niveau** : `_now` (l.21), `_hash` (l.25), `line_uid` (l.30), `physical_lines` (l.36), `_witness` (l.69), `create_pair_session` (l.73), `pair_indices` (l.96), `link_is_stale` (l.105), `stale_link_ids` (l.121), `_revalidation_check` (l.130), `revalidate_pair_links` (l.144), `revalidate_pair_link` (l.170), `page_links_impact` (l.176), `add_pair_link` (l.199), `extend_pair_link` (l.236), `detach_pair_lines` (l.310), `is_revisable_automatic` (l.370), `replace_revisable_pair_proposals` (l.382), `remove_pair_link` (l.447), `set_pair_link_states` (l.454), `pair_progress` (l.471), `verify_pair_sessions` (l.502), `suggest_htr_pair_alignment` (l.516), `apply_pair_proposals` (l.576)
 
 ## `varians_synchro/project_state.py` (35 lignes)
 **Objet (docstring source)** : Reliable, UI-independent detection of project changes since the last save. The project is a JSON-serializable dictionary and nested editors mutate it in place. Comparing its persisted JSON representation catches every such mutation, without a fragile collection of per-button `dirty = True` assignments.
@@ -115,10 +115,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : One QApplication per process, with Spyder/IPython-friendly window lifetime. This module deliberately has no Qt dependency so lifecycle logic is unit-testable without a graphical display. `QApplication` and the main window are injected by `gui.main()` after importing PySide6.
 **Fonctions au premier niveau** : `launch` (l.11)
 
-## `varians_synchro/rapid_review.py` (107 lignes)
+## `varians_synchro/rapid_review.py` (112 lignes)
 **Objet (docstring source)** : V0.7.2 — rapid, non-destructive human review of physical correspondences. This module never auto-validates machine suggestions. Display sorting and filtering have no effect on .vsynch storage order or Varians JSON export.
 **Dépendances internes observées** : `physical_alignment`, `reading_stream`
-**Fonctions au premier niveau** : `ordered_links` (l.18), `review_counts` (l.48), `pending_ids` (l.55), `following_anchor_interval` (l.59), `verify_before_review` (l.75), `validate_checked` (l.97), `suggestions_for_interval` (l.103)
+**Fonctions au premier niveau** : `ordered_links` (l.20), `review_counts` (l.53), `pending_ids` (l.60), `following_anchor_interval` (l.64), `verify_before_review` (l.80), `validate_checked` (l.102), `suggestions_for_interval` (l.108)
 
 ## `varians_synchro/reading_stream.py` (202 lignes)
 **Objet (docstring source)** : V0.7: continuous documentary reading streams and human anchor intervals. This layer never infers textual equivalence. It only orders physical lines and extracts *every active line* strictly between user-confirmed homologous anchors. No ALTO/PAGE, saved line UID, fingerprint, or existing pair link is rewritten. Overrides are stored in the documentary witness's page dictionaries: ``reading_order`` (all pages), ``reading_region_order`` (region identifiers), ``reading_line_order`` (the line UIDs of one page). The last takes precedence.

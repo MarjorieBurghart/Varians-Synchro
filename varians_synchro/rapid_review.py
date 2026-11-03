@@ -5,14 +5,16 @@ filtering have no effect on .vsynch storage order or Varians JSON export.
 """
 from __future__ import annotations
 
-from .physical_alignment import pair_indices, set_pair_link_states
+from .physical_alignment import pair_indices, set_pair_link_states, stale_link_ids
 from .reading_stream import reading_stream
 
 FILTER_ALL = 'all'
 FILTER_PENDING = 'pending'
 FILTER_VALIDATED = 'validated'
 FILTER_ABSENCES = 'absences'
-FILTERS = {FILTER_ALL, FILTER_PENDING, FILTER_VALIDATED, FILTER_ABSENCES}
+# Links whose lines changed after a new segmentation: to revalidate or unlink.
+FILTER_STALE = 'stale'
+FILTERS = {FILTER_ALL, FILTER_PENDING, FILTER_VALIDATED, FILTER_ABSENCES, FILTER_STALE}
 
 
 def ordered_links(project, session, filter_mode=FILTER_ALL):
@@ -24,8 +26,11 @@ def ordered_links(project, session, filter_mode=FILTER_ALL):
     right = reading_stream(witnesses[session['target_witness_id']], include_ignored=True)
     ai = {line['id']: i for i, line in enumerate(left)}
     bi = {line['id']: i for i, line in enumerate(right)}
+    stale = stale_link_ids(project, session) if filter_mode == FILTER_STALE else set()
 
     def visible(link):
+        if filter_mode == FILTER_STALE:
+            return link['id'] in stale
         if filter_mode == FILTER_PENDING:
             return link['state'] != 'validated' and link['kind'] == 'correspondence'
         if filter_mode == FILTER_VALIDATED:

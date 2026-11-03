@@ -141,3 +141,24 @@ def test_a_new_segmentation_drops_the_corrected_reading_order_of_the_page(settin
     set_line_order(a, page['id'], [line['id'] for line in physical_lines(a)])
     assert rebind_page(a, page['id'], a['alto_sources'][-1]['id'], 0) is False
     assert 'reading_line_order' in page
+
+
+def test_the_review_list_can_show_only_the_stale_links(setting):
+    from varians_synchro.rapid_review import ordered_links
+    project, a, _b, session, first, last = setting
+    assert ordered_links(project, session, 'stale') == []
+    _rebind(a)
+    assert [link['id'] for link in ordered_links(project, session, 'stale')] == [first['id'], last['id']]
+
+
+def test_several_links_are_revalidated_all_or_nothing(setting, tmp_path):
+    from varians_synchro.physical_alignment import revalidate_pair_links
+    project, a, _b, session, first, last = setting
+    add_alto_source(a, _xml(tmp_path / 'A-court.xml', TEXTS_A[:2]))
+    rebind_page(a, a['pages'][0]['id'], a['alto_sources'][-1]['id'], 0)
+    before = [dict(link) for link in session['links']]
+    with pytest.raises(ValueError):
+        revalidate_pair_links(project, session, [first['id'], last['id']])   # alpha 6 a disparu
+    assert session['links'] == before
+    assert revalidate_pair_links(project, session, [first['id']]) == 1
+    assert stale_link_ids(project, session) == {last['id']}

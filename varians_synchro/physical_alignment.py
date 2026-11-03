@@ -127,16 +127,10 @@ def stale_link_ids(project, session):
     return {link['id'] for link in session.get('links', []) if link_is_stale(link, known)}
 
 
-def revalidate_pair_link(project, session, link_id):
-    """Human confirmation that a stale link still joins the right lines:
-    its fingerprints are recorded again from the current lines, and it
-    becomes validated. Refused when one of its lines no longer exists or is
-    out of scope (it must then be unlinked). The previous fingerprints are
-    kept in ``evidence.manual_corrections``."""
+def _revalidation_check(project, session, link_id, known_a, known_b):
     link = next((item for item in session.get('links', []) if item['id'] == link_id), None)
     if link is None:
         raise ValueError('Association introuvable')
-    known_a, known_b = pair_indices(project, session)
     members = list(link.get('reference_ids', [])) + list(link.get('target_ids', []))
     if any(uid not in known_a and uid not in known_b for uid in members):
         raise ValueError('Une ligne de ce groupe n’existe plus : dissociez-la au lieu de revalider.')
@@ -144,19 +138,39 @@ def revalidate_pair_link(project, session, link_id):
                | set(_witness(project, session['target_witness_id']).get('ignored_line_ids', [])))
     if set(members) & ignored:
         raise ValueError('Réintégrez les lignes ignorées avant de les associer.')
-    evidence = link.get('evidence')
-    evidence = dict(evidence) if isinstance(evidence, dict) else (
-        {} if evidence is None else {'prior_evidence': evidence})
-    corrections = list(evidence.get('manual_corrections', []))
-    corrections.append({'at': _now(), 'action': 'revalidate',
-                        'previous': {'state': link.get('state'),
-                                     'fingerprints': dict(link.get('fingerprints') or {})}})
-    evidence['manual_corrections'] = corrections
-    link.update(fingerprints={uid: (known_a.get(uid) or known_b[uid])['fingerprint']
-                              for uid in members},
-                state='validated', evidence=evidence, modified=_now())
-    link['reviewed_at'] = link['modified']
-    return link
+    return link, members
+
+
+def revalidate_pair_links(project, session, link_ids):
+    """Human confirmation that stale links still join the right lines: their
+    fingerprints are recorded again from the current lines, and they become
+    validated. All or nothing: refused if a line of one of them no longer
+    exists or is out of scope (that link must be unlinked). The previous
+    state and fingerprints are kept in ``evidence.manual_corrections``.
+    Returns the number of links revalidated."""
+    known_a, known_b = pair_indices(project, session)
+    checked = [_revalidation_check(project, session, link_id, known_a, known_b)
+               for link_id in dict.fromkeys(link_ids)]
+    for link, members in checked:
+        evidence = link.get('evidence')
+        evidence = dict(evidence) if isinstance(evidence, dict) else (
+            {} if evidence is None else {'prior_evidence': evidence})
+        corrections = list(evidence.get('manual_corrections', []))
+        corrections.append({'at': _now(), 'action': 'revalidate',
+                            'previous': {'state': link.get('state'),
+                                         'fingerprints': dict(link.get('fingerprints') or {})}})
+        evidence['manual_corrections'] = corrections
+        link.update(fingerprints={uid: (known_a.get(uid) or known_b[uid])['fingerprint']
+                                  for uid in members},
+                    state='validated', evidence=evidence, modified=_now())
+        link['reviewed_at'] = link['modified']
+    return len(checked)
+
+
+def revalidate_pair_link(project, session, link_id):
+    """``revalidate_pair_links`` for one link; returns it."""
+    revalidate_pair_links(project, session, [link_id])
+    return next(item for item in session['links'] if item['id'] == link_id)
 
 
 def page_links_impact(project, witness_id, page_id):
