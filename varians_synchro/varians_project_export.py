@@ -144,6 +144,8 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
     ET.SubElement(root, 'rendering', css='rendering/tei.css',
                   customElements='rendering/custom-elements.xml', xsltMode='builtin')
     ET.SubElement(root, 'webViewer', outputDir='web_output', filename='viewer.html')
+    json_pages = {wid: {str(page['id']) for page in data.get('pages', [])}
+                  for wid, data in packages.items()}
     witness_list = ET.SubElement(root, 'witnesses', base=pivot_id)
     for w in witnesses:
         wid = w['id']
@@ -174,7 +176,11 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
                 if xml:
                     ET.SubElement(im, 'ocrLink', file=_relative_or_absolute(
                         _source_path(xml['path']), dest), canvas=str(page['id']))
-                ET.SubElement(im, 'pageLink', page=str(page['id']), canvas=str(page['id']))
+                # Only pages of the alignment JSON can be linked: Varians
+                # refuses a link to a page it does not know (an unsegmented
+                # Canvas, such as a flyleaf, is selected but has no page).
+                if str(page['id']) in json_pages[wid]:
+                    ET.SubElement(im, 'pageLink', page=str(page['id']), canvas=str(page['id']))
         else:
             im = ET.SubElement(child, 'images', type='files')
             for page in w.get('pages', []):
@@ -183,12 +189,11 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
                 ET.SubElement(im, 'image', file=_relative_or_absolute(
                     _source_path(page['image_path']), dest),
                     label=str(page.get('label') or page['id']))
-        if w.get('alto_sources'):
-            a = ET.SubElement(child, 'alto', type='files')
-            for src in w['alto_sources']:
-                ET.SubElement(a, 'file', file=_relative_or_absolute(
-                    _source_path(src['path']), dest),
-                    label=Path(src['path']).stem)
+        # No <alto type="files">: the alignment JSON already carries each
+        # line's geometry and text, in Synchro's reading order and without
+        # the lines out of scope. Declared ALTO/PAGE files would be laid over
+        # it when Varians opens the project, bringing those lines back and
+        # the XML order with them: the pivot's <lb/> would then be shifted.
 
     dest.parent.mkdir(parents=True, exist_ok=True)
     stage = Path(tempfile.mkdtemp(prefix='.varians-project-', dir=str(dest.parent)))
@@ -244,9 +249,11 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
                                    xml_declaration=True)
         (stage / 'RAPPORT_EXPORT_VARIANS.txt').write_text(
             'Projet généré par Varians-Synchro.\n'
-            'Format du fichier project.xml : teiManuscriptProject (Varians 0.8.x de référence).\n'
+            'Format du fichier project.xml : teiManuscriptProject (vérifié avec Varians 0.9.4.0).\n'
             'Vérifiez la compatibilité avec votre version courante de Varians.\n'
-            'Les images locales et fichiers ALTO/PAGE restent à leur emplacement original.\n'
+            'Les images locales restent à leur emplacement original. Les lignes (géométrie,\n'
+            'texte HTR, ordre de lecture) sont dans les JSON d\u2019alignement ; les fichiers\n'
+            'ALTO/PAGE ne sont pas déclarés dans project.xml (Varians les superposerait au JSON).\n'
             'Les identifiants exportés sont des références physiques ; la présence de la TEI\n'
             'ne prouve pas à elle seule que ses <lb/> sont reconnus par Varians.\n'
             + ('Copies IIIF HD locales vérifiées et incluses (témoin : nombre) : ' + str(copied) + '\n'

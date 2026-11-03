@@ -1,4 +1,8 @@
-"""Export physical-line sessions to the actual Varians 0.8.5.2 alignment JSON schema.
+"""Export physical-line sessions to the Varians alignment JSON schema.
+
+Opening the exported project in Varians 0.9.4.0 is checked by
+tests/test_varians_094_compat.py (the real Varians code reads it). Lines are
+written in the witness's reading order (reading_stream).
 
 One explicit technical reference witness is used for these export files. This
 DOES NOT magically create an editorial TEI line mapping. The TEI XML <lb/>
@@ -22,6 +26,7 @@ import shutil
 from .imaging import mapped_alto_page
 from .page_order import ordered_pages
 from .physical_alignment import physical_lines, line_uid
+from .reading_stream import reading_stream
 
 
 def _get_witness(project, wid):
@@ -49,13 +54,23 @@ def _build_witness_cache(witness, *, base_id, base=False):
     pages, uid_to_line = [], {}
     order = 0
     ignored = set(witness.get('ignored_line_ids', []))
+    # Lines follow the witness's reading order (reading_stream: page order,
+    # then region and line overrides), as the TEI binding does. Varians reads
+    # the pivot's lines in the order of this JSON (the nth <lb/> is the nth
+    # line), and the other witnesses' lines by ``order``. Physical ``line``
+    # numbers are kept: base_keys still address the same lines.
+    stream = {}
+    for item in reading_stream(witness, include_ignored=True):
+        stream.setdefault(item['page_id'], []).append(item['id'])
     for page in ordered_pages(witness):
         source = mapped_alto_page(witness, page)
         if source is None:
             continue  # No false line geometry on unbound IIIF canvases.
         rows = []
-        for ordinal, src in enumerate(source.get('lines', []), 1):
-            uid = line_uid(witness['id'], page['id'], ordinal)
+        by_uid = {line_uid(witness['id'], page['id'], ordinal): (ordinal, src)
+                  for ordinal, src in enumerate(source.get('lines', []), 1)}
+        for uid in stream.get(page['id'], list(by_uid)):
+            ordinal, src = by_uid[uid]
             order += 1
             box = src.get('bbox') or {}
             row = {

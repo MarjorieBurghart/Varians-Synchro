@@ -42,7 +42,9 @@ Le fichier TEI est **copié**, jamais réécrit. Les sources ALTO/PAGE et les im
 
 ## Compatibilité entre produits
 
-Le contrat historique a été établi avec Varians **0.8.5.2**, et le code indique les conventions Varians 0.8.x. Cette attestation de structure **n'est pas une recette d'import avec les builds actuels de Varians**. Pour chaque sortie : vérifier schéma, comptes pages/lignes, Canvas, correspondance des noms d'images et résolution des `base_keys`, puis ouvrir dans la version exacte de Varians utilisée ; comparer visuellement une sélection Mu/F/L de lignes et polygones. La TEI pivot présente dans un projet généré ne prouve pas que toutes ses balises `<lb/>` correspondent aux clés physiques.
+Le contrat historique a été établi avec Varians **0.8.5.2**. Depuis, l'ouverture d'un projet exporté par **Varians 0.9.4.0** est vérifiée automatiquement : `tests/test_varians_094_compat.py` exporte un projet réaliste (pivot à images locales avec une ligne hors périmètre et un ordre de lecture corrigé ; témoin IIIF avec un Canvas non segmenté) et le fait lire par le vrai code de Varians (`tests/varians_runtime.py` ; la CI récupère Varians à la version `VARIANS_REF`). Il vérifie que le projet s'ouvre, que Varians lit les lignes du pivot dans l'ordre de lecture de Synchro, sans les lignes hors périmètre, que chaque `<lb/>` du pivot a sa ligne, et que les `base_keys` désignent des lignes du pivot.
+
+Règles qui en découlent : les lignes de chaque JSON suivent l'ordre de lecture (`reading_stream`), avec leurs numéros physiques `line` inchangés ; `project.xml` ne déclare pas de `<alto type="files">` (Varians superposerait ces fichiers au JSON, lignes hors périmètre et ordre XML compris) ; un `<pageLink>` n'est écrit que pour une page présente dans le JSON (Varians refuse un lien vers une page inconnue, par exemple un Canvas non segmenté). Pour une nouvelle version de Varians : changer `VARIANS_REF` dans la CI et faire passer ces tests. La TEI pivot présente dans un projet généré ne prouve pas que toutes ses balises `<lb/>` correspondent aux clés physiques.
 
 ## Critères de non-livraison
 
