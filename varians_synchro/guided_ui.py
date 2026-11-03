@@ -27,6 +27,19 @@ from .project_state import ProjectChangeTracker
 from .exceptions import (preview_confirmed_absence, confirm_absence, pair_exception_summary)
 
 
+
+def _run_modal(dialog):
+    """``dialog.exec()``, then free the dialog once control returns to the
+    event loop. Dialogs had the main window as parent and were never
+    deleted: each one kept its images (full-size pixmaps) and project
+    copies, and memory grew at every opening. Code right after exec() in
+    the same slot can still use the dialog."""
+    try:
+        return dialog.exec()
+    finally:
+        dialog.deleteLater()
+
+
 def make_guided_window(legacy_window_type=None):
     from PySide6.QtCore import Qt, QSize, QTimer, QUrl, QThread, Signal, QPointF
     from PySide6.QtGui import QIcon, QPixmap, QImage, QImageReader, QColor, QBrush, QPainter, QPen, QPolygonF
@@ -510,7 +523,7 @@ def make_guided_window(legacy_window_type=None):
         def open_reading_order(self):
             try:
                 dialog = ReadingOrderDialog(self.project, self.session, self)
-                dialog.exec()
+                _run_modal(dialog)
                 # Immediately refresh textual selections in the new reading
                 # order. Image panels remain tied to unchanged physical UIDs.
                 self.left_lines = reading_stream(self.left_witness, include_ignored=True)
@@ -920,7 +933,7 @@ def make_guided_window(legacy_window_type=None):
                         f"{counts['added']} " + tr('ui.groupes.sauvegardes') + f" {counts['skipped']} " + tr('ui.ignores.ils.necessitent.une.verification.sur.les'))
                 for title, callback in [('Conserver la sélection', accept_selection), ('Annuler', review.reject)]:
                     button = QPushButton(title); button.clicked.connect(callback); buttons.addWidget(button)
-                review.exec()
+                _run_modal(review)
             except Exception as exc:
                 QMessageBox.warning(self, 'Alignement HTR–HTR', str(exc))
 
@@ -1021,7 +1034,7 @@ def make_guided_window(legacy_window_type=None):
                     button = QPushButton(tr(key))
                     button.clicked.connect(callback)
                     buttons.addWidget(button)
-                review.exec()
+                _run_modal(review)
             except Exception as exc:
                 QMessageBox.warning(self, tr('progress.title'), str(exc))
 
@@ -1108,7 +1121,7 @@ def make_guided_window(legacy_window_type=None):
                     ('Enregistrer les propositions sélectionnées',accept_selection),
                     ('Annuler',review.reject)]:
                     btn=QPushButton(label);btn.clicked.connect(callback);buttons.addWidget(btn)
-                review.exec()
+                _run_modal(review)
             except Exception as exc:
                 QMessageBox.warning(self,'Interpolation géométrique',str(exc))
 
@@ -1188,7 +1201,7 @@ def make_guided_window(legacy_window_type=None):
                     ('common.cancel',review.reject)):
                     button=QPushButton(tr(label));button.clicked.connect(action)
                     row.addWidget(button)
-                review.exec()
+                _run_modal(review)
             except (ValueError,KeyError) as exc:
                 QMessageBox.warning(self,tr('alignment.residual.title'),str(exc))
 
@@ -1318,6 +1331,30 @@ def make_guided_window(legacy_window_type=None):
                     self.validated_hd_batch = inspect_hd_folder(self.witness, self.output_directory)
                 except Exception as exc:
                     self.registry_error = str(exc)
+                self.done.emit('success', count, '')
+            except InterruptedError as exc:
+                self.done.emit('cancelled', 0, str(exc))
+            except Exception as exc:
+                self.done.emit('failed', 0, str(exc))
+
+    class HTRExportThread(QThread):
+        """Export of IIIF images for an external HTR, off the interface
+        thread (it downloads every page: the window froze for minutes)."""
+        progressed = Signal(int, int)
+        done = Signal(str, int, str)   # success | cancelled | failed
+
+        def __init__(self, witness, selected, path, cancellation, parent=None):
+            super().__init__(parent)
+            self.witness, self.selected, self.path = witness, tuple(selected), path
+            self.cancellation = cancellation
+
+        def run(self):
+            try:
+                from .imaging import export_iiif_htr_zip
+                count = export_iiif_htr_zip(
+                    self.witness, list(self.selected), self.path,
+                    cancelled=self.cancellation.is_set,
+                    progress=lambda done, total: self.progressed.emit(done, total))
                 self.done.emit('success', count, '')
             except InterruptedError as exc:
                 self.done.emit('cancelled', 0, str(exc))
@@ -1648,7 +1685,7 @@ def make_guided_window(legacy_window_type=None):
 
         def suggest(self):
             dialog = BatchBindingDialog(self.witness, self)
-            if dialog.exec() == QDialog.DialogCode.Accepted:
+            if _run_modal(dialog) == QDialog.DialogCode.Accepted:
                 self.update_list()
 
         def export(self):
@@ -1657,11 +1694,48 @@ def make_guided_window(legacy_window_type=None):
                 QMessageBox.information(self,tr('Export'),tr('Sélectionnez des pages IIIF dans la liste.'));return
             path,_ = QFileDialog.getSaveFileName(self,tr('ui.images.pour.traitement.externe'),
                                                  self.witness['id']+'_HTR.zip','ZIP (*.zip)')
-            if path:
+            if not path or getattr(self, '_htr_export_thread', None) is not None:
+                return
+            import threading
+            cancel = threading.Event()
+            progress = QProgressDialog(tr('ui.pages.htr.wait', current=0, total=len(selected)),
+                                       tr('common.cancel'), 0, len(selected), self)
+            progress.setWindowTitle(tr('Export IIIF'))
+            progress.setMinimumDuration(0)
+            progress.setWindowModality(Qt.WindowModality.WindowModal)
+            progress.setAutoClose(False)
+            progress.setAutoReset(False)
+            thread = HTRExportThread(self.witness, selected, path, cancel, self)
+            self._htr_export_thread = thread
+            self._htr_export_progress = progress
+            progress.canceled.connect(cancel.set)
+            def updated(done, total):
+                if not cancel.is_set():
+                    progress.setValue(done)
+                    progress.setLabelText(tr('ui.pages.htr.wait', current=done, total=total))
+            def complete(status, count, error):
                 try:
-                    count = export_iiif_htr_zip(self.witness,selected,path)
-                    QMessageBox.information(self,tr('Export terminé'),tr('release.images_exported', count=count))
-                except Exception as exc:QMessageBox.critical(self,tr('Export IIIF'),str(exc))
+                    progress.canceled.disconnect(cancel.set)
+                except (RuntimeError, TypeError):
+                    pass
+                progress.hide()
+                if status == 'success':
+                    QMessageBox.information(self, tr('Export terminé'),
+                                            tr('release.images_exported', count=count))
+                elif status == 'cancelled':
+                    QMessageBox.information(self, tr('Export IIIF'), tr('ui.pages.htr.cancelled'))
+                else:
+                    QMessageBox.critical(self, tr('Export IIIF'), error)
+                progress.deleteLater()
+            thread.progressed.connect(updated)
+            thread.done.connect(complete)
+            def released():
+                thread.deleteLater()
+                self._htr_export_thread = None
+                self._htr_export_progress = None
+            thread.finished.connect(released)
+            thread.start()
+            progress.show()
 
         def download_hd(self):
             """Download only explicitly selected IIIF canvases, without mutating .vsynch."""
@@ -1733,7 +1807,9 @@ def make_guided_window(legacy_window_type=None):
                 else:
                     QMessageBox.warning(self, tr('ui.pages.hd.title'), error)
                 progress.deleteLater()
-                thread.progressed.connect(updated)
+            # Connected before the start, not from complete(): the bar must
+            # follow the download (it stayed at 0 and invited a cancellation).
+            thread.progressed.connect(updated)
             thread.done.connect(complete)
             def released():
                 thread.deleteLater()
@@ -2403,7 +2479,7 @@ def make_guided_window(legacy_window_type=None):
             close.clicked.connect(dialog.accept)
             layout.addWidget(close)
             panel.show_counterparts([pair['physical_line_id']], navigate=True)
-            dialog.exec()
+            _run_modal(dialog)
 
         def reload_tei_source(self):
             from .tei_binding import refresh_tei_source
@@ -2635,7 +2711,7 @@ def make_guided_window(legacy_window_type=None):
                                             tr('resources.binding.missing'))
                     return
                 dialog = BatchBindingDialog(witness, self)
-                dialog.exec()
+                _run_modal(dialog)
             except Exception as exc:
                 QMessageBox.warning(self, tr('resources.witness.edit'), str(exc))
 
@@ -2808,7 +2884,7 @@ def make_guided_window(legacy_window_type=None):
             witness = next((w for w in self.project['witnesses'] if w['id'] == witness_id), None)
             if witness:
                 dialog = WitnessResourceDialog(self.project, witness, self)
-                if dialog.exec() == QDialog.DialogCode.Accepted:
+                if _run_modal(dialog) == QDialog.DialogCode.Accepted:
                     self.refresh()
                     self._select_pivot()
 
@@ -2859,12 +2935,12 @@ def make_guided_window(legacy_window_type=None):
             if not ok:
                 return
             dialog = SingleWitnessScopeDialog(self.project, chosen, self)
-            if dialog.exec() == QDialog.DialogCode.Accepted:
+            if _run_modal(dialog) == QDialog.DialogCode.Accepted:
                 self.refresh()
 
         def open_tei_binding(self):
             dialog = TEIPhysicalBindingDialog(self.project, self)
-            if dialog.exec() == QDialog.DialogCode.Accepted:
+            if _run_modal(dialog) == QDialog.DialogCode.Accepted:
                 self.refresh()
 
         def _build_alignment_tab(self):
@@ -3199,7 +3275,7 @@ def make_guided_window(legacy_window_type=None):
 
         def add_witness(self):
             dialog = WitnessResourceDialog(self.project, parent=self)
-            if dialog.exec() == QDialog.DialogCode.Accepted:
+            if _run_modal(dialog) == QDialog.DialogCode.Accepted:
                 self.refresh()
                 self._select_pivot()
 
@@ -3209,7 +3285,7 @@ def make_guided_window(legacy_window_type=None):
                 return
             try:
                 dialog = BatchBindingDialog(witness, self)
-                if dialog.exec() == QDialog.DialogCode.Accepted:
+                if _run_modal(dialog) == QDialog.DialogCode.Accepted:
                     self.refresh()
             except Exception as exc:
                 QMessageBox.warning(self, tr('resources.binding.title'), str(exc))
@@ -3217,7 +3293,7 @@ def make_guided_window(legacy_window_type=None):
         def manage_pages(self):
             w=self.choose_witness()
             if w is None:return
-            dlg=PagesDialog(self.project,w,self);dlg.exec();self.refresh()
+            dlg=PagesDialog(self.project,w,self);_run_modal(dlg);self.refresh()
 
         def open_physical_alignment(self):
             a=self.reference_box.currentData();b=self.target_box.currentData()
@@ -3225,7 +3301,7 @@ def make_guided_window(legacy_window_type=None):
                 self.notice(tr('Alignement'),'Ajoutez au moins deux témoins.');return
             try:
                 session=create_pair_session(self.project,a,b)
-                dlg=PairDialog(self.project,session,self);dlg.exec();self.refresh()
+                dlg=PairDialog(self.project,session,self);_run_modal(dlg);self.refresh()
             except Exception as exc:
                 QMessageBox.warning(self,tr('Synchronisation'),str(exc))
 

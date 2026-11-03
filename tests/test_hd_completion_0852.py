@@ -127,3 +127,62 @@ def test_gui_100_percent_progress_reports_success_not_cancelled(monkeypatch, tmp
         time.sleep(.01)
     assert dialog._hd_download_thread is None
     dialog.close()
+
+
+def test_gui_progress_bar_follows_the_download(monkeypatch, tmp_path):
+    """The bar moves while the worker downloads (it stayed at 0 until the
+    end: the progress signal was only connected once the download was over)."""
+    import os
+    import threading
+    import time
+    os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
+    import pytest
+    pytest.importorskip('PySide6')
+    from PySide6.QtWidgets import QApplication
+    from varians_synchro.core import create_witness, new_project
+    from varians_synchro.guided_ui import make_guided_window
+    import varians_synchro.imaging as imaging
+
+    app = QApplication.instance() or QApplication([])
+    window_type = make_guided_window(lambda: None)
+    pages_class = next(c.cell_contents for c in window_type.manage_pages.__closure__
+                       if getattr(c.cell_contents, '__name__', None) == 'PagesDialog')
+    closure = {getattr(c.cell_contents, '__name__', None): c.cell_contents
+               for c in pages_class.download_hd.__closure__}
+    dest = tmp_path / 'HD'
+    dest.mkdir()
+    monkeypatch.setattr(closure['QFileDialog'], 'getExistingDirectory',
+                        staticmethod(lambda *a, **k: str(dest)))
+    for name in ('information', 'warning'):
+        monkeypatch.setattr(closure['QMessageBox'], name, staticmethod(lambda *a, **k: None))
+    monkeypatch.setattr(pages_class, '_load_visible_thumbnails', lambda self: None)
+    gate = threading.Event()
+
+    def slow_export(witness, selected, destination, *, cancelled, progress):
+        progress(1, 2)
+        gate.wait(20)
+        return 2
+    monkeypatch.setattr(imaging, 'export_iiif_hd_images', slow_export)
+    project = new_project()
+    witness = create_witness(project, 'F')
+    witness['image_sources'].append({'id': 'iiif-source', 'kind': 'iiif',
+        'reference': 'https://example.org/manifest',
+        'manifest': {'canvases': [{'id': f'canvas-{n}', 'label': n,
+            'image_service': f'https://example.org/iiif/{n}', 'iiif_image_version': 3}
+            for n in ('14v', '15r')]}})
+    dialog = pages_class(project, witness)
+    for row in range(dialog.pages.count()):
+        dialog.pages.item(row).setSelected(True)
+    dialog.download_hd()
+    progress = dialog._hd_download_progress
+    deadline = time.monotonic() + 20
+    while progress.value() != 1 and time.monotonic() < deadline:
+        app.processEvents()
+        time.sleep(.01)
+    seen = progress.value()
+    gate.set()
+    while getattr(dialog, '_hd_download_thread', None) is not None and time.monotonic() < deadline:
+        app.processEvents()
+        time.sleep(.01)
+    dialog.close()
+    assert seen == 1

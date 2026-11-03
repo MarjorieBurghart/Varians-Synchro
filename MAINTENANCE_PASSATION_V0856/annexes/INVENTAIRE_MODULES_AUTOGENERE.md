@@ -49,10 +49,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `guided_ui`, `i18n`, `qt_lifecycle`
 **Fonctions au premier niveau** : `main` (l.17)
 
-## `varians_synchro/guided_ui.py` (3233 lignes)
+## `varians_synchro/guided_ui.py` (3309 lignes)
 **Objet (docstring source)** : Witness-centered PySide6 GUI; the V0.7 physical alignment engine is preserved.
 **Dépendances internes observées** : `bulk_binding`, `core`, `correspondence_navigation`, `exceptions`, `hd_registry`, `i18n`, `imaging`, `interpolation`, `line_scope`, `overlay_filters`, `page_management`, `page_order`, `physical_alignment`, `project_state`, `rapid_review`, `reading_stream`, `residual_alignment`, `resource_workflow`, `tei_binding`, `tei_visual`, `textual_progress`, `validation`, `varians_export`, `varians_project_export`, `viewer`
-**Fonctions au premier niveau** : `make_guided_window` (l.30)
+**Fonctions au premier niveau** : `_run_modal` (l.31), `make_guided_window` (l.43)
 
 ## `varians_synchro/hd_registry.py` (159 lignes)
 **Objet (docstring source)** : Durable, source-bound IIIF HD downloads linked to manuscript Canvas IDs. No network requests. The registry stores where successful downloads live; it never turns an image into a new manuscript page or replaces an IIIF source. The original ``images.json`` remains the authoritative download receipt.
@@ -63,10 +63,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : Varians-Synchro localization: XML catalogs, same schema as Varians. The files ``i18n/fr.xml`` and ``i18n/en.xml`` live beside ``run.py``. All UI message values (including the French defaults) come from these files. Application state, source texts, folio labels and manuscripts are NEVER translated.
 **Fonctions au premier niveau** : `_load_one` (l.21), `_parameters` (l.39), `reload_catalogs` (l.43), `available_languages` (l.71), `language_labels` (l.75), `set_language` (l.80), `get_language` (l.87), `tr` (l.91), `translate_template` (l.104)
 
-## `varians_synchro/imaging.py` (367 lignes)
+## `varians_synchro/imaging.py` (376 lignes)
 **Objet (docstring source)** : IIIF/local page registry, ALTO-to-page mapping, export for external HTR. Images and ALTO are immutable external inputs. An export is a temporary working copy.
 **Dépendances internes observées** : `core`, `page_order`
-**Fonctions au premier niveau** : `_http_bytes` (l.18), `_label` (l.28), `_first` (l.39), `parse_manifest` (l.45), `fetch_manifest` (l.84), `create_pages` (l.88), `bind_alto` (l.133), `mapped_alto_page` (l.141), `bind_line_source` (l.148), `mapped_line_page` (l.152), `suggest_alto_bindings` (l.156), `suggest_line_bindings` (l.175), `image_request_url` (l.179), `image_bytes` (l.188), `export_iiif_htr_zip` (l.198), `import_htr_results` (l.226), `iiif_hd_url` (l.264), `export_iiif_hd_images` (l.285)
+**Fonctions au premier niveau** : `_http_bytes` (l.18), `_label` (l.28), `_first` (l.39), `parse_manifest` (l.45), `fetch_manifest` (l.84), `create_pages` (l.88), `bind_alto` (l.133), `mapped_alto_page` (l.141), `bind_line_source` (l.148), `mapped_line_page` (l.152), `suggest_alto_bindings` (l.156), `suggest_line_bindings` (l.175), `image_request_url` (l.179), `image_bytes` (l.188), `export_iiif_htr_zip` (l.198), `import_htr_results` (l.235), `iiif_hd_url` (l.273), `export_iiif_hd_images` (l.294)
 
 ## `varians_synchro/interpolation.py` (344 lignes)
 **Objet (docstring source)** : Geometry-first manuscript column matching between confirmed 1:1 anchors. This module never assumes a transcription is correct. A physical ALTO column can be aligned between its first and last confirmed lines even when the ALTO reading-order list is interleaved with other columns, text lines are ragged, or OCR order contains small vertical inversions. The output is *suggestions*, not validated textual equivalence; no source or confirmed link is modified.
@@ -179,10 +179,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `core`, `hd_registry`, `varians_export`
 **Fonctions au premier niveau** : `_varians_safe_id` (l.23), `_source_path` (l.28), `_relative_or_absolute` (l.35), `_cache_varians_manifest` (l.41), `export_varians_project` (l.85)
 
-## `varians_synchro/viewer.py` (736 lignes)
+## `varians_synchro/viewer.py` (742 lignes)
 **Objet (docstring source)** : Reusable manuscript page viewer with clickable ALTO overlay. Images can be IIIF or local. Full physical lines are the interaction unit; HTR is supplementary and never needed for visual selection. A 4200px-wide IIIF request provides useful magnification without downloading all canvases.
 **Dépendances internes observées** : `alto_geometry`, `i18n`, `imaging`, `overlay_filters`, `overlay_selection`, `page_order`, `physical_alignment`, `reading_stream`, `selection_policy`
-**Classes déclarées au premier niveau** : `FetchThread` (l.27), `ZoomableGraphicsView` (l.54), `ClickableLine` (l.75), `WitnessLineList` (l.144), `LineImagePanel` (l.166), `PageViewer` (l.719)
+**Classes déclarées au premier niveau** : `FetchThread` (l.28), `ZoomableGraphicsView` (l.55), `ClickableLine` (l.76), `WitnessLineList` (l.145), `LineImagePanel` (l.167), `PageViewer` (l.725)
 
 ## Attention à la lecture
 

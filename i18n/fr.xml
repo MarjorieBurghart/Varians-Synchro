@@ -688,4 +688,6 @@ Attention : le lot n’a pas pu être rattaché au projet ({error}). Utilisez «
   <string key="alignment.stale.revalidated">Groupes revalidés : {count}</string>
   <string key="alignment.stale.extend">Ce groupe est périmé : ses lignes ont changé depuis son enregistrement. Revalidez-le ou dissociez-le d’abord.</string>
   <string key="alignment.stale.vanished">Une ligne de ce groupe n’existe plus : dissociez-la au lieu de revalider.</string>
+  <string key="ui.pages.htr.wait">Export des images pour la HTR : {current}/{total}</string>
+  <string key="ui.pages.htr.cancelled">Export annulé. Aucune archive partielle n’a été écrite.</string>
 </translations>

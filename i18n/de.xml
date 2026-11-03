@@ -681,4 +681,6 @@ Warnung: Die Serie konnte nicht im Projekt erfasst werden ({error}). Verwenden S
   <string key="alignment.stale.revalidated">Erneut bestätigte Gruppen: {count}</string>
   <string key="alignment.stale.extend">Diese Gruppe ist veraltet: Ihre Zeilen haben sich seit der Speicherung geändert. Bestätigen Sie sie erneut oder lösen Sie zuerst die Verknüpfung.</string>
   <string key="alignment.stale.vanished">Eine Zeile dieser Gruppe existiert nicht mehr: Lösen Sie die Verknüpfung, statt erneut zu bestätigen.</string>
+  <string key="ui.pages.htr.wait">Bilder für die HTR werden exportiert: {current}/{total}</string>
+  <string key="ui.pages.htr.cancelled">Export abgebrochen. Es wurde kein unvollständiges Archiv geschrieben.</string>
 </translations>

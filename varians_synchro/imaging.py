@@ -195,8 +195,13 @@ def image_bytes(page, max_width=2500):
     return _http_bytes(url)
 
 
-def export_iiif_htr_zip(witness, page_ids, output_path, max_width=2500):
-    """Download only selected IIIF pages, with Canvas metadata to enable reimport."""
+def export_iiif_htr_zip(witness, page_ids, output_path, max_width=2500, *,
+                        cancelled=None, progress=None):
+    """Download only selected IIIF pages, with Canvas metadata to enable reimport.
+
+    ``progress(done, total)`` is called after each page; ``cancelled()``,
+    checked before each page, stops the export (InterruptedError) without
+    leaving an archive. Both let the interface run it outside its thread."""
     pages={p['id']:p for p in witness['pages']}
     if not page_ids:raise ValueError('Sélectionnez au moins une page')
     items=[]
@@ -205,6 +210,8 @@ def export_iiif_htr_zip(witness, page_ids, output_path, max_width=2500):
     try:
         with zipfile.ZipFile(tmp,'w',compression=zipfile.ZIP_DEFLATED) as z:
             for num,pid in enumerate(page_ids,1):
+                if cancelled is not None and cancelled():
+                    raise InterruptedError('Export annulé')
                 p=pages[pid]
                 if p['image_kind']!='iiif':raise ValueError('Export IIIF : sélection contenant une image locale')
                 fname=f'{witness["id"]}_{num:04d}.jpg'
@@ -215,6 +222,8 @@ def export_iiif_htr_zip(witness, page_ids, output_path, max_width=2500):
                 items.append({'file':fname,'canvas_id':p['id'],'label':p['label'],
                               'image_request_url':image_request_url(p,max_width),
                               'canvas_dimensions':{'width':p['canvas'].get('width'),'height':p['canvas'].get('height')}})
+                if progress is not None:
+                    progress(num, len(page_ids))
             z.writestr('pages.json',json.dumps({'format':'varians-synchro-htr-export',
                         'witness':witness['id'],'pages':items},ensure_ascii=False,indent=2))
         tmp.replace(dest)

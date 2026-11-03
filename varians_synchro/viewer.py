@@ -16,6 +16,7 @@ from .reading_stream import reading_stream
 from .selection_policy import update_line_selection
 from PySide6.QtCore import Qt, QRectF, QPointF, QThread, Signal, QItemSelectionModel, QTimer
 from PySide6.QtGui import QPixmap, QPen, QColor, QBrush, QImage, QPainter, QPolygonF, QPainterPath
+from shiboken6 import isValid
 from PySide6.QtWidgets import (
     QWidget, QDialog, QVBoxLayout, QLabel, QGraphicsView, QGraphicsScene,
     QGraphicsRectItem, QListWidget, QHBoxLayout, QComboBox, QPushButton,
@@ -478,13 +479,18 @@ class LineImagePanel(QWidget):
         worker.failed.connect(lambda error, s=serial: self._on_error(error, s))
         worker.start()
 
+    def _gone(self):
+        # The panel is destroyed with its dialog without its own closeEvent:
+        # an image arriving afterwards must not reach deleted widgets.
+        return self._closed or not isValid(self) or not isValid(self.status)
+
     def _on_error(self, error, serial):
-        if not self._closed and serial == self._request_serial:
+        if not self._gone() and serial == self._request_serial:
             self.status.setText(tr('viewer.image_unavailable.prefix') + error)
             self._preview_focus_pending = False
 
     def _on_image(self, data, serial):
-        if self._closed or serial != self._request_serial: return
+        if self._gone() or serial != self._request_serial: return
         image = QImage.fromData(data)
         if image.isNull():
             self._on_error(tr('ui.format.dimage.non.reconnu.par.qt'), serial)

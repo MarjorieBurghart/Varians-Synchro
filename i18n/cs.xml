@@ -681,4 +681,6 @@ Varování: dávku se nepodařilo zaznamenat do projektu ({error}). Po kontrole 
   <string key="alignment.stale.revalidated">Znovu potvrzené skupiny: {count}</string>
   <string key="alignment.stale.extend">Tato skupina je zastaralá: její řádky se od uložení změnily. Nejprve ji znovu potvrďte, nebo zrušte její propojení.</string>
   <string key="alignment.stale.vanished">Řádek této skupiny už neexistuje: místo opětovného potvrzení zrušte propojení.</string>
+  <string key="ui.pages.htr.wait">Export obrázků pro HTR: {current}/{total}</string>
+  <string key="ui.pages.htr.cancelled">Export zrušen. Žádný neúplný archiv nebyl zapsán.</string>
 </translations>

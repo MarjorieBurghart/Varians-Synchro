@@ -681,4 +681,6 @@ Attenzione: non è stato possibile registrare il lotto nel progetto ({error}). D
   <string key="alignment.stale.revalidated">Gruppi riconvalidati: {count}</string>
   <string key="alignment.stale.extend">Questo gruppo è obsoleto: le sue righe sono cambiate dalla registrazione. Riconvalidalo o scollegalo prima.</string>
   <string key="alignment.stale.vanished">Una riga di questo gruppo non esiste più: scollegala invece di riconvalidare.</string>
+  <string key="ui.pages.htr.wait">Esportazione delle immagini per l’HTR: {current}/{total}</string>
+  <string key="ui.pages.htr.cancelled">Esportazione annullata. Nessun archivio parziale è stato scritto.</string>
 </translations>
