@@ -33,7 +33,7 @@
 - Version applicative : `core.VERSION`; en v0.8.5.6, elle est seule modifiée dans les modules applicatifs.
 - Version du format : `core.SCHEMA` + projet `version:1`, inchangés ; toute nouvelle version du format nécessite une matrice de migration.
 - Historique : `CHANGELOG.md`, `CHANGELOG_V0856.md`, `TESTS_V0856.md`; ne jamais réécrire rétroactivement des rapports anciens comme s'ils appartenaient à la version présente.
-- Sommes de livraison : `MANIFEST_SHA256.json`, `SHA256SUMS.txt`, vérifiées après tous les ajouts (voir `tools/check_maintenance.py`).
+- Intégrité des fichiers : l'historique Git du dépôt (les anciennes listes `MANIFEST_SHA256.json` et `SHA256SUMS.txt` ont été retirées).
 - Distribution : fournir l'archive source **et** le dossier autonome ; l'archive ZIP n'est pas un installateur signé ni un exécutable autonome.
 
 ## Règles d'acceptation

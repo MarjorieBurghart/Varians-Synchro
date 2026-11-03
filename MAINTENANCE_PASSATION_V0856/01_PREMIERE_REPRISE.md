@@ -3,7 +3,7 @@
 ## 1. Conserver le point de départ
 
 - Décompresser **dans un dossier de travail neuf** ; conserver intacte l'archive officielle et son empreinte SHA-256.
-- Comparer les sommes avec `SHA256SUMS.txt` et `MANIFEST_SHA256.json` à la racine. Ces listes n'incluent pas leur propre empreinte pour éviter une dépendance circulaire.
+- Le code est désormais suivi dans le dépôt Git `MarjorieBurghart/Varians-Synchro` : l'historique Git remplace les anciennes listes d'empreintes SHA-256 (`SHA256SUMS.txt`, `MANIFEST_SHA256.json`), retirées. La livraison v0.8.5.6 d'origine est la release `v0.8.5.6`.
 - Constituer un dépôt Git si nécessaire : importer une première révision de la livraison, puis développer sur une branche ; ne pas afficher de fausses informations de commit ou de licence.
 - Ne **jamais** exécuter un test d'écriture sur un projet scientifique original. Travailler sur une copie de `.vsynch` et de ses ressources.
 
