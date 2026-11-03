@@ -1,0 +1,55 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: ${{ matrix.os }} / Python ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.12"]
+    env:
+      # Qt sans écran : les tests de l'interface pilotent les fenêtres.
+      QT_QPA_PLATFORM: offscreen
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - name: Dossier temporaire à nom long (Windows)
+        # Le TEMP par défaut du serveur Windows est un nom court 8.3
+        # (C:\Users\RUNNER~1\...), ce qui peut fausser des comparaisons de chemins.
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          "TMP=$env:RUNNER_TEMP" >> $env:GITHUB_ENV
+          "TEMP=$env:RUNNER_TEMP" >> $env:GITHUB_ENV
+
+      - name: Bibliothèques système pour Qt (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1 libgl1 libxkbcommon0 libfontconfig1 libdbus-1-3 libglib2.0-0
+
+      - name: Dépendances
+        run: python -m pip install -r requirements-dev.txt
+
+      - name: Compilation de tous les modules
+        run: python -m compileall -q varians_synchro tests tools
+
+      - name: Contrôle de maintenance
+        run: python tools/check_maintenance.py
+
+      - name: Tests
+        run: python -m pytest -q --disable-warnings -rs

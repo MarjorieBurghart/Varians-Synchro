@@ -26,6 +26,8 @@ Un audit strict peut retourner 1 pour un **avertissement documentaire** nécessi
 
 Installer PySide6, vérifier `python -c "import PySide6;print(PySide6.__version__)"`, puis exécuter `python -m pytest -q` et `python run.py`. L'usage de `QT_QPA_PLATFORM=offscreen` peut aider en CI pour certaines fenêtres, **pas** pour remplacer les tests d'interaction réelle et les chargements d'images du serveur.
 
+**Intégration continue** : le workflow GitHub `.github/workflows/tests.yml` lance, à chaque envoi et pull request, la compilation, `tools/check_maintenance.py` et toute la suite (tests Qt compris, avec PySide6 et `QT_QPA_PLATFORM=offscreen`) sous Linux et Windows.
+
 ### Checklist de recette manuelle (Windows prioritaire)
 
 - [ ] Démarrage normal depuis `python run.py`, et depuis Spyder en processus indépendant ; absence de double fenêtre intempestive.

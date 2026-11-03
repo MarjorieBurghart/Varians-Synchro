@@ -9,13 +9,12 @@
 
 ## 2. Environnement
 
-Python 3.10+ (annotations `|`, `Path.is_relative_to`, etc.) ; recommandé un environnement isolé cohérent Python/PySide6. Dépendance déclarée : `PySide6>=6.6,<7` dans `requirements.txt`. Le noyau des outils en ligne de commande et de nombreux tests ne dépend pas de Qt. Pour les tests : installer séparément `pytest` (ce paquet n'est pas dans `requirements.txt`). Sur Windows/Spyder, utiliser l'interpréteur actif **du même environnement**, pas un Python supposé global.
+Python 3.10+ (annotations `|`, `Path.is_relative_to`, etc.) ; recommandé un environnement isolé cohérent Python/PySide6. Dépendance déclarée : `PySide6>=6.6,<7` dans `requirements.txt`. Le noyau des outils en ligne de commande et de nombreux tests ne dépend pas de Qt. Pour les tests : `requirements-dev.txt` (application et `pytest`). Sur Windows/Spyder, utiliser l'interpréteur actif **du même environnement**, pas un Python supposé global.
 
 ```bash
 python -m venv .venv
 # Activer .venv avec la commande propre au système
-python -m pip install -r requirements.txt
-python -m pip install pytest
+python -m pip install -r requirements-dev.txt
 python -m compileall -q varians_synchro tests
 python -m pytest -q
 python run.py
