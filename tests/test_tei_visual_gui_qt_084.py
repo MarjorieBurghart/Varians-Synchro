@@ -4,7 +4,7 @@ os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 import pytest
 pytest.importorskip('PySide6')
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication, QDialog
+from PySide6.QtWidgets import QApplication, QDialog, QMessageBox
 from varians_synchro.guided_ui import make_guided_window
 from varians_synchro.resource_workflow import store_tei_reference
 from test_tei_binding_083 import fixture, tei
@@ -48,6 +48,10 @@ def test_one_visual_preview_follows_selected_tei_line(monkeypatch, app, tmp_path
         observed.append(True)
         return QDialog.DialogCode.Rejected
     monkeypatch.setattr(QDialog, 'exec', inspect)
+    # À la fermeture, la fenêtre demande à juste titre s'il faut enregistrer
+    # le projet (jamais enregistré ici) : on répond « Ne pas enregistrer ».
+    # Le patch de QDialog.exec ne doit pas recevoir cette question.
+    monkeypatch.setattr(QMessageBox, 'exec', lambda self: QMessageBox.StandardButton.Discard)
     try:
         parent.open_tei_binding()
         assert observed

@@ -2,11 +2,11 @@
 """Non-destructive delivery checks for Varians-Synchro v0.8.5.6.
 
 Checks required handoff files, package version and JSON schema, translation
-coverage, generated AST inventory and release manifests. Never edits files.
+coverage and generated AST inventory. Never edits files. File integrity is
+tracked by the Git history (the former SHA-256 release manifests were removed
+when the code moved to a Git repository).
 """
 from __future__ import annotations
-import hashlib
-import json
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -24,14 +24,6 @@ ESSENTIAL = [f'{n:02d}_{suffix}.md' for n,suffix in [
     (13,'REGISTRE_DECISIONS'), (14,'CHECKLIST_PASSATION')]]
 
 
-def sha256(path: Path) -> str:
-    h=hashlib.sha256()
-    with path.open('rb') as f:
-        for chunk in iter(lambda: f.read(1024*1024),b''):
-            h.update(chunk)
-    return h.hexdigest()
-
-
 def check_links(markdown: Path) -> list[str]:
     errors = []
     data = markdown.read_text(encoding='utf-8')
@@ -44,7 +36,7 @@ def check_links(markdown: Path) -> list[str]:
     return errors
 
 
-def check(require_manifests=True) -> list[str]:
+def check() -> list[str]:
     errors=[]
     for file in ESSENTIAL + ['annexes/INVENTAIRE_MODULES_AUTOGENERE.md',
                              'annexes/TRACABILITE_CODE_TESTS.md']:
@@ -73,23 +65,6 @@ def check(require_manifests=True) -> list[str]:
     target=DOC/'annexes'/'INVENTAIRE_MODULES_AUTOGENERE.md'
     if target.exists() and target.read_text(encoding='utf-8')!=inventory_text():
         errors.append('Inventaire AST non synchronisé avec le code')
-    if require_manifests:
-        manifest=ROOT/'MANIFEST_SHA256.json'
-        checksums=ROOT/'SHA256SUMS.txt'
-        if not manifest.exists() or not checksums.exists():
-            errors.append('Manifestes manquants')
-        else:
-            data=json.loads(manifest.read_text(encoding='utf-8'))
-            if data.get('version')!='0.8.5.6':errors.append('Version manifeste incorrecte')
-            listed=data.get('files',{})
-            actual={p.relative_to(ROOT).as_posix():sha256(p) for p in ROOT.rglob('*')
-                    if p.is_file() and p.name not in ('MANIFEST_SHA256.json','SHA256SUMS.txt')
-                    and '__pycache__' not in p.parts and '.pytest_cache' not in p.parts}
-            if actual != listed:
-                errors.append(f'Manifeste de hachage incorrect : absents={len(set(actual)-set(listed))}, superflus={len(set(listed)-set(actual))}, digest_diff={sum(listed.get(k)!=v for k,v in actual.items())}')
-            text=checksums.read_text(encoding='utf-8').splitlines()
-            expected=[f'{digest}  {name}' for name,digest in sorted(actual.items())]
-            if text != expected:errors.append('SHA256SUMS.txt incohérent')
     return errors
 
 
@@ -97,7 +72,7 @@ def main():
     problems=check()
     if problems:
         print('ECHEC maintenance:');print('\n'.join(' - '+x for x in problems));return 1
-    print('OK — dossiers de passation, catalogue (7 × 653), inventaire AST, version 0.8.5.6, liens et SHA-256 cohérents.');return 0
+    print('OK — dossiers de passation, catalogue (7 × 653), inventaire AST, version 0.8.5.6 et liens cohérents.');return 0
 
 
 if __name__=='__main__':

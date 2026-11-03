@@ -29,7 +29,7 @@
 | `creer_demo.py` | Voir `--help` / lecture du script | Données de démonstration ; peut écrire des fichiers |
 | `diagnostic_spyder.py`, `diagnostic_flux_lecture.py` | Diagnostic ponctuel | Contrôles d'environnement / lecture ; étudier options avant usage |
 | `tools/generate_module_inventory.py` | `python tools/generate_module_inventory.py` | Régénère l'inventaire AST du présent dossier |
-| `tools/check_maintenance.py` | `python tools/check_maintenance.py` | Vérifie dossier, liens internes, catalogues et empreintes |
+| `tools/check_maintenance.py` | `python tools/check_maintenance.py` | Vérifie dossier, liens internes, catalogues et inventaire AST |
 
 ## Points d'attention pour une refactorisation
 

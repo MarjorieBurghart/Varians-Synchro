@@ -95,6 +95,10 @@ def test_gui_100_percent_progress_reports_success_not_cancelled(monkeypatch, tmp
     monkeypatch.setattr(message_box, 'warning',
                         staticmethod(lambda *a, **k: notices.append(('warning', a[2]))))
 
+    # Pas de vignette téléchargée pendant le test : le Canvas pointe vers
+    # example.org, et une vraie requête réseau n'a rien à faire ici.
+    monkeypatch.setattr(pages_class, '_load_visible_thumbnails', lambda self: None)
+
     def successful_export(witness, selected, destination, *, cancelled, progress):
         progress(1, 1)  # Precisely the value that used to close QProgressDialog.
         return 1
@@ -109,7 +113,7 @@ def test_gui_100_percent_progress_reports_success_not_cancelled(monkeypatch, tmp
     dialog = pages_class(project, witness)
     dialog.pages.item(0).setSelected(True)
     dialog.download_hd()
-    deadline = time.monotonic() + 3
+    deadline = time.monotonic() + 20  # sortie dès la réponse du fil ; marge pour la CI
     while not notices and time.monotonic() < deadline:
         app.processEvents()
         time.sleep(.01)
@@ -117,7 +121,7 @@ def test_gui_100_percent_progress_reports_success_not_cancelled(monkeypatch, tmp
     assert notices[0][0] == 'information'
     assert '1' in notices[0][1]
     assert 'annul' not in notices[0][1].casefold()
-    deadline = time.monotonic() + 3
+    deadline = time.monotonic() + 20  # sortie dès la réponse du fil ; marge pour la CI
     while getattr(dialog, '_hd_download_thread', None) is not None and time.monotonic() < deadline:
         app.processEvents()
         time.sleep(.01)
