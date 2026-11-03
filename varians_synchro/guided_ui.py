@@ -1733,7 +1733,9 @@ def make_guided_window(legacy_window_type=None):
                 else:
                     QMessageBox.warning(self, tr('ui.pages.hd.title'), error)
                 progress.deleteLater()
-                thread.progressed.connect(updated)
+            # Connected before the start, not from complete(): the bar must
+            # follow the download (it stayed at 0 and invited a cancellation).
+            thread.progressed.connect(updated)
             thread.done.connect(complete)
             def released():
                 thread.deleteLater()
