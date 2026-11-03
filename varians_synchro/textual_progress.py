@@ -16,7 +16,7 @@ from math import hypot, isfinite
 from statistics import median
 import unicodedata
 
-from .physical_alignment import is_revisable_automatic
+from .physical_alignment import is_revisable_automatic, stale_link_ids
 from .reading_stream import reading_stream, anchor_intervals
 
 
@@ -188,6 +188,7 @@ def _segments(project, session):
     # Keep other valid intervals available: one erroneous human anchor must not
     # prevent recalculation of dozens of unrelated manuscript passages.
     protected = [link for link in session.get('links', []) if not is_revisable_automatic(link)]
+    stale = stale_link_ids(project, session)
     parts = []
     for interval in base['intervals']:
         first_a = [ai[uid] for uid in interval['reference_ids']]
@@ -212,7 +213,8 @@ def _segments(project, session):
             touches_b = any(uid in bi and low_b <= bi[uid] < high_b for uid in ids_b)
             if not touches_a and not touches_b:
                 continue
-            if any(uid not in ai for uid in ids_a) or any(uid not in bi for uid in ids_b):
+            if (link['id'] in stale or any(uid not in ai for uid in ids_a)
+                    or any(uid not in bi for uid in ids_b)):
                 unsafe = True
                 warnings.append({'reason': 'stale_protected_link', 'link_id': link['id']})
                 continue

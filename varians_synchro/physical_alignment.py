@@ -102,6 +102,100 @@ def pair_indices(project, session):
             {x['id']: x for x in physical_lines(target)})
 
 
+def link_is_stale(link, known):
+    """True when a line of ``link`` has vanished, or has changed since the
+    link recorded it (its fingerprint differs): after a new segmentation of
+    its page, the line at that rank is another line. ``known`` maps line
+    UIDs to current physical lines. Links without recorded fingerprints
+    (very old projects) are not judged, as in the export."""
+    fingerprints = link.get('fingerprints') or {}
+    for uid in list(link.get('reference_ids', [])) + list(link.get('target_ids', [])):
+        line = known.get(uid)
+        if line is None:
+            return True
+        if fingerprints.get(uid) is not None and fingerprints[uid] != line['fingerprint']:
+            return True
+    return False
+
+
+def stale_link_ids(project, session):
+    """IDs of the session's stale links (``link_is_stale``). They are never
+    deleted: the engines leave them out of anchors and calculations, the
+    export leaves them out, and the user revalidates or unlinks them."""
+    known_a, known_b = pair_indices(project, session)
+    known = {**known_a, **known_b}
+    return {link['id'] for link in session.get('links', []) if link_is_stale(link, known)}
+
+
+def _revalidation_check(project, session, link_id, known_a, known_b):
+    link = next((item for item in session.get('links', []) if item['id'] == link_id), None)
+    if link is None:
+        raise ValueError('Association introuvable')
+    members = list(link.get('reference_ids', [])) + list(link.get('target_ids', []))
+    if any(uid not in known_a and uid not in known_b for uid in members):
+        raise ValueError('Une ligne de ce groupe n’existe plus : dissociez-la au lieu de revalider.')
+    ignored = (set(_witness(project, session['reference_witness_id']).get('ignored_line_ids', []))
+               | set(_witness(project, session['target_witness_id']).get('ignored_line_ids', [])))
+    if set(members) & ignored:
+        raise ValueError('Réintégrez les lignes ignorées avant de les associer.')
+    return link, members
+
+
+def revalidate_pair_links(project, session, link_ids):
+    """Human confirmation that stale links still join the right lines: their
+    fingerprints are recorded again from the current lines, and they become
+    validated. All or nothing: refused if a line of one of them no longer
+    exists or is out of scope (that link must be unlinked). The previous
+    state and fingerprints are kept in ``evidence.manual_corrections``.
+    Returns the number of links revalidated."""
+    known_a, known_b = pair_indices(project, session)
+    checked = [_revalidation_check(project, session, link_id, known_a, known_b)
+               for link_id in dict.fromkeys(link_ids)]
+    for link, members in checked:
+        evidence = link.get('evidence')
+        evidence = dict(evidence) if isinstance(evidence, dict) else (
+            {} if evidence is None else {'prior_evidence': evidence})
+        corrections = list(evidence.get('manual_corrections', []))
+        corrections.append({'at': _now(), 'action': 'revalidate',
+                            'previous': {'state': link.get('state'),
+                                         'fingerprints': dict(link.get('fingerprints') or {})}})
+        evidence['manual_corrections'] = corrections
+        link.update(fingerprints={uid: (known_a.get(uid) or known_b[uid])['fingerprint']
+                                  for uid in members},
+                    state='validated', evidence=evidence, modified=_now())
+        link['reviewed_at'] = link['modified']
+    return len(checked)
+
+
+def revalidate_pair_link(project, session, link_id):
+    """``revalidate_pair_links`` for one link; returns it."""
+    revalidate_pair_links(project, session, [link_id])
+    return next(item for item in session['links'] if item['id'] == link_id)
+
+
+def page_links_impact(project, witness_id, page_id):
+    """What a new segmentation of a page (another XML) would affect, to say
+    it beforehand: links citing its current lines, in every pair session
+    (``links``, ``validated``, ``by_state``), and whether the page has a
+    corrected reading order (``reading_order``), which would be dropped."""
+    witness = _witness(project, witness_id)
+    if witness is None:
+        raise ValueError('Témoin inconnu')
+    page = next((p for p in witness.get('pages', []) if p['id'] == page_id), None)
+    if page is None:
+        raise ValueError('Page inconnue')
+    uids = {line['id'] for line in physical_lines(witness) if line['page_id'] == page_id}
+    by_state = {}
+    for session in project.get('pair_sessions', []):
+        for link in session.get('links', []):
+            if uids & (set(link.get('reference_ids', [])) | set(link.get('target_ids', []))):
+                state = link.get('state', 'uncertain')
+                by_state[state] = by_state.get(state, 0) + 1
+    return {'links': sum(by_state.values()), 'validated': by_state.get('validated', 0),
+            'by_state': by_state,
+            'reading_order': bool(page.get('reading_line_order') or page.get('reading_region_order'))}
+
+
 def add_pair_link(project, session, reference_ids, target_ids, *,
                   state='validated', kind='correspondence', origin='manual', confidence=None, evidence=None):
     first = list(dict.fromkeys(reference_ids))
@@ -169,6 +263,10 @@ def extend_pair_link(project, session, reference_ids, target_ids):
     link = matching[0]
     if link.get('kind') != 'correspondence':
         raise ValueError('La ligne est marquée comme absente. Retirez d’abord cette absence confirmée.')
+    if link_is_stale(link, {**known_a, **known_b}):
+        # Recomputing its fingerprints here would erase the trace of the change.
+        raise ValueError('Ce groupe est périmé : ses lignes ont changé depuis son '
+                         'enregistrement. Revalidez-le ou dissociez-le d’abord.')
     add_a = [uid for uid in first if uid not in link['reference_ids']]
     add_b = [uid for uid in second if uid not in link['target_ids']]
     if not add_a and not add_b:

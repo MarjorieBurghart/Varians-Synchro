@@ -669,4 +669,16 @@ Varování: dávku se nepodařilo zaznamenat do projektu ({error}). Po kontrole 
   <string key="help.title">Uživatelská příručka</string>
   <string key="help.open">Otevřít uživatelskou příručku</string>
   <string key="help.missing">Uživatelská příručka nebyla nalezena.</string>
+  <string key="ui.xml.replace_impact">Tato stránka již má zdroj ALTO nebo PAGE. S jiným souborem se její řádky mohou změnit. Skupiny, které odkazují na její řádky: {links} (z toho potvrzené: {validated}). Skupiny, jejichž řádky se změní, budou označeny jako „zastaralé“: nebudou použity ani exportovány, dokud je znovu nepotvrdíte nebo nezrušíte jejich propojení. Nahradit?</string>
+  <string key="ui.xml.replace_order">Opravené pořadí čtení této stránky bude vynulováno.</string>
+  <string key="review.filter.stale">Zastaralé</string>
+  <string key="alignment.stale.tag">[zastaralé]</string>
+  <string key="alignment.stale.count">zastaralé skupiny: {count}</string>
+  <string key="alignment.stale.revalidate">Znovu potvrdit…</string>
+  <string key="alignment.stale.revalidate.tip">Po kontrole na obrázcích: řádky vybraných zastaralých skupin jsou správné; skupiny budou opět platné.</string>
+  <string key="alignment.stale.select">V seznamu vyberte jednu nebo více zastaralých skupin.</string>
+  <string key="alignment.stale.revalidate_question">Znovu potvrdit vybrané zastaralé skupiny ({count})? Udělejte to až po kontrole jejich řádků na obrázcích.</string>
+  <string key="alignment.stale.revalidated">Znovu potvrzené skupiny: {count}</string>
+  <string key="alignment.stale.extend">Tato skupina je zastaralá: její řádky se od uložení změnily. Nejprve ji znovu potvrďte, nebo zrušte její propojení.</string>
+  <string key="alignment.stale.vanished">Řádek této skupiny už neexistuje: místo opětovného potvrzení zrušte propojení.</string>
 </translations>

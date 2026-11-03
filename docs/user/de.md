@@ -32,6 +32,10 @@ Im dritten Schritt ein Zeugenpaar auswählen, gemeinsame Anker setzen und Vorsch
 
 Richtige Gruppen bestätigen und unsichere korrigieren. Bestätigte Auslassungen gelten nur für das jeweilige Zeugenpaar. Manuelle und bestätigte Zuordnungen bleiben vor automatischer Neuberechnung geschützt.
 
+## Neue Segmentierung einer Seite
+
+Wenn eine Seite eine andere ALTO/PAGE-Datei erhält (korrigierte Segmentierung), können sich ihre Zeilen ändern: Eine Zeile wird über ihren Rang auf der Seite bestimmt. Vor dem Ersetzen zeigt Varians-Synchro an, wie viele Gruppen diese Zeilen betreffen. Nach der Bestätigung werden Gruppen, deren Zeilen sich geändert haben, als „[veraltet]“ markiert: Sie dienen nicht mehr als Anker, gehen weder in Berechnungen noch in den Export ein, werden aber nie gelöscht. Der Filter „Veraltet“ im Ausrichtungsfenster listet sie auf; nach Prüfung an den Bildern stellt „Erneut bestätigen…“ sie wieder her, andernfalls lösen Sie die Verknüpfung. Die korrigierte Lesereihenfolge der Seite wird zurückgesetzt.
+
 ## IIIF-HD und externe HTR
 
 Nur benötigte Canvas in HD herunterladen und danach das Projekt speichern. Beim Varians-Export werden lokale Kopien nur dann übernommen, wenn sämtliche benötigten ALTO/PAGE-Seiten vollständig abgedeckt und geprüft sind. Die HTR-Schaltflächen dienen einer optionalen externen Texterkennung.

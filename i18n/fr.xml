@@ -676,4 +676,16 @@ Attention : le lot n’a pas pu être rattaché au projet ({error}). Utilisez «
   <string key="help.title">Documentation utilisateur</string>
   <string key="help.open">Ouvrir le guide utilisateur</string>
   <string key="help.missing">Le guide utilisateur est introuvable.</string>
+  <string key="ui.xml.replace_impact">Cette page a déjà une source ALTO ou PAGE. Avec un autre fichier, ses lignes peuvent changer. Groupes qui citent ses lignes : {links} (dont validés : {validated}). Ceux dont les lignes auront changé seront marqués « périmés » : ni utilisés ni exportés tant qu’ils n’auront pas été revalidés ou dissociés. La remplacer ?</string>
+  <string key="ui.xml.replace_order">L’ordre de lecture corrigé de cette page sera remis à zéro.</string>
+  <string key="review.filter.stale">Périmés</string>
+  <string key="alignment.stale.tag">[périmé]</string>
+  <string key="alignment.stale.count">groupes périmés : {count}</string>
+  <string key="alignment.stale.revalidate">Revalider…</string>
+  <string key="alignment.stale.revalidate.tip">Après vérification sur les images : les lignes des groupes périmés sélectionnés sont bien les bonnes ; ils redeviennent valides.</string>
+  <string key="alignment.stale.select">Sélectionnez dans la liste un ou plusieurs groupes périmés.</string>
+  <string key="alignment.stale.revalidate_question">Revalider les groupes périmés sélectionnés ({count}) ? Faites-le seulement après avoir vérifié leurs lignes sur les images.</string>
+  <string key="alignment.stale.revalidated">Groupes revalidés : {count}</string>
+  <string key="alignment.stale.extend">Ce groupe est périmé : ses lignes ont changé depuis son enregistrement. Revalidez-le ou dissociez-le d’abord.</string>
+  <string key="alignment.stale.vanished">Une ligne de ce groupe n’existe plus : dissociez-la au lieu de revalider.</string>
 </translations>

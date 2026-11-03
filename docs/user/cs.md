@@ -32,6 +32,10 @@ Ve třetím kroku vyberte dvojici svědků, určete odpovídající kotvy a zkon
 
 Potvrďte správné vazby a opravte nejisté. Potvrzená absence se vztahuje jen k dané dvojici. Ručně vytvořené a potvrzené vazby zůstávají chráněné.
 
+## Nová segmentace stránky
+
+Přiřazení jiného souboru ALTO/PAGE ke stránce (opravená segmentace) může změnit její řádky: řádek je určen svým pořadím na stránce. Před nahrazením Varians-Synchro uvede, kolik skupin na tyto řádky odkazuje. Po potvrzení jsou skupiny, jejichž řádky se změnily, označeny „[zastaralé]“: už se nepoužívají jako kotvy, ve výpočtech ani v exportu, ale nikdy nejsou smazány. Filtr „Zastaralé“ v okně zarovnání je vypíše; po kontrole na obrázcích je „Znovu potvrdit…“ obnoví, jinak zrušte jejich propojení. Opravené pořadí čtení stránky se vynuluje.
+
 ## IIIF HD a externí HTR
 
 Stahujte jen požadované Canvas ve vysokém rozlišení a poté projekt uložte. Lokální kopie se exportují do Varians jen při úplném a ověřeném pokrytí všech obrazů s ALTO/PAGE. Nástroje HTR slouží k volitelnému externímu zpracování.

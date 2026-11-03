@@ -669,4 +669,16 @@
   <string key="help.title">Руководство пользователя</string>
   <string key="help.open">Открыть руководство пользователя</string>
   <string key="help.missing">Руководство пользователя не найдено.</string>
+  <string key="ui.xml.replace_impact">У этой страницы уже есть источник ALTO или PAGE. С другим файлом её строки могут измениться. Группы, ссылающиеся на её строки: {links} (из них подтверждённых: {validated}). Группы, строки которых изменятся, будут помечены как «устаревшие»: они не будут использоваться и экспортироваться, пока вы не подтвердите их заново или не разъедините. Заменить?</string>
+  <string key="ui.xml.replace_order">Исправленный порядок чтения этой страницы будет сброшен.</string>
+  <string key="review.filter.stale">Устаревшие</string>
+  <string key="alignment.stale.tag">[устарела]</string>
+  <string key="alignment.stale.count">устаревшие группы: {count}</string>
+  <string key="alignment.stale.revalidate">Подтвердить заново…</string>
+  <string key="alignment.stale.revalidate.tip">После проверки по изображениям: строки выбранных устаревших групп верны; группы снова становятся действительными.</string>
+  <string key="alignment.stale.select">Выберите в списке одну или несколько устаревших групп.</string>
+  <string key="alignment.stale.revalidate_question">Подтвердить заново выбранные устаревшие группы ({count})? Делайте это только после проверки их строк по изображениям.</string>
+  <string key="alignment.stale.revalidated">Подтверждено заново групп: {count}</string>
+  <string key="alignment.stale.extend">Эта группа устарела: её строки изменились с момента сохранения. Сначала подтвердите её заново или разъедините.</string>
+  <string key="alignment.stale.vanished">Одной из строк этой группы больше нет: разъедините её, а не подтверждайте заново.</string>
 </translations>

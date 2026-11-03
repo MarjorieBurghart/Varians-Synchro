@@ -9,7 +9,8 @@ from .imaging import (create_pages, bind_alto, suggest_alto_bindings,
                       export_iiif_htr_zip, import_htr_results, mapped_alto_page)
 from .physical_alignment import (physical_lines, create_pair_session, add_pair_link, extend_pair_link, detach_pair_lines, replace_revisable_pair_proposals,
                                  remove_pair_link, set_pair_link_states, pair_progress,
-                                 verify_pair_sessions, suggest_htr_pair_alignment, apply_pair_proposals)
+                                 verify_pair_sessions, suggest_htr_pair_alignment, apply_pair_proposals,
+                                 stale_link_ids, revalidate_pair_links, page_links_impact)
 from .interpolation import suggest_between_anchors
 from .textual_progress import suggest_textual_progress
 from .rapid_review import (ordered_links, review_counts, following_anchor_interval,
@@ -20,7 +21,7 @@ from .overlay_filters import (FILTER_ALL, FILTER_UNLINKED, FILTER_AUTOMATIC_REVI
                               style_for_link)
 from .i18n import tr, get_language, set_language, language_labels
 from .line_scope import ignored_ids, linked_scope_conflicts, update_ignored_lines
-from .reading_stream import (reading_stream, anchor_intervals, set_page_order,
+from .reading_stream import (reading_stream, anchor_intervals, set_page_order, rebind_page,
     set_region_order, set_line_order, reset_page_line_order, page_regions)
 from .project_state import ProjectChangeTracker
 from .exceptions import (preview_confirmed_absence, confirm_absence, pair_exception_summary)
@@ -456,6 +457,7 @@ def make_guided_window(legacy_window_type=None):
                 ('review.filter.pending', 'pending'),
                 ('review.filter.validated', 'validated'),
                 ('review.filter.absences', 'absences'),
+                ('review.filter.stale', 'stale'),
             ):
                 self.review_filter.addItem(tr(key), value)
             self.review_filter.setCurrentIndex(1)  # pending by default
@@ -475,6 +477,11 @@ def make_guided_window(legacy_window_type=None):
             self.local_review_button = QPushButton(tr('review.recalculate.next'))
             self.local_review_button.clicked.connect(self.recalculate_next_interval)
             review_bar.addWidget(self.local_review_button)
+            # Groups whose lines changed after a new segmentation of a page.
+            self.revalidate_button = QPushButton(tr('alignment.stale.revalidate'))
+            self.revalidate_button.setToolTip(tr('alignment.stale.revalidate.tip'))
+            self.revalidate_button.clicked.connect(self.revalidate_selection)
+            review_bar.addWidget(self.revalidate_button)
             self.links = QListWidget(); self.links.setMaximumHeight(125)
             self.links.setMinimumHeight(50)
             self.links.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
@@ -549,6 +556,7 @@ def make_guided_window(legacy_window_type=None):
                     left_styles[uid] = style
                 for uid in link['target_ids']:
                     right_styles[uid] = style
+            stale = stale_link_ids(self.project, self.session)
             for link in ordered_links(self.project, self.session,
                                       self.review_filter.currentData() or 'all'):
                 a = ', '.join(name_a.get(x, '[ligne modifiée]') for x in link['reference_ids']) or '∅'
@@ -562,7 +570,11 @@ def make_guided_window(legacy_window_type=None):
                                  lines=detail, missing=missing_label)
                 else:
                     content = f"[{link['state']}]  {a} ↔ {b}  · {link['kind']}"
+                if link['id'] in stale:
+                    content = tr('alignment.stale.tag') + ' ' + content
                 entry = QListWidgetItem(content)
+                if link['id'] in stale:
+                    entry.setToolTip(tr('alignment.stale.revalidate.tip'))
                 entry.setData(Qt.ItemDataRole.UserRole, link['id'])
                 self.links.addItem(entry)
             self._populating_links = False
@@ -598,7 +610,8 @@ def make_guided_window(legacy_window_type=None):
                 f"{self.right_witness['id']} : {state['target_covered']}/{state['target_total']}" + tr('ui.lignes') +
                 f"{state['links']}" + tr('ui.groupes') + f"{state['stale_references']} " + tr('ui.reference.s.a.controler') +
                 '  ·  ' + tr('scope.progress', left=state['reference_ignored'], right=state['target_ignored']) +
-                '  ·  ' + tr('exception.status', **pair_exception_summary(self.project, self.session)))
+                '  ·  ' + tr('exception.status', **pair_exception_summary(self.project, self.session)) +
+                ('  ·  ' + tr('alignment.stale.count', count=len(stale)) if stale else ''))
             self._render_navigation_status()
 
         def reset_tei_search(self, *args):
@@ -1179,6 +1192,30 @@ def make_guided_window(legacy_window_type=None):
             except (ValueError,KeyError) as exc:
                 QMessageBox.warning(self,tr('alignment.residual.title'),str(exc))
 
+        def revalidate_selection(self):
+            """Revalidate the selected stale groups, after a human check on the
+            images (all or nothing; a group with a vanished line is refused)."""
+            stale = stale_link_ids(self.project, self.session)
+            selected = [link_id for link_id in self._selected_link_ids() if link_id in stale]
+            if not selected:
+                QMessageBox.information(self, tr('review.title'), tr('alignment.stale.select'))
+                return
+            confirm = QMessageBox.question(
+                self, tr('review.title'),
+                tr('alignment.stale.revalidate_question', count=len(selected)),
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                QMessageBox.StandardButton.No)
+            if confirm != QMessageBox.StandardButton.Yes:
+                return
+            try:
+                count = revalidate_pair_links(self.project, self.session, selected)
+            except ValueError as exc:
+                QMessageBox.warning(self, tr('review.title'), tr(str(exc)))
+                return
+            self.populate()
+            self._navigation_notice = tr('alignment.stale.revalidated', count=count)
+            self._render_navigation_status()
+
         def detach_lines(self):
             """Remove clicked line(s), keeping the unselected group members."""
             a, b = self.selection()
@@ -1594,10 +1631,19 @@ def make_guided_window(legacy_window_type=None):
             chosen,ok = QInputDialog.getItem(self,tr('ui.xml.source'),tr('ui.xml.select_page'),labels,0,False)
             if ok:
                 src,i = candidates[labels.index(chosen)]
-                if sel[0].get('alto_binding'):
-                    answer = QMessageBox.question(self,tr('ui.xml.replace_title'),tr('ui.xml.replace_question'))
+                binding = sel[0].get('alto_binding') or {}
+                if binding and (binding.get('source_id'), binding.get('page_index')) != (src['id'], i):
+                    # Say beforehand what a new segmentation affects: groups citing
+                    # the page's lines become stale if those lines change.
+                    impact = page_links_impact(self.project, self.witness['id'], sel[0]['id'])
+                    text = (tr('ui.xml.replace_impact', links=impact['links'],
+                               validated=impact['validated'])
+                            if impact['links'] else tr('ui.xml.replace_question'))
+                    if impact['reading_order']:
+                        text += '\n\n' + tr('ui.xml.replace_order')
+                    answer = QMessageBox.question(self,tr('ui.xml.replace_title'),text)
                     if answer != QMessageBox.StandardButton.Yes:return
-                bind_alto(self.witness,sel[0]['id'],src['id'],i)
+                rebind_page(self.witness,sel[0]['id'],src['id'],i)
                 self.update_list()
 
         def suggest(self):

@@ -32,6 +32,10 @@ Dans 3 · Aligner les témoins, choisir une paire de témoins, établir des rep�
 
 Valider les groupes corrects ; corriger les groupes incertains. Les absences confirmées sont propres à la paire, alors que les lignes ignorées sont hors périmètre du témoin. Les groupes manuels ou validés sont protégés des recalculs automatiques.
 
+## Nouvelle segmentation d’une page
+
+Donner à une page un autre fichier ALTO/PAGE (segmentation corrigée) peut changer ses lignes : une ligne est repérée par son rang dans la page. Avant le remplacement, Varians-Synchro indique combien de groupes citent ces lignes. Après confirmation, les groupes dont les lignes ont changé sont marqués « [périmé] » : ils ne sont plus utilisés comme repères, ni dans les calculs, ni dans l’export, mais ne sont jamais supprimés. Le filtre « Périmés » de la fenêtre d’alignement les liste ; après vérification sur les images, « Revalider… » les rétablit, sinon dissociez-les. L’ordre de lecture corrigé de la page est remis à zéro.
+
 ## Images IIIF HD et HTR
 
 Télécharger uniquement les Canvas HD utiles. Enregistrer ensuite le projet : les lots et les références Canvas sont conservés. Le projet Varians n’utilise ces copies locales que si toutes les pages nécessaires avec ALTO/PAGE sont couvertes et intègres. Les commandes Exporter pour HTR / Réimporter HTR servent à un traitement de reconnaissance externe ; elles sont facultatives.

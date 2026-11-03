@@ -12,7 +12,6 @@ import re
 from pathlib import Path
 
 from .page_order import ordered_pages, _natural
-from .imaging import bind_alto
 
 
 def _stem(value):
@@ -198,6 +197,8 @@ def apply_binding_choices(witness, plan, selections):
         raise ValueError('Une même page XML ne peut pas être attribuée à plusieurs images : '
                          + details)
     # Everything has been checked: modifying the page dictionaries is safe.
+    # A page bound to another XML loses the reading order made for its old lines.
+    from .reading_stream import rebind_page
     for pid, (source_id, index) in selected:
-        bind_alto(witness, pid, source_id, index)
+        rebind_page(witness, pid, source_id, index)
     return {'associated': len(selected), 'skipped': len(selections) - len(selected)}

@@ -29,7 +29,9 @@ class CompleteCatalogV0855(unittest.TestCase):
     def test_seven_catalogs_complete_identical_keys_and_parameters(self):
         catalogs = {lang: load(lang) for lang in LANGS}
         keys = set(catalogs['fr'])
-        self.assertEqual(len(keys), 653)
+        # Nombre de clés tenu dans docs/i18n_coverage.json (mis à jour avec les catalogues).
+        coverage = json.loads((ROOT/'docs/i18n_coverage.json').read_text(encoding='utf-8'))
+        self.assertEqual(len(keys), coverage['fr']['catalog_entries'])
         for lang, values in catalogs.items():
             self.assertEqual(set(values), keys, lang)
             for k in keys:
@@ -75,7 +77,7 @@ class CompleteCatalogV0855(unittest.TestCase):
         coverage=json.loads((ROOT/'docs/i18n_coverage.json').read_text(encoding='utf-8'))
         self.assertEqual(set(coverage),set(LANGS))
         for lang in LANGS:
-            self.assertEqual(coverage[lang]['catalog_entries'],653)
+            self.assertEqual(coverage[lang]['catalog_entries'],len(load('fr')))
             self.assertEqual(coverage[lang]['english_fallbacks'],0)
             self.assertEqual(coverage[lang]['fallback_key_file'],None)
 

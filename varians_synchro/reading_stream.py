@@ -10,8 +10,9 @@ Overrides are stored in the documentary witness's page dictionaries:
 """
 from __future__ import annotations
 
+from .imaging import bind_alto
 from .page_order import ordered_pages
-from .physical_alignment import physical_lines
+from .physical_alignment import physical_lines, stale_link_ids
 
 
 class ReadingOrderError(ValueError):
@@ -64,6 +65,22 @@ def reset_page_line_order(witness, page_id):
     if page is None:
         raise ReadingOrderError('Page inconnue.')
     page.pop('reading_line_order', None)
+
+
+def rebind_page(witness, page_id, source_id, page_index=0):
+    """Associate a page with a (possibly new) XML segmentation. If the XML
+    changes, the page's corrected reading order (region and line orders,
+    made for the previous lines) is dropped. Return True if it was."""
+    page = next((p for p in witness.get('pages', []) if p['id'] == page_id), None)
+    if page is None:
+        raise ReadingOrderError('Page inconnue.')
+    previous = page.get('alto_binding') or {}
+    bind_alto(witness, page_id, source_id, page_index)
+    if (previous.get('source_id'), previous.get('page_index')) == (source_id, page_index):
+        return False
+    dropped = page.pop('reading_line_order', None) is not None
+    dropped = (page.pop('reading_region_order', None) is not None) or dropped
+    return dropped
 
 
 def page_regions(witness, page_id):
@@ -132,8 +149,13 @@ def anchor_intervals(project, session):
     bi = {line['id']: i for i, line in enumerate(b)}
     anchors = []
     warnings = []
+    stale = stale_link_ids(project, session)
     for link in session.get('links', []):
         if link.get('state') != 'validated' or link.get('kind') != 'correspondence':
+            continue
+        if link['id'] in stale:
+            # Its lines changed (new segmentation): never an anchor until revalidated.
+            warnings.append({'link_id': link.get('id'), 'reason': 'stale_anchor'})
             continue
         aids = link.get('reference_ids', [])
         bids = link.get('target_ids', [])
