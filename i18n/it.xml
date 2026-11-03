@@ -669,4 +669,16 @@ Attenzione: non è stato possibile registrare il lotto nel progetto ({error}). D
   <string key="help.title">Manuale utente</string>
   <string key="help.open">Apri il manuale utente</string>
   <string key="help.missing">Impossibile trovare il manuale utente.</string>
+  <string key="ui.xml.replace_impact">Questa pagina ha già una sorgente ALTO o PAGE. Con un altro file, le sue righe possono cambiare. Gruppi che citano le sue righe: {links} (di cui convalidati: {validated}). Quelli le cui righe cambieranno saranno segnati come «obsoleti»: né usati né esportati finché non saranno riconvalidati o scollegati. Sostituirla?</string>
+  <string key="ui.xml.replace_order">L’ordine di lettura corretto di questa pagina sarà azzerato.</string>
+  <string key="review.filter.stale">Obsoleti</string>
+  <string key="alignment.stale.tag">[obsoleto]</string>
+  <string key="alignment.stale.count">gruppi obsoleti: {count}</string>
+  <string key="alignment.stale.revalidate">Riconvalida…</string>
+  <string key="alignment.stale.revalidate.tip">Dopo la verifica sulle immagini: le righe dei gruppi obsoleti selezionati sono quelle giuste; tornano validi.</string>
+  <string key="alignment.stale.select">Seleziona nell’elenco uno o più gruppi obsoleti.</string>
+  <string key="alignment.stale.revalidate_question">Riconvalidare i gruppi obsoleti selezionati ({count})? Fallo solo dopo averne verificato le righe sulle immagini.</string>
+  <string key="alignment.stale.revalidated">Gruppi riconvalidati: {count}</string>
+  <string key="alignment.stale.extend">Questo gruppo è obsoleto: le sue righe sono cambiate dalla registrazione. Riconvalidalo o scollegalo prima.</string>
+  <string key="alignment.stale.vanished">Una riga di questo gruppo non esiste più: scollegala invece di riconvalidare.</string>
 </translations>

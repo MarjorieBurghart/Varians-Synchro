@@ -676,4 +676,16 @@ Warning: the batch could not be registered in the project ({error}). Use “Atta
   <string key="help.title">User documentation</string>
   <string key="help.open">Open user guide</string>
   <string key="help.missing">The user guide could not be found.</string>
+  <string key="ui.xml.replace_impact">This page already has an ALTO or PAGE source. With another file, its lines may change. Groups citing its lines: {links} (validated: {validated}). Those whose lines change will be marked “stale”: neither used nor exported until they are revalidated or unlinked. Replace it?</string>
+  <string key="ui.xml.replace_order">The corrected reading order of this page will be reset.</string>
+  <string key="review.filter.stale">Stale</string>
+  <string key="alignment.stale.tag">[stale]</string>
+  <string key="alignment.stale.count">stale groups: {count}</string>
+  <string key="alignment.stale.revalidate">Revalidate…</string>
+  <string key="alignment.stale.revalidate.tip">After checking on the images: the lines of the selected stale groups are the right ones; they become valid again.</string>
+  <string key="alignment.stale.select">Select one or more stale groups in the list.</string>
+  <string key="alignment.stale.revalidate_question">Revalidate the selected stale groups ({count})? Do this only after checking their lines on the images.</string>
+  <string key="alignment.stale.revalidated">Groups revalidated: {count}</string>
+  <string key="alignment.stale.extend">This group is stale: its lines have changed since it was recorded. Revalidate or unlink it first.</string>
+  <string key="alignment.stale.vanished">A line of this group no longer exists: unlink it instead of revalidating.</string>
 </translations>

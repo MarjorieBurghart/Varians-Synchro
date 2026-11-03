@@ -32,6 +32,10 @@ Nella terza fase scegliere una coppia, porre ancore corrispondenti e verificare 
 
 Convalidare i gruppi corretti e rivedere quelli incerti. Le assenze confermate riguardano solo la coppia. I legami manuali e convalidati restano protetti.
 
+## Nuova segmentazione di una pagina
+
+Assegnare a una pagina un altro file ALTO/PAGE (segmentazione corretta) può cambiarne le righe: una riga è individuata dalla sua posizione nella pagina. Prima della sostituzione, Varians-Synchro indica quanti gruppi citano queste righe. Dopo la conferma, i gruppi le cui righe sono cambiate sono segnati «[obsoleto]»: non sono più usati come ancore, nei calcoli né nell’esportazione, ma non vengono mai eliminati. Il filtro «Obsoleti» della finestra di allineamento li elenca; dopo la verifica sulle immagini, «Riconvalida…» li ripristina, altrimenti scollegali. L’ordine di lettura corretto della pagina viene azzerato.
+
 ## IIIF HD e HTR esterna
 
 Scaricare soltanto i Canvas HD utili e salvare il progetto. Le copie locali entrano nell’esportazione Varians solo se tutti i Canvas segmentati necessari sono coperti e verificati. I comandi HTR riguardano un’elaborazione esterna facoltativa.

@@ -669,4 +669,16 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="help.title">ユーザーガイド</string>
   <string key="help.open">ユーザーガイドを開く</string>
   <string key="help.missing">ユーザーガイドが見つかりません。</string>
+  <string key="ui.xml.replace_impact">このページには ALTO/PAGE のソースが既に登録されています。別のファイルにすると行が変わる可能性があります。この行を参照するグループ：{links}（うち承認済み：{validated}）。行が変わったグループは「失効」と表示され、再承認または関連付けの解除まで、計算にもエクスポートにも使われません。置き換えますか？</string>
+  <string key="ui.xml.replace_order">このページの修正済みの読み順はリセットされます。</string>
+  <string key="review.filter.stale">失効</string>
+  <string key="alignment.stale.tag">［失効］</string>
+  <string key="alignment.stale.count">失効したグループ：{count}</string>
+  <string key="alignment.stale.revalidate">再承認…</string>
+  <string key="alignment.stale.revalidate.tip">画像で確認した後に：選択した失効グループの行が正しいことを確認し、再び有効にします。</string>
+  <string key="alignment.stale.select">一覧から失効したグループを1つ以上選択してください。</string>
+  <string key="alignment.stale.revalidate_question">選択した失効グループ（{count}）を再承認しますか？画像で行を確認した後にのみ行ってください。</string>
+  <string key="alignment.stale.revalidated">再承認したグループ：{count}</string>
+  <string key="alignment.stale.extend">このグループは失効しています。保存後に行が変更されました。先に再承認するか、関連付けを解除してください。</string>
+  <string key="alignment.stale.vanished">このグループの行の一つがもう存在しません。再承認ではなく関連付けを解除してください。</string>
 </translations>

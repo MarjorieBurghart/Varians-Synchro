@@ -2,7 +2,7 @@
 
 | Priorité | Point | Conséquence | Mesure recommandée |
 |---|---|---|---|
-| Haute | `.vsynch` dépend d'UID basés sur page + ordinal | Nouvelle segmentation peut laisser des liens trompeurs ou périmés | `verify_pair_sessions`, comparaison des empreintes, migration manuelle contrôlée |
+| Haute | `.vsynch` dépend d'UID basés sur page + ordinal | Nouvelle segmentation peut laisser des liens trompeurs ou périmés | Avertissement avant réassociation ; groupes périmés exclus des ancres, calculs et export, à revalider ou dissocier (chapitre 05) |
 | Haute | `base_keys` du JSON d'alignement sont physiques | Le navigateur de Varians peut ouvrir un JSON pourtant décalé de la TEI | Vérifier `<lb/>`, documenter « NOT_ESTABLISHED », recette d'import réelle |
 | Haute | Compatibilité export projet vérifiée avec Varians 0.9.4.0 seulement (`tests/test_varians_094_compat.py`) | Une nouvelle version de Varians peut changer ses attentes | Changer `VARIANS_REF` dans la CI et faire passer ces tests |
 | Haute | Origine scientifique des absences et validations | Faux positifs philologiques irréversibles si acceptés en bloc | Prévisualisation, provenance et contrôle humain |

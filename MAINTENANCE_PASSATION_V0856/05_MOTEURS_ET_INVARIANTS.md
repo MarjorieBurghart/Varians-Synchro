@@ -20,6 +20,17 @@ Le moteur travaille au-delà des colonnes et folios. L'ordre de lecture choisi f
 - `set_pair_link_states` exige l'existence de tous les IDs demandés et inscrit une date de révision en cas de validation.
 - `verify_pair_sessions` et `pair_progress` signalent lignes disparues ou dont le fingerprint diverge ; ils **ne réparent pas** les liens.
 
+## Groupes périmés (nouvelle segmentation d'une page)
+
+Une ligne est identifiée par sa page et son rang (`line_uid`). Si une page reçoit un autre XML, un groupe peut désigner d'autres lignes. Un groupe est **périmé** quand une de ses lignes a disparu ou que son empreinte (`fingerprints`) ne correspond plus à la ligne actuelle (`physical_alignment.link_is_stale`, `stale_link_ids`). Il n'est jamais supprimé, mais :
+
+- il n'est jamais une ancre (`reading_stream.anchor_intervals` : avertissement `stale_anchor` ; `interpolation.suggest_between_anchors`) ni un obstacle sûr (`textual_progress` : `stale_protected_link`) ;
+- `extend_pair_link` le refuse (recalculer ses empreintes effacerait la trace du changement) ;
+- l'export l'écarte (contrôle d'empreintes de `varians_export`) ;
+- l'interface le marque « [périmé] », le filtre « Périmés » le liste (`rapid_review.FILTER_STALE`), et « Revalider… » (`revalidate_pair_links`, tout ou rien, refusé si une ligne a disparu) relève à nouveau ses empreintes après vérification humaine, avec trace dans `evidence.manual_corrections`.
+
+Avant de donner un autre XML à une page, l'interface dit ce que cela touche (`page_links_impact` : groupes par statut, ordre de lecture corrigé) ; `reading_stream.rebind_page` associe la page et retire son ordre de lecture corrigé si son XML change. Tests : `tests/test_stale_links.py`, `tests/test_stale_links_qt.py`.
+
 ## Propositions et niveau de preuve
 
 | Mécanisme | Module | Rôle | Limite à respecter |

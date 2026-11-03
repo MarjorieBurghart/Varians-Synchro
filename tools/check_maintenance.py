@@ -57,7 +57,9 @@ def check() -> list[str]:
             key=entry.get('key')
             if not key or key in vals:errors.append(f'Clé invalide/dupliquée : {lang}: {key}')
             vals[key]=entry.text
-        if len(vals)!=653:errors.append(f'Couverture {lang}: {len(vals)} au lieu de 653')
+        # Même nombre de clés que le catalogue français (le premier lu).
+        expected = len(vals) if lang == 'fr' else expected
+        if len(vals)!=expected:errors.append(f'Couverture {lang}: {len(vals)} au lieu de {expected}')
         catalog[lang]=set(vals)
     if catalog and len(set(map(frozenset,catalog.values())))!=1:
         errors.append('Catalogues : clés différentes')
@@ -72,7 +74,7 @@ def main():
     problems=check()
     if problems:
         print('ECHEC maintenance:');print('\n'.join(' - '+x for x in problems));return 1
-    print('OK — dossiers de passation, catalogue (7 × 653), inventaire AST, version 0.8.5.6 et liens cohérents.');return 0
+    print('OK — dossiers de passation, catalogues (7 langues, mêmes clés), inventaire AST, version 0.8.5.6 et liens cohérents.');return 0
 
 
 if __name__=='__main__':

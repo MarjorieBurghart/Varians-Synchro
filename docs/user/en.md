@@ -32,6 +32,10 @@ In step 3 choose two witnesses, place homologous anchors, generate cumulative-te
 
 Validate correct groups, revise uncertain groups and confirm genuine omissions pair by pair. Globally ignored lines are outside the witness scope. Manual and validated groups are protected against automatic recalculation.
 
+## New segmentation of a page
+
+Giving a page another ALTO/PAGE file (corrected segmentation) may change its lines: a line is identified by its rank on the page. Before the replacement, Varians-Synchro says how many groups cite these lines. Once confirmed, groups whose lines changed are marked “[stale]”: they are no longer used as anchors, in calculations or in the export, but they are never deleted. The “Stale” filter of the alignment window lists them; after checking on the images, “Revalidate…” restores them; otherwise unlink them. The page’s corrected reading order is reset.
+
 ## IIIF HD and external HTR
 
 Download selected HD Canvas only and save the project to retain Canvas-to-file mapping. Copies enter Varians export only if every required segmented Canvas has a verified local copy. Export for HTR / Reimport HTR concern optional external recognition.
