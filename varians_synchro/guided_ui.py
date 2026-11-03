@@ -27,6 +27,19 @@ from .project_state import ProjectChangeTracker
 from .exceptions import (preview_confirmed_absence, confirm_absence, pair_exception_summary)
 
 
+
+def _run_modal(dialog):
+    """``dialog.exec()``, then free the dialog once control returns to the
+    event loop. Dialogs had the main window as parent and were never
+    deleted: each one kept its images (full-size pixmaps) and project
+    copies, and memory grew at every opening. Code right after exec() in
+    the same slot can still use the dialog."""
+    try:
+        return dialog.exec()
+    finally:
+        dialog.deleteLater()
+
+
 def make_guided_window(legacy_window_type=None):
     from PySide6.QtCore import Qt, QSize, QTimer, QUrl, QThread, Signal, QPointF
     from PySide6.QtGui import QIcon, QPixmap, QImage, QImageReader, QColor, QBrush, QPainter, QPen, QPolygonF
@@ -510,7 +523,7 @@ def make_guided_window(legacy_window_type=None):
         def open_reading_order(self):
             try:
                 dialog = ReadingOrderDialog(self.project, self.session, self)
-                dialog.exec()
+                _run_modal(dialog)
                 # Immediately refresh textual selections in the new reading
                 # order. Image panels remain tied to unchanged physical UIDs.
                 self.left_lines = reading_stream(self.left_witness, include_ignored=True)
@@ -920,7 +933,7 @@ def make_guided_window(legacy_window_type=None):
                         f"{counts['added']} " + tr('ui.groupes.sauvegardes') + f" {counts['skipped']} " + tr('ui.ignores.ils.necessitent.une.verification.sur.les'))
                 for title, callback in [('Conserver la sélection', accept_selection), ('Annuler', review.reject)]:
                     button = QPushButton(title); button.clicked.connect(callback); buttons.addWidget(button)
-                review.exec()
+                _run_modal(review)
             except Exception as exc:
                 QMessageBox.warning(self, 'Alignement HTR–HTR', str(exc))
 
@@ -1021,7 +1034,7 @@ def make_guided_window(legacy_window_type=None):
                     button = QPushButton(tr(key))
                     button.clicked.connect(callback)
                     buttons.addWidget(button)
-                review.exec()
+                _run_modal(review)
             except Exception as exc:
                 QMessageBox.warning(self, tr('progress.title'), str(exc))
 
@@ -1108,7 +1121,7 @@ def make_guided_window(legacy_window_type=None):
                     ('Enregistrer les propositions sélectionnées',accept_selection),
                     ('Annuler',review.reject)]:
                     btn=QPushButton(label);btn.clicked.connect(callback);buttons.addWidget(btn)
-                review.exec()
+                _run_modal(review)
             except Exception as exc:
                 QMessageBox.warning(self,'Interpolation géométrique',str(exc))
 
@@ -1188,7 +1201,7 @@ def make_guided_window(legacy_window_type=None):
                     ('common.cancel',review.reject)):
                     button=QPushButton(tr(label));button.clicked.connect(action)
                     row.addWidget(button)
-                review.exec()
+                _run_modal(review)
             except (ValueError,KeyError) as exc:
                 QMessageBox.warning(self,tr('alignment.residual.title'),str(exc))
 
@@ -1648,7 +1661,7 @@ def make_guided_window(legacy_window_type=None):
 
         def suggest(self):
             dialog = BatchBindingDialog(self.witness, self)
-            if dialog.exec() == QDialog.DialogCode.Accepted:
+            if _run_modal(dialog) == QDialog.DialogCode.Accepted:
                 self.update_list()
 
         def export(self):
@@ -2405,7 +2418,7 @@ def make_guided_window(legacy_window_type=None):
             close.clicked.connect(dialog.accept)
             layout.addWidget(close)
             panel.show_counterparts([pair['physical_line_id']], navigate=True)
-            dialog.exec()
+            _run_modal(dialog)
 
         def reload_tei_source(self):
             from .tei_binding import refresh_tei_source
@@ -2637,7 +2650,7 @@ def make_guided_window(legacy_window_type=None):
                                             tr('resources.binding.missing'))
                     return
                 dialog = BatchBindingDialog(witness, self)
-                dialog.exec()
+                _run_modal(dialog)
             except Exception as exc:
                 QMessageBox.warning(self, tr('resources.witness.edit'), str(exc))
 
@@ -2810,7 +2823,7 @@ def make_guided_window(legacy_window_type=None):
             witness = next((w for w in self.project['witnesses'] if w['id'] == witness_id), None)
             if witness:
                 dialog = WitnessResourceDialog(self.project, witness, self)
-                if dialog.exec() == QDialog.DialogCode.Accepted:
+                if _run_modal(dialog) == QDialog.DialogCode.Accepted:
                     self.refresh()
                     self._select_pivot()
 
@@ -2861,12 +2874,12 @@ def make_guided_window(legacy_window_type=None):
             if not ok:
                 return
             dialog = SingleWitnessScopeDialog(self.project, chosen, self)
-            if dialog.exec() == QDialog.DialogCode.Accepted:
+            if _run_modal(dialog) == QDialog.DialogCode.Accepted:
                 self.refresh()
 
         def open_tei_binding(self):
             dialog = TEIPhysicalBindingDialog(self.project, self)
-            if dialog.exec() == QDialog.DialogCode.Accepted:
+            if _run_modal(dialog) == QDialog.DialogCode.Accepted:
                 self.refresh()
 
         def _build_alignment_tab(self):
@@ -3201,7 +3214,7 @@ def make_guided_window(legacy_window_type=None):
 
         def add_witness(self):
             dialog = WitnessResourceDialog(self.project, parent=self)
-            if dialog.exec() == QDialog.DialogCode.Accepted:
+            if _run_modal(dialog) == QDialog.DialogCode.Accepted:
                 self.refresh()
                 self._select_pivot()
 
@@ -3211,7 +3224,7 @@ def make_guided_window(legacy_window_type=None):
                 return
             try:
                 dialog = BatchBindingDialog(witness, self)
-                if dialog.exec() == QDialog.DialogCode.Accepted:
+                if _run_modal(dialog) == QDialog.DialogCode.Accepted:
                     self.refresh()
             except Exception as exc:
                 QMessageBox.warning(self, tr('resources.binding.title'), str(exc))
@@ -3219,7 +3232,7 @@ def make_guided_window(legacy_window_type=None):
         def manage_pages(self):
             w=self.choose_witness()
             if w is None:return
-            dlg=PagesDialog(self.project,w,self);dlg.exec();self.refresh()
+            dlg=PagesDialog(self.project,w,self);_run_modal(dlg);self.refresh()
 
         def open_physical_alignment(self):
             a=self.reference_box.currentData();b=self.target_box.currentData()
@@ -3227,7 +3240,7 @@ def make_guided_window(legacy_window_type=None):
                 self.notice(tr('Alignement'),'Ajoutez au moins deux témoins.');return
             try:
                 session=create_pair_session(self.project,a,b)
-                dlg=PairDialog(self.project,session,self);dlg.exec();self.refresh()
+                dlg=PairDialog(self.project,session,self);_run_modal(dlg);self.refresh()
             except Exception as exc:
                 QMessageBox.warning(self,tr('Synchronisation'),str(exc))
 

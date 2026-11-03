@@ -49,10 +49,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `guided_ui`, `i18n`, `qt_lifecycle`
 **Fonctions au premier niveau** : `main` (l.17)
 
-## `varians_synchro/guided_ui.py` (3235 lignes)
+## `varians_synchro/guided_ui.py` (3248 lignes)
 **Objet (docstring source)** : Witness-centered PySide6 GUI; the V0.7 physical alignment engine is preserved.
 **Dépendances internes observées** : `bulk_binding`, `core`, `correspondence_navigation`, `exceptions`, `hd_registry`, `i18n`, `imaging`, `interpolation`, `line_scope`, `overlay_filters`, `page_management`, `page_order`, `physical_alignment`, `project_state`, `rapid_review`, `reading_stream`, `residual_alignment`, `resource_workflow`, `tei_binding`, `tei_visual`, `textual_progress`, `validation`, `varians_export`, `varians_project_export`, `viewer`
-**Fonctions au premier niveau** : `make_guided_window` (l.30)
+**Fonctions au premier niveau** : `_run_modal` (l.31), `make_guided_window` (l.43)
 
 ## `varians_synchro/hd_registry.py` (159 lignes)
 **Objet (docstring source)** : Durable, source-bound IIIF HD downloads linked to manuscript Canvas IDs. No network requests. The registry stores where successful downloads live; it never turns an image into a new manuscript page or replaces an IIIF source. The original ``images.json`` remains the authoritative download receipt.
@@ -179,10 +179,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `core`, `hd_registry`, `varians_export`
 **Fonctions au premier niveau** : `_varians_safe_id` (l.23), `_source_path` (l.28), `_relative_or_absolute` (l.35), `_cache_varians_manifest` (l.41), `export_varians_project` (l.85)
 
-## `varians_synchro/viewer.py` (736 lignes)
+## `varians_synchro/viewer.py` (742 lignes)
 **Objet (docstring source)** : Reusable manuscript page viewer with clickable ALTO overlay. Images can be IIIF or local. Full physical lines are the interaction unit; HTR is supplementary and never needed for visual selection. A 4200px-wide IIIF request provides useful magnification without downloading all canvases.
 **Dépendances internes observées** : `alto_geometry`, `i18n`, `imaging`, `overlay_filters`, `overlay_selection`, `page_order`, `physical_alignment`, `reading_stream`, `selection_policy`
-**Classes déclarées au premier niveau** : `FetchThread` (l.27), `ZoomableGraphicsView` (l.54), `ClickableLine` (l.75), `WitnessLineList` (l.144), `LineImagePanel` (l.166), `PageViewer` (l.719)
+**Classes déclarées au premier niveau** : `FetchThread` (l.28), `ZoomableGraphicsView` (l.55), `ClickableLine` (l.76), `WitnessLineList` (l.145), `LineImagePanel` (l.167), `PageViewer` (l.725)
 
 ## Attention à la lecture
 
