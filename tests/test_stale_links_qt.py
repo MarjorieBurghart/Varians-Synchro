@@ -1,6 +1,7 @@
 """Interface des correspondances périmées : avertissement avant de donner un
 autre XML à une page, marque dans la liste des groupes, revalidation."""
 import os
+from pathlib import Path
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 import pytest
 pytest.importorskip('PySide6')
@@ -36,7 +37,7 @@ def _assign(app, monkeypatch, project, witness, answer):
     target = witness['alto_sources'][-1]
 
     def choose(parent, title, label, labels, *args, **kwargs):
-        return next(text for text in labels if target['path'].split('/')[-1] in text), True
+        return next(text for text in labels if Path(target['path']).name in text), True
     monkeypatch.setattr(names['QInputDialog'], 'getItem', staticmethod(choose))
     monkeypatch.setattr(names['QMessageBox'], 'question',
                         staticmethod(lambda parent, title, text, *a, **k: asked.append(text) or answer))
