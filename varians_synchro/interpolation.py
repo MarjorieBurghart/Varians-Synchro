@@ -14,7 +14,7 @@ from statistics import median
 
 from .automatic import normalize
 from .i18n import tr
-from .physical_alignment import physical_lines, _witness, is_revisable_automatic
+from .physical_alignment import physical_lines, _witness, is_revisable_automatic, stale_link_ids
 
 
 def _bbox(line):
@@ -246,9 +246,11 @@ def suggest_between_anchors(project, session, *, max_lines_per_side=220,
     ib = {ln['id']:ln for ln in b}
     groups = {}
     warnings = []
+    stale = stale_link_ids(project, session)  # lines changed: never an anchor
     for link in session.get('links', []):
         aa, bb = link.get('reference_ids', []), link.get('target_ids', [])
         if (link.get('state') == 'validated' and link.get('kind') == 'correspondence'
+                and link['id'] not in stale
                 and len(aa) == len(bb) == 1 and aa[0] in ia and bb[0] in ib):
             pair = (ia[aa[0]]['page_id'], ib[bb[0]]['page_id'])
             groups.setdefault(pair, []).append((aa[0], bb[0], link['id']))
