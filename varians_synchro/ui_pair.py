@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QKeySequence, QShortcut
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHBoxLayout, QLineEdit, QMenu,
                                QSplitter, QToolButton, QVBoxLayout, QWidget)
 
@@ -32,7 +33,6 @@ class PairDialog(QDialog):
     """Visual-first manual alignment; HTR is optional secondary information."""
     def __init__(self, project, session, parent=None):
         super().__init__(parent)
-        from .viewer import LineImagePanel
         self.project = project
         self.session = session
         self.setWindowTitle('Synchronisation visuelle entre témoins — Varians-Synchro')
@@ -52,6 +52,21 @@ class PairDialog(QDialog):
         self.left_lines = physical_lines(base)
         self.right_lines = physical_lines(target)
         main = QVBoxLayout(self)
+        self._build_actions(main)
+        self._build_filters(main)
+        self._build_visual_tab(main)
+        self._build_text_tab()
+        self._build_review_list(main)
+        self.status = QLabel(); self.status.setWordWrap(True); main.addWidget(self.status)
+        hint = QLabel(tr('alignment.edit.hint'))
+        hint.setWordWrap(True)
+        hint.setMaximumHeight(48)
+        main.addWidget(hint)
+        self.tabs.setMinimumHeight(150)
+        self.populate()
+
+    def _build_actions(self, main):
+        """Barre d'actions en haut de la fenêtre et leurs raccourcis."""
         # Primary action always stays at the TOP: it must never disappear
         # beneath a large image or below a small laptop's visible screen.
         top = QHBoxLayout(); main.addLayout(top)
@@ -103,13 +118,15 @@ class PairDialog(QDialog):
         self.scope_actions.setMenu(scope_menu)
         top.addWidget(self.scope_actions)
         top.addStretch(1)
-        from PySide6.QtGui import QShortcut, QKeySequence
         self.assoc_shortcut=QShortcut(QKeySequence('Ctrl+Return'),self)
         self.assoc_shortcut.activated.connect(lambda: self.attach('correspondence'))
         self.assoc_shortcut2=QShortcut(QKeySequence('Ctrl+Enter'),self)
         self.assoc_shortcut2.activated.connect(lambda: self.attach('correspondence'))
         self.absence_shortcut = QShortcut(QKeySequence('Ctrl+Shift+A'), self)
         self.absence_shortcut.activated.connect(self.confirm_selected_absence)
+
+    def _build_filters(self, main):
+        """Consigne, cadres visibles, recherche dans le texte TEI, légende."""
         title = QLabel(tr('ui.cliquez.sur.une.ligne.deja.liee.pour'))
         title.setWordWrap(True); main.addWidget(title)
         filter_row = QHBoxLayout(); main.addLayout(filter_row)
@@ -128,9 +145,9 @@ class PairDialog(QDialog):
             filter_row.addWidget(QLabel(tr('tei.visual.search_label')))
             self.tei_search_side = QComboBox()
             if self._tei_left:
-                self.tei_search_side.addItem(base['id'], 'reference')
+                self.tei_search_side.addItem(self.left_witness['id'], 'reference')
             if self._tei_right:
-                self.tei_search_side.addItem(target['id'], 'target')
+                self.tei_search_side.addItem(self.right_witness['id'], 'target')
             filter_row.addWidget(self.tei_search_side)
             self.tei_search_edit = QLineEdit()
             self.tei_search_edit.setPlaceholderText(tr('tei.visual.search'))
@@ -146,12 +163,15 @@ class PairDialog(QDialog):
         self.legend.setWordWrap(True)
         main.addWidget(self.legend)
 
+    def _build_visual_tab(self, main):
+        """Onglets ; le premier : les images des deux témoins côte à côte."""
+        from .viewer import LineImagePanel
         self.tabs = QTabWidget()
         main.addWidget(self.tabs, 1)
         visual = QWidget(); visual_layout = QVBoxLayout(visual)
         split = QSplitter(Qt.Orientation.Horizontal)
-        self.left_panel = LineImagePanel(base, split)
-        self.right_panel = LineImagePanel(target, split)
+        self.left_panel = LineImagePanel(self.left_witness, split)
+        self.right_panel = LineImagePanel(self.right_witness, split)
         self.left_panel.set_tei_line_texts(self._tei_left)
         self.right_panel.set_tei_line_texts(self._tei_right)
         self.left_panel.line_clicked.connect(lambda uid: self._show_counterparts('reference', uid))
@@ -164,7 +184,10 @@ class PairDialog(QDialog):
         split.setSizes([760, 760])
         visual_layout.addWidget(split, 1)
         self.tabs.addTab(visual, 'ui.xml.visual_tab')
+        self.visual_splitter = split
 
+    def _build_text_tab(self):
+        """Second onglet : les lignes des deux témoins en texte."""
         text_page = QWidget(); text_layout = QVBoxLayout(text_page)
         text_layout.addWidget(QLabel(tr('tei.visual.pair_help')))
         text_split = QSplitter(Qt.Orientation.Horizontal)
@@ -183,6 +206,8 @@ class PairDialog(QDialog):
         text_layout.addWidget(text_split, 1)
         self.tabs.addTab(text_page, 'Vue textuelle (facultative)')
 
+    def _build_review_list(self, main):
+        """Barre de révision, liste des groupes et raccourcis de révision."""
         # Links/results area is compact and scrollable, never allowed to
         # push the primary controls below the monitor's visible area.
         # V0.7.2: fast, ordered human review. Display order never changes
@@ -236,14 +261,6 @@ class PairDialog(QDialog):
             shortcut = QShortcut(QKeySequence(seq), self)
             shortcut.activated.connect(handler)
             setattr(self, 'review_shortcut_' + seq.replace('+', '_'), shortcut)
-        self.status = QLabel(); self.status.setWordWrap(True); main.addWidget(self.status)
-        hint = QLabel(tr('alignment.edit.hint'))
-        hint.setWordWrap(True)
-        hint.setMaximumHeight(48)
-        main.addWidget(hint)
-        self.tabs.setMinimumHeight(150)
-        self.visual_splitter = split
-        self.populate()
 
     def open_reading_order(self):
         try:
