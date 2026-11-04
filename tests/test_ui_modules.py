@@ -56,3 +56,12 @@ def test_the_scope_dialog_opens_on_its_own(app, setting):
     dialog = SingleWitnessScopeDialog(project, 'A')
     assert dialog.witness['id'] == 'A' and dialog.staged_project is not project
     dialog.close()
+
+
+def test_the_batch_binding_dialog_opens_on_its_own(app, setting):
+    from varians_synchro.ui_batch_binding import BatchBindingDialog
+    witness = setting[1]
+    del witness['pages'][0]['alto_binding']          # une page à associer
+    dialog = BatchBindingDialog(witness)
+    assert dialog.table.rowCount() == len(dialog.plan['rows']) == 1
+    dialog.close()
