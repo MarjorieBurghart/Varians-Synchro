@@ -19,7 +19,7 @@ from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 from .errors import Localized, localized
 
-VERSION = '0.8.5.6'
+VERSION = '0.8.6.0'
 SCHEMA = 'varians-synchro-project'
 
 

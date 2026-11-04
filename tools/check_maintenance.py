@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Non-destructive delivery checks for Varians-Synchro v0.8.5.6.
+"""Non-destructive delivery checks for Varians-Synchro (version: core.VERSION).
 
 Checks required handoff files, package version and JSON schema, translation
 coverage and generated AST inventory. Never edits files. File integrity is
@@ -41,6 +41,12 @@ def check_links(markdown: Path) -> list[str]:
     return errors
 
 
+def app_version() -> str:
+    """Version de Varians-Synchro, lue dans ``core.VERSION`` (sans l'importer)."""
+    code = (ROOT/'varians_synchro'/'core.py').read_text(encoding='utf-8')
+    return re.search(r"^VERSION = '([^']+)'", code, re.MULTILINE).group(1)
+
+
 def check() -> list[str]:
     errors=[]
     for file in ESSENTIAL + ['annexes/INVENTAIRE_MODULES_AUTOGENERE.md',
@@ -49,7 +55,10 @@ def check() -> list[str]:
     for file in DOCUMENTS():
         errors.extend(check_links(file))
     code = (ROOT/'varians_synchro'/'core.py').read_text(encoding='utf-8')
-    if "VERSION = '0.8.5.6'" not in code:errors.append('Version Python non alignée')
+    version = app_version()
+    # La version de core.py est celle qu'annonce le dossier de passation.
+    if f'application v{version}' not in (DOC/'00_LIRE_EN_PREMIER.md').read_text(encoding='utf-8'):
+        errors.append(f'Version Python non alignée : {version} absente de 00_LIRE_EN_PREMIER.md')
     if "SCHEMA = 'varians-synchro-project'" not in code:errors.append('Nom du format modifié')
     catalog={}
     for lang in 'fr en de cs it ru ja'.split():
@@ -77,7 +86,7 @@ def main():
     problems=check()
     if problems:
         print('ECHEC maintenance:');print('\n'.join(' - '+x for x in problems));return 1
-    print('OK — dossiers de passation, catalogues (7 langues, mêmes clés), inventaire AST, version 0.8.5.6 et liens cohérents.');return 0
+    print(f'OK — dossiers de passation, catalogues (7 langues, mêmes clés), inventaire AST, version {app_version()} et liens cohérents.');return 0
 
 
 if __name__=='__main__':

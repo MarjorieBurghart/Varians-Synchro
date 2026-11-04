@@ -1,4 +1,4 @@
-# Inventaire technique généré automatiquement (code v0.8.5.6)
+# Inventaire technique généré automatiquement (code v0.8.6.0)
 
 Génération reproductible : `python tools/generate_module_inventory.py` depuis la racine.
 Inspection statique AST : **aucun module applicatif n’est importé ni exécuté**.
