@@ -22,7 +22,7 @@ from PySide6.QtWidgets import (QDialogButtonBox, QHBoxLayout, QLabel, QLineEdit,
 
 from .help_search import Section, Utf16Positions, search
 from .i18n import get_language, tr
-from .ui_widgets import QDialog
+from .ui_widgets import QDialog, call_soon
 
 HELP_DIR = Path(__file__).resolve().parent.parent / 'help'
 
@@ -85,7 +85,9 @@ class HelpDialog(QDialog):
         splitter.setStretchFactor(1, 1)
         splitter.setSizes([300, 680])
         layout.addWidget(splitter, 1)
-        buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Close, parent=self)
+        # Bouton à nous : celui de Qt (« Close ») n'est pas traduit.
+        buttons = QDialogButtonBox(parent=self)
+        buttons.addButton(QPushButton(tr('common.close'), self), QDialogButtonBox.ButtonRole.RejectRole)
         buttons.rejected.connect(self.close)
         layout.addWidget(buttons)
         # Entrée dans le champ passe à l'occurrence suivante : aucun bouton
@@ -175,6 +177,7 @@ class HelpDialog(QDialog):
             item.setToolTip(hit.excerpt)
             self.results.addItem(item)
         self.results.blockSignals(False)
+        appears = bool(query.strip()) and not self.results.isVisible()
         self.results.setVisible(bool(query.strip()))
         self.occurrences = sorted(span for hit in self._hits for span in hit.spans)
         positions = Utf16Positions(text)
@@ -188,6 +191,10 @@ class HelpDialog(QDialog):
                                           count=len(self.occurrences)))
         self.current = 0 if self.occurrences else -1
         self._show_current()
+        if appears:
+            # La liste, en apparaissant, rétrécit le texte, qui se remet en
+            # page : on replace la vue sur l'occurrence une fois cela fait.
+            call_soon(self, self._scroll_to_current)
 
     def next_occurrence(self):
         """▶, F3 ou Entrée dans le champ : occurrence suivante, la première
@@ -209,6 +216,13 @@ class HelpDialog(QDialog):
         if self.occurrences:
             self.current = (self.current - 1) % len(self.occurrences)
             self._show_current()
+
+    def _scroll_to_current(self):
+        """L'occurrence courante dans le premier tiers de la vue, pas tout en bas."""
+        if self.current < 0:
+            return
+        bar = self.browser.verticalScrollBar()
+        bar.setValue(bar.value() + self.browser.cursorRect().top() - self.browser.viewport().height() // 3)
 
     def _show_section(self, row):
         if 0 <= row < len(self._hits):
@@ -237,9 +251,7 @@ class HelpDialog(QDialog):
         cursor = QTextCursor(document)
         cursor.setPosition(self._positions[self.current][0])
         self.browser.setTextCursor(cursor)
-        # L'occurrence dans le premier tiers de la vue, pas tout en bas.
-        bar = self.browser.verticalScrollBar()
-        bar.setValue(bar.value() + self.browser.cursorRect().top() - self.browser.viewport().height() // 3)
+        self._scroll_to_current()
         start = self.occurrences[self.current][0]
         row = next((row for row, hit in enumerate(self._hits)
                     if hit.section.start <= start < hit.section.end), -1)

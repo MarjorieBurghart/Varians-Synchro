@@ -139,3 +139,30 @@ def test_f1_in_the_synchronisation_window_opens_its_section(app, guides, setting
     help_window.show_anchor('synchronisation')
     assert _scrolled_to(help_window, 'Synchronisation')
     _dispose(pair)
+
+
+def test_the_close_button_is_translated(app, guides):
+    from PySide6.QtWidgets import QPushButton
+    dialog = ui_help.HelpDialog()
+    assert tr('common.close') in [button.text() for button in dialog.findChildren(QPushButton)]
+    _dispose(dialog)
+
+
+def test_the_first_occurrence_is_shown_once_the_results_list_appears(app, monkeypatch):
+    """La liste des résultats, en apparaissant, rétrécit le texte du guide
+    (vrai guide : ses longs paragraphes se remettent en page) : la vue doit
+    être placée sur l'occurrence après cette nouvelle mise en page."""
+    from pathlib import Path
+    monkeypatch.setattr(ui_help, 'HELP_DIR', Path(__file__).resolve().parents[1] / 'help')
+    set_language('fr')
+    dialog = ui_help.HelpDialog()
+    dialog.resize(1000, 720)
+    dialog.show()
+    QTest.qWaitForWindowExposed(dialog)
+    dialog.search_box.setText('base_keys')
+    dialog.run_search()
+    for _ in range(3):
+        QCoreApplication.processEvents()
+    top = dialog.browser.cursorRect().top()
+    assert 0 <= top < dialog.browser.viewport().height()
+    _dispose(dialog)
