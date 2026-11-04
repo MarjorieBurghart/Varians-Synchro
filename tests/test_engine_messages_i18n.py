@@ -29,7 +29,9 @@ ROOT = Path(__file__).resolve().parents[1]
 CODE = ROOT / 'varians_synchro'
 CATALOG = {entry.get('key'): entry.text for entry in ET.parse(ROOT / 'i18n' / 'fr.xml').getroot()}
 FRENCH = set(CATALOG.values())
-NOT_ENGINES = {'gui.py', 'guided_ui.py', 'viewer.py', 'i18n.py', 'errors.py'}
+# self_test.py écrit un rapport JSON pour la construction et la CI, jamais
+# montré dans l'interface : ses messages restent en français.
+NOT_ENGINES = {'gui.py', 'guided_ui.py', 'viewer.py', 'i18n.py', 'errors.py', 'self_test.py'}
 ENGINES = [path for path in sorted(CODE.glob('*.py'))
            if not path.name.startswith('ui_') and path.name not in NOT_ENGINES]
 WINDOWS = sorted(CODE.glob('ui_*.py')) + [CODE / 'viewer.py']

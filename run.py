@@ -27,6 +27,11 @@ def main():
     return qt_main()
 
 
-if __name__ == '__main__':
+if __name__ == '__main__' and sys.argv[1:2] == ['--self-test']:
+    # Vérification d'une installation, version construite comprise
+    # (varians_synchro/self_test.py) : rapport JSON, code de sortie 0 ou 1.
+    from varians_synchro.self_test import run as self_test
+    raise SystemExit(self_test(sys.argv[2] if len(sys.argv) > 2 else None))
+elif __name__ == '__main__':
     # No SystemExit: keep Spyder interactive kernel unaffected.
     main()

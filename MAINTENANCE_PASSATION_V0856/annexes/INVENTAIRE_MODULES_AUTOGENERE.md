@@ -4,7 +4,7 @@ Génération reproductible : `python tools/generate_module_inventory.py` depuis 
 Inspection statique AST : **aucun module applicatif n’est importé ni exécuté**.
 Les numéros de ligne sont ceux de **cette livraison uniquement**.
 
-**54 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
+**55 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
 
 ## `varians_synchro/__init__.py` (1 lignes)
 **Dépendances internes observées** : `core`
@@ -170,6 +170,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 ## `varians_synchro/selection_policy.py` (40 lignes)
 **Objet (docstring source)** : Pure cross-folio line selection rules shared by manuscript and text clicks. Selection is transient visual UI state, never written to .vsynch or used by the matching algorithm itself. All UIDs belong to one witness; the caller supplies the already validated documentary reading order, including ignored lines.
 **Fonctions au premier niveau** : `update_line_selection` (l.10)
+
+## `varians_synchro/self_test.py` (220 lignes)
+**Objet (docstring source)** : Vérification d'une installation de Varians-Synchro. ``Varians-Synchro --self-test RAPPORT.json`` (ou ``python run.py --self-test RAPPORT.json``) contrôle, sans réseau : - ``translations`` : les sept catalogues de l'interface, mêmes clés, chacun lisible dans sa langue ; - ``help`` : l'aide dans les sept langues ; - ``resources`` : les icônes et le projet d'exemple (``demo_local_ALTO``) ; - ``project`` : le projet d'exemple ouvert, ses fichiers ALTO retrouvés, puis enregistré, sur une copie (l'exemple livré n'est jamais modifié) ; - ``alignment`` : une synchronisation A ↔ B, un groupe, puis « Exporter JSON pour Varians » et « Créer un projet Va
+**Dépendances internes observées** : `app_icon`, `core`, `i18n`, `physical_alignment`, `project_state`, `ui_main_window`, `varians_export`, `varians_project_export`
+**Fonctions au premier niveau** : `frozen` (l.37), `installation_folder` (l.42), `_data_folder` (l.57), `_translations` (l.64), `_help` (l.90), `_resources` (l.98), `_project` (l.108), `_alignment` (l.125), `_window` (l.144), `run` (l.175)
 
 ## `varians_synchro/spyder_launch.py` (82 lignes)
 **Objet (docstring source)** : Safe Spyder entrypoint: start the Qt GUI in a separate Python process. No Qt imports are permitted here. A single Spyder kernel may load a different Qt binding or platform plugin; creating Qt widgets in that same native process can terminate the kernel without raising a Python exception.
