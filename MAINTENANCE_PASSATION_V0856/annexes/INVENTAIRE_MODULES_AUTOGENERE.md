@@ -4,7 +4,7 @@ Génération reproductible : `python tools/generate_module_inventory.py` depuis 
 Inspection statique AST : **aucun module applicatif n’est importé ni exécuté**.
 Les numéros de ligne sont ceux de **cette livraison uniquement**.
 
-**48 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
+**49 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
 
 ## `varians_synchro/__init__.py` (1 lignes)
 **Dépendances internes observées** : `core`
@@ -19,6 +19,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : ALTO physical-line polygon geometry (pure Python, no Qt dependency). PERO and other HTR engines may describe a sloping text line using <TextLine><Shape><Polygon POINTS="x,y ..."/></Shape></TextLine>. The TextLine HPOS/VPOS/WIDTH/HEIGHT attributes are only an axis-aligned *envelope*, which can overlap neighbouring lines even when the polygons don't. This module never changes the source file or the persistent line identifiers. For projects imported before polygons were stored, original ALTO files are consulted on demand and cached; if missing, original bounding boxes remain.
 **Dépendances internes observées** : `imaging`, `page_xml`
 **Fonctions au premier niveau** : `parse_alto_points` (l.22), `_local_name` (l.49), `textline_polygon` (l.53), `_source_geometry` (l.66), `_cached_source_geometry` (l.83), `page_line_polygons` (l.87), `polygon_contains` (l.145)
+
+## `varians_synchro/app_icon.py` (46 lignes)
+**Objet (docstring source)** : Icône de l'application : le logo de Varians-Synchro. Les images de ``icons/`` (à côté de ``run.py``) sont produites à partir du logo (``logo/*.psd``) par ``tools/generate_icons.py``. Ce module ne charge PySide6 qu'à l'appel d'``application_icon`` : il s'importe sans Qt.
+**Fonctions au premier niveau** : `icon_files` (l.17), `application_icon` (l.22), `use_own_taskbar_entry` (l.33)
 
 ## `varians_synchro/automatic.py` (170 lignes)
 **Objet (docstring source)** : Conservative, offline, deterministic TEI/HTR line alignment proposals. No generative AI or source modification. Only unassigned intervals are eligible. The sequence matcher detects shared textual spans, projects matched character intervals to physical lines, and NEVER labels interpolation as verified.
@@ -49,10 +53,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `physical_alignment`, `reading_stream`
 **Fonctions au premier niveau** : `_digest` (l.20), `_selection` (l.25), `_runs` (l.47), `preview_confirmed_absence` (l.58), `confirm_absence` (l.94), `pair_exception_summary` (l.151)
 
-## `varians_synchro/gui.py` (35 lignes)
+## `varians_synchro/gui.py` (40 lignes)
 **Objet (docstring source)** : Minimal PySide6 application shell for witness-centered Varians-Synchro. The historical V0.5 editor and its TXT interface were retired in V0.8.0. The legacy project *data* are still readable: no project migration discards older text resources or alignment sessions. The historical algorithm modules remain in the package for backwards-compatible project introspection.
-**Dépendances internes observées** : `error_report`, `guided_ui`, `i18n`, `qt_lifecycle`
-**Fonctions au premier niveau** : `main` (l.17)
+**Dépendances internes observées** : `app_icon`, `error_report`, `guided_ui`, `i18n`, `qt_lifecycle`
+**Fonctions au premier niveau** : `main` (l.18)
 
 ## `varians_synchro/guided_ui.py` (23 lignes)
 **Objet (docstring source)** : Point d'entrée de l'interface de Varians-Synchro. Les fenêtres sont réparties dans les modules ``ui_*`` : - ``ui_main_window`` : fenêtre principale (``GuidedWindow``) ; - ``ui_pair`` : synchronisation visuelle d'une paire de témoins ; - ``ui_pages`` : images et associations ALTO/PAGE d'un témoin ; - ``ui_batch_binding`` : association automatique par lot ; - ``ui_resources`` : ajout et modification d'un témoin ; - ``ui_tei_binding`` : liaison TEI ↔ lignes physiques ; - ``ui_reading_order``, ``ui_scope`` : ordre de lecture, périmètre ; - ``ui_widgets`` : widgets Qt qui traduisent leurs textes, ``_run_modal``. Ce module ne charge PySide6 qu'à l'
@@ -116,7 +120,7 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Classes déclarées au premier niveau** : `ProjectChangeTracker` (l.19)
 **Fonctions au premier niveau** : `project_fingerprint` (l.13)
 
-## `varians_synchro/qt_lifecycle.py` (47 lignes)
+## `varians_synchro/qt_lifecycle.py` (57 lignes)
 **Objet (docstring source)** : One QApplication per process, with Spyder/IPython-friendly window lifetime. This module deliberately has no Qt dependency so lifecycle logic is unit-testable without a graphical display. `QApplication` and the main window are injected by `gui.main()` after importing PySide6.
 **Fonctions au premier niveau** : `launch` (l.11)
 

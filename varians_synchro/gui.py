@@ -10,6 +10,7 @@ from __future__ import annotations
 import sys
 import traceback
 
+from .app_icon import application_icon, use_own_taskbar_entry
 from .i18n import available_languages, set_language
 from .qt_lifecycle import launch
 
@@ -32,4 +33,8 @@ def main():
     # An unexpected error in a click is shown, not only written to the console.
     from .error_report import install
     install()
-    return launch(QApplication, make_guided_window(), sys.argv)
+    # Windows : la barre des tâches montre le logo, pas l'icône de Python
+    # (seulement quand l'application est la nôtre, avant toute fenêtre).
+    if QApplication.instance() is None:
+        use_own_taskbar_entry()
+    return launch(QApplication, make_guided_window(), sys.argv, application_icon)

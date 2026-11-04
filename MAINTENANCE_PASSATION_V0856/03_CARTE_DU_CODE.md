@@ -6,7 +6,7 @@
 
 | Groupe | Modules | Fonctions et décisions clés |
 |---|---|---|
-| Application | `gui`, `guided_ui`, `ui_*`, `viewer`, `qt_lifecycle`, `error_report`, `spyder_launch` | Shell PySide6, fenêtres, sélection, images, erreurs imprévues, processus Spyder |
+| Application | `gui`, `guided_ui`, `ui_*`, `viewer`, `qt_lifecycle`, `app_icon`, `error_report`, `spyder_launch` | Shell PySide6, fenêtres, sélection, images, icône, erreurs imprévues, processus Spyder |
 | Projet, ressources | `core`, `project_state`, `resource_workflow`, `bulk_binding` | Format `.vsynch`, sauvegarde/backup, témoins, ressources, liaisons page↔XML |
 | Pages et géométries | `imaging`, `page_xml`, `alto_geometry`, `hd_registry`, `page_order`, `page_management` | IIIF, ALTO/PAGE, polygones, copies HD, folios |
 | Lignes et correspondances | `physical_alignment`, `reading_stream`, `line_scope`, `correspondence_navigation`, `selection_policy`, `overlay_selection`, `overlay_filters` | UID, flux physique, groupes, exclusion, navigation et surlignages |

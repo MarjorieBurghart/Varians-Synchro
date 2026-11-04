@@ -24,6 +24,12 @@ Le code des fenêtres est dense, celui de `ui_pair.py` surtout. Ses quatre fenê
 
 `error_report.install()` (appelé par `gui.main`) pose un crochet sur `sys.excepthook` : une exception levée dans une action de l'interface (slot Qt) reste écrite dans la console ou le journal, et un message « Action impossible » s'affiche en plus (`error.unexpected.*`, traduit ; le texte de l'erreur l'est s'il figure dans les catalogues). Auparavant, rien ne se passait à l'écran. Test : `tests/test_error_report_qt.py`.
 
+## Icône de l'application
+
+`gui.main` passe `app_icon.application_icon` à `qt_lifecycle.launch`, qui l'appelle une fois l'application Qt créée : l'icône devient celle de l'application (toutes ses fenêtres, boîtes sans parent comprises) quand Varians-Synchro possède l'application, et seulement celle de sa fenêtre principale dans la console Qt d'un autre programme. Sous Windows, `app_icon.use_own_taskbar_entry` donne au processus l'identité `Varians.VariansSynchro` (`SetCurrentProcessExplicitAppUserModelID`) avant la première fenêtre ; sans elle, la barre des tâches range la fenêtre sous `python.exe` et montre l'icône de Python. Elle n'est prise que si l'application Qt n'existe pas encore.
+
+Les PNG de `icons/` (16 à 256 px) et `icons/varians_synchro.ico` sont produits par `python tools/generate_icons.py` (Pillow requis, seulement pour ce script) à partir du logo `logo/*.psd` : le logo est centré sur une pastille blanche aux coins arrondis, lisible sur une barre des tâches sombre. Après une modification du logo, relancer le script et livrer les fichiers produits. Tests : `tests/test_app_icon.py`, `test_app_icon_qt.py`, `test_qt_lifecycle.py`.
+
 ## Catalogues XML
 
 Sept catalogues : `i18n/fr.xml`, `en.xml`, `de.xml`, `cs.xml`, `it.xml`, `ru.xml`, `ja.xml`. Dans v0.8.5.5 et v0.8.5.6 : **653 clés remplies par langue**, paramètres de format conservés. `i18n.py` contrôle balise racine, unicité/présence des clés, égalité des ensembles de clés et ensembles de paramètres `{variable}` ; `tr(key,**values)` ne modifie jamais les entrées métier inconnues. `translate_template` délègue à `tr`. Les valeurs françaises historiques peuvent servir d'alias pour les appels anciens.

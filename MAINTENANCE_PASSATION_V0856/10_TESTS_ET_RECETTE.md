@@ -63,7 +63,7 @@ Installer PySide6, vérifier `python -c "import PySide6;print(PySide6.__version_
 | TEI et images | `test_tei_binding_083.py`, `test_tei_visual_084.py`, `test_page_xml_support.py`, `test_alto_polygon_geometry.py` |
 | IIIF et HD | `test_imaging.py`, `test_hd_completion_0852.py`, `test_hd_registry_0853.py` |
 | Export et audit | `test_varians_export.py`, `test_varians_export_audit.py`, `test_source_integrity.py` |
-| Qt/Spyder/localisation | `test_qt_lifecycle.py`, `test_spyder_launch.py`, `test_i18n_xml_catalogs.py`, `test_i18n_full_0855.py` |
+| Qt/Spyder/localisation | `test_qt_lifecycle.py`, `test_spyder_launch.py`, `test_app_icon.py`, `test_app_icon_qt.py`, `test_i18n_xml_catalogs.py`, `test_i18n_full_0855.py` |
 | Intégrité documentaire v0.8.5.6 | `test_maintenance_0856.py`, `tools/check_maintenance.py` |
 
 **Résultats effectivement constatés pour cette livraison** : se reporter à `TESTS_V0856.md`, qui sera produit après le dernier passage des tests. Ne pas reporter les nombres de v0.8.5.5 comme s'ils validaient v0.8.5.6.

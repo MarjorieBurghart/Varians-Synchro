@@ -53,6 +53,7 @@ Le calcul ne déduit aucune absence, aucune identité textuelle certifiée ni au
 - Les fenêtres (modules `ui_*`, une par module) orchestrent les cas d'usage et appellent les services, sans écrire de TEI ou d'ALTO.
 - `gui.py` lance l'application ; `guided_ui.make_guided_window` fournit la fenêtre principale (`ui_main_window.GuidedWindow`) et ne charge PySide6 qu'à son appel.
 - `qt_lifecycle.py` protège le singleton QApplication lorsque l'application est lancée dans Spyder.
+- `app_icon.py` fournit l'icône de l'application (PNG de `icons/`, produits à partir de `logo/*.psd` par `tools/generate_icons.py`) et, sous Windows, l'identité propre du processus dans la barre des tâches.
 
 ## Deux familles de sessions, sans confusion
 

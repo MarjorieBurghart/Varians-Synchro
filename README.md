@@ -88,6 +88,7 @@ Cette livraison réunit **V0.8.0 et V0.8.1** sur la base stable du moteur de syn
 ## Démarrer
 
 - Installer `PySide6` dans l'environnement Python utilisé, puis lancer `python run.py` ; sous Spyder, le démarrage reste isolé dans un processus séparé.
+- L'application a pour icône le logo de Varians-Synchro (fenêtres, barre des tâches, Dock). Pour un raccourci Windows vers `start_windows.bat` : Propriétés → Changer d'icône → `icons/varians_synchro.ico`.
 - Créer le projet, choisir tout de suite son fichier `.vsynch`, puis ouvrir **Projet et témoins → Ajouter un témoin…**.
 - Renseigner le sigle, les images et les fichiers ALTO/PAGE, éventuellement un Manifest IIIF ou une édition TEI.
 - Utiliser **Associer automatiquement les images et les ALTO/PAGE** dans la fiche du témoin ou l'étape Pages, contrôler les propositions, puis les appliquer.

@@ -8,6 +8,10 @@ class FakeWindow:
         self.minimized = False
         self.raise_calls = 0
         self.activate_calls = 0
+        self.icon = None
+
+    def setWindowIcon(self, icon):
+        self.icon = icon
 
     def show(self):
         self.visible = True
@@ -37,6 +41,10 @@ class FakeApplication:
         FakeApplication.current = self
         FakeApplication.constructions += 1
         self.exec_calls = 0
+        self.icon = None
+
+    def setWindowIcon(self, icon):
+        self.icon = icon
 
     @classmethod
     def instance(cls):
@@ -109,3 +117,24 @@ def test_deleted_qt_window_reference_is_handled():
     app._varians_synchro_window = DeletedWindow()
     assert launch(FakeApplication, FakeWindow, ['run.py']) == 0
     assert isinstance(app._varians_synchro_window, FakeWindow)
+
+
+def test_the_icon_is_given_to_the_application_and_its_window():
+    """L'icône (créée une fois l'application construite) vaut pour toutes
+    ses fenêtres, y compris les boîtes sans parent."""
+    reset()
+    made = []
+    launch(FakeApplication, FakeWindow, ['run.py'], icon=lambda: made.append('logo') or 'logo')
+    app = FakeApplication.instance()
+    assert made == ['logo']
+    assert app.icon == 'logo' and app._varians_synchro_window.icon == 'logo'
+
+
+def test_a_host_application_keeps_its_own_icon():
+    """Lancée dans la console Qt d'un autre programme, seule la fenêtre de
+    Varians-Synchro prend le logo."""
+    reset()
+    host = FakeApplication(['run.py'])
+    launch(FakeApplication, FakeWindow, ['run.py'], icon=lambda: 'logo')
+    assert host.icon is None
+    assert host._varians_synchro_window.icon == 'logo'

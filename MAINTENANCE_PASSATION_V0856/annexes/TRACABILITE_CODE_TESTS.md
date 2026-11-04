@@ -14,6 +14,7 @@
 | Exports, base_keys et audit | `varians_export.py`, `varians_project_export.py`, `validation.py` | `test_varians_export.py`, `test_varians_export_audit.py` | `EXPORT_VARIANS.md`, `DIAGNOSTIC_BASE_KEYS.md` |
 | Copies HD, Canvas, SHA-256 | `imaging.py`, `hd_registry.py` | `test_hd_registry_0853.py`, `test_hd_completion_0852.py` | `GUIDE_COPIES_HD_V0853.md` |
 | I18n, langue Qt et runtime Spyder | `i18n.py`, `gui.py`, `spyder_launch.py` | `test_i18n_full_0855.py`, `test_spyder_launch.py` | `INTERNATIONALISATION.md`, `TESTS_V0855.md` |
+| Icône de l'application, barre des tâches Windows | `app_icon.py`, `qt_lifecycle.py`, `gui.py`, `tools/generate_icons.py` | `test_app_icon.py`, `test_app_icon_qt.py`, `test_qt_lifecycle.py` | `MAINTENANCE_PASSATION_V0856/09_INTERFACE_ET_I18N.md` |
 | Dossier lui-même | `tools/check_maintenance.py` | `test_maintenance_0856.py` | `CHANGELOG_V0856.md` |
 
 Les noms de tests indiquent une **couverture à examiner**, et non la preuve que toutes les branches sont testées. Un changement critique demande en plus des tests ciblés sur les nouveaux cas.
