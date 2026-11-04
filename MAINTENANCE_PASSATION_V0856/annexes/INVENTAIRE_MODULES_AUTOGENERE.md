@@ -184,7 +184,7 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `hd_registry`, `i18n`, `imaging`, `page_management`, `page_order`, `physical_alignment`, `reading_stream`, `ui_batch_binding`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `DraggablePagesList` (l.21), `HDDownloadThread` (l.34), `HTRExportThread` (l.71), `PagesDialog` (l.96)
 
-## `varians_synchro/ui_pair.py` (942 lignes)
+## `varians_synchro/ui_pair.py` (950 lignes)
 **Objet (docstring source)** : Fenêtre « Synchronisation visuelle entre témoins » : groupes de lignes de deux témoins, propositions, révision rapide et revalidation.
 **Dépendances internes observées** : `correspondence_navigation`, `exceptions`, `i18n`, `interpolation`, `line_scope`, `overlay_filters`, `physical_alignment`, `rapid_review`, `reading_stream`, `residual_alignment`, `tei_binding`, `textual_progress`, `ui_proposals`, `ui_reading_order`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `PairDialog` (l.32)

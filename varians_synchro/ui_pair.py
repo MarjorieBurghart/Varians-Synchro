@@ -664,11 +664,19 @@ class PairDialog(QDialog):
                 preselect=False, wrap_intro=False, list_stretch=0)
 
             def accept_selection():
-                counts = apply_pair_proposals(self.project, self.session, review.picked(candidates))
+                picked = review.picked(candidates)
+                if not picked:
+                    QMessageBox.information(review, 'Propositions HTR–HTR (facultatives)',
+                                            tr('progress.empty'))
+                    return
+                counts = apply_pair_proposals(self.project, self.session, picked)
                 self.populate(); review.accept()
                 QMessageBox.information(self, 'Propositions enregistrées',
                     f"{counts['added']} " + tr('ui.groupes.sauvegardes') + f" {counts['skipped']} " + tr('ui.ignores.ils.necessitent.une.verification.sur.les'))
-            review.add_buttons([('Conserver la sélection', accept_selection), ('Annuler', review.reject)])
+            # Nothing is preselected (HTR is only an optional hint): the
+            # button must not suggest an existing selection.
+            review.add_buttons(review.selection_buttons(tr('common.select_all'), tr('common.select_none'))
+                               + [(tr('progress.save'), accept_selection), (tr('common.cancel'), review.reject)])
             _run_modal(review)
         except Exception as exc:
             QMessageBox.warning(self, 'Alignement HTR–HTR', str(exc))
