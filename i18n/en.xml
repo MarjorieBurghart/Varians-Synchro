@@ -703,4 +703,20 @@ Warning: the batch could not be registered in the project ({error}). Use “Atta
 {error}
 
 Technical details are in the console or the startup log.</string>
+  <string key="alignment.error.duplicate_line_ids">Duplicate ALTO line identifiers</string>
+  <string key="alignment.error.same_witness">Choose two different witnesses</string>
+  <string key="alignment.error.unknown_witness">Unknown witness</string>
+  <string key="alignment.error.no_alto">Link ALTO pages to both witnesses before aligning them</string>
+  <string key="alignment.error.session_witness_missing">A witness of this alignment is missing from the project</string>
+  <string key="alignment.error.link_not_found">Correspondence not found</string>
+  <string key="alignment.error.unknown_page">Unknown page</string>
+  <string key="alignment.error.invalid_link">Invalid correspondence state or kind</string>
+  <string key="alignment.error.correspondence_sides">A correspondence needs lines from both witnesses</string>
+  <string key="alignment.error.absence_sides">An absence needs exactly one side without lines</string>
+  <string key="alignment.error.unknown_line">At least one line does not exist in the linked ALTO pages</string>
+  <string key="alignment.error.line_already_linked">A line is already linked: unlink it before trying again</string>
+  <string key="alignment.error.confidence_range">Confidence out of range</string>
+  <string key="alignment.error.recalculation_conflict">Recalculation stopped: the new correspondences conflict with each other.</string>
+  <string key="alignment.error.invalid_state">Invalid state</string>
+  <string key="alignment.error.link_not_found_unchanged">Correspondence not found: nothing was changed</string>
 </translations>

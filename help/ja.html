@@ -32,7 +32,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ul>
 <li><strong>二つの写本の行を結び付けます。</strong> 二つの伝本が各行の輪郭とともに並べて表示され、一方のどの行が他方のどの行に対応するかを利用者が指定します。一つの対応には、両側それぞれに複数の行を含めることができます。</li>
 <li><strong>ソフトウェアが提案し、判断するのは利用者です。</strong> 利用者が置いたいくつかのアンカーをもとに、その間の対応をテキスト量から提案します。提案は画像上で確認し、承認します。</li>
-<li><strong>基準伝本を軸に作業します。</strong> ほかの各伝本は基準伝本に対して整列されます。Varians では、基準伝本の行は校訂版の中でその <code>&lt;lb/&gt;</code> によって示され、ほかの伝本は基準伝本との整列によってそれに追従します。</li>
+<li><strong>ピボット伝本を軸に作業します。</strong> ほかの各伝本はピボット伝本に対して整列されます。Varians では、ピボット伝本の行は校訂版の中でその <code>&lt;lb/&gt;</code> によって示され、ほかの伝本はピボット伝本との整列によってそれに追従します。</li>
 <li><strong>Varians 用に書き出します。</strong> 伝本ごとに一つの同期ファイル（JSON）、またはそのまま開ける完全な Varians プロジェクトを書き出します。</li>
 </ul>
 <h3>Varians-Synchro がしないこと</h3>
@@ -44,14 +44,14 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3>始めるのに必要なもの</h3>
 <ul>
 <li>各伝本について：その画像（ローカルファイル、または IIIF Manifest）と、整列する各ページについて、その行を記述した ALTO または PAGE XML ファイル。</li>
-<li>任意で、基準伝本の TEI 校訂本文（すでにある場合）。</li>
+<li>任意で、ピボット伝本の TEI 校訂本文（すでにある場合）。</li>
 </ul>
 <h3>4 つのステップ</h3>
 <p>メインウィンドウでは、左側に示された 4 つのステップに沿って作業します。</p>
 <ol>
 <li><b class="ui" data-tr="navigation.project">1 · 伝本の追加</b>：写本とそのファイルを登録します。</li>
 <li><b class="ui" data-tr="navigation.pages">2 · 資料の関連付け</b>：各画像をその行ファイルに結び付け、ページの順序と無視する行を設定します。</li>
-<li><b class="ui" data-tr="navigation.alignment">3 · 伝本の整列</b>：各伝本を基準伝本に対して整列します。</li>
+<li><b class="ui" data-tr="navigation.alignment">3 · 伝本の整列</b>：各伝本をピボット伝本に対して整列します。</li>
 <li><b class="ui" data-tr="navigation.progress">4 · 完了</b>：検査を行い、Varians へ書き出します。</li>
 </ol>
 <p>作業を終えるたびに、プロジェクトを<b class="ui" data-tr="common.save">保存</b>してください。ヘルプはいつでも<b class="ui" data-tr="help.open">ユーザーガイドを開く</b>または <kbd>F1</kbd> で開けます。</p>
@@ -61,8 +61,8 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ol>
 <li><code>demo_local_ALTO</code> フォルダーを別の場所にコピーしてください。保存するとプロジェクトファイルが変更されるためです。</li>
 <li><b class="ui" data-tr="project.open">.vsynch を開く</b>をクリックし、コピーしたフォルダーにある <code>exemple.vsynch</code> を選びます。</li>
-<li><b class="ui" data-tr="navigation.project">1 · 伝本の追加</b>で伝本 A をクリックし、<b class="ui" data-tr="resources.witness.pivot">この伝本を整列の基準伝本にする</b>にチェックを入れてから、<b class="ui" data-tr="resources.witness.confirm">伝本を保存</b>をクリックします。</li>
-<li><b class="ui" data-tr="navigation.alignment">3 · 伝本の整列</b>で、<b class="ui" data-tr="alignment.reference.label">技術的な基準伝本</b>のメニューは A、<b class="ui" data-tr="alignment.target.label">比較する伝本</b>のメニューは B のままにして、<b class="ui" data-tr="ui.xml.open_alignment">伝本を整列</b>をクリックします。</li>
+<li><b class="ui" data-tr="navigation.project">1 · 伝本の追加</b>で伝本 A をクリックし、<b class="ui" data-tr="resources.witness.pivot">この伝本を整列のピボット伝本にする</b>にチェックを入れてから、<b class="ui" data-tr="resources.witness.confirm">伝本を保存</b>をクリックします。</li>
+<li><b class="ui" data-tr="navigation.alignment">3 · 伝本の整列</b>で、<b class="ui" data-tr="alignment.reference.label">技術的なピボット伝本</b>のメニューは A、<b class="ui" data-tr="alignment.target.label">比較する伝本</b>のメニューは B のままにして、<b class="ui" data-tr="ui.xml.open_alignment">伝本を整列</b>をクリックします。</li>
 <li>同期ウィンドウで、A の 1 行目、続いて B の 1 行目をクリックし、<kbd>Ctrl+Enter</kbd>（<b class="ui" data-tr="alignment.action.link_lines">行を関連付ける</b>）を押します。3 行目どうしについても同じ操作をします。緑で表示されるこの二つの対応が、アンカーになります。</li>
 <li><b class="ui" data-tr="progress.action">アンカー間を整列（テキスト）</b>をクリックすると、2 行目どうしを結び付ける提案が示されます。<b class="ui" data-tr="progress.save">選択内容を保存</b>をクリックします。提案は青の破線で表示されます。これは確認が必要な状態です。</li>
 <li>下部で<b class="ui" data-tr="review.filter.pending">要確認</b>フィルターを使い、一覧から提案を選んで画像上で確認し、<b class="ui" data-tr="review.validate.next">承認して次へ</b>をクリックします。</li>
@@ -71,52 +71,52 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </ol>
 
 <h2 id="nouveau-projet">3. ワークフロー A：新しい Varians プロジェクトを作成する</h2>
-<p>校訂作業をこれから始めるところで、Varians プロジェクトはまだない場合です。Varians-Synchro がプロジェクト全体を準備します：伝本、画像、同期、そして基準伝本の TEI 校訂本文（ある場合）。</p>
+<p>校訂作業をこれから始めるところで、Varians プロジェクトはまだない場合です。Varians-Synchro がプロジェクト全体を準備します：伝本、画像、同期、そしてピボット伝本の TEI 校訂本文（ある場合）。</p>
 <h3>Varians-Synchro での作業</h3>
 <ol>
 <li><strong>プロジェクトを作成する。</strong> <b class="ui" data-tr="project.new">新規プロジェクト</b>は名前を尋ね、続いて <code>.vsynch</code> ファイルの保存先を尋ねます。ファイルはただちに保存されます。</li>
-<li><strong>伝本を登録する。</strong> <b class="ui" data-tr="navigation.project">1 · 伝本の追加</b>で、<b class="ui" data-tr="resources.witness.new">伝本を追加…</b>を使って各写本を追加します：略号、画像、ALTO/PAGE ファイル、そして基準伝本についてのみ、TEI 校訂本文があればそれも指定します。基準伝本を選びます（<a href="#notions">基本概念</a>を参照）。既定では最初に追加した伝本が基準伝本になります。詳細：<a href="#etape1">ステップ 1</a>。</li>
+<li><strong>伝本を登録する。</strong> <b class="ui" data-tr="navigation.project">1 · 伝本の追加</b>で、<b class="ui" data-tr="resources.witness.new">伝本を追加…</b>を使って各写本を追加します：シグラム、画像、ALTO/PAGE ファイル、そしてピボット伝本についてのみ、TEI 校訂本文があればそれも指定します。ピボット伝本を選びます（<a href="#notions">基本概念</a>を参照）。既定では最初に追加した伝本がピボット伝本になります。詳細：<a href="#etape1">ステップ 1</a>。</li>
 <li><strong>画像と行を関連付ける。</strong> <b class="ui" data-tr="navigation.pages">2 · 資料の関連付け</b>で、各ページが正しい ALTO/PAGE ファイルに関連付けられていること、ページが読み順に並んでいることを確認します。無視する行、つまり校訂する本文の範囲外にある行（対象箇所の前後、柱題、同じページにある別の作品）を指定します。詳細：<a href="#etape2">ステップ 2</a>。</li>
-<li><strong>各伝本を基準伝本に対して整列する。</strong> <b class="ui" data-tr="navigation.alignment">3 · 伝本の整列</b>で、<b class="ui" data-tr="alignment.reference.label">技術的な基準伝本</b>のメニューで基準伝本を、<b class="ui" data-tr="alignment.target.label">比較する伝本</b>のメニューでほかの伝本を選び、<b class="ui" data-tr="ui.xml.open_alignment">伝本を整列</b>を開きます。アンカーを置き、残りはソフトウェアに提案させ、確認して承認します。これを伝本ごとに繰り返します。詳細：<a href="#synchronisation">同期ウィンドウ</a>。</li>
+<li><strong>各伝本をピボット伝本に対して整列する。</strong> <b class="ui" data-tr="navigation.alignment">3 · 伝本の整列</b>で、<b class="ui" data-tr="alignment.reference.label">技術的なピボット伝本</b>のメニューでピボット伝本を、<b class="ui" data-tr="alignment.target.label">比較する伝本</b>のメニューでほかの伝本を選び、<b class="ui" data-tr="ui.xml.open_alignment">伝本を整列</b>を開きます。アンカーを置き、残りはソフトウェアに提案させ、確認して承認します。これを伝本ごとに繰り返します。詳細：<a href="#synchronisation">同期ウィンドウ</a>。</li>
 <li><strong>保存</strong>してから、<b class="ui" data-tr="navigation.progress">4 · 完了</b>で<b class="ui" data-tr="audit.action">プロジェクトの整合性を検査…</b>を実行し、警告を読みます。</li>
 <li><strong>Varians プロジェクトを作成する。</strong> <b class="ui" data-tr="ui.final.export_project.action">入力済み Varians プロジェクトを作成…</b>は、空のフォルダーにプロジェクトを書き出します。含まれるのは<strong>承認済み</strong>の対応だけです。したがって、反映させたい対応はすべて、この段階より前に承認しておいてください。詳細：<a href="#export-projet">入力済み Varians プロジェクト</a>。</li>
 </ol>
 <h3>Varians での作業</h3>
 <ol>
 <li><b class="varians" data-varians="menu.file">ファイル</b> → <b class="varians" data-varians="menu.open_project">プロジェクトを開く…</b>で、作成された <code>project.xml</code> を開きます。</li>
-<li><strong>TEI 校訂本文がない場合</strong>、Varians で新しい翻刻を始めるときと同じく、プロジェクトには空の TEI が入ります。そこに基準伝本のページと行を用意するには、<b class="varians" data-varians="menu.file">ファイル</b> → <b class="varians" data-varians="menu.project_settings">プロジェクト設定…</b>の<b class="varians" data-varians="pivot.title">ピボット伝本から転写の枠組みを準備</b>欄で、<b class="varians" data-varians="pivot.option.pb">空のTEIにピボット伝本の&lt;pb/&gt;（改ページ）を生成する</b>にチェックを入れ、必要に応じて<b class="varians" data-varians="pivot.option.lb">ALTO・PAGE・同期データから&lt;lb/&gt;（改行）も生成する</b>にもチェックを入れます。</li>
-<li><strong>TEI 校訂本文がある場合</strong>、その校訂本文には、基準伝本の有効な行 1 行につきちょうど 1 つの <code>&lt;lb edRef="#PIVOT"/&gt;</code> が、読み順に含まれていなければなりません。Varians は基準伝本の n 番目の行を n 番目の <code>&lt;lb/&gt;</code> に対応させるからです。Varians-Synchro の任意のステップ<a href="#tei">TEI 校訂本文の対応付け</a>を使えば、書き出しの前にこれを確認できます。</li>
+<li><strong>TEI 校訂本文がない場合</strong>、Varians で新しい翻刻を始めるときと同じく、プロジェクトには空の TEI が入ります。そこにピボット伝本のページと行を用意するには、<b class="varians" data-varians="menu.file">ファイル</b> → <b class="varians" data-varians="menu.project_settings">プロジェクト設定…</b>の<b class="varians" data-varians="pivot.title">ピボット伝本から転写の枠組みを準備</b>欄で、<b class="varians" data-varians="pivot.option.pb">空のTEIにピボット伝本の&lt;pb/&gt;（改ページ）を生成する</b>にチェックを入れ、必要に応じて<b class="varians" data-varians="pivot.option.lb">ALTO・PAGE・同期データから&lt;lb/&gt;（改行）も生成する</b>にもチェックを入れます。</li>
+<li><strong>TEI 校訂本文がある場合</strong>、その校訂本文には、ピボット伝本の有効な行 1 行につきちょうど 1 つの <code>&lt;lb edRef="#PIVOT"/&gt;</code> が、読み順に含まれていなければなりません。Varians はピボット伝本の n 番目の行を n 番目の <code>&lt;lb/&gt;</code> に対応させるからです。Varians-Synchro の任意のステップ<a href="#tei">TEI 校訂本文の対応付け</a>を使えば、書き出しの前にこれを確認できます。</li>
 <li><b class="varians" data-varians="menu.display">表示</b> → <b class="varians" data-varians="diagnostics.menu">写本の状態を診断…</b>で結果を確認します。</li>
 </ol>
 
 <h2 id="ajout-temoin">4. ワークフロー B：既存の Varians プロジェクトに伝本を追加する</h2>
-<p>Varians プロジェクトがすでにあり、それが Varians-Synchro のプロジェクトから作成されている場合（または、その基準伝本の同期が Varians-Synchro のプロジェクトに由来する場合）です。そこに新しい写本を、校訂版と同期させて追加します。</p>
-<div class="note"><strong>原則。</strong> 新しい伝本の同期ファイルは、基準伝本の行を、そのページの識別子とページ内での番号によって指します。これらは<em>お使いの</em> <code>.vsynch</code> プロジェクトが把握しているとおりのものです。したがって、Varians プロジェクトの作成に使ったのと同じ <code>.vsynch</code> プロジェクトで作業し、基準伝本には手を加えないでください。</div>
+<p>Varians プロジェクトがすでにあり、それが Varians-Synchro のプロジェクトから作成されている場合（または、そのピボット伝本の同期が Varians-Synchro のプロジェクトに由来する場合）です。そこに新しい写本を、校訂版と同期させて追加します。</p>
+<div class="note"><strong>原則。</strong> 新しい伝本の同期ファイルは、ピボット伝本の行を、そのページの識別子とページ内での番号によって指します。これらは<em>お使いの</em> <code>.vsynch</code> プロジェクトが把握しているとおりのものです。したがって、Varians プロジェクトの作成に使ったのと同じ <code>.vsynch</code> プロジェクトで作業し、ピボット伝本には手を加えないでください。</div>
 <h3>Varians-Synchro での作業</h3>
 <ol>
 <li><b class="ui" data-tr="project.open">.vsynch を開く</b>：Varians プロジェクトの作成に使ったプロジェクトを開きます。</li>
-<li><b class="ui" data-tr="navigation.project">1 · 伝本の追加</b>で、<b class="ui" data-tr="resources.witness.new">伝本を追加…</b>を使って新しい写本を追加します（略号、画像、ALTO/PAGE）。略号には、Varians で使う略号を付けてください。</li>
+<li><b class="ui" data-tr="navigation.project">1 · 伝本の追加</b>で、<b class="ui" data-tr="resources.witness.new">伝本を追加…</b>を使って新しい写本を追加します（シグラム、画像、ALTO/PAGE）。シグラムには、Varians で使うシグラムを付けてください。</li>
 <li><b class="ui" data-tr="navigation.pages">2 · 資料の関連付け</b>で、そのページを ALTO/PAGE ファイルに関連付け、無視する行を指定します。</li>
-<li><b class="ui" data-tr="navigation.alignment">3 · 伝本の整列</b>で、<b class="ui" data-tr="alignment.reference.label">技術的な基準伝本</b>のメニューは基準伝本のままにし、<b class="ui" data-tr="alignment.target.label">比較する伝本</b>のメニューで新しい伝本を選んで、整列し、承認します。</li>
+<li><b class="ui" data-tr="navigation.alignment">3 · 伝本の整列</b>で、<b class="ui" data-tr="alignment.reference.label">技術的なピボット伝本</b>のメニューはピボット伝本のままにし、<b class="ui" data-tr="alignment.target.label">比較する伝本</b>のメニューで新しい伝本を選んで、整列し、承認します。</li>
 <li><b class="ui" data-tr="common.save">保存</b>します。</li>
-<li><b class="ui" data-tr="navigation.progress">4 · 完了</b>で<b class="ui" data-tr="export.varians.action">Varians 用 JSON を書き出す…</b>を選び、参照伝本として基準伝本を、また空のフォルダーを選びます。新しい伝本のファイルは <code>validated/&lt;略号&gt;.json</code>（承認済みの対応）です。<code>working/&lt;略号&gt;.json</code> には未承認の提案も含まれます。<a href="#export-json">Varians 用 JSON の書き出し</a>を参照してください。</li>
+<li><b class="ui" data-tr="navigation.progress">4 · 完了</b>で<b class="ui" data-tr="export.varians.action">Varians 用 JSON を書き出す…</b>を選び、参照伝本としてピボット伝本を、また空のフォルダーを選びます。新しい伝本のファイルは <code>validated/&lt;シグラム&gt;.json</code>（承認済みの対応）です。<code>working/&lt;シグラム&gt;.json</code> には未承認の提案も含まれます。<a href="#export-json">Varians 用 JSON の書き出し</a>を参照してください。</li>
 </ol>
-<div class="warn"><strong>基準伝本は変更しないでください</strong>（ページ、その ALTO/PAGE ファイル、無視した行、読み順）。変更すると行の番号や数が変わり、校訂版の <code>&lt;lb/&gt;</code> と対応しなくなります。どうしても変更する場合は、Varians の基準伝本の同期も <code>validated/&lt;pivot&gt;.json</code> で置き換え、その行数が引き続き <code>&lt;lb/&gt;</code> の数と一致していることを確認してください。</div>
+<div class="warn"><strong>ピボット伝本は変更しないでください</strong>（ページ、その ALTO/PAGE ファイル、無視した行、読み順）。変更すると行の番号や数が変わり、校訂版の <code>&lt;lb/&gt;</code> と対応しなくなります。どうしても変更する場合は、Varians のピボット伝本の同期も <code>validated/&lt;pivot&gt;.json</code> で置き換え、その行数が引き続き <code>&lt;lb/&gt;</code> の数と一致していることを確認してください。</div>
 <h3>Varians での作業</h3>
 <ol>
 <li><b class="varians" data-varians="menu.file">ファイル</b> → <b class="varians" data-varians="menu.project_settings">プロジェクト設定…</b>を開き、伝本の一覧で<b class="varians" data-varians="project.witness.add">追加…</b>をクリックします。</li>
-<li>略号と画像（<b class="varians" data-varians="project.witness.images">画像ソース</b>）を指定し、<b class="varians" data-varians="project.witness.alignment.optional">同期ファイル（任意）</b>には <code>validated/&lt;略号&gt;.json</code> ファイルを指定します。<b class="varians" data-varians="project.witness.alignment.copy">同期データをプロジェクトへコピー</b>にチェックを入れてください。こうしておけば、プロジェクトを移動しても欠けるものがありません。</li>
-<li><b class="varians" data-varians="menu.display">表示</b> → <b class="varians" data-varians="diagnostics.menu">写本の状態を診断…</b>で確認します。新しい伝本に、基準伝本への有効なリンクがなければなりません。</li>
+<li>シグラムと画像（<b class="varians" data-varians="project.witness.images">画像ソース</b>）を指定し、<b class="varians" data-varians="project.witness.alignment.optional">同期ファイル（任意）</b>には <code>validated/&lt;シグラム&gt;.json</code> ファイルを指定します。<b class="varians" data-varians="project.witness.alignment.copy">同期データをプロジェクトへコピー</b>にチェックを入れてください。こうしておけば、プロジェクトを移動しても欠けるものがありません。</li>
+<li><b class="varians" data-varians="menu.display">表示</b> → <b class="varians" data-varians="diagnostics.menu">写本の状態を診断…</b>で確認します。新しい伝本に、ピボット伝本への有効なリンクがなければなりません。</li>
 </ol>
 <h3>既存の伝本を更新する</h3>
 <p>Varians-Synchro で伝本の整列を補ったら、もう一度書き出してから、Varians でその伝本に新しいファイルを指定する（プロジェクト設定の<b class="varians" data-varians="project.witness.edit">編集…</b>）か、プロジェクトの <code>alignments/</code> フォルダーにあるそのファイルを置き換えます。<b class="varians" data-varians="menu.display">表示</b> → <b class="varians" data-varians="diagnostics.refresh">同期データを再読み込み…</b>（<kbd>Ctrl+Shift+R</kbd>）で、プロジェクトを開き直さずにファイルを読み直せます。</p>
-<p><strong>この <code>.vsynch</code> から作成されていない Varians プロジェクトの場合。</strong> ページの識別子が異なるため、Varians は、ファイルのリンクが基準伝本のどの行にも対応しないと報告します。基準伝本の同期も <code>validated/&lt;pivot&gt;.json</code> で置き換える必要があり、その行数は <code>&lt;lb/&gt;</code> の数と同じでなければなりません。</p>
+<p><strong>この <code>.vsynch</code> から作成されていない Varians プロジェクトの場合。</strong> ページの識別子が異なるため、Varians は、ファイルのリンクがピボット伝本のどの行にも対応しないと報告します。ピボット伝本の同期も <code>validated/&lt;pivot&gt;.json</code> で置き換える必要があり、その行数は <code>&lt;lb/&gt;</code> の数と同じでなければなりません。</p>
 
 <h2 id="notions">5. 基本概念</h2>
 <table>
 <tr><th>用語</th><th>意味</th></tr>
-<tr><td>伝本、略号</td><td>写本（または古い刊本）。略号はその識別子です。伝本を保存した後は変更できません。また、書き出しができるように、ピリオド、<code>/</code>、<code>\</code> を含めてはいけません。Varians プロジェクトの略号をそのまま使ってください。</td></tr>
-<tr><td>基準伝本</td><td>プロジェクトの基準となる伝本です。ほかの伝本はこれに対して整列され、Varians はその <code>&lt;lb/&gt;</code> によってこの伝本をたどります。この選択は技術的なもので、ステンマについても、校訂版の底本についても、何ら前提とするものではありません。既定では最初に追加した伝本が基準伝本です。変更するには、別の伝本の編集画面で基準伝本のチェックボックスにチェックを入れます。ステップ 3 の<b class="ui" data-tr="alignment.reference.label">技術的な基準伝本</b>のメニューは、整列する左側の伝本を選ぶだけで、プロジェクトの基準伝本は変わりません。</td></tr>
+<tr><td>伝本、シグラム</td><td>写本（または古い刊本）。シグラムはその識別子です。伝本を保存した後は変更できません。また、書き出しができるように、ピリオド、<code>/</code>、<code>\</code> を含めてはいけません。Varians プロジェクトのシグラムをそのまま使ってください。</td></tr>
+<tr><td>ピボット伝本</td><td>プロジェクトの基準となる伝本です。ほかの伝本はこれに対して整列され、Varians はその <code>&lt;lb/&gt;</code> によってこの伝本をたどります。この選択は技術的なもので、ステンマについても、校訂版の底本についても、何ら前提とするものではありません。既定では最初に追加した伝本がピボット伝本です。変更するには、別の伝本の編集画面でピボット伝本のチェックボックスにチェックを入れます。ステップ 3 の<b class="ui" data-tr="alignment.reference.label">技術的なピボット伝本</b>のメニューは、整列する左側の伝本を選ぶだけで、プロジェクトのピボット伝本は変わりません。</td></tr>
 <tr><td>物理行</td><td>ページの ALTO/PAGE ファイルに記述された行です。ページと、そのファイル内での番号によって識別されます。ファイルの内容は、取り込み時にプロジェクトにコピーされます。</td></tr>
 <tr><td>無視した行（対象範囲）</td><td>研究対象の本文の範囲外にある行です。その伝本についてプロジェクト全体で有効で、計算、TEI の対応付け、書き出しから除外されます。すでに関連付けられた行を無視すると、確認の後、すべてのペアでその関連付けが解除されます。</td></tr>
 <tr><td>グループ（対応）</td><td>左側の伝本の行と、右側の伝本の行とを結び付けたものです：1↔1、1↔n、n↔m。一つの行は、ペアごとに最大一つのグループにしか属しません。</td></tr>
@@ -132,14 +132,14 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <p><b class="ui" data-tr="resources.witness.new">伝本を追加…</b>は新しい伝本の編集画面を開きます。一覧の伝本（またはその資料の一つ）をクリックすると、その伝本の編集画面が開き、情報を補えます。一覧には、伝本ごとに資料とその状態（関連付け済みのページ、取り込んだ行、TEI の対応付け）が表示されます。</p>
 <h3 id="fiche-temoin">伝本の編集画面</h3>
 <ul>
-<li><b class="ui" data-tr="resources.witness.sigil">略号</b>と<b class="ui" data-tr="resources.witness.label">説明</b>。略号は、伝本を保存した後は変更できません。</li>
-<li><b class="ui" data-tr="resources.witness.pivot">この伝本を整列の基準伝本にする</b>。</li>
+<li><b class="ui" data-tr="resources.witness.sigil">シグラム</b>と<b class="ui" data-tr="resources.witness.label">説明</b>。シグラムは、伝本を保存した後は変更できません。</li>
+<li><b class="ui" data-tr="resources.witness.pivot">この伝本を整列のピボット伝本にする</b>。</li>
 <li>4 種類の資料（それぞれに<b class="ui" data-tr="resources.witness.add">追加…</b>があります）：
 <ul>
 <li><b class="ui" data-tr="resources.witness.images">ローカル画像</b>：画像は名前順に並べられます（「2」は「10」より前）。</li>
 <li><b class="ui" data-tr="resources.witness.manifests">IIIF Manifest</b>：Manifest の URL を指定します。Manifest が応答しない場合も、URL は利用できない状態として保持されます。</li>
 <li><b class="ui" data-tr="resources.witness.xml">ALTO/PAGE-XML ファイル</b>：形式は内容から判別されます。</li>
-<li><b class="ui" data-tr="resources.witness.tei">TEI XML 校訂本文</b>：任意です。基準伝本の場合に役立ちます。</li>
+<li><b class="ui" data-tr="resources.witness.tei">TEI XML 校訂本文</b>：任意です。ピボット伝本の場合に役立ちます。</li>
 </ul></li>
 <li><b class="ui" data-tr="resources.witness.remove_pending">削除</b>で取り除けるのは、編集画面を今回開いている間に追加した資料だけです。すでに保存された資料は、その関連付けを壊さないよう、プロジェクトに残ります。</li>
 <li><b class="ui" data-tr="resources.binding.title">画像と ALTO/PAGE を自動で関連付ける</b>は、その場でページの関連付けを提案します（<a href="#association-auto">後述</a>を参照）。</li>
@@ -159,17 +159,17 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </ul>
 <p>これらの変更はただちに反映されます。<b class="ui" data-tr="common.close">閉じる</b>で閉じてから、プロジェクトを保存してください。</p>
 <h3 id="association-auto">自動で関連付ける</h3>
-<p><b class="ui" data-tr="resources.binding.title">画像と ALTO/PAGE を自動で関連付ける</b>は、まだ行ファイルのない各ページに行ファイルを提案します。まず名前と画像の参照情報から（<b class="ui" data-tr="resources.binding.name">一意の名前</b>）、次に、ローカル画像の数がファイルの数と等しい場合には、名前の自然順から提案します。特に後者を確認してください。一つずれると、以降のすべてのページに及びます。同じファイルが二つのページに提案された場合は赤で示されます。<b class="ui" data-tr="resources.binding.apply">関連付けを適用</b>は、既存の関連付けを上書きしません。</p>
+<p><b class="ui" data-tr="resources.binding.title">画像と ALTO/PAGE を自動で関連付ける</b>は、まだ行ファイルのない各ページに行ファイルを提案します。まず名前と画像の参照情報から（<b class="ui" data-tr="resources.binding.name">一意の名前</b>）、次に、残りのページがすべてローカル画像で、関連付けられていない ALTO/PAGE ページがちょうど同じ数だけ残っている場合には、ファイル名の自然順に対応させて提案します。特に後者を確認してください。一つずれると、以降のすべてのページに及びます。同じファイルが二つのページに提案された場合は赤で示されます。<b class="ui" data-tr="resources.binding.apply">関連付けを適用</b>は、既存の関連付けを上書きしません。</p>
 <h3 id="perimetre">無視する行（対象範囲）</h3>
 <p><b class="ui" data-tr="tei.scope.action">伝本の画像で無視する行を指定…</b>：研究対象の本文の範囲外にある行を、複数のページにまたがっていても画像上で選択し、<b class="ui" data-tr="tei.scope.ignore">選択行を無視する</b>（または<b class="ui" data-tr="tei.scope.restore">選択行を対象に戻す</b>）をクリックします。<b class="ui" data-tr="tei.scope.save">対象範囲を保存</b>で適用され、<b class="ui" data-tr="resources.cancel">キャンセル</b>では何も変更されません。同じ設定は同期ウィンドウ（<b class="ui" data-tr="scope.menu">対象範囲 ▾</b>）にもあります。</p>
 <h3 id="tei">TEI 校訂本文の対応付け（任意）</h3>
-<p><b class="ui" data-tr="tei.binding.action">TEI 校訂本文と ALTO/PAGE 行を対応付ける…</b>は、TEI 校訂本文の <code>&lt;lb edRef="#略号"/&gt;</code> を、伝本の有効な行と読み順に照合します。両者の数は等しくなければなりません。ウィンドウはそれらを比較し、妨げとなっている原因（無視する行の指定漏れ、校異中の曖昧な読み）を示します。特に<b class="ui" data-tr="tei.visual.begin">先頭</b>と<b class="ui" data-tr="tei.visual.end">末尾</b>を使って、いくつかの行をテキストと切り出した画像で確認し、<b class="ui" data-tr="tei.binding.apply">対応付けを確定</b>をクリックします。</p>
-<p>この対応付けは書き出しには必要ありません。基準伝本の行数がその <code>&lt;lb/&gt;</code> の数と確かに一致することを確認するためのもので、同期ウィンドウでは HTR テキストの代わりに TEI テキストが表示されるようになります。校訂本文、対象範囲、順序、領域分割のいずれかが変わると、状態は<b class="ui" data-tr="tei.binding.status.stale">要再確認（資料が変更されています）</b>になります。</p>
+<p><b class="ui" data-tr="tei.binding.action">TEI 校訂本文と ALTO/PAGE 行を対応付ける…</b>は、TEI 校訂本文の <code>&lt;lb edRef="#シグラム"/&gt;</code> を、伝本の有効な行と読み順に照合します。両者の数は等しくなければなりません。ウィンドウはそれらを比較し、妨げとなっている原因（無視する行の指定漏れ、校異中の曖昧な読み）を示します。特に<b class="ui" data-tr="tei.visual.begin">先頭</b>と<b class="ui" data-tr="tei.visual.end">末尾</b>を使って、いくつかの行をテキストと切り出した画像で確認し、<b class="ui" data-tr="tei.binding.apply">対応付けを確定</b>をクリックします。</p>
+<p>この対応付けは書き出しには必要ありません。ピボット伝本の行数がその <code>&lt;lb/&gt;</code> の数と確かに一致することを確認するためのもので、同期ウィンドウでは HTR テキストの代わりに TEI テキストが表示されるようになります。校訂本文、対象範囲、順序、領域分割のいずれかが変わると、状態は<b class="ui" data-tr="tei.binding.status.stale">要再確認（資料が変更されています）</b>になります。</p>
 
 <h2 id="etape3">8. ステップ 3：伝本の整列</h2>
-<p><b class="ui" data-tr="alignment.reference.label">技術的な基準伝本</b>のメニューで左側の伝本（通常はプロジェクトの基準伝本）を、<b class="ui" data-tr="alignment.target.label">比較する伝本</b>のメニューでもう一方の伝本を選び、<b class="ui" data-tr="ui.xml.open_alignment">伝本を整列</b>をクリックします。同期はペアごとに一つしかありません。逆の向きで開いても同じ同期が開き、左側の伝本も同じです。</p>
+<p><b class="ui" data-tr="alignment.reference.label">技術的なピボット伝本</b>のメニューで左側の伝本（通常はプロジェクトのピボット伝本）を、<b class="ui" data-tr="alignment.target.label">比較する伝本</b>のメニューでもう一方の伝本を選び、<b class="ui" data-tr="ui.xml.open_alignment">伝本を整列</b>をクリックします。同期はペアごとに一つしかありません。逆の向きで開いても同じ同期が開き、左側の伝本も同じです。</p>
 <p>ボタンの下にある整列済みペアの一覧には、それぞれの進み具合（グループ数、両側で関連付けられた行）が表示されます。ペアをダブルクリックするか <kbd>Enter</kbd> を押すと、その同期が再び開きます。クリックすると、そのペアが二つのメニューで選択されます。</p>
-<p>Varians へ書き出すには、各伝本が基準伝本に対して<strong>直接</strong>整列されていなければなりません。基準伝本が A の場合、B↔C の整列は書き出しには使われません。</p>
+<p>Varians へ書き出すには、各伝本がピボット伝本に対して<strong>直接</strong>整列されていなければなりません。ピボット伝本が A の場合、B↔C の整列は書き出しには使われません。</p>
 
 <h2 id="synchronisation">9. 同期ウィンドウ</h2>
 <p>二つの伝本が並べて表示され、参照伝本は左側です。行の輪郭は状態に応じて色分けされます。作業はすべてメモリ上で行われます。ウィンドウを閉じた後、メインウィンドウでプロジェクトを保存してください。ここで <kbd>F1</kbd> を押すと、ヘルプのこの節が開きます。</p>
@@ -224,36 +224,36 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3 id="export-projet">入力済み Varians プロジェクト</h3>
 <p><b class="ui" data-tr="ui.final.export_project.action">入力済み Varians プロジェクトを作成…</b>は、Varians がそのまま開けるプロジェクトを空のフォルダーに書き出します：</p>
 <ul>
-<li><code>project.xml</code>：伝本、その画像（IIIF Manifest、またはローカル画像のパス）、基準伝本。</li>
-<li><code>xml/edition.xml</code>：基準伝本の TEI 校訂本文。ない場合は空の TEI。</li>
-<li><code>alignments/&lt;略号&gt;.json</code>：各伝本の同期（<strong>承認済みの対応のみ</strong>）。</li>
+<li><code>project.xml</code>：伝本、その画像（IIIF Manifest、またはローカル画像のパス）、ピボット伝本。</li>
+<li><code>xml/edition.xml</code>：ピボット伝本の TEI 校訂本文。ない場合は空の TEI。</li>
+<li><code>alignments/&lt;シグラム&gt;.json</code>：各伝本の同期（<strong>承認済みの対応のみ</strong>）。</li>
 <li><code>rendering/</code>、<code>i18n/</code>、<code>web_output/</code>：Varians プロジェクトの通常のフォルダー。</li>
 <li><code>RAPPORT_EXPORT_VARIANS.txt</code>：書き出しの報告書。</li>
 <li>場合により <code>iiif/</code>：IIIF 画像の HD コピー（必要なページすべてにコピーがある場合）。</li>
 </ul>
-<p>画像は元の場所に置かれたままで、プロジェクトはそれを参照します（行は同期ファイルに含まれています）。フォルダーが空でない場合、略号にピリオド、<code>/</code>、<code>\</code> が含まれる場合、基準伝本に複数の TEI 校訂本文がある場合、一つの伝本に IIIF 画像とローカル画像が混在している場合、またはファイルが見つからない場合は、書き出しは行われません。</p>
+<p>画像は元の場所に置かれたままで、プロジェクトはそれを参照します（行は同期ファイルに含まれています）。フォルダーが空でない場合、シグラムにピリオド、<code>/</code>、<code>\</code> が含まれる場合、ピボット伝本に複数の TEI 校訂本文がある場合、一つの伝本に IIIF 画像とローカル画像が混在している場合、またはファイルが見つからない場合は、書き出しは行われません。</p>
 <h3 id="export-json">Varians 用 JSON の書き出し</h3>
-<p><b class="ui" data-tr="export.varians.action">Varians 用 JSON を書き出す…</b>は、既存の Varians プロジェクトに伝本を追加したり、伝本を更新したりするためのものです（<a href="#ajout-temoin">ワークフロー B</a>）。参照伝本（Varians プロジェクトの基準伝本）を選んで確定し、空のフォルダーを選びます。そこに次のものが書き出されます：</p>
+<p><b class="ui" data-tr="export.varians.action">Varians 用 JSON を書き出す…</b>は、既存の Varians プロジェクトに伝本を追加したり、伝本を更新したりするためのものです（<a href="#ajout-temoin">ワークフロー B</a>）。参照伝本（Varians プロジェクトのピボット伝本）を選んで確定し、空のフォルダーを選びます。そこに次のものが書き出されます：</p>
 <ul>
-<li><code>validated/&lt;略号&gt;.json</code>：伝本ごとに一つのファイル。承認済みの対応のみ。</li>
-<li><code>working/&lt;略号&gt;.json</code>：同じ内容に加えて、未承認の提案。</li>
+<li><code>validated/&lt;シグラム&gt;.json</code>：伝本ごとに一つのファイル。承認済みの対応のみ。</li>
+<li><code>working/&lt;シグラム&gt;.json</code>：同じ内容に加えて、未承認の提案。</li>
 <li><code>rapport_export.json</code>：書き出しの集計と検査結果。</li>
 </ul>
 <p>Varians は Varians-Synchro の状態を区別しません。そのことを承知のうえで試す場合を除き、<code>validated/</code> を読み込んでください。書き出されるのは参照伝本との直接の同期だけで、第三の伝本を介した推定は行いません。書き出せる対応が一つもない伝本がある場合は、書き出しの前にその旨と原因が表示されます。</p>
 
 <h2 id="format-json">11. 同期ファイルの形式（JSON）</h2>
-<p>伝本ごとに一つのファイルで、文字コードは UTF-8、形式は Varians が読み込む <code>tei-manuscript-alignment</code> のバージョン 1 です。基準伝本のファイルはその行を記述し、ほかの各伝本のファイルは自分の行を記述して、基準伝本の行に結び付けます。</p>
+<p>伝本ごとに一つのファイルで、文字コードは UTF-8、形式は Varians が読み込む <code>tei-manuscript-alignment</code> のバージョン 1 です。ピボット伝本のファイルはその行を記述し、ほかの各伝本のファイルは自分の行を記述して、ピボット伝本の行に結び付けます。</p>
 <h3 id="format-racine">ルート</h3>
 <table>
 <tr><th>フィールド</th><th>内容</th></tr>
 <tr><td><code class="field">meta.format</code></td><td><code>"tei-manuscript-alignment"</code>。</td></tr>
 <tr><td><code class="field">meta.format_version</code></td><td><code>1</code>。</td></tr>
-<tr><td><code class="field">meta.witness</code></td><td>記述対象の伝本の略号。</td></tr>
-<tr><td><code class="field">meta.base_witness</code></td><td>基準伝本（参照伝本）の略号。</td></tr>
-<tr><td><code class="field">meta.role</code></td><td>基準伝本では <code>"base"</code>、ほかの伝本では <code>"secondary"</code>。</td></tr>
+<tr><td><code class="field">meta.witness</code></td><td>記述対象の伝本のシグラム。</td></tr>
+<tr><td><code class="field">meta.base_witness</code></td><td>ピボット伝本（参照伝本）のシグラム。</td></tr>
+<tr><td><code class="field">meta.role</code></td><td>ピボット伝本では <code>"base"</code>、ほかの伝本では <code>"secondary"</code>。</td></tr>
 <tr><td><code class="field">meta.source</code></td><td><code>"Varians-Synchro"</code>。</td></tr>
 <tr><td><code class="field">meta.reference_basis</code></td><td><code>"physical-lines-in-study-scope"</code>：キーは物理行を指します（無視した行を除く）。</td></tr>
-<tr><td><code class="field">meta.editorial_tei_alignment</code></td><td><code>"NOT_ESTABLISHED"</code>：ファイルには TEI へのリンクは含まれません。基準伝本の行をその <code>&lt;lb/&gt;</code> に対応させるのは Varians です。</td></tr>
+<tr><td><code class="field">meta.editorial_tei_alignment</code></td><td><code>"NOT_ESTABLISHED"</code>：ファイルには TEI へのリンクは含まれません。ピボット伝本の行をその <code>&lt;lb/&gt;</code> に対応させるのは Varians です。</td></tr>
 <tr><td><code class="field">pages</code></td><td>伝本のページのうち ALTO/PAGE ファイルを持つもの（読み順）。</td></tr>
 </table>
 <h3 id="format-page">ページ</h3>
@@ -277,19 +277,19 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <tr><td><code class="field">pages[].lines[].polygon</code></td><td>任意：行の輪郭（PAGE ファイル）。点 <code>[x, y]</code> のリスト。</td></tr>
 <tr><td><code class="field">pages[].lines[].alto_id</code></td><td>ALTO/PAGE ファイルにおける行の識別子。</td></tr>
 <tr><td><code class="field">pages[].lines[].alto</code></td><td>行の HTR テキスト（ない場合は空）。</td></tr>
-<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>基準伝本以外の伝本のみ：この行が対応する基準伝本の行。形式は <code>"ページID::行"</code>（基準伝本の行の <code class="field">pages[].id</code> と <code class="field">pages[].lines[].line</code>）。n↔m グループの行は、そのグループに含まれる基準伝本のすべての行のキーを持ちます。対応のない行（未対応、確定した欠落、<code>validated/</code> における未承認グループ）には、このフィールドはありません。</td></tr>
+<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>ピボット伝本以外の伝本のみ：この行が対応するピボット伝本の行。形式は <code>"ページID::行"</code>（ピボット伝本の行の <code class="field">pages[].id</code> と <code class="field">pages[].lines[].line</code>）。n↔m グループの行は、そのグループに含まれるピボット伝本のすべての行のキーを持ちます。対応のない行（未対応、確定した欠落、<code>validated/</code> における未承認グループ）には、このフィールドはありません。</td></tr>
 <tr><td><code class="field">pages[].lines[].vsynch_state</code></td><td>Varians-Synchro におけるグループの状態：<code>validated</code>、<code>uncertain</code>、<code>proposed</code>（後の二つは <code>working/</code> のみ）。参考情報で、Varians は使用しません。</td></tr>
 <tr><td><code class="field">pages[].lines[].vsynch_origin</code></td><td>グループの由来（<code>manual</code>、<code>manual-correction</code>、<code>automatic-textual-progress-v071</code>、<code>automatic-htr-htr</code>…）。参考情報。</td></tr>
 <tr><td><code class="field">pages[].lines[].score</code></td><td>任意：自動提案の信頼度（0 から 1）。参考情報。</td></tr>
 </table>
 <h3>Varians での扱い</h3>
 <ul>
-<li>基準伝本のファイルの行は、ファイル内の順序で、校訂版の <code>&lt;lb edRef="#PIVOT"/&gt;</code> と一対一で対応します。1 行目が最初の <code>&lt;lb/&gt;</code> に、という具合です。Varians は両者の数が等しいことを確認します。</li>
-<li>基準伝本のキーは <code>ページID::行</code> です。ページがその識別子と ALTO/PAGE ファイルを保っている限り、キーは有効です。そのため、既存のプロジェクトに加える新しい伝本は、同じ <code>.vsynch</code> プロジェクトで整列しなければなりません（<a href="#ajout-temoin">ワークフロー B</a>）。</li>
-<li>本文が基準伝本のある行に達すると、Varians はほかの各伝本で、<code>base_keys</code> がその行を指している行（1 行または複数行）を表示します。</li>
+<li>ピボット伝本のファイルの行は、ファイル内の順序で、校訂版の <code>&lt;lb edRef="#PIVOT"/&gt;</code> と一対一で対応します。1 行目が最初の <code>&lt;lb/&gt;</code> に、という具合です。Varians は両者の数が等しいことを確認します。</li>
+<li>ピボット伝本のキーは <code>ページID::行</code> です。ページがその識別子と ALTO/PAGE ファイルを保っている限り、キーは有効です。そのため、既存のプロジェクトに加える新しい伝本は、同じ <code>.vsynch</code> プロジェクトで整列しなければなりません（<a href="#ajout-temoin">ワークフロー B</a>）。</li>
+<li>本文がピボット伝本のある行に達すると、Varians はほかの各伝本で、<code>base_keys</code> がその行を指している行（1 行または複数行）を表示します。</li>
 </ul>
 <h3>例</h3>
-<p>基準伝本 A のあるページの 1 行目と 2 行目に結び付けられた、伝本 B の 1 行：</p>
+<p>ピボット伝本 A のあるページの 1 行目と 2 行目に結び付けられた、伝本 B の 1 行：</p>
 <pre>{"meta": {"format": "tei-manuscript-alignment", "format_version": 1,
           "witness": "B", "base_witness": "A", "role": "secondary",
           "source": "Varians-Synchro",
@@ -315,12 +315,12 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </ul>
 <h3>よくある問題</h3>
 <ul>
-<li><strong>「Associez des pages ALTO aux deux témoins avant de synchroniser」（同期の前に、両方の伝本のページに ALTO を関連付けてください）</strong>：二つの伝本のどちらかに、行ファイルに関連付けられたページがまだ一つもありません（<a href="#etape2">ステップ 2</a>）。</li>
+<li><strong>「<b class="ui" data-tr="alignment.error.no_alto">整列する前に、両方の伝本に ALTO ページを関連付けてください</b>」</strong>：二つの伝本のどちらかに、行ファイルに関連付けられたページがまだ一つもありません（<a href="#etape2">ステップ 2</a>）。</li>
 <li><strong>IIIF 画像を利用できない</strong>：サーバーが応答していません。関連付けは失われていません。後で再試行するか、HD コピーをダウンロードしてください。</li>
 <li><strong>画像上で輪郭がずれる</strong>：画像と ALTO/PAGE ファイルの縦横比が異なっています（ステータスバーに表示されます）。ファイルがその画像に確かに対応しているか確認してください。</li>
-<li><strong>書き出しが拒否される</strong>：選んだフォルダーが空でないか、略号にピリオド、<code>/</code>、<code>\</code> が含まれています。</li>
-<li><strong>Varians で基準伝本の行が本文と対応しない</strong>：<code>&lt;lb edRef="#PIVOT"/&gt;</code> の数が基準伝本の有効な行の数と異なっています（無視する行の指定漏れ、または <code>&lt;lb/&gt;</code> の不足）。Varians の<b class="varians" data-varians="diagnostics.menu">写本の状態を診断…</b>と、Varians-Synchro の<a href="#tei">TEI の対応付け</a>が、食い違いを見つける助けになります。</li>
-<li><strong>Varians で、ファイルのリンクが基準伝本のどの行にも対応しない</strong>：基準伝本の同期が同じ <code>.vsynch</code> プロジェクトに由来していません（<a href="#ajout-temoin">ワークフロー B</a>を参照）。</li>
+<li><strong>書き出しが拒否される</strong>：選んだフォルダーが空でないか、シグラムにピリオド、<code>/</code>、<code>\</code> が含まれています。</li>
+<li><strong>Varians でピボット伝本の行が本文と対応しない</strong>：<code>&lt;lb edRef="#PIVOT"/&gt;</code> の数がピボット伝本の有効な行の数と異なっています（無視する行の指定漏れ、または <code>&lt;lb/&gt;</code> の不足）。Varians の<b class="varians" data-varians="diagnostics.menu">写本の状態を診断…</b>と、Varians-Synchro の<a href="#tei">TEI の対応付け</a>が、食い違いを見つける助けになります。</li>
+<li><strong>Varians で、ファイルのリンクがピボット伝本のどの行にも対応しない</strong>：ピボット伝本の同期が同じ <code>.vsynch</code> プロジェクトに由来していません（<a href="#ajout-temoin">ワークフロー B</a>を参照）。</li>
 <li><strong>Spyder を使う場合</strong>：<code>run.py</code> を実行してください。Spyder のコンソールを乱さないよう、ソフトウェアは別のプロセスで起動します。起動ログは <code>~/.varians_synchro/logs</code> にあります。</li>
 </ul>
 

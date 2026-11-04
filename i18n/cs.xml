@@ -696,4 +696,20 @@ Varování: dávku se nepodařilo zaznamenat do projektu ({error}). Po kontrole 
 {error}
 
 Technické podrobnosti najdete v konzoli nebo ve spouštěcím protokolu.</string>
+  <string key="alignment.error.duplicate_line_ids">Duplicitní identifikátory řádků ALTO</string>
+  <string key="alignment.error.same_witness">Vyberte dva různé svědky</string>
+  <string key="alignment.error.unknown_witness">Neznámý svědek</string>
+  <string key="alignment.error.no_alto">Před zarovnáním přiřaďte oběma svědkům stránky ALTO</string>
+  <string key="alignment.error.session_witness_missing">Svědek tohoto zarovnání v projektu chybí</string>
+  <string key="alignment.error.link_not_found">Přiřazení nenalezeno</string>
+  <string key="alignment.error.unknown_page">Neznámá stránka</string>
+  <string key="alignment.error.invalid_link">Neplatný stav nebo druh korespondence</string>
+  <string key="alignment.error.correspondence_sides">Korespondence vyžaduje řádky obou svědků</string>
+  <string key="alignment.error.absence_sides">Absence vyžaduje právě jednu stranu bez řádků</string>
+  <string key="alignment.error.unknown_line">Alespoň jeden řádek v přiřazených stránkách ALTO neexistuje</string>
+  <string key="alignment.error.line_already_linked">Řádek je již propojen: před dalším pokusem jej odpojte</string>
+  <string key="alignment.error.confidence_range">Spolehlivost mimo povolený rozsah</string>
+  <string key="alignment.error.recalculation_conflict">Přepočet přerušen: nové korespondence jsou ve vzájemném rozporu.</string>
+  <string key="alignment.error.invalid_state">Neplatný stav</string>
+  <string key="alignment.error.link_not_found_unchanged">Přiřazení nenalezeno: nic nebylo změněno</string>
 </translations>

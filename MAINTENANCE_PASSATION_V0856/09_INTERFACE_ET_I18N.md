@@ -43,6 +43,8 @@ Les PNG de `icons/` (16 à 256 px) et `icons/varians_synchro.ico` sont produits 
 
 Sept catalogues : `i18n/fr.xml`, `en.xml`, `de.xml`, `cs.xml`, `it.xml`, `ru.xml`, `ja.xml`. Dans v0.8.5.5 et v0.8.5.6 : **653 clés remplies par langue**, paramètres de format conservés. `i18n.py` contrôle balise racine, unicité/présence des clés, égalité des ensembles de clés et ensembles de paramètres `{variable}` ; `tr(key,**values)` ne modifie jamais les entrées métier inconnues. `translate_template` délègue à `tr`. Les valeurs françaises historiques peuvent servir d'alias pour les appels anciens.
 
+Les messages des exceptions levées par le moteur (`raise ValueError('…')` en français, par exemple dans `physical_alignment.py`) sont traduits à l'affichage : leur texte français est la valeur d'une clé du catalogue (`alignment.error.*`), donc un alias que `tr` reconnaît, et les boîtes de message de `ui_widgets` passent leur texte par `tr`. `tests/test_alignment_errors_i18n.py` vérifie que chaque message de `physical_alignment.py` est au catalogue : un nouveau message doit y être ajouté, dans les sept langues, avec exactement le même texte français.
+
 En cas d'ajout d'une chaîne : créer une clé stable, ajouter sept valeurs, conserver exactement les mêmes paramètres de format et faire passer `tests/test_i18n.py`, `test_i18n_xml_catalogs.py` et `test_i18n_full_0855.py`. Ne pas localiser JSON persisté, identifiants, sigles, chemins ni noms de balises/attributs XML.
 
 ## À ne pas confondre

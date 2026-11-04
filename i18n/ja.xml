@@ -87,7 +87,7 @@
   <string key="ui.chaque.page.peut.etre.liee.a.une">各ページではローカル画像または IIIF Canvas のいずれかを使用できます。ALTO ファイルは対象ページにのみ必要です。</string>
   <string key="ui.ouvrir.les.pages.et.associer.les.alto">ページを開いて ALTO ファイルを関連付け</string>
   <string key="ui.h3.synchroniser.les.temoins.h3">&lt;h3&gt;伝本を同期&lt;/h3&gt;</string>
-  <string key="alignment.reference.label">技術的な基準伝本：</string>
+  <string key="alignment.reference.label">技術的なピボット伝本：</string>
   <string key="alignment.target.label">比較する伝本：</string>
   <string key="alignment.open_visual">行の視覚的対応付けを開く</string>
   <string key="ui.alignement.tei.compatibilite.v0.5">TEI の対応付け（V0.5 互換）</string>
@@ -364,7 +364,7 @@
   <string key="export.varians.tooltip">物理行の対応を 2 組でエクスポート：確認済みの関連付けと、要確認の関連付け。</string>
   <string key="export.varians.title">Varians 用整列データを書き出す</string>
   <string key="export.varians.no_witness">書き出し前に伝本を 1 つ以上追加してください。</string>
-  <string key="export.varians.choose_base">物理的な基準伝本（暫定）：</string>
+  <string key="export.varians.choose_base">物理的なピボット伝本（暫定）：</string>
   <string key="export.varians.warning">このエクスポートでは、選択した伝本の物理行を参照元として使用します。これらの行が TEI 校訂版の &lt;lb/&gt; 要素に対応付けられるまでは、Varians で校訂テキストと画像が同期する保証はありません。古いグループは除外します。validated/ と working/ を分けて出力しますか？</string>
   <string key="export.varians.choose_empty">Varians JSON 用の空フォルダーを選択</string>
   <string key="export.varians.success">ファイルの出力先：{path}
@@ -481,15 +481,15 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="resources.project.no_witness">最初の伝本を追加してください。</string>
   <string key="resources.project.no_alignment">伝本間の整列はまだ保存されていません。</string>
   <string key="resources.project.no_broken_links">古くなった行参照はありません。</string>
-  <string key="resources.project.alignment_help">基準伝本は整列と Varians への書き出しの基準です。TEI は必須ではありません。</string>
+  <string key="resources.project.alignment_help">ピボット伝本は整列と Varians への書き出しの基準です。TEI は必須ではありません。</string>
   <string key="resources.project.choose_path">新規プロジェクトの保存先を選択</string>
   <string key="resources.project.current_path">別の保存先を選んでください。このファイルは現在開いているプロジェクトです。</string>
   <string key="resources.witness.new">伝本を追加…</string>
   <string key="resources.witness.edit">伝本と資料を編集</string>
-  <string key="resources.witness.help">略号は伝本の固定識別子です。資料は後から追加できます。変更は確定時に一括反映され、「キャンセル」はプロジェクトを変更しません。</string>
-  <string key="resources.witness.sigil">略号：</string>
+  <string key="resources.witness.help">シグラムは伝本の固定識別子です。資料は後から追加できます。変更は確定時に一括反映され、「キャンセル」はプロジェクトを変更しません。</string>
+  <string key="resources.witness.sigil">シグラム：</string>
   <string key="resources.witness.label">説明：</string>
-  <string key="resources.witness.pivot">この伝本を整列の基準伝本にする</string>
+  <string key="resources.witness.pivot">この伝本を整列のピボット伝本にする</string>
   <string key="resources.witness.pivot_label">基準</string>
   <string key="resources.witness.images">ローカル画像</string>
   <string key="resources.witness.manifests">IIIF Manifest</string>
@@ -589,7 +589,7 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="release.images_exported">{count} 画像を pages.json とともにエクスポートしました。</string>
   <string key="release.htr_reimported">関連付け済み {imported} ページ、不足 {missing} ページ、スキップ {skipped} ページ。</string>
   <string key="ui.alignment.heading">伝本を対照する</string>
-  <string key="ui.alignment.intro">伝本の本文を2冊ずつ視覚的に対照し、1冊を基準伝本にします。基準伝本と複数の伝本が対応付けられていれば、基準を介して他の伝本どうしの関係も分かります。</string>
+  <string key="ui.alignment.intro">伝本の本文を2冊ずつ視覚的に対照し、1冊をピボット伝本にします。ピボット伝本と複数の伝本が対応付けられていれば、基準を介して他の伝本どうしの関係も分かります。</string>
   <string key="ui.final.heading">プロジェクトの完了</string>
   <string key="ui.final.intro">資料と対応を確認してから Varians に書き出します。検査はプロジェクトを変更しません。</string>
   <string key="ui.final.physical_sessions">伝本間の整列：{count}</string>
@@ -605,13 +605,13 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="ui.pages.batch.tip">ファイル名と自然順から画像と ALTO/PAGE の関連付けを提案し、確認後に適用します。</string>
   <string key="ui.pages.scope.tip">伝本を選び、編集対象外の ALTO/PAGE 行を指定します。</string>
   <string key="ui.pages.tei.tip">TEI 行と指定した範囲を比較し、画像を確認してから対応付けを確定します。</string>
-  <string key="ui.alignment.open.tip">基準伝本と別の伝本の行の視覚的照合を開きます。</string>
+  <string key="ui.alignment.open.tip">ピボット伝本と別の伝本の行の視覚的照合を開きます。</string>
   <string key="ui.alignment.pair_status">{reference} ↔ {target}：{groups} グループ、{reference_covered}/{reference_total} 行と {target_covered}/{target_total} 行</string>
   <string key="ui.alignment.list.tip">ペアをダブルクリックするか Enter キーを押すと、その整列を開きます。クリックすると、2 つのメニューでそのペアが選択されます。</string>
   <string key="ui.final.export_project.action">入力済み Varians プロジェクトを作成…</string>
   <string key="ui.final.export_project.tip">project.xml、参照元 TEI のコピー、伝本情報、対応付け JSON を含むプロジェクトフォルダーを作成します。インストール済みの Varians との互換性を確認してください。</string>
-  <string key="ui.final.export_project.no_tei">基準伝本に TEI 版が登録されていません。Varians の「新しい翻刻を開始」と同じく、Varians プロジェクトには空の TEI 版が入ります。</string>
-  <string key="ui.final.export_project.prepare_pivot">そこに基準伝本の &lt;pb/&gt; と &lt;lb/&gt; を用意するには、Varians の「ファイル」メニュー →「プロジェクト設定…」で「空のTEIにピボット伝本の&lt;pb/&gt;（改ページ）を生成する」にチェックを入れてください。</string>
+  <string key="ui.final.export_project.no_tei">ピボット伝本に TEI 版が登録されていません。Varians の「新しい翻刻を開始」と同じく、Varians プロジェクトには空の TEI 版が入ります。</string>
+  <string key="ui.final.export_project.prepare_pivot">そこにピボット伝本の &lt;pb/&gt; と &lt;lb/&gt; を用意するには、Varians の「ファイル」メニュー →「プロジェクト設定…」で「空のTEIにピボット伝本の&lt;pb/&gt;（改ページ）を生成する」にチェックを入れてください。</string>
   <string key="ui.final.export_project.confirm">このエクスポートは Varians の既知の project.xml 形式を使用し、画像と ALTO/PAGE 資料を参照します。別のコンピューターでは外部パスの修正が必要になることがあります。続行しますか？</string>
   <string key="ui.final.export_project.success">Varians プロジェクトを作成しました：\n{path}\nVarians で project.xml を開いてください。</string>
   <string key="ui.pages.hd.action">選択した IIIF 画像を HD でダウンロード…</string>
@@ -696,4 +696,20 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
 {error}
 
 技術的な詳細はコンソールまたは起動ログにあります。</string>
+  <string key="alignment.error.duplicate_line_ids">ALTO の行識別子が重複しています</string>
+  <string key="alignment.error.same_witness">異なる 2 つの伝本を選んでください</string>
+  <string key="alignment.error.unknown_witness">不明な伝本です</string>
+  <string key="alignment.error.no_alto">整列する前に、両方の伝本に ALTO ページを関連付けてください</string>
+  <string key="alignment.error.session_witness_missing">この整列の伝本がプロジェクトにありません</string>
+  <string key="alignment.error.link_not_found">対応が見つかりません</string>
+  <string key="alignment.error.unknown_page">不明なページです</string>
+  <string key="alignment.error.invalid_link">対応の状態または種類が無効です</string>
+  <string key="alignment.error.correspondence_sides">対応には両方の伝本の行が必要です</string>
+  <string key="alignment.error.absence_sides">欠落には、行のない側がちょうど 1 つ必要です</string>
+  <string key="alignment.error.unknown_line">関連付けた ALTO ページに存在しない行があります</string>
+  <string key="alignment.error.line_already_linked">すでに関連付けられた行があります。やり直す前に関連付けを解除してください</string>
+  <string key="alignment.error.confidence_range">信頼度が範囲外です</string>
+  <string key="alignment.error.recalculation_conflict">再計算を中止しました。新しい対応どうしが矛盾しています。</string>
+  <string key="alignment.error.invalid_state">無効な状態です</string>
+  <string key="alignment.error.link_not_found_unchanged">対応が見つかりません。何も変更していません</string>
 </translations>

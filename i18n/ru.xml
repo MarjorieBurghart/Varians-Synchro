@@ -696,4 +696,20 @@
 {error}
 
 Технические подробности — в консоли или в журнале запуска.</string>
+  <string key="alignment.error.duplicate_line_ids">Повторяющиеся идентификаторы строк ALTO</string>
+  <string key="alignment.error.same_witness">Выберите двух разных свидетелей</string>
+  <string key="alignment.error.unknown_witness">Неизвестный свидетель</string>
+  <string key="alignment.error.no_alto">Перед выравниванием привяжите страницы ALTO к обоим свидетелям</string>
+  <string key="alignment.error.session_witness_missing">Свидетель этого выравнивания отсутствует в проекте</string>
+  <string key="alignment.error.link_not_found">Соответствие не найдено</string>
+  <string key="alignment.error.unknown_page">Неизвестная страница</string>
+  <string key="alignment.error.invalid_link">Недопустимое состояние или тип соответствия</string>
+  <string key="alignment.error.correspondence_sides">Соответствие требует строк обоих свидетелей</string>
+  <string key="alignment.error.absence_sides">Отсутствие требует ровно одной стороны без строк</string>
+  <string key="alignment.error.unknown_line">По крайней мере одна строка отсутствует в привязанных страницах ALTO</string>
+  <string key="alignment.error.line_already_linked">Строка уже связана: отвяжите её, прежде чем повторить</string>
+  <string key="alignment.error.confidence_range">Уверенность вне допустимого диапазона</string>
+  <string key="alignment.error.recalculation_conflict">Пересчёт прерван: новые соответствия противоречат друг другу.</string>
+  <string key="alignment.error.invalid_state">Недопустимое состояние</string>
+  <string key="alignment.error.link_not_found_unchanged">Соответствие не найдено: ничего не изменено</string>
 </translations>

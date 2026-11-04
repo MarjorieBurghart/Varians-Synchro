@@ -159,7 +159,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </ul>
 <p>Queste modifiche vengono applicate subito: chiudete con <b class="ui" data-tr="common.close">Chiudi</b>, poi salvate il progetto.</p>
 <h3 id="association-auto">Associare automaticamente</h3>
-<p><b class="ui" data-tr="resources.binding.title">Associa automaticamente immagini e ALTO/PAGE</b> propone un file di righe per ogni pagina che non ne ha ancora uno: prima in base ai nomi e ai riferimenti delle immagini (<b class="ui" data-tr="resources.binding.name">Nome univoco</b>), poi, per immagini locali in numero uguale, in base all’ordine naturale dei nomi. Controllate soprattutto queste ultime: uno sfasamento si ripercuote su tutta la serie. Uno stesso file proposto per due pagine è segnalato in rosso. <b class="ui" data-tr="resources.binding.apply">Applica le associazioni</b> non sovrascrive alcuna associazione esistente.</p>
+<p><b class="ui" data-tr="resources.binding.title">Associa automaticamente immagini e ALTO/PAGE</b> propone un file di righe per ogni pagina che non ne ha ancora uno: prima in base ai nomi e ai riferimenti delle immagini (<b class="ui" data-tr="resources.binding.name">Nome univoco</b>), poi, se le pagine rimanenti sono tutte immagini locali e restano esattamente altrettante pagine ALTO/PAGE non associate, abbinandole nell’ordine naturale dei nomi dei file. Controllate soprattutto queste ultime: uno sfasamento si ripercuote su tutta la serie. Uno stesso file proposto per due pagine è segnalato in rosso. <b class="ui" data-tr="resources.binding.apply">Applica le associazioni</b> non sovrascrive alcuna associazione esistente.</p>
 <h3 id="perimetre">Righe da ignorare (ambito)</h3>
 <p><b class="ui" data-tr="tei.scope.action">Definisci le righe da ignorare nelle immagini del testimone…</b>: selezionate sulle immagini le righe fuori dal testo studiato, anche su più pagine, poi fate clic su <b class="ui" data-tr="tei.scope.ignore">Ignora le righe selezionate</b> (o <b class="ui" data-tr="tei.scope.restore">Reintegra le righe selezionate</b>). <b class="ui" data-tr="tei.scope.save">Salva l'ambito</b> applica le modifiche; <b class="ui" data-tr="resources.cancel">Annulla</b> non cambia nulla. La stessa impostazione esiste nella finestra di sincronizzazione (<b class="ui" data-tr="scope.menu">Ambito ▾</b>).</p>
 <h3 id="tei">Collegare l’edizione TEI (facoltativo)</h3>
@@ -315,7 +315,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </ul>
 <h3>Problemi frequenti</h3>
 <ul>
-<li><strong>«Associez des pages ALTO aux deux témoins avant de synchroniser»</strong>: uno dei due testimoni non ha ancora alcuna pagina associata a un file di righe (<a href="#etape2">Fase 2</a>).</li>
+<li><strong>«<b class="ui" data-tr="alignment.error.no_alto">Associare pagine ALTO a entrambi i testimoni prima di allinearli</b>»</strong>: uno dei due testimoni non ha ancora alcuna pagina associata a un file di righe (<a href="#etape2">Fase 2</a>).</li>
 <li><strong>Immagine IIIF non disponibile</strong>: il server non risponde; le associazioni non vanno perse. Riprovate più tardi, oppure scaricate delle copie HD.</li>
 <li><strong>Contorni sfalsati sull’immagine</strong>: l’immagine e il file ALTO/PAGE non hanno le stesse proporzioni (la barra di stato lo segnala); verificate che il file corrisponda davvero a questa immagine.</li>
 <li><strong>Esportazione rifiutata</strong>: la cartella scelta non è vuota, oppure una sigla contiene un punto, <code>/</code> o <code>\</code>.</li>

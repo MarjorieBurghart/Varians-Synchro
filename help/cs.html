@@ -159,7 +159,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </ul>
 <p>Tyto změny se provádějí přímo: zavřete okno tlačítkem <b class="ui" data-tr="common.close">Zavřít</b> a pak projekt uložte.</p>
 <h3 id="association-auto">Automatické přiřazení</h3>
-<p><b class="ui" data-tr="resources.binding.title">Automaticky přiřadit ALTO/PAGE k obrázkům</b> navrhne soubor řádků pro každou stránku, která ho ještě nemá: nejprve podle názvů a odkazů na obrázky (<b class="ui" data-tr="resources.binding.name">Jedinečný název</b>), pak, u místních obrázků ve stejném počtu, podle přirozeného pořadí názvů. Kontrolujte hlavně tato druhá přiřazení: posun se přenese na celou sérii. Tentýž soubor navržený pro dvě stránky je označen červeně. <b class="ui" data-tr="resources.binding.apply">Použít přiřazení</b> nepřepíše žádné existující přiřazení.</p>
+<p><b class="ui" data-tr="resources.binding.title">Automaticky přiřadit ALTO/PAGE k obrázkům</b> navrhne soubor řádků pro každou stránku, která ho ještě nemá: nejprve podle názvů a odkazů na obrázky (<b class="ui" data-tr="resources.binding.name">Jedinečný název</b>), pak, pokud jsou všechny zbývající stránky místní obrázky a zbývá přesně stejný počet nepřiřazených stránek ALTO/PAGE, jejich spárováním v přirozeném pořadí názvů souborů. Kontrolujte hlavně tato druhá přiřazení: posun se přenese na celou sérii. Tentýž soubor navržený pro dvě stránky je označen červeně. <b class="ui" data-tr="resources.binding.apply">Použít přiřazení</b> nepřepíše žádné existující přiřazení.</p>
 <h3 id="perimetre">Řádky k ignorování (rozsah)</h3>
 <p><b class="ui" data-tr="tei.scope.action">Určit řádky ignorované na obrázcích svědka…</b>: na obrázcích vyberte řádky mimo zkoumaný text, i na více stránkách, a pak použijte <b class="ui" data-tr="tei.scope.ignore">Ignorovat vybrané řádky</b> (nebo <b class="ui" data-tr="tei.scope.restore">Obnovit vybrané řádky</b>). <b class="ui" data-tr="tei.scope.save">Uložit rozsah</b> změny použije; <b class="ui" data-tr="resources.cancel">Zrušit</b> nic nezmění. Stejné nastavení je k dispozici i v okně zarovnání (<b class="ui" data-tr="scope.menu">Rozsah ▾</b>).</p>
 <h3 id="tei">Propojení edice TEI (volitelné)</h3>
@@ -315,7 +315,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </ul>
 <h3>Časté problémy</h3>
 <ul>
-<li><strong>„Associez des pages ALTO aux deux témoins avant de synchroniser“</strong> (před zarovnáním přiřaďte stránky ALTO oběma svědkům): jeden z obou svědků zatím nemá žádnou stránku přiřazenou k souboru řádků (<a href="#etape2">Krok 2</a>).</li>
+<li><strong>„<b class="ui" data-tr="alignment.error.no_alto">Před zarovnáním přiřaďte oběma svědkům stránky ALTO</b>“</strong>: jeden z obou svědků zatím nemá žádnou stránku přiřazenou k souboru řádků (<a href="#etape2">Krok 2</a>).</li>
 <li><strong>Obrázek IIIF není dostupný</strong>: server neodpovídá; přiřazení se neztratí. Zkuste to později znovu, nebo stáhněte kopie v HD.</li>
 <li><strong>Obrysy posunuté vůči obrázku</strong>: obrázek a soubor ALTO/PAGE nemají stejné proporce (stavový řádek na to upozorní); ověřte, že soubor skutečně odpovídá tomuto obrázku.</li>
 <li><strong>Export odmítnut</strong>: zvolená složka není prázdná, nebo sigla obsahuje tečku, <code>/</code> nebo <code>\</code>.</li>
