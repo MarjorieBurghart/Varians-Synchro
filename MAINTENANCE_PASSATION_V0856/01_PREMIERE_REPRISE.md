@@ -24,9 +24,9 @@ Sous Windows, `start_windows.bat` lance `py -3 run.py` : il peut donc sélection
 
 ## 3. Premiers fichiers à ouvrir
 
-`run.py` → `varians_synchro/gui.py` → `varians_synchro/guided_ui.py` (construction fenêtre). Côté données : `core.py` et `resource_workflow.py`; appariement : `physical_alignment.py`, `reading_stream.py`, `textual_progress.py`; TEI : `tei_binding.py`; export : `varians_export.py`, `varians_project_export.py`.
+`run.py` → `varians_synchro/gui.py` → `varians_synchro/guided_ui.py` (point d'entrée) → `varians_synchro/ui_main_window.py` (fenêtre principale). Côté données : `core.py` et `resource_workflow.py`; appariement : `physical_alignment.py`, `reading_stream.py`, `textual_progress.py`; TEI : `tei_binding.py`; export : `varians_export.py`, `varians_project_export.py`.
 
-Le module `guided_ui.py` est monolithique (plus de 3 000 lignes). Lire d'abord ses appels à la logique métier et ses opérations d'ouverture/sauvegarde ; ne pas commencer par une refonte cosmétique qui changerait l'ordre des mutations.
+L'interface est répartie en modules `ui_*` : une fenêtre par module (liste dans `03_CARTE_DU_CODE.md`). Lire d'abord leurs appels à la logique métier et les opérations d'ouverture/sauvegarde de `ui_main_window.py` ; ne pas commencer par une refonte cosmétique qui changerait l'ordre des mutations.
 
 ## 4. Opérations sans risque sur une copie
 

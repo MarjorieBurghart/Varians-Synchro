@@ -2,9 +2,9 @@
 
 ## Composition UI
 
-`gui.main()` crée l'application Qt et instancie `guided_ui.make_guided_window()`, qui construit une hiérarchie locale de composants et de dialogues Qt. `viewer.py` fournit des widgets de visualisation et de sélection de lignes, zoom et chargement d'images ; `qt_lifecycle.py` encapsule le cycle de vie. `QSettings('Varians', 'Varians-Synchro')` conserve la langue de l'application. Le projet courant, son chemin et les modifications non sauvegardées sont des **données du document**, pas une préférence QSettings.
+`gui.main()` crée l'application Qt et instancie la fenêtre rendue par `guided_ui.make_guided_window()` (`ui_main_window.GuidedWindow`) ; chaque fenêtre de l'interface a son module `ui_*` (liste dans `03_CARTE_DU_CODE.md`). `viewer.py` fournit des widgets de visualisation et de sélection de lignes, zoom et chargement d'images ; `qt_lifecycle.py` encapsule le cycle de vie. `QSettings('Varians', 'Varians-Synchro')` conserve la langue de l'application. Le projet courant, son chemin et les modifications non sauvegardées sont des **données du document**, pas une préférence QSettings.
 
-Le code de `guided_ui.py` est particulièrement dense : préserver les frontières « lecture → prévisualisation → confirmation → mutation → sauvegarde » lors de tout découpage en classes. Éviter d'importer PySide6 dans les modules métier ; cela permet audits et tests sans serveur graphique.
+Le code des fenêtres est dense, celui de `ui_pair.py` surtout : préserver les frontières « lecture → prévisualisation → confirmation → mutation → sauvegarde » lors de tout découpage. Éviter d'importer PySide6 dans les modules métier, et dans `guided_ui.py` hors de `make_guided_window` ; cela permet audits et tests sans serveur graphique (`tests/test_ui_modules.py`).
 
 ## Contrats ergonomiques
 

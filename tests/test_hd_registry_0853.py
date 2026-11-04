@@ -141,8 +141,8 @@ def test_unsegmented_iiif_witness_is_not_eligible(tmp_path,monkeypatch):
 
 
 def test_gui_groups_old_htr_actions_away_from_hd_workflow():
-    from pathlib import Path
-    s=(Path(__file__).resolve().parents[1]/'varians_synchro'/'guided_ui.py').read_text()
+    from ui_source import ui_class
+    s = ui_class('PagesDialog')[0]
     assert "htr_group = QGroupBox(tr('ui.pages.htr.group'))" in s
     assert "def attach_hd_folder(self):" in s
     assert "thread.validated_hd_batch" in s

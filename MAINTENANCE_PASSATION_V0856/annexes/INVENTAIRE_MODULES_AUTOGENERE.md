@@ -4,7 +4,7 @@ Génération reproductible : `python tools/generate_module_inventory.py` depuis 
 Inspection statique AST : **aucun module applicatif n’est importé ni exécuté**.
 Les numéros de ligne sont ceux de **cette livraison uniquement**.
 
-**38 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
+**47 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
 
 ## `varians_synchro/__init__.py` (1 lignes)
 **Dépendances internes observées** : `core`
@@ -54,10 +54,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `error_report`, `guided_ui`, `i18n`, `qt_lifecycle`
 **Fonctions au premier niveau** : `main` (l.17)
 
-## `varians_synchro/guided_ui.py` (3316 lignes)
-**Objet (docstring source)** : Witness-centered PySide6 GUI; the V0.7 physical alignment engine is preserved.
-**Dépendances internes observées** : `bulk_binding`, `core`, `correspondence_navigation`, `exceptions`, `hd_registry`, `i18n`, `imaging`, `interpolation`, `line_scope`, `overlay_filters`, `page_management`, `page_order`, `physical_alignment`, `project_state`, `rapid_review`, `reading_stream`, `residual_alignment`, `resource_workflow`, `tei_binding`, `tei_visual`, `textual_progress`, `validation`, `varians_export`, `varians_project_export`, `viewer`
-**Fonctions au premier niveau** : `_run_modal` (l.31), `make_guided_window` (l.43)
+## `varians_synchro/guided_ui.py` (23 lignes)
+**Objet (docstring source)** : Point d'entrée de l'interface de Varians-Synchro. Les fenêtres sont réparties dans les modules ``ui_*`` : - ``ui_main_window`` : fenêtre principale (``GuidedWindow``) ; - ``ui_pair`` : synchronisation visuelle d'une paire de témoins ; - ``ui_pages`` : images et associations ALTO/PAGE d'un témoin ; - ``ui_batch_binding`` : association automatique par lot ; - ``ui_resources`` : ajout et modification d'un témoin ; - ``ui_tei_binding`` : liaison TEI ↔ lignes physiques ; - ``ui_reading_order``, ``ui_scope`` : ordre de lecture, périmètre ; - ``ui_widgets`` : widgets Qt qui traduisent leurs textes, ``_run_modal``. Ce module ne charge PySide6 qu'à l'
+**Dépendances internes observées** : `ui_main_window`
+**Fonctions au premier niveau** : `make_guided_window` (l.20)
 
 ## `varians_synchro/hd_registry.py` (159 lignes)
 **Objet (docstring source)** : Durable, source-bound IIIF HD downloads linked to manuscript Canvas IDs. No network requests. The registry stores where successful downloads live; it never turns an image into a new manuscript page or replaces an IIIF source. The original ``images.json`` remains the authoritative download receipt.
@@ -169,6 +169,52 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `physical_alignment`, `reading_stream`
 **Fonctions au premier niveau** : `_chars` (l.23), `_length` (l.28), `_weights` (l.48), `_cumulative` (l.107), `_partition` (l.116), `_method` (l.164), `_segments` (l.172), `suggest_textual_progress` (l.266)
 
+## `varians_synchro/ui_batch_binding.py` (208 lignes)
+**Objet (docstring source)** : Fenêtre « Associer automatiquement les images et les ALTO/PAGE » : propositions par lot, que l’utilisateur peut modifier.
+**Dépendances internes observées** : `bulk_binding`, `i18n`, `ui_widgets`
+**Classes déclarées au premier niveau** : `ProtectedBindingComboBox` (l.13), `BatchBindingDialog` (l.25)
+
+## `varians_synchro/ui_main_window.py` (603 lignes)
+**Objet (docstring source)** : Fenêtre principale de Varians-Synchro : projet et témoins, pages, synchronisation, avancement et exports.
+**Dépendances internes observées** : `core`, `i18n`, `physical_alignment`, `project_state`, `resource_workflow`, `tei_binding`, `ui_batch_binding`, `ui_pages`, `ui_pair`, `ui_resources`, `ui_scope`, `ui_tei_binding`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`
+**Classes déclarées au premier niveau** : `GuidedWindow` (l.26)
+
+## `varians_synchro/ui_pages.py` (580 lignes)
+**Objet (docstring source)** : Fenêtre « Images et associations ALTO/PAGE » d’un témoin : ordre des pages, association des XML, copies HD et export pour une HTR.
+**Dépendances internes observées** : `hd_registry`, `i18n`, `imaging`, `page_management`, `page_order`, `physical_alignment`, `reading_stream`, `ui_batch_binding`, `ui_widgets`, `viewer`
+**Classes déclarées au premier niveau** : `DraggablePagesList` (l.21), `HDDownloadThread` (l.34), `HTRExportThread` (l.71), `PagesDialog` (l.96)
+
+## `varians_synchro/ui_pair.py` (1014 lignes)
+**Objet (docstring source)** : Fenêtre « Synchronisation visuelle entre témoins » : groupes de lignes de deux témoins, propositions, révision rapide et revalidation.
+**Dépendances internes observées** : `correspondence_navigation`, `exceptions`, `i18n`, `interpolation`, `line_scope`, `overlay_filters`, `physical_alignment`, `rapid_review`, `reading_stream`, `residual_alignment`, `tei_binding`, `textual_progress`, `ui_reading_order`, `ui_widgets`, `viewer`
+**Classes déclarées au premier niveau** : `PairDialog` (l.30)
+
+## `varians_synchro/ui_reading_order.py` (184 lignes)
+**Objet (docstring source)** : Fenêtre « Ordre de lecture » : pages, régions et lignes d’un témoin.
+**Dépendances internes observées** : `i18n`, `imaging`, `page_order`, `reading_stream`, `ui_widgets`
+**Classes déclarées au premier niveau** : `ReadingOrderDialog` (l.14)
+
+## `varians_synchro/ui_resources.py` (201 lignes)
+**Objet (docstring source)** : Fenêtre « Ajouter un témoin… » / « Modifier le témoin et ses ressources » : sigle, images, XML, TEI et Manifests IIIF, appliqués d’un bloc.
+**Dépendances internes observées** : `i18n`, `resource_workflow`, `ui_batch_binding`, `ui_widgets`
+**Classes déclarées au premier niveau** : `WitnessResourceDialog` (l.16)
+
+## `varians_synchro/ui_scope.py` (84 lignes)
+**Objet (docstring source)** : Fenêtre « Périmètre » : lignes d’un témoin exclues de l’étude.
+**Dépendances internes observées** : `i18n`, `line_scope`, `ui_widgets`, `viewer`
+**Classes déclarées au premier niveau** : `SingleWitnessScopeDialog` (l.13)
+
+## `varians_synchro/ui_tei_binding.py` (448 lignes)
+**Objet (docstring source)** : Fenêtre « Liaison TEI ↔ lignes physiques » : contrôle visuel d’une ligne TEI sur l’image, sur un brouillon du projet.
+**Dépendances internes observées** : `i18n`, `tei_binding`, `tei_visual`, `ui_widgets`, `viewer`
+**Classes déclarées au premier niveau** : `TEILineFetchThread` (l.22), `TEIReviewCard` (l.38), `TEIPhysicalBindingDialog` (l.163)
+
+## `varians_synchro/ui_widgets.py` (114 lignes)
+**Objet (docstring source)** : Widgets Qt qui traduisent leurs textes, et ouverture modale d'une fenêtre. Les fenêtres de l'interface utilisent ces classes à la place de celles de PySide6 : un texte passé à ``QLabel``, ``setWindowTitle`` ou ``QMessageBox.warning`` est une clé de traduction (ou un texte français connu des catalogues) et s'affiche dans la langue choisie.
+**Dépendances internes observées** : `i18n`
+**Classes déclarées au premier niveau** : `QLabel` (l.31), `QPushButton` (l.40), `QListWidget` (l.49), `QComboBox` (l.54), `QTabWidget` (l.61), `QTreeWidget` (l.66), `QDialog` (l.71), `QMainWindow` (l.76), `QMessageBox` (l.81), `QInputDialog` (l.96), `QFileDialog` (l.105)
+**Fonctions au premier niveau** : `_run_modal` (l.19)
+
 ## `varians_synchro/validation.py` (163 lignes)
 **Objet (docstring source)** : Read-only V0.7.4 preflight for documentary streams and physical pairs. The audit NEVER repairs historical links, guesses an omission, or modifies data. Warnings may reflect unavailable external resources on a different workstation. Hard errors mark contradictions that must not be silently treated as reliable.
 **Dépendances internes observées** : `core`, `physical_alignment`, `reading_stream`, `tei_binding`, `varians_export`
@@ -191,4 +237,4 @@ Pas de fonction ou classe déclarée au premier niveau.
 
 ## Attention à la lecture
 
-Les fonctions et classes **internes à** `guided_ui.make_guided_window`, les méthodes des classes, les fonctions de tests et les importations dynamiques ne sont pas détaillés ici. Cette liste est **un point d’entrée**, pas une analyse d’appels complète. Les dépendances proviennent d’une inspection syntaxique (AST) et peuvent inclure des chemins conditionnels. Pour les contrats, consulter les chapitres métiers du dossier.
+Les méthodes des classes (notamment celles des fenêtres `ui_*`), les fonctions de tests et les importations dynamiques ne sont pas détaillés ici. Cette liste est **un point d’entrée**, pas une analyse d’appels complète. Les dépendances proviennent d’une inspection syntaxique (AST) et peuvent inclure des chemins conditionnels. Pour les contrats, consulter les chapitres métiers du dossier.

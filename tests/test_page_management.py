@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import ast
 import json
-from pathlib import Path
 import pytest
 
 from varians_synchro.core import (new_project, create_witness, add_image_source,
@@ -96,10 +95,8 @@ def test_unsaved_tracker_marks_reorder_and_reverts():
 
 
 def test_ui_exposes_order_actions_and_stable_ids():
-    ui = (Path(__file__).resolve().parents[1] / 'varians_synchro' / 'guided_ui.py').read_text()
-    tree = ast.parse(ui)
-    pages = next(sub for item in tree.body if isinstance(item, ast.FunctionDef) and item.name=='make_guided_window'
-                 for sub in item.body if isinstance(sub, ast.ClassDef) and sub.name=='PagesDialog')
+    from ui_source import ui_class
+    ui, pages, _path = ui_class('PagesDialog')
     methods = {item.name for item in pages.body if isinstance(item, ast.FunctionDef)}
     assert {'update_list','_on_rows_moved','_commit_displayed_order','move_selected','reverse_order',
             '_load_visible_thumbnails','_remote_thumbnail_finished','selected'}.issubset(methods)

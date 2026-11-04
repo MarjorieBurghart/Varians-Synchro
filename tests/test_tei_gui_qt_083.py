@@ -1,9 +1,10 @@
 """Optional graphical smoke tests for the V0.8.3 TEI editorial linking UI."""
+import copy
 import os
 os.environ.setdefault('QT_QPA_PLATFORM','offscreen')
 import pytest
 PySide6=pytest.importorskip('PySide6')
-from PySide6.QtWidgets import QApplication, QPushButton, QDialog, QComboBox
+from PySide6.QtWidgets import QApplication, QPushButton, QComboBox
 from varians_synchro.guided_ui import make_guided_window
 from varians_synchro.core import new_project, create_witness
 from varians_synchro.project_state import ProjectChangeTracker
@@ -24,18 +25,17 @@ def test_pages_stage_exposes_scope_and_tei_binding(qt_app):
 
 
 def test_empty_tei_binding_dialog_reports_absence(qt_app):
-    # Open via an intercepted modal to ensure no startup crashes and that the
-    # missing-resource state is explained without mutating the project.
+    # The window opens without crashing and explains the missing resource
+    # without changing the project.
+    from varians_synchro.ui_tei_binding import TEIPhysicalBindingDialog
     window=make_guided_window()()
     try:
-        baseline=window.project.copy()
-        def inspect_modal(dialog):
-            assert 'TEI' in dialog.windowTitle()
-            assert dialog.resource_box.count()==0
-            assert not dialog.apply_button.isEnabled()
-            return QDialog.DialogCode.Rejected
-        # The class is nested in make_guided_window: capture the construction
-        # of QDialog only through the window action in production smoke tests.
+        baseline=copy.deepcopy(window.project)
+        dialog=TEIPhysicalBindingDialog(window.project, window)
+        assert 'TEI' in dialog.windowTitle()
+        assert dialog.resource_box.count()==0
+        assert not dialog.apply_button.isEnabled()
+        dialog.reject()
         assert window.project==baseline
     finally:
         window.close()

@@ -1,7 +1,6 @@
 """V0.8.0–0.8.1: witness transaction, pivot, and batch XML-image association."""
 from __future__ import annotations
 
-import ast
 import copy
 import json
 from pathlib import Path
@@ -225,14 +224,11 @@ def test_new_translations_in_both_catalogs():
 
 
 def test_ui_has_single_resource_entry_and_retired_old_widgets():
-    source=(Path(__file__).resolve().parents[1]/'varians_synchro'/'guided_ui.py').read_text()
-    tree=ast.parse(source)
-    classes={c.name: c for fn in tree.body if isinstance(fn,ast.FunctionDef)
-             and fn.name=='make_guided_window' for c in fn.body if isinstance(c,ast.ClassDef)}
-    assert {'WitnessResourceDialog','BatchBindingDialog','GuidedWindow'}.issubset(classes)
-    main=classes['GuidedWindow']
-    code=ast.get_source_segment(source,next(f for f in main.body if isinstance(f,ast.FunctionDef) and f.name=='_build_project_tab'))
-    assert 'addWitnessResourcesButton' in code
+    from ui_source import ui_class, ui_files, ui_method
+    for name in ('WitnessResourceDialog', 'BatchBindingDialog', 'GuidedWindow'):
+        ui_class(name)
+    assert 'addWitnessResourcesButton' in ui_method('GuidedWindow', '_build_project_tab')
+    source = ''.join(path.read_text(encoding='utf-8') for path in ui_files())
     assert 'Outils historiques V0.5' not in source
     assert 'Importer texte TXT' not in source
     assert 'Texte pivot TXT' not in (Path(__file__).resolve().parents[1]/'varians_synchro'/'gui.py').read_text()

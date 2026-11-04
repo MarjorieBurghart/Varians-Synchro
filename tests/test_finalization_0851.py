@@ -168,13 +168,12 @@ def test_varians_project_iiif_selection_and_ocr_links(tmp_path):
 
 
 def test_ui_pages_action_precedes_information_and_final_section_has_exports():
-    from pathlib import Path
-    source=(Path(__file__).resolve().parents[1]/'varians_synchro'/'guided_ui.py').read_text()
-    pages=source.split('        def _build_pages_tab(self):')[1].split('        def open_single_witness_scope(self):')[0]
+    from ui_source import ui_method
+    pages=ui_method('GuidedWindow', '_build_pages_tab')
     assert pages.index('actions = (') < pages.index('self.page_info = QPlainTextEdit()')
     for required in ('ui.pages.manage.tip','ui.pages.batch.tip','ui.pages.scope.tip','ui.pages.tei.tip'):
         assert required in pages
-    final=source.split('        def _build_progress_tab(self):')[1].split('        def audit_project_integrity(self):')[0]
+    final=ui_method('GuidedWindow', '_build_progress_tab')
     assert 'exportVariansJsonButton' in final
     assert 'exportVariansProjectButton' in final
     assert 'ui.final.audit.help' in final

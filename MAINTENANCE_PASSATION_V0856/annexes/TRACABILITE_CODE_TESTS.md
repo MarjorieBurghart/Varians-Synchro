@@ -3,7 +3,7 @@
 | Risque ou exigence | Code à étudier | Tests existants | Source historique |
 |---|---|---|---|
 | Sauvegarde, backup, compatibilité | `core.py`, `project_state.py` | `test_core.py`, `test_unsaved_changes.py` | `FORMAT_PROJET.md`, `CORRECTIF_SAUVEGARDE_V0.7.2.1.md` |
-| Création/ouverture transactionnelles | `guided_ui.py` | `test_project_open_creation_regression_0812.py` | `CORRECTIF_OUVERTURE_PROJET_V0812.md` |
+| Création/ouverture transactionnelles | `ui_main_window.py` | `test_project_open_creation_regression_0812.py` | `CORRECTIF_OUVERTURE_PROJET_V0812.md` |
 | Association pages-images-XML | `imaging.py`, `bulk_binding.py` | `test_resources_081.py`, `test_page_management.py` | `GUIDE_RESSOURCES_V081.md` |
 | PAGE et polygones ALTO | `page_xml.py`, `alto_geometry.py`, `viewer.py` | `test_page_xml_support.py`, `test_alto_polygon_geometry.py` | `GUIDE_PAGE_XML.md` |
 | Ordres et flux de lecture | `page_order.py`, `reading_stream.py` | `test_reading_stream.py`, `test_page_order.py` | `GUIDE_ORDRE_VISUEL_PAGES.md` |

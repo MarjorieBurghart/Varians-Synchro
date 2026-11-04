@@ -19,7 +19,7 @@ flowchart TD
   TEI --> Audit
   Audit --> ExportJSON["varians_export : validated / working"]
   Audit --> ExportProject["varians_project_export : project.xml et ressources"]
-  UI["run → gui → guided_ui (+ viewer)"] --> Ingestion
+  UI["run → gui → guided_ui → ui_* (+ viewer)"] --> Ingestion
   UI --> Pair
   UI --> TEI
   UI --> ExportJSON
@@ -41,7 +41,7 @@ Ce schéma décrit des **responsabilités**, pas la succession de chaque appel ;
 
 ## Architecture d'exécution
 
-`run.py` détecte un noyau Spyder et lance un processus Qt séparé via `spyder_launch`, sinon il appelle `gui.main()`. `gui.main` configure la langue depuis `QSettings('Varians','Varians-Synchro')`, crée une `QApplication` puis construit la fenêtre via `guided_ui.make_guided_window()`. Les parcours CLI (`audit_vsynch.py`, `recette_v085.py`, `exporter_json_varians.py`) n'importent pas Qt pour exécuter leur travail principal.
+`run.py` détecte un noyau Spyder et lance un processus Qt séparé via `spyder_launch`, sinon il appelle `gui.main()`. `gui.main` configure la langue depuis `QSettings('Varians','Varians-Synchro')`, crée une `QApplication` puis construit la fenêtre via `guided_ui.make_guided_window()`, qui rend la classe `GuidedWindow` de `ui_main_window.py`. Les parcours CLI (`audit_vsynch.py`, `recette_v085.py`, `exporter_json_varians.py`) n'importent pas Qt pour exécuter leur travail principal.
 
 ## Règles de flux
 
