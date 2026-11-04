@@ -73,6 +73,7 @@ def main(folder=None):
         create_pages(w)
         data=add_alto_source(w,alto)
         bind_alto(w,w['pages'][0]['id'],data['id'])
+    p['pivot_witness_id']='A'      # comme le premier témoin ajouté par la fiche du témoin
     _relative_paths(p,folder)
     output=folder/'exemple.vsynch'
     save_project(p,output)
