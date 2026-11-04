@@ -2267,7 +2267,11 @@ def make_guided_window(legacy_window_type=None):
         """
         def __init__(self, project, parent=None):
             super().__init__(parent)
-            self.project = project
+            # A draft: « Réanalyser » and the binding change only this copy,
+            # written back to the project by « Appliquer » (commit). « Annuler »
+            # thus closes without changing anything, as its tooltip says.
+            self._live_project = project
+            self.project = copy.deepcopy(project)
             self.preview = None
             self._pairs = []
             self._previewed_endpoints = set()
@@ -2531,6 +2535,9 @@ def make_guided_window(legacy_window_type=None):
                 result = apply_tei_binding(self.project, self.witness_box.currentData(),
                                            self.resource_box.currentData(), self.preview,
                                            replace=current['status'] == 'stale')
+                # Reloads and binding of the draft, now confirmed (only TEI
+                # resources are changed by this window).
+                self._live_project['text_resources'] = self.project['text_resources']
                 QMessageBox.information(self, tr('tei.binding.title'),
                     tr('tei.binding.success', count=result['count']))
                 self.accept()
