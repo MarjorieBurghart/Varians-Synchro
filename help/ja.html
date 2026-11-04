@@ -137,7 +137,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>4 種類の資料（それぞれに<b class="ui" data-tr="resources.witness.add">追加…</b>があります）：
 <ul>
 <li><b class="ui" data-tr="resources.witness.images">ローカル画像</b>：画像は名前順に並べられます（「2」は「10」より前）。</li>
-<li><b class="ui" data-tr="resources.witness.manifests">IIIF Manifest</b>：Manifest の URL を指定します。Manifest が応答しない場合も、URL は利用できない状態として保持されます。</li>
+<li><b class="ui" data-tr="resources.witness.manifests">IIIF Manifest</b>：Manifest の URL を指定します。Manifest が応答しない場合も、URL は利用できない状態として保持され、<b class="ui" data-tr="resources.witness.retry">再試行</b>で再度問い合わせられます。</li>
 <li><b class="ui" data-tr="resources.witness.xml">ALTO/PAGE-XML ファイル</b>：形式は内容から判別されます。</li>
 <li><b class="ui" data-tr="resources.witness.tei">TEI XML 校訂本文</b>：任意です。ピボット伝本の場合に役立ちます。</li>
 </ul></li>
@@ -317,6 +317,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ul>
 <li><strong>「<b class="ui" data-tr="alignment.error.no_alto">整列する前に、両方の伝本に ALTO ページを関連付けてください</b>」</strong>：二つの伝本のどちらかに、行ファイルに関連付けられたページがまだ一つもありません（<a href="#etape2">ステップ 2</a>）。</li>
 <li><strong>IIIF 画像を利用できない</strong>：サーバーが応答していません。関連付けは失われていません。後で再試行するか、HD コピーをダウンロードしてください。</li>
+<li><strong>IIIF Manifest を利用できない</strong>：伝本の追加時に Manifest が応答しませんでした。URL は保持され、概要に表示されます。<b class="ui" data-tr="navigation.project">1 · 伝本の追加</b>で伝本をクリックし、<b class="ui" data-tr="resources.witness.retry">再試行</b>を押してください。Manifest が応答したか、何ページあるかが表示されます。<b class="ui" data-tr="resources.witness.confirm">伝本を保存</b>で結果が保持されます。</li>
 <li><strong>画像上で輪郭がずれる</strong>：画像と ALTO/PAGE ファイルの縦横比が異なっています（ステータスバーに表示されます）。ファイルがその画像に確かに対応しているか確認してください。</li>
 <li><strong>書き出しが拒否される</strong>：選んだフォルダーが空でないか、シグラムにピリオド、<code>/</code>、<code>\</code> が含まれています。</li>
 <li><strong>Varians でピボット伝本の行が本文と対応しない</strong>：<code>&lt;lb edRef="#PIVOT"/&gt;</code> の数がピボット伝本の有効な行の数と異なっています（無視する行の指定漏れ、または <code>&lt;lb/&gt;</code> の不足）。Varians の<b class="varians" data-varians="diagnostics.menu">写本の状態を診断…</b>と、Varians-Synchro の<a href="#tei">TEI の対応付け</a>が、食い違いを見つける助けになります。</li>

@@ -523,7 +523,13 @@ Reordering does not change sources.</string>
   <string key="resources.binding.ordinal_confirm">Confirm {count} link(s) based only on natural filename order? Check the images and XML files: these pairs are not proven.</string>
   <string key="resources.binding.missing">Import at least one image and one ALTO/PAGE file first.</string>
   <string key="resources.witness.tei_note">Linking this TEI edition to physical lines requires ALTO/PAGE and a defined editorial scope. Use “2 · Associate resources”.</string>
-  <string key="resources.project.manifest_unavailable">Manifest saved, currently unavailable (retry later)</string>
+  <string key="resources.project.manifest_unavailable">Manifest saved, currently unavailable: use “Retry” in the witness card</string>
+  <string key="resources.witness.manifest_unavailable">unavailable</string>
+  <string key="resources.witness.retry">Retry</string>
+  <string key="resources.witness.retry.tip">Queries again the IIIF Manifests that had not answered. The project changes only when the witness is saved.</string>
+  <string key="resources.witness.retry_none">This witness has no unavailable Manifest.</string>
+  <string key="resources.witness.retry_loaded">{url}: Manifest loaded, {pages} page(s). Save the witness to keep it.</string>
+  <string key="resources.witness.retry_failed">{url}: still unavailable ({error}).</string>
   <string key="resources.project.manifest_loaded">Manifest loaded — {pages} Canvas items</string>
   <string key="resources.project.image_loaded">Image imported</string>
   <string key="resources.project.xml_loaded">{lines} physical lines imported</string>

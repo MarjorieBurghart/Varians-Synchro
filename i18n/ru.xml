@@ -518,7 +518,13 @@
   <string key="resources.binding.ordinal_confirm">Подтвердить {count} связей, предложенных только по естественному порядку? Проверьте изображения и XML: имена не подтверждают их соответствие.</string>
   <string key="resources.binding.missing">Сначала импортируйте изображение и файл ALTO/PAGE.</string>
   <string key="resources.witness.tei_note">Для привязки издания TEI к физическим строкам нужны ALTO/PAGE и определённые границы текста. Используйте шаг «2 · Связать ресурсы».</string>
-  <string key="resources.project.manifest_unavailable">Манифест сохранён, доступ недоступен (повторите попытку)</string>
+  <string key="resources.project.manifest_unavailable">Манифест сохранён, но недоступен: «Повторить» в карточке свидетеля</string>
+  <string key="resources.witness.manifest_unavailable">недоступен</string>
+  <string key="resources.witness.retry">Повторить</string>
+  <string key="resources.witness.retry.tip">Повторно запрашивает манифесты IIIF, которые не ответили. Проект изменится только при сохранении свидетеля.</string>
+  <string key="resources.witness.retry_none">У этого свидетеля нет недоступных манифестов.</string>
+  <string key="resources.witness.retry_loaded">{url}: манифест загружен, страниц: {pages}. Сохраните свидетеля, чтобы его сохранить.</string>
+  <string key="resources.witness.retry_failed">{url}: по-прежнему недоступен ({error}).</string>
   <string key="resources.project.manifest_loaded">Манифест загружен — холстов: {pages}</string>
   <string key="resources.project.image_loaded">Изображение импортировано</string>
   <string key="resources.project.xml_loaded">Импортировано строк: {lines}</string>

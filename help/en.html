@@ -137,7 +137,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Four groups of resources, each with <b class="ui" data-tr="resources.witness.add">Add…</b>:
 <ul>
 <li><b class="ui" data-tr="resources.witness.images">Local images</b>: images are sorted by name (“2” before “10”);</li>
-<li><b class="ui" data-tr="resources.witness.manifests">IIIF Manifest</b>: the URL of the Manifest; if it does not respond, the URL is kept, with the status “unavailable”;</li>
+<li><b class="ui" data-tr="resources.witness.manifests">IIIF Manifest</b>: the URL of the Manifest; if it does not respond, the URL is kept, with the status “unavailable”, and <b class="ui" data-tr="resources.witness.retry">Retry</b> queries it again;</li>
 <li><b class="ui" data-tr="resources.witness.xml">ALTO/PAGE XML files</b>: the format is recognized from the content;</li>
 <li><b class="ui" data-tr="resources.witness.tei">TEI XML edition</b>: optional, useful for the pivot.</li>
 </ul></li>
@@ -317,6 +317,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ul>
 <li><strong>“<b class="ui" data-tr="alignment.error.no_alto">Link ALTO pages to both witnesses before aligning them</b>”</strong>: one of the two witnesses does not yet have any page associated with a line file (<a href="#etape2">Step 2</a>).</li>
 <li><strong>IIIF image unavailable</strong>: the server is not responding; the associations are not lost. Try again later, or download HD copies.</li>
+<li><strong>IIIF Manifest unavailable</strong>: it did not respond when the witness was added; its URL is kept and the summary says so. In <b class="ui" data-tr="navigation.project">1 · Add witnesses</b>, click the witness, then <b class="ui" data-tr="resources.witness.retry">Retry</b>: the software tells you whether the Manifest responded and how many pages it has; <b class="ui" data-tr="resources.witness.confirm">Save witness</b> keeps the result.</li>
 <li><strong>Line frames offset on the image</strong>: the image and the ALTO/PAGE file do not have the same proportions (the status bar reports it); check that the file really belongs to this image.</li>
 <li><strong>Export refused</strong>: the chosen folder is not empty, or a siglum contains a dot, <code>/</code> or <code>\</code>.</li>
 <li><strong>In Varians, the lines of the pivot do not match the text</strong>: the number of <code>&lt;lb edRef="#PIVOT"/&gt;</code> elements differs from the number of active lines of the pivot (lines to ignore that were not marked, or missing <code>&lt;lb/&gt;</code> elements). <b class="varians" data-varians="diagnostics.menu">Witness diagnostics…</b> in Varians and the <a href="#tei">TEI binding</a> in Varians-Synchro help to find the discrepancy.</li>

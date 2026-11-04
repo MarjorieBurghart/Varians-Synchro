@@ -518,7 +518,13 @@ Saranno adeguati {affected} gruppi automatici incerti; saranno creati {groups} g
   <string key="resources.binding.ordinal_confirm">Confermare {count} associazioni proposte solo dall'ordine naturale? Verificare immagini e XML: i nomi non attestano queste corrispondenze.</string>
   <string key="resources.binding.missing">Importa prima almeno un'immagine e un file ALTO/PAGE.</string>
   <string key="resources.witness.tei_note">Il collegamento dell'edizione TEI alle righe fisiche richiede ALTO/PAGE e la definizione del perimetro editoriale. Usare «2 · Associare le risorse».</string>
-  <string key="resources.project.manifest_unavailable">Manifest conservato, accesso non disponibile (riprovare)</string>
+  <string key="resources.project.manifest_unavailable">Manifest conservato, accesso non disponibile: «Riprova» nella scheda del testimone</string>
+  <string key="resources.witness.manifest_unavailable">non disponibile</string>
+  <string key="resources.witness.retry">Riprova</string>
+  <string key="resources.witness.retry.tip">Interroga di nuovo i Manifest IIIF che non avevano risposto. Il progetto cambia solo al salvataggio del testimone.</string>
+  <string key="resources.witness.retry_none">Questo testimone non ha Manifest non disponibili.</string>
+  <string key="resources.witness.retry_loaded">{url}: Manifest caricato, {pages} pagina/e. Salva il testimone per conservarlo.</string>
+  <string key="resources.witness.retry_failed">{url}: ancora non disponibile ({error}).</string>
   <string key="resources.project.manifest_loaded">Manifest letto — {pages} canvas</string>
   <string key="resources.project.image_loaded">Immagine importata</string>
   <string key="resources.project.xml_loaded">Importate {lines} righe fisiche</string>

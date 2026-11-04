@@ -65,6 +65,12 @@ def set_project_pivot(project: dict, witness_id: str | None) -> None:
     project['pivot_witness_id'] = witness_id
 
 
+def unavailable_manifests(witness: dict) -> list[str]:
+    """Adresses des Manifests IIIF du témoin qui n'ont pas répondu."""
+    return [source['reference'] for source in witness.get('image_sources', [])
+            if source['kind'] == 'iiif' and source.get('status') == 'unavailable']
+
+
 def resource_summary(project: dict, witness_id: str) -> dict:
     w = next(w for w in project['witnesses'] if w['id'] == witness_id)
     total = len(w.get('pages', []))
@@ -86,7 +92,7 @@ def apply_witness_draft(project: dict, *, identifier: str, label: str = '',
     Existing page UIDs, manual order, XML bindings, link sessions, TEI documents,
     and previous source records survive. A failed XML import changes nothing.
     A manifest fetch failure is recorded as unavailable instead of aborting the
-    entire witness; it can be retried later.
+    entire witness; giving its address again retries it (``unavailable_manifests``).
     """
     identifier = identifier.strip()
     if not identifier:
@@ -110,18 +116,23 @@ def apply_witness_draft(project: dict, *, identifier: str, label: str = '',
             existing_img.add(_local_key(p))
             image_inventory_changed = True
 
-    existing_manifest = {_manifest_key(s['reference']) for s in w['image_sources'] if s['kind'] == 'iiif'}
+    # A manifest given again is queried again only if it had not answered.
+    known_manifests = {_manifest_key(s['reference']): s for s in w['image_sources'] if s['kind'] == 'iiif'}
     for url in dict.fromkeys(str(x).strip() for x in manifests if str(x).strip()):
-        if _manifest_key(url) not in existing_manifest:
+        entry = known_manifests.get(_manifest_key(url))
+        if entry is not None and entry.get('status') != 'unavailable':
+            continue
+        if entry is None:
             entry = add_image_source(w, 'iiif', url)
-            try:
-                entry['manifest'] = (manifest_loader or inspect_manifest)(url)
-                entry['status'] = 'inspected'
-            except Exception as exc:
-                entry['status'] = 'unavailable'
-                entry['error'] = str(exc)
-            existing_manifest.add(_manifest_key(url))
-            image_inventory_changed = True
+            known_manifests[_manifest_key(url)] = entry
+        try:
+            entry['manifest'] = (manifest_loader or inspect_manifest)(entry['reference'])
+            entry['status'] = 'inspected'
+            entry.pop('error', None)
+        except Exception as exc:
+            entry['status'] = 'unavailable'
+            entry['error'] = str(exc)
+        image_inventory_changed = True
 
     existing_xml = {_local_key(src['path']) for src in w['alto_sources']}
     for path in sorted(set(str(x) for x in xml_files), key=lambda x: _natural(Path(x).name)):

@@ -518,7 +518,13 @@ Upraví se {affected} nejistých automatických skupin; vytvoří se {groups} sk
   <string key="resources.binding.ordinal_confirm">Potvrdit {count} propojení navržených pouze podle přirozeného pořadí? Ověřte snímky i XML: názvy tato propojení nepotvrzují.</string>
   <string key="resources.binding.missing">Nejprve importujte alespoň jeden obrázek a soubor ALTO/PAGE.</string>
   <string key="resources.witness.tei_note">Pro propojení edice TEI s fyzickými řádky jsou nutné soubory ALTO/PAGE a vymezení rozsahu edice. Použijte krok „2 · Přiřadit zdroje“.</string>
-  <string key="resources.project.manifest_unavailable">Manifest byl uložen, ale nyní není dostupný (zkuste znovu)</string>
+  <string key="resources.project.manifest_unavailable">Manifest byl uložen, ale nyní není dostupný: „Zkusit znovu“ v kartě svědka</string>
+  <string key="resources.witness.manifest_unavailable">nedostupný</string>
+  <string key="resources.witness.retry">Zkusit znovu</string>
+  <string key="resources.witness.retry.tip">Znovu dotáže manifesty IIIF, které neodpověděly. Projekt se změní až po uložení svědka.</string>
+  <string key="resources.witness.retry_none">Tento svědek nemá žádný nedostupný manifest.</string>
+  <string key="resources.witness.retry_loaded">{url}: manifest načten, stran: {pages}. Uložte svědka, aby zůstal zachován.</string>
+  <string key="resources.witness.retry_failed">{url}: stále nedostupný ({error}).</string>
   <string key="resources.project.manifest_loaded">Manifest načten — {pages} pláten</string>
   <string key="resources.project.image_loaded">Obrázek importován</string>
   <string key="resources.project.xml_loaded">Importováno {lines} fyzických řádků</string>

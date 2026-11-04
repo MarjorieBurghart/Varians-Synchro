@@ -137,7 +137,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Quatre groupes de ressources, chacun avec <b class="ui" data-tr="resources.witness.add">Ajouter…</b> :
 <ul>
 <li><b class="ui" data-tr="resources.witness.images">Images locales</b> : les images sont triées par nom (« 2 » avant « 10 ») ;</li>
-<li><b class="ui" data-tr="resources.witness.manifests">Manifest IIIF</b> : l’adresse du Manifest ; s’il ne répond pas, l’adresse est gardée, avec l’état indisponible ;</li>
+<li><b class="ui" data-tr="resources.witness.manifests">Manifest IIIF</b> : l’adresse du Manifest ; s’il ne répond pas, l’adresse est gardée, avec l’état indisponible, et <b class="ui" data-tr="resources.witness.retry">Réessayer</b> l’interroge de nouveau ;</li>
 <li><b class="ui" data-tr="resources.witness.xml">Fichiers ALTO/PAGE-XML</b> : le format est reconnu d’après le contenu ;</li>
 <li><b class="ui" data-tr="resources.witness.tei">Édition TEI XML</b> : facultative, utile pour le pivot.</li>
 </ul></li>
@@ -317,6 +317,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ul>
 <li><strong>« <b class="ui" data-tr="alignment.error.no_alto">Associez des pages ALTO aux deux témoins avant de synchroniser</b> »</strong> : un des deux témoins n’a encore aucune page associée à un fichier de lignes (<a href="#etape2">Étape 2</a>).</li>
 <li><strong>Image IIIF indisponible</strong> : le serveur ne répond pas ; les associations ne sont pas perdues. Réessayez plus tard, ou téléchargez des copies HD.</li>
+<li><strong>Manifest IIIF indisponible</strong> : il n’a pas répondu quand le témoin a été ajouté ; son adresse est gardée et le bilan l’indique. Dans <b class="ui" data-tr="navigation.project">1 · Ajout des témoins</b>, cliquez sur le témoin, puis sur <b class="ui" data-tr="resources.witness.retry">Réessayer</b> : le logiciel dit si le Manifest a répondu, et combien de pages il contient ; <b class="ui" data-tr="resources.witness.confirm">Enregistrer le témoin</b> garde le résultat.</li>
 <li><strong>Cadres décalés sur l’image</strong> : l’image et le fichier ALTO/PAGE n’ont pas les mêmes proportions (la barre d’état le signale) ; vérifiez que le fichier correspond bien à cette image.</li>
 <li><strong>Export refusé</strong> : le dossier choisi n’est pas vide, ou un sigle contient un point, <code>/</code> ou <code>\</code>.</li>
 <li><strong>Dans Varians, les lignes du pivot ne correspondent pas au texte</strong> : le nombre de <code>&lt;lb edRef="#PIVOT"/&gt;</code> diffère du nombre de lignes retenues du pivot (lignes à ignorer oubliées, ou <code>&lt;lb/&gt;</code> manquants). <b class="varians" data-varians="diagnostics.menu">État des témoins…</b> dans Varians et la <a href="#tei">liaison TEI</a> de Varians-Synchro aident à trouver l’écart.</li>
