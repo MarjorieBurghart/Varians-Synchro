@@ -7,11 +7,11 @@ import pytest
 pytest.importorskip('PySide6')
 from PySide6.QtWidgets import QApplication
 
-from varians_synchro.guided_ui import make_guided_window
 from varians_synchro.i18n import tr
 from varians_synchro.physical_alignment import stale_link_ids
 from varians_synchro.reading_stream import rebind_page
 from varians_synchro.ui_pages import PagesDialog
+from varians_synchro.ui_pair import PairDialog
 from varians_synchro.ui_widgets import QInputDialog, QMessageBox
 from test_stale_links import setting  # noqa: F401  (fixture)
 
@@ -19,11 +19,6 @@ from test_stale_links import setting  # noqa: F401  (fixture)
 @pytest.fixture(scope='module')
 def app():
     return QApplication.instance() or QApplication([])
-
-
-def _nested(method, name):
-    return next(cell.cell_contents for cell in method.__closure__
-                if getattr(cell.cell_contents, '__name__', '') == name)
 
 
 def _assign(app, monkeypatch, project, witness, answer):
@@ -61,11 +56,9 @@ def test_declining_keeps_the_page_and_its_groups(app, monkeypatch, setting):
 def test_stale_groups_are_marked_and_can_be_revalidated(app, monkeypatch, setting):
     project, a, _b, session, first, _last = setting
     rebind_page(a, a['pages'][0]['id'], a['alto_sources'][-1]['id'], 0)
-    window_type = make_guided_window(lambda: None)
-    pair_class = _nested(window_type.open_physical_alignment, 'PairDialog')
     monkeypatch.setattr(QMessageBox, 'question',
                         staticmethod(lambda *a, **k: QMessageBox.StandardButton.Yes))
-    dialog = pair_class(project, session)
+    dialog = PairDialog(project, session)
     dialog.review_filter.setCurrentIndex(dialog.review_filter.findData('stale'))
     dialog.populate()
     texts = [dialog.links.item(i).text() for i in range(dialog.links.count())]

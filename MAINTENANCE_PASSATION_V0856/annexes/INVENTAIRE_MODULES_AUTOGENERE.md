@@ -4,7 +4,7 @@ Génération reproductible : `python tools/generate_module_inventory.py` depuis 
 Inspection statique AST : **aucun module applicatif n’est importé ni exécuté**.
 Les numéros de ligne sont ceux de **cette livraison uniquement**.
 
-**45 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
+**46 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
 
 ## `varians_synchro/__init__.py` (1 lignes)
 **Dépendances internes observées** : `core`
@@ -54,9 +54,9 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `error_report`, `guided_ui`, `i18n`, `qt_lifecycle`
 **Fonctions au premier niveau** : `main` (l.17)
 
-## `varians_synchro/guided_ui.py` (1623 lignes)
+## `varians_synchro/guided_ui.py` (639 lignes)
 **Objet (docstring source)** : Witness-centered PySide6 GUI; the V0.7 physical alignment engine is preserved.
-**Dépendances internes observées** : `core`, `correspondence_navigation`, `exceptions`, `i18n`, `imaging`, `interpolation`, `line_scope`, `overlay_filters`, `physical_alignment`, `project_state`, `rapid_review`, `reading_stream`, `residual_alignment`, `resource_workflow`, `tei_binding`, `textual_progress`, `ui_batch_binding`, `ui_pages`, `ui_reading_order`, `ui_resources`, `ui_scope`, `ui_tei_binding`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`, `viewer`
+**Dépendances internes observées** : `core`, `correspondence_navigation`, `exceptions`, `i18n`, `imaging`, `interpolation`, `line_scope`, `overlay_filters`, `physical_alignment`, `project_state`, `rapid_review`, `reading_stream`, `residual_alignment`, `resource_workflow`, `tei_binding`, `textual_progress`, `ui_batch_binding`, `ui_pages`, `ui_pair`, `ui_reading_order`, `ui_resources`, `ui_scope`, `ui_tei_binding`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`
 **Fonctions au premier niveau** : `make_guided_window` (l.30)
 
 ## `varians_synchro/hd_registry.py` (159 lignes)
@@ -178,6 +178,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : Fenêtre « Images et associations ALTO/PAGE » d’un témoin : ordre des pages, association des XML, copies HD et export pour une HTR.
 **Dépendances internes observées** : `hd_registry`, `i18n`, `imaging`, `page_management`, `page_order`, `physical_alignment`, `reading_stream`, `ui_batch_binding`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `DraggablePagesList` (l.21), `HDDownloadThread` (l.34), `HTRExportThread` (l.71), `PagesDialog` (l.96)
+
+## `varians_synchro/ui_pair.py` (1014 lignes)
+**Objet (docstring source)** : Fenêtre « Synchronisation visuelle entre témoins » : groupes de lignes de deux témoins, propositions, révision rapide et revalidation.
+**Dépendances internes observées** : `correspondence_navigation`, `exceptions`, `i18n`, `interpolation`, `line_scope`, `overlay_filters`, `physical_alignment`, `rapid_review`, `reading_stream`, `residual_alignment`, `tei_binding`, `textual_progress`, `ui_reading_order`, `ui_widgets`, `viewer`
+**Classes déclarées au premier niveau** : `PairDialog` (l.30)
 
 ## `varians_synchro/ui_reading_order.py` (184 lignes)
 **Objet (docstring source)** : Fenêtre « Ordre de lecture » : pages, régions et lignes d’un témoin.
