@@ -62,6 +62,8 @@ class GuidedWindow(QMainWindow):
         help_button = QPushButton(tr('help.open'))
         help_button.setToolTip(tr('help.title'))
         help_button.clicked.connect(self.open_user_manual)
+        from PySide6.QtGui import QKeySequence, QShortcut
+        QShortcut(QKeySequence('F1'), self, self.open_user_manual)
         top.addWidget(help_button)
         top.addWidget(QLabel(tr('common.language')))
         self.language_box = QComboBox()
@@ -88,13 +90,9 @@ class GuidedWindow(QMainWindow):
         self.refresh()
 
     def open_user_manual(self):
-        from pathlib import Path
-        from PySide6.QtCore import QUrl
-        from PySide6.QtGui import QDesktopServices
-        from PySide6.QtWidgets import QMessageBox
-        path = Path(__file__).resolve().parent.parent / 'docs' / 'user' / (get_language() + '.md')
-        if not path.is_file() or not QDesktopServices.openUrl(QUrl.fromLocalFile(str(path))):
-            QMessageBox.warning(self, tr('help.title'), tr('help.missing'))
+        """Le guide utilisateur dans une fenêtre du logiciel (F1)."""
+        from .ui_help import open_help
+        open_help(self)
 
     def change_language(self):
         requested = self.language_box.currentData()

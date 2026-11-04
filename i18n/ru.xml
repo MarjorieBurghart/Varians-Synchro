@@ -672,6 +672,11 @@
   <string key="help.title">Руководство пользователя</string>
   <string key="help.open">Открыть руководство пользователя</string>
   <string key="help.missing">Руководство пользователя не найдено.</string>
+  <string key="help.search.placeholder">Поиск в справке (Ctrl+F)</string>
+  <string key="help.search.summary">разделов: {sections}, совпадений: {count}</string>
+  <string key="help.search.none">Ничего не найдено</string>
+  <string key="help.search.prev.tip">Предыдущее совпадение (Shift+F3)</string>
+  <string key="help.search.next.tip">Следующее совпадение (F3)</string>
   <string key="ui.xml.replace_impact">У этой страницы уже есть источник ALTO или PAGE. С другим файлом её строки могут измениться. Группы, ссылающиеся на её строки: {links} (из них подтверждённых: {validated}). Группы, строки которых изменятся, будут помечены как «устаревшие»: они не будут использоваться и экспортироваться, пока вы не подтвердите их заново или не разъедините. Заменить?</string>
   <string key="ui.xml.replace_order">Исправленный порядок чтения этой страницы будет сброшен.</string>
   <string key="review.filter.stale">Устаревшие</string>

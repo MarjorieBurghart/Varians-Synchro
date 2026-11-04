@@ -672,6 +672,11 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="help.title">ユーザーガイド</string>
   <string key="help.open">ユーザーガイドを開く</string>
   <string key="help.missing">ユーザーガイドが見つかりません。</string>
+  <string key="help.search.placeholder">ヘルプを検索 (Ctrl+F)</string>
+  <string key="help.search.summary">{sections} 節、{count} 件</string>
+  <string key="help.search.none">見つかりません</string>
+  <string key="help.search.prev.tip">前の一致 (Shift+F3)</string>
+  <string key="help.search.next.tip">次の一致 (F3)</string>
   <string key="ui.xml.replace_impact">このページには ALTO/PAGE のソースが既に登録されています。別のファイルにすると行が変わる可能性があります。この行を参照するグループ：{links}（うち承認済み：{validated}）。行が変わったグループは「失効」と表示され、再承認または関連付けの解除まで、計算にもエクスポートにも使われません。置き換えますか？</string>
   <string key="ui.xml.replace_order">このページの修正済みの読み順はリセットされます。</string>
   <string key="review.filter.stale">失効</string>

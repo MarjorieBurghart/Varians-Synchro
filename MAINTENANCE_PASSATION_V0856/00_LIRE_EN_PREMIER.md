@@ -2,7 +2,7 @@
 
 **État du dossier : 19 octobre 2026 — application v0.8.5.6.**
 
-Ce répertoire est le **point d'entrée unique pour une reprise du code par une autre équipe**. Il ne remplace ni les guides de manipulation de l'interface (`docs/user/`), ni les manuels développeur traduits (`docs/developer/`) : il décrit les contrats à préserver et la manière de travailler sur le logiciel. Les documents historiques à la racine témoignent des choix antérieurs ; ils ne doivent pas être pris pour une spécification plus récente que le code.
+Ce répertoire est le **point d'entrée unique pour une reprise du code par une autre équipe**. Il ne remplace ni le guide utilisateur (`help/<langue>.html`, affiché dans le logiciel par F1), ni les manuels développeur traduits (`docs/developer/`) : il décrit les contrats à préserver et la manière de travailler sur le logiciel. Les documents historiques à la racine témoignent des choix antérieurs ; ils ne doivent pas être pris pour une spécification plus récente que le code.
 
 ## Consulter dans cet ordre
 

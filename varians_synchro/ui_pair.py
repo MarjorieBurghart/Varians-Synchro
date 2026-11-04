@@ -124,6 +124,14 @@ class PairDialog(QDialog):
         self.assoc_shortcut2.activated.connect(lambda: self.attach('correspondence'))
         self.absence_shortcut = QShortcut(QKeySequence('Ctrl+Shift+A'), self)
         self.absence_shortcut.activated.connect(self.confirm_selected_absence)
+        # F1 : l'aide, à la section de cette fenêtre (enfant de la fenêtre,
+        # donc utilisable bien que celle-ci soit modale).
+        self.help_shortcut = QShortcut(QKeySequence('F1'), self)
+        self.help_shortcut.activated.connect(self.open_help)
+
+    def open_help(self):
+        from .ui_help import open_help
+        open_help(self, 'synchronisation')
 
     def _build_filters(self, main):
         """Consigne, cadres visibles, recherche dans le texte TEI, légende."""

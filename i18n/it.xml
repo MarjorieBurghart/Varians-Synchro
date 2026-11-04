@@ -672,6 +672,11 @@ Attenzione: non è stato possibile registrare il lotto nel progetto ({error}). D
   <string key="help.title">Manuale utente</string>
   <string key="help.open">Apri il manuale utente</string>
   <string key="help.missing">Impossibile trovare il manuale utente.</string>
+  <string key="help.search.placeholder">Cerca nella guida (Ctrl+F)</string>
+  <string key="help.search.summary">sezioni: {sections}, occorrenze: {count}</string>
+  <string key="help.search.none">Nessun risultato</string>
+  <string key="help.search.prev.tip">Occorrenza precedente (Maiusc+F3)</string>
+  <string key="help.search.next.tip">Occorrenza successiva (F3)</string>
   <string key="ui.xml.replace_impact">Questa pagina ha già una sorgente ALTO o PAGE. Con un altro file, le sue righe possono cambiare. Gruppi che citano le sue righe: {links} (di cui convalidati: {validated}). Quelli le cui righe cambieranno saranno segnati come «obsoleti»: né usati né esportati finché non saranno riconvalidati o scollegati. Sostituirla?</string>
   <string key="ui.xml.replace_order">L’ordine di lettura corretto di questa pagina sarà azzerato.</string>
   <string key="review.filter.stale">Obsoleti</string>

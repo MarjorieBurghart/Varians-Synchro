@@ -4,7 +4,7 @@ Génération reproductible : `python tools/generate_module_inventory.py` depuis 
 Inspection statique AST : **aucun module applicatif n’est importé ni exécuté**.
 Les numéros de ligne sont ceux de **cette livraison uniquement**.
 
-**49 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
+**51 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
 
 ## `varians_synchro/__init__.py` (1 lignes)
 **Dépendances internes observées** : `core`
@@ -67,6 +67,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : Durable, source-bound IIIF HD downloads linked to manuscript Canvas IDs. No network requests. The registry stores where successful downloads live; it never turns an image into a new manuscript page or replaces an IIIF source. The original ``images.json`` remains the authoritative download receipt.
 **Dépendances internes observées** : `imaging`
 **Fonctions au premier niveau** : `_sha256` (l.18), `inspect_hd_folder` (l.26), `register_hd_snapshot` (l.82), `register_hd_folder` (l.90), `local_copy_plan` (l.96), `varians_remote_key` (l.134), `varians_offline_index` (l.148)
+
+## `varians_synchro/help_search.py` (121 lignes)
+**Objet (docstring source)** : Recherche dans l'aide de Varians-Synchro, sans Qt (reprise de Varians). L'aide est une longue page découpée en sections (un titre et le texte qui le suit). La recherche ne tient compte ni des accents ni de la casse, ni des signes typographiques (« ’ » vaut « ' », « » » vaut « " », une espace insécable une espace). Plusieurs mots : les sections qui les contiennent tous, dans n'importe quel ordre ; entre guillemets, l'expression exacte. Les positions sont celles du texte de l'aide (une par caractère) ; la fenêtre d'aide les passe à Qt avec ``Utf16Positions``.
+**Classes déclarées au premier niveau** : `Section` (l.25), `Hit` (l.34), `Utf16Positions` (l.106)
+**Fonctions au premier niveau** : `fold` (l.43), `query_terms` (l.61), `search` (l.71), `_excerpt` (l.92)
 
 ## `varians_synchro/i18n.py` (108 lignes)
 **Objet (docstring source)** : Varians-Synchro localization: XML catalogs, same schema as Varians. The files ``i18n/fr.xml`` and ``i18n/en.xml`` live beside ``run.py``. All UI message values (including the French defaults) come from these files. Application state, source texts, folio labels and manuscripts are NEVER translated.
@@ -178,9 +183,15 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `bulk_binding`, `i18n`, `ui_widgets`
 **Classes déclarées au premier niveau** : `ProtectedBindingComboBox` (l.13), `BatchBindingDialog` (l.25)
 
-## `varians_synchro/ui_main_window.py` (673 lignes)
+## `varians_synchro/ui_help.py` (281 lignes)
+**Objet (docstring source)** : Aide intégrée de Varians-Synchro : le guide ``help/<langue>.html`` affiché dans une fenêtre du logiciel (et non plus un fichier ouvert par une autre application). La fenêtre n'est pas modale : on lit l'aide en travaillant. ``open_help`` en garde une par fenêtre parente ; ouverte depuis la fenêtre de synchronisation (elle-même modale), elle en est l'enfant et reste donc utilisable. Recherche reprise de Varians (``help_search``) : un champ (Ctrl+F), la liste des sections qui contiennent tous les mots, avec un extrait, et les occurrences surlignées, parcourues par ◀ ▶ (F3, Maj+F3). Le sommaire, fait de liens, n'est pas une section.
+**Dépendances internes observées** : `help_search`, `i18n`, `ui_widgets`
+**Classes déclarées au premier niveau** : `HelpDialog` (l.40)
+**Fonctions au premier niveau** : `help_path` (l.30), `open_help` (l.263)
+
+## `varians_synchro/ui_main_window.py` (671 lignes)
 **Objet (docstring source)** : Fenêtre principale de Varians-Synchro : projet et témoins, pages, synchronisation, avancement et exports.
-**Dépendances internes observées** : `core`, `i18n`, `physical_alignment`, `project_state`, `resource_workflow`, `tei_binding`, `ui_batch_binding`, `ui_pages`, `ui_pair`, `ui_resources`, `ui_scope`, `ui_tei_binding`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`
+**Dépendances internes observées** : `core`, `i18n`, `physical_alignment`, `project_state`, `resource_workflow`, `tei_binding`, `ui_batch_binding`, `ui_help`, `ui_pages`, `ui_pair`, `ui_resources`, `ui_scope`, `ui_tei_binding`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`
 **Classes déclarées au premier niveau** : `_PairList` (l.26), `GuidedWindow` (l.43)
 
 ## `varians_synchro/ui_pages.py` (580 lignes)
@@ -188,9 +199,9 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `hd_registry`, `i18n`, `imaging`, `page_management`, `page_order`, `physical_alignment`, `reading_stream`, `ui_batch_binding`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `DraggablePagesList` (l.21), `HDDownloadThread` (l.34), `HTRExportThread` (l.71), `PagesDialog` (l.96)
 
-## `varians_synchro/ui_pair.py` (950 lignes)
+## `varians_synchro/ui_pair.py` (958 lignes)
 **Objet (docstring source)** : Fenêtre « Synchronisation visuelle entre témoins » : groupes de lignes de deux témoins, propositions, révision rapide et revalidation.
-**Dépendances internes observées** : `correspondence_navigation`, `exceptions`, `i18n`, `interpolation`, `line_scope`, `overlay_filters`, `physical_alignment`, `rapid_review`, `reading_stream`, `residual_alignment`, `tei_binding`, `textual_progress`, `ui_proposals`, `ui_reading_order`, `ui_widgets`, `viewer`
+**Dépendances internes observées** : `correspondence_navigation`, `exceptions`, `i18n`, `interpolation`, `line_scope`, `overlay_filters`, `physical_alignment`, `rapid_review`, `reading_stream`, `residual_alignment`, `tei_binding`, `textual_progress`, `ui_help`, `ui_proposals`, `ui_reading_order`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `PairDialog` (l.32)
 
 ## `varians_synchro/ui_proposals.py` (88 lignes)

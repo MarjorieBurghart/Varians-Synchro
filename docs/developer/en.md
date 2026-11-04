@@ -20,7 +20,7 @@ Python/PySide6 application for physical-line alignment across manuscript witness
 
 ## Localization and end-user documentation
 
-External XML catalogs in `i18n/`, loaded by `varians_synchro/i18n.py`; key and format-placeholder equality is mandatory. Data identifiers, manuscript transcriptions, filenames and URLs must never be translated. V0.8.5.5 replaces all 244 identified English fallbacks in each of de/cs/it/ru/ja. See `docs/i18n_coverage.json` and `docs/I18N_NATIVE_REVIEW_V0855.md`. Native-speaker and discipline-specific linguistic review remains outstanding. User guides are supplied in `docs/user/<lang>.md`; the main window opens the currently selected language.
+External XML catalogs in `i18n/`, loaded by `varians_synchro/i18n.py`; key and format-placeholder equality is mandatory. Data identifiers, manuscript transcriptions, filenames and URLs must never be translated. V0.8.5.5 replaces all 244 identified English fallbacks in each of de/cs/it/ru/ja. See `docs/i18n_coverage.json` and `docs/I18N_NATIVE_REVIEW_V0855.md`. Native-speaker and discipline-specific linguistic review remains outstanding. The user guide is `help/<lang>.html`, shown inside the application (help button or F1) in the current language, French as fallback; `tools/help_labels.py` fills the interface labels it quotes from the catalogs, and `tests/test_help_guides.py` checks them.
 
 ## Test recipe
 
