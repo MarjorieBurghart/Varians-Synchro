@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Varians-Synchro — Guide</title><style>
+body{font-family:sans-serif;line-height:1.5;max-width:980px;margin:24px auto;padding:0 22px;color:#202124}
+h1{margin-bottom:.25em}h2{margin-top:1.8em;border-bottom:1px solid #ddd;padding-bottom:.2em}h3{margin-top:1.25em}
+code{background:#f1f3f4;padding:1px 4px;border-radius:3px}pre{background:#f7f7f7;border:1px solid #ddd;padding:10px}
+kbd{border:1px solid #bbb;border-radius:3px;padding:1px 4px;background:#f7f7f7}
+table{border-collapse:collapse;width:100%}td,th{border:1px solid #ccc;padding:6px 9px;text-align:left;vertical-align:top}
+.note{background:#f4f8ff;border-left:4px solid #8db8e8;padding:9px 12px}.warn{background:#fff8e8;border-left:4px solid #e0b35a;padding:9px 12px}
+ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
+</style></head><body>
+<h1>Varians-Synchro — User guide</h1>
+<p>Varians-Synchro aligns the manuscripts of a single work line by line, from their images and the segmentation of their lines (ALTO or PAGE XML). In this way it prepares the alignment files that allow <strong>Varians</strong> to display each witness beside the edition, with the right manuscript line facing the text.</p>
+
+<div class="toc"><h2>Contents</h2><ol>
+<li><a href="#presentation">Overview</a></li>
+<li><a href="#essai">First try: the sample project</a></li>
+<li><a href="#nouveau-projet">Workflow A: create a new Varians project</a></li>
+<li><a href="#ajout-temoin">Workflow B: add a witness to an existing Varians project</a></li>
+<li><a href="#notions">Key concepts</a></li>
+<li><a href="#etape1">Step 1: add witnesses</a></li>
+<li><a href="#etape2">Step 2: associate resources</a></li>
+<li><a href="#etape3">Step 3: align witnesses</a></li>
+<li><a href="#synchronisation">The alignment window</a></li>
+<li><a href="#etape4">Step 4: finalize and export</a></li>
+<li><a href="#format-json">Format of the alignment files (JSON)</a></li>
+<li><a href="#fichiers">Files, backups and troubleshooting</a></li>
+<li><a href="#raccourcis">Shortcuts</a></li>
+</ol></div>
+
+<h2 id="presentation">1. Overview</h2>
+<h3>What Varians-Synchro does</h3>
+<ul>
+<li><strong>It links the lines of two manuscripts.</strong> You see the two witnesses side by side, with the outline of each line, and you state which lines of one correspond to which lines of the other. A correspondence can join several lines on each side.</li>
+<li><strong>It suggests; you decide.</strong> From a few anchors that you place, it suggests the intermediate correspondences based on the quantity of text; you check them on the images and validate them.</li>
+<li><strong>It works relative to a pivot witness.</strong> Every other witness is aligned with the pivot. In Varians, the lines of the pivot are located in the edition by its <code>&lt;lb/&gt;</code> elements; the other witnesses follow through their alignment with the pivot.</li>
+<li><strong>It exports for Varians</strong> one alignment file (JSON) per witness, or a complete Varians project, ready to open.</li>
+</ul>
+<h3>What it does not do</h3>
+<ul>
+<li>It does not transcribe or segment the images: the lines come from recognition software (eScriptorium, Transkribus, Kraken…), as ALTO or PAGE XML files.</li>
+<li>It does not edit the TEI text: that is the job of Varians.</li>
+<li>It never modifies your source files (images, ALTO, PAGE, TEI). All its work is stored in the <code>.vsynch</code> project file.</li>
+</ul>
+<h3>What you need to start</h3>
+<ul>
+<li>For each witness: its images (local files, or a IIIF Manifest) and, for each page to align, an ALTO or PAGE XML file describing its lines.</li>
+<li>Optionally, the TEI edition of the pivot witness, if it already exists.</li>
+</ul>
+<h3>The four-step process</h3>
+<p>The main window follows four steps, listed on the left:</p>
+<ol>
+<li><b class="ui" data-tr="navigation.project">1 · Add witnesses</b>: declare the manuscripts and their files;</li>
+<li><b class="ui" data-tr="navigation.pages">2 · Associate resources</b>: associate each image with its line file, set the page order and the lines to ignore;</li>
+<li><b class="ui" data-tr="navigation.alignment">3 · Align witnesses</b>: align each witness with the pivot;</li>
+<li><b class="ui" data-tr="navigation.progress">4 · Finalize</b>: check, then export to Varians.</li>
+</ol>
+<p>Remember to <b class="ui" data-tr="common.save">Save</b> the project after each work session. The help opens at any time with <b class="ui" data-tr="help.open">Open user guide</b> or <kbd>F1</kbd>.</p>
+
+<h2 id="essai">2. First try: the sample project</h2>
+<p>The <code>demo_local_ALTO/</code> folder, supplied with the software, contains two small fictitious witnesses, A and B, each with one page of three lines, and their ALTO files. Their text is divided differently, as in two real manuscripts. Ten minutes are enough to go through the whole process.</p>
+<ol>
+<li>Copy the <code>demo_local_ALTO</code> folder elsewhere: saving modifies the project file.</li>
+<li>Click <b class="ui" data-tr="project.open">Open .vsynch</b> and choose <code>exemple.vsynch</code> in the copy.</li>
+<li>In <b class="ui" data-tr="navigation.project">1 · Add witnesses</b>, click witness A, check <b class="ui" data-tr="resources.witness.pivot">Use this witness as the pivot for aligning witnesses</b>, then click <b class="ui" data-tr="resources.witness.confirm">Save witness</b>.</li>
+<li>In <b class="ui" data-tr="navigation.alignment">3 · Align witnesses</b>, keep A in <b class="ui" data-tr="alignment.reference.label">Technical reference</b> and B in <b class="ui" data-tr="alignment.target.label">Witness to align</b>, then click <b class="ui" data-tr="ui.xml.open_alignment">Align witnesses</b>.</li>
+<li>In the alignment window, click the first line of A, then the first line of B, and press <kbd>Ctrl+Enter</kbd> (<b class="ui" data-tr="alignment.action.link_lines">Link selected lines</b>). Do the same for the third lines. These two correspondences, in green, are your anchors.</li>
+<li>Click <b class="ui" data-tr="progress.action">Align between anchors (text quantity)</b>: the software suggests linking the second lines. Click <b class="ui" data-tr="progress.save">Save selection</b>. The suggestion appears in dashed blue: it needs review.</li>
+<li>At the bottom, with the <b class="ui" data-tr="review.filter.pending">To review</b> filter, choose the suggestion in the list, check it on the images, then click <b class="ui" data-tr="review.validate.next">Validate &amp; next</b>.</li>
+<li>Close the alignment window and click <b class="ui" data-tr="common.save">Save</b>.</li>
+<li>In <b class="ui" data-tr="navigation.progress">4 · Finalize</b>, click <b class="ui" data-tr="ui.final.export_project.action">Create a preconfigured Varians project…</b>, choose an empty folder, then open the newly created <code>project.xml</code> in Varians.</li>
+</ol>
+
+<h2 id="nouveau-projet">3. Workflow A: create a new Varians project</h2>
+<p>You are starting an edition: no Varians project exists yet. Varians-Synchro prepares the whole project: witnesses, images, alignments and, if you have it, the TEI edition of the pivot.</p>
+<h3>In Varians-Synchro</h3>
+<ol>
+<li><strong>Create the project.</strong> <b class="ui" data-tr="project.new">New project</b> asks for a name, then for the location of the <code>.vsynch</code> file, which is saved immediately.</li>
+<li><strong>Declare the witnesses.</strong> In <b class="ui" data-tr="navigation.project">1 · Add witnesses</b>, add each manuscript with <b class="ui" data-tr="resources.witness.new">Add witness…</b>: its siglum, its images, its ALTO/PAGE files and, for the pivot only, its TEI edition if there is one. Choose the pivot (see <a href="#notions">Key concepts</a>): by default, it is the first witness added. Details: <a href="#etape1">Step 1</a>.</li>
+<li><strong>Associate images and lines.</strong> In <b class="ui" data-tr="navigation.pages">2 · Associate resources</b>, check that each page is associated with the right ALTO/PAGE file and that the pages are in reading order. Mark the lines to ignore: those outside the text you are editing (beginning and end of a passage, running titles, another work on the same page). Details: <a href="#etape2">Step 2</a>.</li>
+<li><strong>Align each witness with the pivot.</strong> In <b class="ui" data-tr="navigation.alignment">3 · Align witnesses</b>, choose the pivot in <b class="ui" data-tr="alignment.reference.label">Technical reference</b>, another witness in <b class="ui" data-tr="alignment.target.label">Witness to align</b>, and open <b class="ui" data-tr="ui.xml.open_alignment">Align witnesses</b>. Place anchors, let the software suggest the rest, then check and validate. Repeat for each witness. Details: <a href="#synchronisation">The alignment window</a>.</li>
+<li><strong>Save</strong>, then, in <b class="ui" data-tr="navigation.progress">4 · Finalize</b>, run <b class="ui" data-tr="audit.action">Check project consistency…</b> and read the warnings.</li>
+<li><strong>Create the Varians project.</strong> <b class="ui" data-tr="ui.final.export_project.action">Create a preconfigured Varians project…</b> writes the project into an empty folder. It contains only <strong>validated</strong> correspondences: so validate everything that should count before this step. Details: <a href="#export-projet">Preconfigured Varians project</a>.</li>
+</ol>
+<h3>In Varians</h3>
+<ol>
+<li><b class="varians" data-varians="menu.file">File</b> → <b class="varians" data-varians="menu.open_project">Open project…</b>, then the newly created <code>project.xml</code>.</li>
+<li><strong>Without a TEI edition</strong>, the project receives an empty TEI, as for a new transcription in Varians. To prepare the pages and lines of the pivot in it: <b class="varians" data-varians="menu.file">File</b> → <b class="varians" data-varians="menu.project_settings">Project settings…</b>, <b class="varians" data-varians="pivot.title">Prepare pivot-witness transcription</b> box, check <b class="varians" data-varians="pivot.option.pb">Prepare pivot-witness &lt;pb/&gt; markers in an empty TEI</b> and, if you wish, <b class="varians" data-varians="pivot.option.lb">Also generate &lt;lb/&gt; markers from ALTO, PAGE or synchronization</b>.</li>
+<li><strong>With a TEI edition</strong>, it must contain exactly one <code>&lt;lb edRef="#PIVOT"/&gt;</code> per active line of the pivot, in reading order: Varians matches the n-th line of the pivot with the n-th <code>&lt;lb/&gt;</code>. The optional step <a href="#tei">Link the TEI edition</a> in Varians-Synchro lets you check this before export.</li>
+<li>Check the result with <b class="varians" data-varians="menu.display">View</b> → <b class="varians" data-varians="diagnostics.menu">Witness diagnostics…</b>.</li>
+</ol>
+
+<h2 id="ajout-temoin">4. Workflow B: add a witness to an existing Varians project</h2>
+<p>Your Varians project already exists and was created from a Varians-Synchro project (or the alignment file of its pivot comes from one). You want to add a new manuscript to it, synchronized with the edition.</p>
+<div class="note"><strong>The principle.</strong> The alignment file of the new witness designates the lines of the pivot by the identifier of their page and their position in that page, as known to <em>your</em> <code>.vsynch</code> project. So you must work in the same <code>.vsynch</code> project as the one used to create the Varians project, and leave the pivot untouched.</div>
+<h3>In Varians-Synchro</h3>
+<ol>
+<li><b class="ui" data-tr="project.open">Open .vsynch</b>: open the project that was used to create the Varians project.</li>
+<li>In <b class="ui" data-tr="navigation.project">1 · Add witnesses</b>, add the new manuscript with <b class="ui" data-tr="resources.witness.new">Add witness…</b> (siglum, images, ALTO/PAGE). Give it the siglum it will have in Varians.</li>
+<li>In <b class="ui" data-tr="navigation.pages">2 · Associate resources</b>, associate its pages with their ALTO/PAGE files and mark its lines to ignore.</li>
+<li>In <b class="ui" data-tr="navigation.alignment">3 · Align witnesses</b>, keep the pivot in <b class="ui" data-tr="alignment.reference.label">Technical reference</b>, choose the new witness in <b class="ui" data-tr="alignment.target.label">Witness to align</b>, then align and validate.</li>
+<li><b class="ui" data-tr="common.save">Save</b>.</li>
+<li>In <b class="ui" data-tr="navigation.progress">4 · Finalize</b>, <b class="ui" data-tr="export.varians.action">Export JSON for Varians…</b>: choose the pivot as the reference witness, and an empty folder. The file of the new witness is <code>validated/&lt;sigle&gt;.json</code> (validated correspondences); <code>working/&lt;sigle&gt;.json</code> also contains the unvalidated suggestions. See <a href="#export-json">Export JSON for Varians</a>.</li>
+</ol>
+<div class="warn"><strong>Do not modify the pivot</strong> (its pages, their ALTO/PAGE files, its ignored lines, its reading order): its lines would change position or number, and would no longer match the <code>&lt;lb/&gt;</code> elements of the edition. If you must modify it, also replace the alignment file of the pivot in Varians with <code>validated/&lt;pivot&gt;.json</code>, and check that its number of lines still equals its number of <code>&lt;lb/&gt;</code> elements.</div>
+<h3>In Varians</h3>
+<ol>
+<li><b class="varians" data-varians="menu.file">File</b> → <b class="varians" data-varians="menu.project_settings">Project settings…</b>; in the list of witnesses, <b class="varians" data-varians="project.witness.add">Add…</b>.</li>
+<li>Enter the siglum, the images (<b class="varians" data-varians="project.witness.images">Image source</b>) and, in <b class="varians" data-varians="project.witness.alignment.optional">Synchronization file (optional)</b>, the file <code>validated/&lt;sigle&gt;.json</code>. Check <b class="varians" data-varians="project.witness.alignment.copy">Copy synchronization into the project</b>: the project then stays complete if you move it.</li>
+<li>Check with <b class="varians" data-varians="menu.display">View</b> → <b class="varians" data-varians="diagnostics.menu">Witness diagnostics…</b>: the new witness must have valid links to the pivot.</li>
+</ol>
+<h3>Updating a witness already in the project</h3>
+<p>After completing the alignment of a witness in Varians-Synchro, export again. Then, in Varians, give the witness the new file (<b class="varians" data-varians="project.witness.edit">Edit…</b> in the project settings), or replace its file in the <code>alignments/</code> folder of the project. <b class="varians" data-varians="menu.display">View</b> → <b class="varians" data-varians="diagnostics.refresh">Refresh synchronization…</b> (<kbd>Ctrl+Shift+R</kbd>) rereads the files without reopening the project.</p>
+<p><strong>Varians project that does not come from this <code>.vsynch</code>.</strong> The page identifiers differ: Varians then reports that the links in the file match no line of the pivot. You must also replace the alignment file of the pivot with <code>validated/&lt;pivot&gt;.json</code>, which has the same number of lines as its <code>&lt;lb/&gt;</code> elements.</p>
+
+<h2 id="notions">5. Key concepts</h2>
+<table>
+<tr><th>Concept</th><th>Meaning</th></tr>
+<tr><td>Witness, siglum</td><td>A manuscript (or an early edition). The siglum is its identifier: it can no longer be changed once the witness is saved, and it must contain no dot, no <code>/</code> and no <code>\</code>, or export will not be possible. Keep the siglum used in the Varians project.</td></tr>
+<tr><td>Pivot witness</td><td>The reference witness of the project: the other witnesses are aligned with it, and Varians follows it through its <code>&lt;lb/&gt;</code> elements. This choice is technical: it implies nothing about the stemma or about the base manuscript of the edition. The first witness added is the pivot by default; to change it, check the pivot box in the record of another witness. The <b class="ui" data-tr="alignment.reference.label">Technical reference</b> menu in step 3 only chooses the left-hand witness to align; it does not change the pivot of the project.</td></tr>
+<tr><td>Physical line</td><td>A line described by the ALTO/PAGE file of a page. It is identified by its page and its position in that file. The content of the file is copied into the project on import.</td></tr>
+<tr><td>Ignored line (scope)</td><td>A line outside the text under study. It applies to the witness throughout the project: it is excluded from calculations, from the TEI binding and from exports. Ignoring a line that is already linked removes its links, in all pairs, after confirmation.</td></tr>
+<tr><td>Group (correspondence)</td><td>Lines of the left-hand witness linked to lines of the right-hand witness: 1↔1, 1↔n or n↔m. A line belongs to at most one group per pair.</td></tr>
+<tr><td>Group state</td><td><code>validated</code>, <code>uncertain</code> or <code>proposed</code>. The list of groups shows these states as they are. The <b class="ui" data-tr="review.filter.pending">To review</b> filter gathers the unvalidated groups.</td></tr>
+<tr><td>Anchor</td><td>A validated correspondence on which suggestions rely. Anchors must follow one another in the same order in both witnesses; at least two are needed.</td></tr>
+<tr><td>Confirmed absence</td><td>Lines of one witness that have no equivalent in the other (omission, lacuna). It applies to one pair, appears in red and produces no link on export.</td></tr>
+<tr><td>Unlinked line</td><td>An active line that does not yet belong to any group in the pair (in purple).</td></tr>
+<tr><td>Stale group</td><td>A group in which a line has changed: usually, the page has received another ALTO/PAGE file. It is never deleted, but it is excluded from anchors, calculations and exports until you revalidate or unlink it.</td></tr>
+<tr><td>Protection</td><td>Manual groups and validated groups are never replaced by a calculation. Only unvalidated automatic suggestions can be.</td></tr>
+</table>
+
+<h2 id="etape1">6. Step 1: add witnesses</h2>
+<p><b class="ui" data-tr="resources.witness.new">Add witness…</b> opens the record of a new witness; clicking a witness in the list (or one of its resources) opens its record so that you can complete it. For each witness, the list shows its resources and their status (associated pages, imported lines, TEI binding).</p>
+<h3 id="fiche-temoin">The witness record</h3>
+<ul>
+<li><b class="ui" data-tr="resources.witness.sigil">Siglum</b> and <b class="ui" data-tr="resources.witness.label">Description</b>. The siglum can no longer be changed once the witness is saved.</li>
+<li><b class="ui" data-tr="resources.witness.pivot">Use this witness as the pivot for aligning witnesses</b>.</li>
+<li>Four groups of resources, each with <b class="ui" data-tr="resources.witness.add">Add…</b>:
+<ul>
+<li><b class="ui" data-tr="resources.witness.images">Local images</b>: images are sorted by name (“2” before “10”);</li>
+<li><b class="ui" data-tr="resources.witness.manifests">IIIF Manifest</b>: the URL of the Manifest; if it does not respond, the URL is kept, with the status “unavailable”;</li>
+<li><b class="ui" data-tr="resources.witness.xml">ALTO/PAGE XML files</b>: the format is recognized from the content;</li>
+<li><b class="ui" data-tr="resources.witness.tei">TEI XML edition</b>: optional, useful for the pivot.</li>
+</ul></li>
+<li><b class="ui" data-tr="resources.witness.remove_pending">Remove</b> only removes a resource added since the record was opened: a resource that is already saved stays in the project, so as not to break its associations.</li>
+<li><b class="ui" data-tr="resources.binding.title">Automatically link images and ALTO/PAGE</b> suggests page associations right away (see <a href="#association-auto">below</a>).</li>
+<li><b class="ui" data-tr="resources.witness.confirm">Save witness</b> applies everything at once; <b class="ui" data-tr="resources.cancel">Cancel</b> leaves the project unchanged.</li>
+</ul>
+
+<h2 id="etape2">7. Step 2: associate resources</h2>
+<p>Four operations, each for a witness of your choice:</p>
+<h3 id="pages">Pages, order and line files</h3>
+<p><b class="ui" data-tr="pages.order.open">Manage images, their order and ALTO/PAGE associations…</b> shows the pages of the witness, with their thumbnails and their line files.</p>
+<ul>
+<li><strong>Reading order</strong>: drag the pages, or use <b class="ui" data-tr="pages.order.up">Move up</b>, <b class="ui" data-tr="pages.order.down">Move down</b>, <b class="ui" data-tr="pages.order.reverse">Reverse order</b>.</li>
+<li><b class="ui" data-tr="ui.xml.link_source">Associate ALTO/PAGE</b> gives the selected page a line file. If the page already had one, the software states how many groups will be affected: they will become stale (see <a href="#perimes">Stale groups</a>).</li>
+<li><b class="ui" data-tr="ui.afficher.page">View page</b> (or a double-click) shows the page and its lines.</li>
+<li><strong>HD copies of IIIF images</strong>: <b class="ui" data-tr="ui.pages.hd.action">Download selected IIIF images in high resolution…</b> saves the chosen images into an empty folder; <b class="ui" data-tr="ui.pages.hd.attach">Attach an existing HD download…</b> retrieves a previous batch. The Varians project uses these copies if every relevant page has one.</li>
+<li><strong>External HTR (optional)</strong>: <b class="ui" data-tr="ui.exporter.pour.htr">Export for HTR</b> saves the chosen IIIF images in a ZIP for recognition software; <b class="ui" data-tr="ui.reimporter.htr">Reimport HTR</b> then associates the resulting ALTO/PAGE files, by name.</li>
+</ul>
+<p>These changes take effect immediately: close with <b class="ui" data-tr="common.close">Close</b>, then save the project.</p>
+<h3 id="association-auto">Automatic association</h3>
+<p><b class="ui" data-tr="resources.binding.title">Automatically link images and ALTO/PAGE</b> suggests a line file for each page that does not have one yet: first based on names and image references (<b class="ui" data-tr="resources.binding.name">Unique name</b>), then, for local images in equal numbers, based on the natural order of the names. Check the latter carefully: an offset carries over to the whole series. A file suggested for two pages is flagged in red. <b class="ui" data-tr="resources.binding.apply">Apply links</b> never overwrites an existing association.</p>
+<h3 id="perimetre">Lines to ignore (scope)</h3>
+<p><b class="ui" data-tr="tei.scope.action">Choose lines to ignore on witness images…</b>: on the images, select the lines outside the text under study, even across several pages, then <b class="ui" data-tr="tei.scope.ignore">Ignore selected lines</b> (or <b class="ui" data-tr="tei.scope.restore">Restore selected lines</b>). <b class="ui" data-tr="tei.scope.save">Save scope</b> applies the changes; <b class="ui" data-tr="resources.cancel">Cancel</b> changes nothing. The same setting is available in the alignment window (<b class="ui" data-tr="scope.menu">Scope ▾</b>).</p>
+<h3 id="tei">Link the TEI edition (optional)</h3>
+<p><b class="ui" data-tr="tei.binding.action">Link the TEI edition to ALTO/PAGE lines…</b> matches the <code>&lt;lb edRef="#SIGLE"/&gt;</code> elements of a TEI edition with the active lines of the witness, in reading order. The numbers must be equal: the window compares them and reports what is blocking (lines to ignore that were not marked, ambiguous readings in an apparatus). Check a few lines, in particular with <b class="ui" data-tr="tei.visual.begin">Beginning</b> and <b class="ui" data-tr="tei.visual.end">End</b>, on the text and the cropped image, then <b class="ui" data-tr="tei.binding.apply">Confirm bindings</b>.</p>
+<p>The binding is not required for export: it serves to check that the number of lines of the pivot matches its <code>&lt;lb/&gt;</code> elements, and it makes the alignment window show the TEI text instead of the HTR text. Its status changes to <b class="ui" data-tr="tei.binding.status.stale">needs review (sources changed)</b> if the edition, the scope, the order or the segmentation changes.</p>
+
+<h2 id="etape3">8. Step 3: align witnesses</h2>
+<p>Choose the left-hand witness in <b class="ui" data-tr="alignment.reference.label">Technical reference</b> (usually the pivot of the project) and the other witness in <b class="ui" data-tr="alignment.target.label">Witness to align</b>, then click <b class="ui" data-tr="ui.xml.open_alignment">Align witnesses</b>. There is only one alignment per pair: opening it the other way round reopens the same alignment, with the same witness on the left.</p>
+<p>Below the button, the list of pairs already aligned shows their progress (number of groups, linked lines on each side). Double-clicking a pair, or pressing <kbd>Enter</kbd>, reopens its alignment; a single click selects it in the two menus.</p>
+<p>For export to Varians, each witness must be aligned <strong>directly</strong> with the pivot: a B↔C alignment is not used for export if the pivot is A.</p>
+
+<h2 id="synchronisation">9. The alignment window</h2>
+<p>The two witnesses are shown side by side, the reference witness on the left. The line outlines are colored according to their state. All work is done in memory: after closing the window, save the project in the main window. Here, <kbd>F1</kbd> opens this section of the help.</p>
+<h3>Recommended method</h3>
+<ol>
+<li><strong>Place anchors.</strong> Link a few certain lines: at the beginning, at the end, and where the manuscripts diverge (change of column, lacuna, addition). Select the line or lines on the left and on the right, then <b class="ui" data-tr="alignment.action.link_lines">Link selected lines</b> (<kbd>Ctrl+Enter</kbd>). A group created this way is manual and validated (solid green).</li>
+<li><strong>Let the software suggest the rest.</strong> <b class="ui" data-tr="progress.action">Align between anchors (text quantity)</b> calculates, between two anchors, the most probable correspondences based on the quantity of text in each line. A window shows the suggestions: keep the right ones, then <b class="ui" data-tr="progress.save">Save selection</b>. They are saved as needing review (dashed blue).</li>
+<li><strong>Review and validate.</strong> At the bottom, choose the <b class="ui" data-tr="review.filter.pending">To review</b> filter and go through the groups with <b class="ui" data-tr="review.next">Next ▶</b> (<kbd>F8</kbd>) and <b class="ui" data-tr="review.previous">◀ Previous</b> (<kbd>Shift+F8</kbd>). The chosen group appears in pink on both images. <b class="ui" data-tr="review.validate.next">Validate &amp; next</b> (<kbd>Alt+V</kbd>) validates it and moves to the next one.</li>
+<li><strong>Correct.</strong> To add a line to a group, select it together with a line of the group and use <b class="ui" data-tr="alignment.action.link_lines">Link selected lines</b>. To remove a line, select it and use <b class="ui" data-tr="alignment.action.unlink_lines">Unlink</b>. A corrected group becomes manual (green) and protected.</li>
+<li><strong>Handle absences</strong> (see <a href="#absences">below</a>), then close and save.</li>
+</ol>
+<h3>Selecting lines</h3>
+<ul>
+<li>Clicking a line selects it (orange) and replaces the selection in that witness, on all its pages.</li>
+<li><kbd>Ctrl</kbd>+click adds or removes a line; <kbd>Shift</kbd>+click selects a run of lines in the reading order of the witness, from one page to the next.</li>
+<li>Clicking a line that is already linked shows its corresponding lines in the other witness in pink (changing page if needed). Pink is never a selection.</li>
+<li>Mouse wheel: zoom; drag: move the image; double-click: zoom to the line. <b class="ui" data-tr="viewer.fit_page">Fit page</b> shows the whole page.</li>
+<li><b class="ui" data-tr="viewer.htr.toggle">HTR text</b> shows the text of the lines below the image (the TEI text if a TEI binding is valid). <b class="ui" data-tr="viewer.alto.toggle">Line outlines</b> hides or shows the outlines; <b class="ui" data-tr="viewer.clear_selection">Clear selection</b> empties the selection.</li>
+</ul>
+<h3>Colors</h3>
+<table>
+<tr><th>Color</th><th>Meaning</th></tr>
+<tr><td>orange</td><td>selected line</td></tr>
+<tr><td>pink</td><td>viewed counterpart</td></tr>
+<tr><td>purple</td><td>unlinked line</td></tr>
+<tr><td>solid / dashed green</td><td>manual group: validated / to review</td></tr>
+<tr><td>solid / dashed blue</td><td>automatic group: validated / to review</td></tr>
+<tr><td>dashed red</td><td>confirmed absence</td></tr>
+<tr><td>dashed grey</td><td>ignored line</td></tr>
+</table>
+<p><b class="ui" data-tr="alignment.filter.title">Visible frames</b> limits the display to <b class="ui" data-tr="alignment.filter.unlinked">Unlinked lines</b> or to <b class="ui" data-tr="alignment.filter.automatic_review">Automatic links to review</b>, to spot what remains to be done.</p>
+<h3 id="revision">The list of groups</h3>
+<p>At the bottom, <b class="ui" data-tr="review.queue.label">Review</b> filters the groups: <b class="ui" data-tr="review.filter.all">All groups</b>, <b class="ui" data-tr="review.filter.pending">To review</b>, <b class="ui" data-tr="review.filter.validated">Validated</b>, <b class="ui" data-tr="review.filter.absences">Confirmed absences</b>, <b class="ui" data-tr="review.filter.stale">Stale</b>. Each group is described there by its state and its lines, named <code>page:rang</code> (page label, line position). You can select several groups (<kbd>Ctrl</kbd>, <kbd>Shift</kbd>) and use <b class="ui" data-tr="review.validate.selected">Validate selected…</b>.</p>
+<p><b class="ui" data-tr="review.recalculate.next">Recalculate gap…</b> redoes the suggestions for the interval that follows the chosen anchor only, for example after adding an anchor.</p>
+<h3 id="absences">Confirmed absences</h3>
+<p>When lines of one witness have no equivalent in the other, select them on one side only, then <b class="ui" data-tr="alignment.action.more">More actions</b> → <b class="ui" data-tr="exception.action.confirm">Confirm absence for selected lines (Ctrl+Shift+A)</b>. They are no longer “unlinked” and appear in red. <b class="ui" data-tr="exception.action.revoke">Remove selected absences from review list</b> cancels an absence chosen with the <b class="ui" data-tr="review.filter.absences">Confirmed absences</b> filter.</p>
+<h3 id="perimes">Stale groups</h3>
+<p>Giving a page another ALTO/PAGE file (a corrected segmentation) can change its lines. Before the replacement, the software states how many groups cite these lines; afterwards, the groups in which a line has changed are marked “[stale]”. The <b class="ui" data-tr="review.filter.stale">Stale</b> filter lists them. After checking them on the images, <b class="ui" data-tr="alignment.stale.revalidate">Revalidate…</b> restores them; otherwise, unlink them. The corrected reading order of the page is reset.</p>
+<h3>Other operations</h3>
+<ul>
+<li><b class="ui" data-tr="Supprimer le(s) groupe(s) sélectionné(s) dans la liste">Delete selected group(s) from list</b> and <b class="ui" data-tr="alignment.action.mark_uncertain">Mark as uncertain</b> act on the groups chosen in the list.</li>
+<li><b class="ui" data-tr="alignment.action.suggest_htr">Suggest using HTR (optional)</b> looks for correspondences based on the similarity of the HTR text of the lines. Nothing is preselected: choose the suggestions to keep.</li>
+<li><b class="ui" data-tr="stream.window.action">Reading order and intervals…</b> corrects the order of the pages, regions (columns) and lines of a witness, when the segmentation does not give it correctly, and shows the intervals between anchors.</li>
+<li><b class="ui" data-tr="progress.legacy.geometry">Old geometric interpolation (compatibility)</b> and <b class="ui" data-tr="progress.legacy.residual">Old residual-lines tool (compatibility)</b> are old methods, kept for projects that used them.</li>
+</ul>
+<p>The <b class="ui" data-tr="alignment.tab.text">Text view (optional)</b> tab shows the lines of both witnesses as text. Commands act on the selection in the displayed tab.</p>
+
+<h2 id="etape4">10. Step 4: finalize and export</h2>
+<p><b class="ui" data-tr="ui.final.refresh">Refresh summary</b> summarizes the witnesses and the alignments, and reports changed lines or missing files.</p>
+<h3 id="controle">Checking consistency</h3>
+<p><b class="ui" data-tr="audit.action">Check project consistency…</b> checks the project without changing anything: active lines and associated pages of each witness, validated groups and absences of each pair, missing or stale references, missing files. Run it before each export.</p>
+<h3 id="export-projet">Preconfigured Varians project</h3>
+<p><b class="ui" data-tr="ui.final.export_project.action">Create a preconfigured Varians project…</b> writes, into an empty folder, a project that Varians opens as it is:</p>
+<ul>
+<li><code>project.xml</code>: the witnesses, their images (IIIF Manifest, or paths of the local images) and the pivot;</li>
+<li><code>xml/edition.xml</code>: the TEI edition of the pivot, or an empty TEI if it has none;</li>
+<li><code>alignments/&lt;sigle&gt;.json</code>: the alignment file of each witness, <strong>validated correspondences only</strong>;</li>
+<li><code>rendering/</code>, <code>i18n/</code>, <code>web_output/</code>: the usual folders of a Varians project;</li>
+<li><code>RAPPORT_EXPORT_VARIANS.txt</code>: the export report;</li>
+<li>possibly <code>iiif/</code>: the HD copies of the IIIF images, if every relevant page has one.</li>
+</ul>
+<p>The images stay where they are: the project points to them (the lines are in the alignment files). Export is refused if the folder is not empty, if a siglum contains a dot, <code>/</code> or <code>\</code>, if the pivot has several TEI editions, if a witness mixes IIIF and local images, or if a file cannot be found.</p>
+<h3 id="export-json">Export JSON for Varians</h3>
+<p><b class="ui" data-tr="export.varians.action">Export JSON for Varians…</b> is used to add or update witnesses in an existing Varians project (<a href="#ajout-temoin">Workflow B</a>). Choose the reference witness (the pivot of the Varians project), confirm, then choose an empty folder. The software writes into it:</p>
+<ul>
+<li><code>validated/&lt;sigle&gt;.json</code>: one file per witness, validated correspondences only;</li>
+<li><code>working/&lt;sigle&gt;.json</code>: the same, plus the unvalidated suggestions;</li>
+<li><code>rapport_export.json</code>: the counts and checks of the export.</li>
+</ul>
+<p>Varians does not know the states used by Varians-Synchro: import <code>validated/</code>, except for a deliberate test. Only direct alignments with the reference witness are exported, with no inference through a third witness. If a witness has no exportable correspondence, the software says so before the export, and gives the reason.</p>
+
+<h2 id="format-json">11. Format of the alignment files (JSON)</h2>
+<p>One file per witness, in UTF-8, in the <code>tei-manuscript-alignment</code> format, version 1, which Varians reads. The file of the pivot describes its lines; the file of each other witness describes its own lines and links them to the lines of the pivot.</p>
+<h3 id="format-racine">Root</h3>
+<table>
+<tr><th>Field</th><th>Content</th></tr>
+<tr><td><code class="field">meta.format</code></td><td><code>"tei-manuscript-alignment"</code>.</td></tr>
+<tr><td><code class="field">meta.format_version</code></td><td><code>1</code>.</td></tr>
+<tr><td><code class="field">meta.witness</code></td><td>The siglum of the witness described.</td></tr>
+<tr><td><code class="field">meta.base_witness</code></td><td>The siglum of the pivot (reference witness).</td></tr>
+<tr><td><code class="field">meta.role</code></td><td><code>"base"</code> for the pivot, <code>"secondary"</code> for the other witnesses.</td></tr>
+<tr><td><code class="field">meta.source</code></td><td><code>"Varians-Synchro"</code>.</td></tr>
+<tr><td><code class="field">meta.reference_basis</code></td><td><code>"physical-lines-in-study-scope"</code>: the keys designate physical lines, excluding ignored lines.</td></tr>
+<tr><td><code class="field">meta.editorial_tei_alignment</code></td><td><code>"NOT_ESTABLISHED"</code>: the file contains no link to the TEI; it is Varians that matches the lines of the pivot with its <code>&lt;lb/&gt;</code> elements.</td></tr>
+<tr><td><code class="field">pages</code></td><td>The pages of the witness that have an ALTO/PAGE file, in reading order.</td></tr>
+</table>
+<h3 id="format-page">Page</h3>
+<table>
+<tr><th>Field</th><th>Content</th></tr>
+<tr><td><code class="field">pages[].id</code></td><td>The identifier of the page in the <code>.vsynch</code> project. It does not change as long as the page remains in the project.</td></tr>
+<tr><td><code class="field">pages[].label</code></td><td>The label of the page (folio, image name).</td></tr>
+<tr><td><code class="field">pages[].alto_width</code>, <code class="field">pages[].alto_height</code></td><td>The dimensions of the page in the ALTO/PAGE file (pixels), to which the line coordinates refer.</td></tr>
+<tr><td><code class="field">pages[].image</code></td><td>The image of the page; <code class="field">pages[].image.type</code> is <code>"file"</code>, <code>"iiif"</code> or <code>"none"</code>.</td></tr>
+<tr><td><code class="field">pages[].image.path</code></td><td>Local image: its path, as recorded in the project.</td></tr>
+<tr><td><code class="field">pages[].image.label</code></td><td>The label of the image.</td></tr>
+<tr><td><code class="field">pages[].image.service</code>, <code class="field">pages[].image.image</code>, <code class="field">pages[].image.canvas</code>, <code class="field">pages[].image.width</code>, <code class="field">pages[].image.height</code>, <code class="field">pages[].image.iiif_version</code></td><td>IIIF image: the image service, the URL of the image, the identifier of the Canvas, its dimensions and the version of the IIIF Image API.</td></tr>
+<tr><td><code class="field">pages[].lines</code></td><td>The active lines of the page, in reading order.</td></tr>
+</table>
+<h3 id="format-ligne">Line</h3>
+<table>
+<tr><th>Field</th><th>Content</th></tr>
+<tr><td><code class="field">pages[].lines[].line</code></td><td>The position of the line in the ALTO/PAGE file of its page (starting from 1). Ignored lines are not written, but positions are not renumbered: there may therefore be gaps.</td></tr>
+<tr><td><code class="field">pages[].lines[].order</code></td><td>The place of the line in the reading order of the witness, across all pages.</td></tr>
+<tr><td><code class="field">pages[].lines[].bbox</code></td><td>The rectangle of the line: <code class="field">pages[].lines[].bbox.hpos</code>, <code class="field">pages[].lines[].bbox.vpos</code> (top-left corner), <code class="field">pages[].lines[].bbox.width</code>, <code class="field">pages[].lines[].bbox.height</code>, in pixels of the ALTO/PAGE file.</td></tr>
+<tr><td><code class="field">pages[].lines[].polygon</code></td><td>Optional: the outline of the line (PAGE files), as a list of <code>[x, y]</code> points.</td></tr>
+<tr><td><code class="field">pages[].lines[].alto_id</code></td><td>The identifier of the line in the ALTO/PAGE file.</td></tr>
+<tr><td><code class="field">pages[].lines[].alto</code></td><td>The HTR text of the line (empty if there is none).</td></tr>
+<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>Other witnesses only: the pivot lines to which the line corresponds, in the form <code>"id_de_page::rang"</code> (<code class="field">pages[].id</code> and <code class="field">pages[].lines[].line</code> of a pivot line). A line in an n↔m group carries the keys of all the pivot lines of the group. A line without a correspondence (unlinked line, confirmed absence, unvalidated group in <code>validated/</code>) does not have this field.</td></tr>
+<tr><td><code class="field">pages[].lines[].vsynch_state</code></td><td>The state of the group in Varians-Synchro: <code>validated</code>, <code>uncertain</code> or <code>proposed</code> (the last two only in <code>working/</code>). For information only: Varians does not use it.</td></tr>
+<tr><td><code class="field">pages[].lines[].vsynch_origin</code></td><td>The origin of the group (<code>manual</code>, <code>manual-correction</code>, <code>automatic-textual-progress-v071</code>, <code>automatic-htr-htr</code>…). For information only.</td></tr>
+<tr><td><code class="field">pages[].lines[].score</code></td><td>Optional: the confidence of an automatic suggestion, between 0 and 1. For information only.</td></tr>
+</table>
+<h3>What Varians does with them</h3>
+<ul>
+<li>The lines in the file of the pivot, in file order, correspond one by one to the <code>&lt;lb edRef="#PIVOT"/&gt;</code> elements of the edition: the first line to the first <code>&lt;lb/&gt;</code>, and so on. Varians checks that the numbers are equal.</li>
+<li>A pivot key is <code>id_de_page::rang</code>: it remains valid as long as the page keeps its identifier and its ALTO/PAGE file. This is why the new witness of an existing project must be aligned in the same <code>.vsynch</code> project (<a href="#ajout-temoin">Workflow B</a>).</li>
+<li>When the text reaches a line of the pivot, Varians shows, in each other witness, the line or lines whose <code>base_keys</code> designate it.</li>
+</ul>
+<h3>Example</h3>
+<p>A line of witness B, linked to lines 1 and 2 of a page of pivot A:</p>
+<pre>{"meta": {"format": "tei-manuscript-alignment", "format_version": 1,
+          "witness": "B", "base_witness": "A", "role": "secondary",
+          "source": "Varians-Synchro",
+          "reference_basis": "physical-lines-in-study-scope",
+          "editorial_tei_alignment": "NOT_ESTABLISHED"},
+ "pages": [{"id": "8f2c…", "label": "f. 12r", "alto_width": 2480, "alto_height": 3508,
+            "image": {"type": "file", "path": "C:/images/B/f12r.jpg", "label": "f12r"},
+            "lines": [{"line": 1, "order": 1,
+                       "bbox": {"hpos": 210.0, "vpos": 340.0, "width": 1630.0, "height": 72.0},
+                       "alto_id": "line_1", "alto": "Beatus Germanus in hac vita",
+                       "base_keys": ["5d1a…::1", "5d1a…::2"],
+                       "vsynch_state": "validated", "vsynch_origin": "manual"}]}]}</pre>
+
+<h2 id="fichiers">12. Files, backups and troubleshooting</h2>
+<h3>The project file</h3>
+<ul>
+<li>All the work is in the <code>.vsynch</code> file: witnesses, content of the imported ALTO/PAGE files, associations, ignored lines, reading order, alignments. The source files are never modified.</li>
+<li>Saving is safe: the file is replaced in a single operation, and the previous version is kept in <code>&lt;projet&gt;.vsynch.bak</code>. To go back, copy this <code>.bak</code> file under a new name ending in <code>.vsynch</code> and open it.</li>
+<li>There is no “Save As” command: to keep a version, copy the <code>.vsynch</code> file.</li>
+<li>A project with relative paths (such as the supplied sample) opens from any folder; on saving, the paths are written in full.</li>
+<li>Modifying an ALTO/PAGE file on disk after import does not change the project; the summary reports it. For a corrected segmentation, import the new file and associate it with the page (the affected groups become stale).</li>
+<li>Closing the software, or opening or creating a project, offers to save the current changes.</li>
+</ul>
+<h3>Common problems</h3>
+<ul>
+<li><strong>“Associez des pages ALTO aux deux témoins avant de synchroniser”</strong> (“Associate ALTO pages with both witnesses before synchronizing”): one of the two witnesses does not yet have any page associated with a line file (<a href="#etape2">Step 2</a>).</li>
+<li><strong>IIIF image unavailable</strong>: the server is not responding; the associations are not lost. Try again later, or download HD copies.</li>
+<li><strong>Line frames offset on the image</strong>: the image and the ALTO/PAGE file do not have the same proportions (the status bar reports it); check that the file really belongs to this image.</li>
+<li><strong>Export refused</strong>: the chosen folder is not empty, or a siglum contains a dot, <code>/</code> or <code>\</code>.</li>
+<li><strong>In Varians, the lines of the pivot do not match the text</strong>: the number of <code>&lt;lb edRef="#PIVOT"/&gt;</code> elements differs from the number of active lines of the pivot (lines to ignore that were not marked, or missing <code>&lt;lb/&gt;</code> elements). <b class="varians" data-varians="diagnostics.menu">Witness diagnostics…</b> in Varians and the <a href="#tei">TEI binding</a> in Varians-Synchro help to find the discrepancy.</li>
+<li><strong>In Varians, the links in the file match no line of the pivot</strong>: the alignment file of the pivot does not come from the same <code>.vsynch</code> project (see <a href="#ajout-temoin">Workflow B</a>).</li>
+<li><strong>With Spyder</strong>: run <code>run.py</code>; the software opens in a separate process, so as not to disturb the Spyder console. The startup log is in <code>~/.varians_synchro/logs</code>.</li>
+</ul>
+
+<h2 id="raccourcis">13. Shortcuts</h2>
+<table>
+<tr><th>Key</th><th>Action</th></tr>
+<tr><td><kbd>F1</kbd></td><td>Open the help (in the alignment window: at the section on that window).</td></tr>
+<tr><td><kbd>Ctrl+Enter</kbd></td><td><b class="ui" data-tr="alignment.action.link_lines">Link selected lines</b>.</td></tr>
+<tr><td><kbd>Ctrl+Shift+A</kbd></td><td>Confirm the absence of the selected lines.</td></tr>
+<tr><td><kbd>F8</kbd> / <kbd>Shift+F8</kbd></td><td>Next / previous group in the list.</td></tr>
+<tr><td><kbd>Alt+V</kbd></td><td><b class="ui" data-tr="review.validate.next">Validate &amp; next</b>.</td></tr>
+<tr><td>click / <kbd>Ctrl</kbd>+click / <kbd>Shift</kbd>+click</td><td>Select a line / add or remove a line / select a run of lines.</td></tr>
+<tr><td>double-click, mouse wheel</td><td>Zoom to the line; zoom.</td></tr>
+<tr><td><kbd>Ctrl+F</kbd>, <kbd>F3</kbd> / <kbd>Shift+F3</kbd></td><td>In the help: search, next / previous match.</td></tr>
+</table>
+</body></html>
