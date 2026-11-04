@@ -611,6 +611,8 @@ Reordering does not change sources.</string>
   <string key="ui.pages.scope.tip">Select a witness and mark ALTO/PAGE lines outside the passage being studied.</string>
   <string key="ui.pages.tei.tip">Compare TEI edition lines to the selected physical scope and inspect their images before confirming the mapping.</string>
   <string key="ui.alignment.open.tip">Open the visual line-alignment interface for the pivot and a secondary witness.</string>
+  <string key="ui.alignment.pair_status">{reference} ↔ {target}: {groups} group(s), {reference_covered}/{reference_total} and {target_covered}/{target_total} lines</string>
+  <string key="ui.alignment.list.tip">Double-click a pair, or press Enter, to open its alignment. A single click selects it in the two menus.</string>
   <string key="ui.final.export_project.action">Create a preconfigured Varians project…</string>
   <string key="ui.final.export_project.tip">Prepare a project folder with project.xml, a copy of the pivot TEI, witnesses and alignment JSON files. Verify compatibility with your installed Varians version.</string>
   <string key="ui.final.export_project.no_tei">No TEI edition is attached to the pivot witness: the Varians project will receive an empty TEI edition, as with “Start a new transcription” in Varians.</string>

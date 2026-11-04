@@ -606,6 +606,8 @@
   <string key="ui.pages.scope.tip">Выбрать свидетеля и пометить строки ALTO/PAGE вне изучаемого фрагмента.</string>
   <string key="ui.pages.tei.tip">Сравнить строки TEI с выделенным объёмом и проверить изображения перед подтверждением.</string>
   <string key="ui.alignment.open.tip">Открыть визуальную сверку строк опорного и другого свидетеля.</string>
+  <string key="ui.alignment.pair_status">{reference} ↔ {target}: групп: {groups}, строк: {reference_covered}/{reference_total} и {target_covered}/{target_total}</string>
+  <string key="ui.alignment.list.tip">Дважды щёлкните пару или нажмите Enter, чтобы открыть её выравнивание. Одинарный щелчок выбирает её в обоих меню.</string>
   <string key="ui.final.export_project.action">Создать предварительно заполненный проект Varians…</string>
   <string key="ui.final.export_project.tip">Подготовить папку проекта с project.xml, копией опорного TEI, свидетелями и файлами JSON выравнивания. Проверьте совместимость с установленной версией Varians.</string>
   <string key="ui.final.export_project.no_tei">С опорным свидетелем не связано издание TEI: проект Varians получит пустое издание TEI, как при команде «Начать новую транскрипцию» в Varians.</string>

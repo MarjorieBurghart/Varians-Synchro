@@ -606,6 +606,8 @@ Saranno adeguati {affected} gruppi automatici incerti; saranno creati {groups} g
   <string key="ui.pages.scope.tip">Seleziona un testimone e contrassegna le righe ALTO/PAGE fuori dal passo esaminato.</string>
   <string key="ui.pages.tei.tip">Confronta le righe TEI con l'ambito definito e controlla le immagini prima di confermare.</string>
   <string key="ui.alignment.open.tip">Aprire il controllo visivo delle righe fra pivot e testimone secondario.</string>
+  <string key="ui.alignment.pair_status">{reference} ↔ {target}: {groups} gruppi, righe {reference_covered}/{reference_total} e {target_covered}/{target_total}</string>
+  <string key="ui.alignment.list.tip">Fare doppio clic su una coppia, o premere Invio, per aprirne l’allineamento. Un clic singolo la seleziona nei due menu.</string>
   <string key="ui.final.export_project.action">Crea progetto Varians precompilato…</string>
   <string key="ui.final.export_project.tip">Preparare una cartella di progetto con project.xml, copia della TEI pivot, testimoni e file JSON di allineamento. Verificare la compatibilità con la versione di Varians installata.</string>
   <string key="ui.final.export_project.no_tei">Al pivot non è associata alcuna edizione TEI: il progetto Varians riceverà un’edizione TEI vuota, come con «Inizia una nuova trascrizione» in Varians.</string>

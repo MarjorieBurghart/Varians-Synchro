@@ -3,10 +3,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QMessageBox as QtMessageBox,
-                               QPlainTextEdit, QSplitter, QStackedWidget, QTreeWidgetItem,
-                               QVBoxLayout, QWidget)
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QListWidgetItem,
+                               QMessageBox as QtMessageBox, QPlainTextEdit, QSplitter,
+                               QStackedWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
 
 from .core import check_alto_files, load_project, new_project, save_project, VERSION
 from .i18n import get_language, language_labels, set_language, tr
@@ -21,6 +21,23 @@ from .ui_scope import SingleWitnessScopeDialog
 from .ui_tei_binding import TEIPhysicalBindingDialog
 from .ui_widgets import (_run_modal, QComboBox, QDialog, QFileDialog, QInputDialog, QLabel,
                          QListWidget, QMainWindow, QMessageBox, QPushButton, QTreeWidget)
+
+
+class _PairList(QListWidget):
+    """Liste des paires alignées (étape 3) : un double-clic ou la touche
+    Entrée émettent ``opened`` pour la ligne choisie. Entrée est traitée ici :
+    sous macOS, elle n'« active » pas un élément de liste."""
+    opened = Signal(object)
+
+    def __init__(self):
+        super().__init__()
+        self.itemDoubleClicked.connect(self.opened.emit)
+
+    def keyPressEvent(self, event):
+        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter) and self.currentItem() is not None:
+            self.opened.emit(self.currentItem())
+            return
+        super().keyPressEvent(event)
 
 
 class GuidedWindow(QMainWindow):
@@ -254,7 +271,16 @@ class GuidedWindow(QMainWindow):
         b.setToolTip(tr('ui.alignment.open.tip'))
         b.clicked.connect(self.open_physical_alignment)
         main.addWidget(b)
-        self.align_status=QPlainTextEdit();self.align_status.setReadOnly(True);main.addWidget(self.align_status,1)
+        # Une ligne par paire : double-clic ou Entrée l'ouvrent, un clic la
+        # choisit dans les deux menus.
+        self.align_status = _PairList()
+        self.align_status.setToolTip(tr('ui.alignment.list.tip'))
+        self.align_status.currentItemChanged.connect(self._choose_listed_pair)
+        self.align_status.opened.connect(self._open_listed_pair)
+        main.addWidget(self.align_status, 1)
+        hint = QLabel(tr('ui.alignment.list.tip'))
+        hint.setWordWrap(True)
+        main.addWidget(hint)
         self.stack.addWidget(page)
 
     def export_varians_json(self):
@@ -475,17 +501,7 @@ class GuidedWindow(QMainWindow):
         if oldb is None and self.target_box.count() > 1:
             self.target_box.setCurrentIndex(1)
         self.align_info.setText(tr('resources.project.alignment_help'))
-        lines = []
-        for session in self.project.get('pair_sessions', []):
-            try:
-                progress = pair_progress(self.project, session)
-                lines.append(f"{session['reference_witness_id']} ↔ {session['target_witness_id']}: "
-                             f"{progress['links']} groupes, "
-                             f"{progress['reference_covered']}/{progress['reference_total']} et "
-                             f"{progress['target_covered']}/{progress['target_total']} lignes")
-            except ValueError as exc:
-                lines.append(str(exc))
-        self.align_status.setPlainText('\n'.join(lines) or tr('resources.project.no_alignment'))
+        self._list_pairs()
         report = '\n'.join(all_rows) + '\n\n'
         report += tr('ui.final.physical_sessions', count=len(self.project.get('pair_sessions', []))) + '\n'
         legacy_count = len(self.project.get('alignment_sessions', []))
@@ -591,10 +607,63 @@ class GuidedWindow(QMainWindow):
         if w is None:return
         dlg=PagesDialog(self.project,w,self);_run_modal(dlg);self.refresh()
 
+    def _list_pairs(self):
+        """Une ligne par paire enregistrée, avec l'identifiant de sa session
+        (aucun pour une ligne d'erreur ou « aucune synchronisation »). La
+        ligne choisie est gardée ; les menus ne bougent pas."""
+        pairs = self.align_status
+        current = pairs.currentItem()
+        kept = current.data(Qt.ItemDataRole.UserRole) if current is not None else None
+        pairs.blockSignals(True)
+        pairs.clear()
+        for session in self.project.get('pair_sessions', []):
+            try:
+                progress = pair_progress(self.project, session)
+            except ValueError as exc:
+                pairs.addItem(QListWidgetItem(str(exc)))
+                continue
+            item = QListWidgetItem(tr(
+                'ui.alignment.pair_status', reference=session['reference_witness_id'],
+                target=session['target_witness_id'], groups=progress['links'],
+                reference_covered=progress['reference_covered'],
+                reference_total=progress['reference_total'],
+                target_covered=progress['target_covered'], target_total=progress['target_total']))
+            item.setData(Qt.ItemDataRole.UserRole, session['id'])
+            pairs.addItem(item)
+            if session['id'] == kept:
+                pairs.setCurrentItem(item)
+        if not pairs.count():
+            pairs.addItem(QListWidgetItem(tr('resources.project.no_alignment')))
+        pairs.blockSignals(False)
+
+    def _listed_session(self, item):
+        sid = item.data(Qt.ItemDataRole.UserRole) if item is not None else None
+        return next((s for s in self.project.get('pair_sessions', []) if sid and s['id'] == sid), None)
+
+    def _choose_listed_pair(self, item, _previous=None):
+        """Un clic sur une paire la met dans les deux menus, dans son sens."""
+        session = self._listed_session(item)
+        if session is None:
+            return
+        for box, wid in ((self.reference_box, session['reference_witness_id']),
+                         (self.target_box, session['target_witness_id'])):
+            index = box.findData(wid)
+            if index >= 0:
+                box.setCurrentIndex(index)
+
+    def _open_listed_pair(self, item):
+        """Double-clic ou Entrée : la synchronisation de la paire, comme le bouton."""
+        session = self._listed_session(item)
+        if session is not None:
+            self._open_pair(session['reference_witness_id'], session['target_witness_id'])
+
     def open_physical_alignment(self):
         a=self.reference_box.currentData();b=self.target_box.currentData()
         if not a or not b:
             self.notice(tr('Alignement'),'Ajoutez au moins deux témoins.');return
+        self._open_pair(a, b)
+
+    def _open_pair(self, a, b):
         try:
             session=create_pair_session(self.project,a,b)
             dlg=PairDialog(self.project,session,self);_run_modal(dlg);self.refresh()

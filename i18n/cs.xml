@@ -606,6 +606,8 @@ Upraví se {affected} nejistých automatických skupin; vytvoří se {groups} sk
   <string key="ui.pages.scope.tip">Vybrat svědka a označit řádky ALTO/PAGE mimo zkoumaný úsek.</string>
   <string key="ui.pages.tei.tip">Porovnat řádky TEI se zvoleným rozsahem a před potvrzením ověřit obrázky.</string>
   <string key="ui.alignment.open.tip">Otevřít vizuální porovnání řádků mezi pivotem a dalším svědkem.</string>
+  <string key="ui.alignment.pair_status">{reference} ↔ {target}: skupiny: {groups}, řádky: {reference_covered}/{reference_total} a {target_covered}/{target_total}</string>
+  <string key="ui.alignment.list.tip">Dvojklikem na dvojici nebo klávesou Enter otevřete její zarovnání. Jedním kliknutím ji vyberete v obou nabídkách.</string>
   <string key="ui.final.export_project.action">Vytvořit předvyplněný projekt Varians…</string>
   <string key="ui.final.export_project.tip">Připravit složku projektu s project.xml, kopií referenční TEI, svědky a soubory JSON zarovnání. Ověřte kompatibilitu s nainstalovanou verzí Varians.</string>
   <string key="ui.final.export_project.no_tei">K pivotu není přiřazena žádná edice TEI: projekt Varians dostane prázdnou edici TEI, jako při volbě „Začít novou transkripci“ ve Varians.</string>
