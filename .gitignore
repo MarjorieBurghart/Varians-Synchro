@@ -15,3 +15,6 @@ dist/
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Copies de secours créées par Varians-Synchro à l’enregistrement
+*.vsynch.bak

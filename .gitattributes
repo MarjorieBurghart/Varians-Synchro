@@ -1,0 +1,3 @@
+# Exemple livré : fichiers gardés tels quels (fins de ligne comprises),
+# le projet .vsynch contrôle leur empreinte SHA-256.
+demo_local_ALTO/** -text

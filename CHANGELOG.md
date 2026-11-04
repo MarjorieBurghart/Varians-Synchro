@@ -5,6 +5,7 @@
 - Correspondances périmées après une nouvelle segmentation : avertissement avant de changer le XML d’une page, marque dans la liste, exclusion des calculs, revalidation.
 - Interface : barre de progression du téléchargement HD, fenêtres libérées après fermeture, export HTR hors du fil de l’interface avec annulation, erreurs imprévues affichées, « Annuler » de la liaison TEI sans effet sur le projet, appels différés (vignettes, ordre des pages, visionneuse) abandonnés avec leur fenêtre, espaces rétablies dans les traductions.
 - Code : `guided_ui.py` (3 300 lignes) découpé en modules `ui_*`, une fenêtre par module, sans changement du code des classes ; `make_guided_window()` sans paramètre ; les quatre fenêtres de propositions de la synchronisation passent par une fenêtre commune (`ui_proposals.py`), désormais testée, sans changement de comportement.
+- Projet : un chemin de fichier relatif est lu par rapport au dossier du `.vsynch` ; l'exemple livré (`demo_local_ALTO/`) n'a plus que des chemins relatifs et s'ouvre tel quel (il pointait vers des chemins de l'environnement où il avait été créé).
 
 ## V0.8.5.6 — dossier autonome de maintenance et passation (19/10/2026)
 

@@ -41,9 +41,26 @@ def write_alto(path, texts):
     path.write_text('\n'.join(content),encoding='utf-8')
 
 
-def main():
-    folder=Path(__file__).resolve().parent/'demo_local_ALTO'
-    folder.mkdir(exist_ok=True)
+def _relative_paths(project, folder):
+    """Chemins relatifs au dossier de l'exemple : le projet s'ouvre tel quel,
+    où que soit ce dossier (Varians-Synchro les lit par rapport au .vsynch)."""
+    folder = folder.resolve()
+    def relative(value):
+        return Path(value).resolve().relative_to(folder).as_posix()
+    for witness in project['witnesses']:
+        for source in witness['image_sources']:
+            source['reference'] = relative(source['reference'])
+        for source in witness['alto_sources']:
+            source['path'] = relative(source['path'])
+        for page in witness['pages']:
+            page['image_path'] = relative(page['image_path'])
+
+
+def main(folder=None):
+    """Crée l'exemple dans ``folder`` (par défaut demo_local_ALTO/, à côté
+    de ce fichier) et rend le chemin du projet .vsynch."""
+    folder=Path(folder) if folder else Path(__file__).resolve().parent/'demo_local_ALTO'
+    folder.mkdir(parents=True, exist_ok=True)
     p=new_project('Exemple de deux témoins ALTO sans TEI')
     for witness_id, texts, shift in (
         ('A',['Beatus Germanus in hac vita','multis miraculis claruit','et populum docuit'],0),
@@ -56,9 +73,11 @@ def main():
         create_pages(w)
         data=add_alto_source(w,alto)
         bind_alto(w,w['pages'][0]['id'],data['id'])
+    _relative_paths(p,folder)
     output=folder/'exemple.vsynch'
     save_project(p,output)
     print('Projet de démonstration créé :',output)
+    return output
 
 
 if __name__=='__main__':

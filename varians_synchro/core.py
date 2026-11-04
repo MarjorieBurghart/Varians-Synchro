@@ -13,7 +13,7 @@ import tempfile
 import re
 import uuid
 import xml.etree.ElementTree as ET
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
@@ -93,9 +93,46 @@ def save_project(project, path):
             backup_stage.unlink(missing_ok=True)
 
 
+def _is_relative_file_path(value):
+    """Vrai pour un chemin de fichier relatif ; faux pour une URL ou un chemin
+    absolu, POSIX ou Windows (y compris celui d'un autre système)."""
+    if not isinstance(value, str) or not value or '://' in value or value.startswith('file:'):
+        return False
+    return not (value.startswith(('/', '\\')) or PurePosixPath(value).is_absolute()
+                or PureWindowsPath(value).drive)
+
+
+def _resolve_relative_paths(project, base):
+    """Chemins relatifs du projet lus par rapport au dossier ``base`` du
+    fichier .vsynch (séparateurs « / » ou « \\ »). Les chemins absolus et les
+    URL ne changent pas. Un projet peut ainsi voyager avec ses fichiers
+    (l'exemple livré dans demo_local_ALTO/, par exemple) ; enregistré, il
+    garde des chemins absolus."""
+    def absolute(value):
+        if not _is_relative_file_path(value):
+            return value
+        return str((base / PureWindowsPath(value).as_posix()).resolve())
+    for witness in project.get('witnesses', []):
+        for source in witness.get('image_sources', []):
+            if source.get('kind') == 'local':
+                source['reference'] = absolute(source.get('reference'))
+        for source in witness.get('alto_sources', []):
+            if 'path' in source:
+                source['path'] = absolute(source['path'])
+        for page in witness.get('pages', []):
+            if page.get('image_path'):
+                page['image_path'] = absolute(page['image_path'])
+        for batch in witness.get('hd_downloads', []):
+            batch['directory'] = absolute(batch['directory'])
+    for resource in project.get('text_resources', []):
+        if 'path' in resource:
+            resource['path'] = absolute(resource['path'])
+
+
 def load_project(path):
     data = json.loads(Path(path).read_text(encoding='utf-8'))
     validate_project(data)
+    _resolve_relative_paths(data, Path(path).resolve().parent)
     # In-memory migration from the original 0.5 project schema. Never rewrite
     # the user's original file until explicit Save.
     data.setdefault('pair_sessions', [])
