@@ -14,7 +14,8 @@ from .overlay_selection import choose_line_at, choose_line_geometry
 from .alto_geometry import page_line_polygons
 from .reading_stream import reading_stream
 from .selection_policy import update_line_selection
-from PySide6.QtCore import Qt, QRectF, QPointF, QThread, Signal, QItemSelectionModel, QTimer
+from .ui_widgets import call_soon
+from PySide6.QtCore import Qt, QRectF, QPointF, QThread, Signal, QItemSelectionModel
 from PySide6.QtGui import QPixmap, QPen, QColor, QBrush, QImage, QPainter, QPolygonF, QPainterPath
 from shiboken6 import isValid
 from PySide6.QtWidgets import (
@@ -330,10 +331,10 @@ class LineImagePanel(QWidget):
                 if total > 0:
                     htr = min(self._htr_height, max(45, total // 2))
                     self.content_splitter.setSizes([max(1, total - htr), htr])
-            QTimer.singleShot(0, restore_htr_height)
+            call_soon(self, restore_htr_height)
         # Layout size changes are asynchronous; never call fit_page() here.
         # That would destroy the user's custom zoom on every checkbox click.
-        QTimer.singleShot(0, lambda p=previous_center: self.view.centerOn(p))
+        call_soon(self, lambda p=previous_center: self.view.centerOn(p))
 
 
     def set_line_styles(self, styles):

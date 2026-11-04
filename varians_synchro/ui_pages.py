@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from PySide6.QtCore import QSize, Qt, QThread, QTimer, QUrl, Signal
+from PySide6.QtCore import QSize, Qt, QThread, QUrl, Signal
 from PySide6.QtGui import QIcon, QImage, QImageReader, QPixmap
 from PySide6.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
 from PySide6.QtWidgets import (QAbstractItemView, QGroupBox, QHBoxLayout, QListWidgetItem,
@@ -14,7 +14,7 @@ from .imaging import create_pages, import_htr_results, mapped_alto_page
 from .physical_alignment import page_links_impact
 from .reading_stream import rebind_page
 from .ui_batch_binding import BatchBindingDialog
-from .ui_widgets import (_run_modal, QDialog, QFileDialog, QInputDialog, QLabel, QListWidget,
+from .ui_widgets import (_run_modal, call_soon, QDialog, QFileDialog, QInputDialog, QLabel, QListWidget,
                          QMessageBox, QPushButton)
 
 
@@ -28,7 +28,7 @@ class DraggablePagesList(QListWidget):
         super().dropEvent(event)
         if event.isAccepted() and self.on_order_changed is not None:
             # Defer until Qt has finished its internal item movement.
-            QTimer.singleShot(0, self.on_order_changed)
+            call_soon(self, self.on_order_changed)
 
 
 class HDDownloadThread(QThread):
@@ -260,7 +260,7 @@ class PagesDialog(QDialog):
                                total=len(self.witness['pages'])))
 
     def _schedule_thumbnails(self, *_):
-        QTimer.singleShot(0, self._load_visible_thumbnails)
+        call_soon(self, self._load_visible_thumbnails)
 
     def _visible_item_ids(self):
         viewport = self.pages.viewport().rect()
@@ -339,7 +339,7 @@ class PagesDialog(QDialog):
     def _on_rows_moved(self, *_):
         if not self._rebuilding:
             # Do not update model text inside Qt's internal move operation.
-            QTimer.singleShot(0, self._commit_displayed_order)
+            call_soon(self, self._commit_displayed_order)
 
     def _commit_displayed_order(self):
         from .page_management import commit_page_order
