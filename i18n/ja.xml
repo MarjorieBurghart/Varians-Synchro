@@ -525,6 +525,20 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="resources.witness.retry_none">この伝本に利用不可の Manifest はありません。</string>
   <string key="resources.witness.retry_loaded">{url}：Manifest を読み込みました（{pages} ページ）。保持するには伝本を保存してください。</string>
   <string key="resources.witness.retry_failed">{url}：まだ利用できません（{error}）。</string>
+  <string key="error.removal.unknown_witness">プロジェクトに伝本が見つかりません。</string>
+  <string key="error.removal.unknown_resource">この伝本に資料が見つかりません。</string>
+  <string key="error.removal.pivot">ピボット伝本は削除できません。先に別の伝本をピボット伝本にしてください。</string>
+  <string key="resources.witness.remove_confirm">「{name}」をこの伝本から削除しますか？
+
+削除または解放されるページ：{pages}、行：{lines}。影響を受けるグループ：{groups}（うち承認済み：{validated}）。グループは失効として残り、後で関連付けを解除できます。
+
+ファイルはディスクに残ります。削除は「伝本を保存」で反映されます。</string>
+  <string key="resources.witness.removal_tip">「伝本を保存」で削除されます。残すには、もう一度「削除」をクリックしてください。</string>
+  <string key="resources.witness.remove_witness">伝本を削除…</string>
+  <string key="resources.witness.remove_witness.tip">この伝本を、同期と TEI 版とともにプロジェクトから削除します。ディスク上のファイルは削除しません。</string>
+  <string key="resources.witness.remove_witness_confirm">伝本 {witness} をプロジェクトから削除しますか？
+
+その同期（{sessions}）とグループ（{groups}、うち承認済み：{validated}）、および TEI 版が削除されます。ファイルはディスクに残ります。削除を保持するには、続けてプロジェクトを保存してください。</string>
   <string key="resources.project.manifest_loaded">Manifest 読込済み — Canvas 数: {pages}</string>
   <string key="resources.project.image_loaded">画像を取り込みました</string>
   <string key="resources.project.xml_loaded">物理行を {lines} 行取り込みました</string>
@@ -633,7 +647,7 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="ui.pages.hd.cancelled">ダウンロードをキャンセルしました。不完全な画像は公開されていません。</string>
   <string key="ui.resources.add.tip">伝本と必要に応じて画像・IIIF・ALTO/PAGE・TEI を追加します。</string>
   <string key="ui.resources.add_resource.tip">この伝本に資料を追加します。確定するまで変更は保存されません。</string>
-  <string key="ui.resources.remove_resource.tip">新規資料を一覧から外します。ディスク上のファイルは削除しません。</string>
+  <string key="ui.resources.remove_resource.tip">選択した資料を削除します。新しく追加した資料は一覧から消え、保存済みの資料は確認後「伝本を保存」で削除されます。ディスク上のファイルは削除しません。</string>
   <string key="ui.resources.auto.tip">画像と ALTO/PAGE の対応案を適用前に確認します。</string>
   <string key="ui.resources.save.tip">伝本への変更を一括して適用します。</string>
   <string key="ui.resources.cancel.tip">プロジェクトの資料を変更せずに閉じます。</string>

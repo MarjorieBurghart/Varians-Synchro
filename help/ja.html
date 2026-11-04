@@ -141,7 +141,8 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li><b class="ui" data-tr="resources.witness.xml">ALTO/PAGE-XML ファイル</b>：形式は内容から判別されます。</li>
 <li><b class="ui" data-tr="resources.witness.tei">TEI XML 校訂本文</b>：任意です。ピボット伝本の場合に役立ちます。</li>
 </ul></li>
-<li><b class="ui" data-tr="resources.witness.remove_pending">削除</b>で取り除けるのは、編集画面を今回開いている間に追加した資料だけです。すでに保存された資料は、その関連付けを壊さないよう、プロジェクトに残ります。</li>
+<li><b class="ui" data-tr="resources.witness.remove_pending">削除</b>で選択した資料を削除します。編集画面を今回開いている間に追加した資料は、一覧から消えるだけです。保存済みの資料では、まず削除の影響（削除または解放されるページ、行、影響を受けるグループ）が表示され、確認すると「−」が付き、<b class="ui" data-tr="resources.witness.confirm">伝本を保存</b>で削除されます。その行に関わっていたグループは失効として残るので、後で関連付けを解除してください（<a href="#perimes">失効したグループ</a>を参照）。ディスク上のファイルは削除しません。</li>
+<li><b class="ui" data-tr="resources.witness.remove_witness">伝本を削除…</b>で、確認後に伝本をその同期と TEI 版とともにプロジェクトから削除します。ピボット伝本は削除できません。先に別のピボット伝本を選んでください。</li>
 <li><b class="ui" data-tr="resources.binding.title">画像と ALTO/PAGE を自動で関連付ける</b>は、その場でページの関連付けを提案します（<a href="#association-auto">後述</a>を参照）。</li>
 <li><b class="ui" data-tr="resources.witness.confirm">伝本を保存</b>はすべてを一括して適用します。<b class="ui" data-tr="resources.cancel">キャンセル</b>では、プロジェクトは何も変更されません。</li>
 </ul>

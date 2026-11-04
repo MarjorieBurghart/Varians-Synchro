@@ -525,6 +525,20 @@
   <string key="resources.witness.retry_none">У этого свидетеля нет недоступных манифестов.</string>
   <string key="resources.witness.retry_loaded">{url}: манифест загружен, страниц: {pages}. Сохраните свидетеля, чтобы его сохранить.</string>
   <string key="resources.witness.retry_failed">{url}: по-прежнему недоступен ({error}).</string>
+  <string key="error.removal.unknown_witness">Свидетель не найден в проекте.</string>
+  <string key="error.removal.unknown_resource">Ресурс не найден у этого свидетеля.</string>
+  <string key="error.removal.pivot">Опорного свидетеля нельзя удалить: сначала выберите опорным другого свидетеля.</string>
+  <string key="resources.witness.remove_confirm">Удалить «{name}» у этого свидетеля?
+
+Удалённых или освобождённых страниц: {pages}; строк: {lines}. Затронутых групп: {groups}, из них подтверждённых: {validated}; они сохраняются, помечаются как устаревшие, и их можно будет отвязать.
+
+Файл остаётся на диске. Удаление выполняется кнопкой «Сохранить свидетеля».</string>
+  <string key="resources.witness.removal_tip">Будет удалено кнопкой «Сохранить свидетеля». Нажмите «Удалить» ещё раз, чтобы оставить.</string>
+  <string key="resources.witness.remove_witness">Удалить свидетеля…</string>
+  <string key="resources.witness.remove_witness.tip">Удаляет этого свидетеля из проекта вместе с его синхронизациями и изданиями TEI. Файлы с диска не удаляются.</string>
+  <string key="resources.witness.remove_witness_confirm">Удалить свидетеля {witness} из проекта?
+
+Его синхронизации ({sessions}) и их группы ({groups}, из них подтверждённых: {validated}) будут удалены, как и его издания TEI. Файлы остаются на диске. Затем сохраните проект, чтобы сохранить удаление.</string>
   <string key="resources.project.manifest_loaded">Манифест загружен — холстов: {pages}</string>
   <string key="resources.project.image_loaded">Изображение импортировано</string>
   <string key="resources.project.xml_loaded">Импортировано строк: {lines}</string>
@@ -633,7 +647,7 @@
   <string key="ui.pages.hd.cancelled">Загрузка отменена. Неполные изображения не опубликованы.</string>
   <string key="ui.resources.add.tip">Добавить свидетель и при необходимости изображения, IIIF, ALTO/PAGE и TEI.</string>
   <string key="ui.resources.add_resource.tip">Выбрать дополнительные ресурсы. До подтверждения изменения не сохраняются.</string>
-  <string key="ui.resources.remove_resource.tip">Удалить выбранные новые ресурсы из списка, не удаляя файлы с диска.</string>
+  <string key="ui.resources.remove_resource.tip">Удаляет выбранный ресурс: новый исчезает из списка; уже сохранённый удаляется после подтверждения кнопкой «Сохранить свидетеля». Файлы с диска не удаляются.</string>
   <string key="ui.resources.auto.tip">Проверить предложенные связи изображений и ALTO/PAGE перед применением.</string>
   <string key="ui.resources.save.tip">Применить все изменения свидетеля одной операцией.</string>
   <string key="ui.resources.cancel.tip">Закрыть без изменения ресурсов проекта.</string>

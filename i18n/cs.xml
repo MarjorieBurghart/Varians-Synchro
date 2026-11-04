@@ -525,6 +525,20 @@ Upraví se {affected} nejistých automatických skupin; vytvoří se {groups} sk
   <string key="resources.witness.retry_none">Tento svědek nemá žádný nedostupný manifest.</string>
   <string key="resources.witness.retry_loaded">{url}: manifest načten, stran: {pages}. Uložte svědka, aby zůstal zachován.</string>
   <string key="resources.witness.retry_failed">{url}: stále nedostupný ({error}).</string>
+  <string key="error.removal.unknown_witness">Svědek nebyl v projektu nalezen.</string>
+  <string key="error.removal.unknown_resource">Zdroj nebyl u tohoto svědka nalezen.</string>
+  <string key="error.removal.pivot">Pivotního svědka nelze odebrat: nejprve zvolte jako pivot jiného svědka.</string>
+  <string key="resources.witness.remove_confirm">Odebrat „{name}“ z tohoto svědka?
+
+Odebrané nebo uvolněné strany: {pages}; řádky: {lines}. Dotčené skupiny: {groups}, z toho potvrzené: {validated}; zůstanou zachovány, označí se jako zastaralé a můžete je odpojit.
+
+Soubor zůstane na disku. Odebrání se provede tlačítkem „Uložit svědka“.</string>
+  <string key="resources.witness.removal_tip">Odebere se tlačítkem „Uložit svědka“. Chcete-li ho ponechat, klikněte znovu na „Odebrat“.</string>
+  <string key="resources.witness.remove_witness">Odebrat svědka…</string>
+  <string key="resources.witness.remove_witness.tip">Odebere tohoto svědka z projektu i s jeho synchronizacemi a edicemi TEI. Z disku se nesmaže žádný soubor.</string>
+  <string key="resources.witness.remove_witness_confirm">Odebrat svědka {witness} z projektu?
+
+Jeho synchronizace ({sessions}) a jejich skupiny ({groups}, z toho potvrzené: {validated}) budou smazány, stejně jako jeho edice TEI. Soubory zůstanou na disku. Poté projekt uložte, aby odebrání zůstalo zachováno.</string>
   <string key="resources.project.manifest_loaded">Manifest načten — {pages} pláten</string>
   <string key="resources.project.image_loaded">Obrázek importován</string>
   <string key="resources.project.xml_loaded">Importováno {lines} fyzických řádků</string>
@@ -633,7 +647,7 @@ Kopie byly zaznamenány v projektu. Nezapomeňte uložit soubor .vsynch.</string
   <string key="ui.pages.hd.cancelled">Stahování zrušeno. Nebyly zveřejněny neúplné obrázky.</string>
   <string key="ui.resources.add.tip">Přidat svědka a případné zdroje: obrázky, IIIF, ALTO/PAGE, TEI.</string>
   <string key="ui.resources.add_resource.tip">Vybrat další zdroje pro svědka. Nic se neuloží před potvrzením.</string>
-  <string key="ui.resources.remove_resource.tip">Odebrat nově přidané položky ze seznamu bez mazání souborů na disku.</string>
+  <string key="ui.resources.remove_resource.tip">Odebere vybraný zdroj: nově přidaný zmizí ze seznamu; již uložený se po potvrzení odebere tlačítkem „Uložit svědka“. Z disku se nesmaže žádný soubor.</string>
   <string key="ui.resources.auto.tip">Před použitím ověřit navržené vazby mezi obrázky a soubory ALTO/PAGE.</string>
   <string key="ui.resources.save.tip">Použít všechny změny svědka najednou.</string>
   <string key="ui.resources.cancel.tip">Zavřít bez změny zdrojů projektu.</string>

@@ -525,6 +525,20 @@ Das Umordnen ändert keine Quellen.</string>
   <string key="resources.witness.retry_none">Dieser Textzeuge hat kein nicht erreichbares Manifest.</string>
   <string key="resources.witness.retry_loaded">{url}: Manifest geladen, {pages} Seite(n). Speichern Sie den Textzeugen, um es zu behalten.</string>
   <string key="resources.witness.retry_failed">{url}: weiterhin nicht erreichbar ({error}).</string>
+  <string key="error.removal.unknown_witness">Textzeuge im Projekt nicht gefunden.</string>
+  <string key="error.removal.unknown_resource">Ressource bei diesem Textzeugen nicht gefunden.</string>
+  <string key="error.removal.pivot">Der Pivot-Textzeuge kann nicht entfernt werden: Wählen Sie zuerst einen anderen Textzeugen als Pivot.</string>
+  <string key="resources.witness.remove_confirm">„{name}“ von diesem Textzeugen entfernen?
+
+Entfernte oder freigegebene Seiten: {pages}; Zeilen: {lines}. Betroffene Gruppen: {groups}, davon bestätigt: {validated}; sie bleiben erhalten, werden als veraltet markiert, und Sie können sie lösen.
+
+Die Datei bleibt auf dem Datenträger. Das Entfernen wird mit „Textzeugen speichern“ übernommen.</string>
+  <string key="resources.witness.removal_tip">Wird mit „Textzeugen speichern“ entfernt. Klicken Sie erneut auf „Entfernen“, um es zu behalten.</string>
+  <string key="resources.witness.remove_witness">Textzeugen entfernen…</string>
+  <string key="resources.witness.remove_witness.tip">Entfernt diesen Textzeugen mit seinen Synchronisationen und TEI-Editionen aus dem Projekt. Es wird keine Datei vom Datenträger gelöscht.</string>
+  <string key="resources.witness.remove_witness_confirm">Textzeugen {witness} aus dem Projekt entfernen?
+
+Seine Synchronisationen ({sessions}) und deren Gruppen ({groups}, davon bestätigt: {validated}) werden gelöscht, ebenso seine TEI-Editionen. Die Dateien bleiben auf dem Datenträger. Speichern Sie anschließend das Projekt, um das Entfernen zu behalten.</string>
   <string key="resources.project.manifest_loaded">Manifest geladen — {pages} Canvases</string>
   <string key="resources.project.image_loaded">Bild importiert</string>
   <string key="resources.project.xml_loaded">{lines} physische Zeilen importiert</string>
@@ -633,7 +647,7 @@ Die Kopien wurden im Projekt erfasst. Denken Sie daran, die .vsynch-Datei zu spe
   <string key="ui.pages.hd.cancelled">Download abgebrochen. Keine unvollständigen Bilder wurden veröffentlicht.</string>
   <string key="ui.resources.add.tip">Textzeugen mit optionalen Bildern, IIIF-, ALTO/PAGE- und TEI-Quellen hinzufügen.</string>
   <string key="ui.resources.add_resource.tip">Weitere Quellen für diesen Textzeugen auswählen. Bis zur Bestätigung wird nichts gespeichert.</string>
-  <string key="ui.resources.remove_resource.tip">Ausgewählte neue Quellen aus der Liste entfernen, ohne Dateien auf dem Datenträger zu löschen.</string>
+  <string key="ui.resources.remove_resource.tip">Entfernt die ausgewählte Ressource: Eine neu hinzugefügte verschwindet aus der Liste; eine bereits gespeicherte wird nach Bestätigung mit „Textzeugen speichern“ entfernt. Es wird keine Datei vom Datenträger gelöscht.</string>
   <string key="ui.resources.auto.tip">Vorgeschlagene Zuordnungen zwischen Bildern und ALTO/PAGE prüfen, bevor sie übernommen werden.</string>
   <string key="ui.resources.save.tip">Alle Änderungen an diesem Textzeugen gemeinsam übernehmen.</string>
   <string key="ui.resources.cancel.tip">Ohne Änderungen an den Projektquellen schließen.</string>

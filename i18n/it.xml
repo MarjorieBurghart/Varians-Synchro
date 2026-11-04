@@ -525,6 +525,20 @@ Saranno adeguati {affected} gruppi automatici incerti; saranno creati {groups} g
   <string key="resources.witness.retry_none">Questo testimone non ha Manifest non disponibili.</string>
   <string key="resources.witness.retry_loaded">{url}: Manifest caricato, {pages} pagina/e. Salva il testimone per conservarlo.</string>
   <string key="resources.witness.retry_failed">{url}: ancora non disponibile ({error}).</string>
+  <string key="error.removal.unknown_witness">Testimone non trovato nel progetto.</string>
+  <string key="error.removal.unknown_resource">Risorsa non trovata in questo testimone.</string>
+  <string key="error.removal.pivot">Il testimone pivot non può essere rimosso: scegli prima un altro testimone come pivot.</string>
+  <string key="resources.witness.remove_confirm">Rimuovere «{name}» da questo testimone?
+
+Pagine rimosse o liberate: {pages}; righe: {lines}. Gruppi interessati: {groups}, di cui convalidati: {validated}; vengono conservati, segnati come obsoleti, e potrai scollegarli.
+
+Il file resta sul disco. La rimozione viene applicata con «Salva testimone».</string>
+  <string key="resources.witness.removal_tip">Sarà rimosso con «Salva testimone». Fai di nuovo clic su «Rimuovi» per conservarlo.</string>
+  <string key="resources.witness.remove_witness">Rimuovi testimone…</string>
+  <string key="resources.witness.remove_witness.tip">Rimuove questo testimone dal progetto, con le sue sincronizzazioni e le sue edizioni TEI. Nessun file viene cancellato dal disco.</string>
+  <string key="resources.witness.remove_witness_confirm">Rimuovere il testimone {witness} dal progetto?
+
+Le sue sincronizzazioni ({sessions}) e i loro gruppi ({groups}, di cui convalidati: {validated}) saranno eliminati, così come le sue edizioni TEI. I file restano sul disco. Salva poi il progetto per conservare la rimozione.</string>
   <string key="resources.project.manifest_loaded">Manifest letto — {pages} canvas</string>
   <string key="resources.project.image_loaded">Immagine importata</string>
   <string key="resources.project.xml_loaded">Importate {lines} righe fisiche</string>
@@ -633,7 +647,7 @@ Le copie sono state registrate nel progetto. Ricordarsi di salvare il file .vsyn
   <string key="ui.pages.hd.cancelled">Download annullato. Nessuna immagine parziale è stata pubblicata.</string>
   <string key="ui.resources.add.tip">Aggiungere un testimone e le eventuali risorse: immagini, IIIF, ALTO/PAGE, TEI.</string>
   <string key="ui.resources.add_resource.tip">Selezionare altre risorse per il testimone. Nulla viene salvato prima della conferma.</string>
-  <string key="ui.resources.remove_resource.tip">Rimuovere dall'elenco le nuove risorse selezionate senza cancellare i file dal disco.</string>
+  <string key="ui.resources.remove_resource.tip">Rimuove la risorsa selezionata: una risorsa appena aggiunta scompare dall’elenco; una già salvata viene rimossa, dopo conferma, con «Salva testimone». Nessun file viene cancellato dal disco.</string>
   <string key="ui.resources.auto.tip">Verificare le associazioni proposte fra immagini e ALTO/PAGE prima di applicarle.</string>
   <string key="ui.resources.save.tip">Applicare in un'unica operazione le modifiche al testimone.</string>
   <string key="ui.resources.cancel.tip">Chiudere senza modificare le risorse del progetto.</string>

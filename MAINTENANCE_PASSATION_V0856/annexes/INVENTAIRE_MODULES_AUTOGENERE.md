@@ -4,7 +4,7 @@ Génération reproductible : `python tools/generate_module_inventory.py` depuis 
 Inspection statique AST : **aucun module applicatif n’est importé ni exécuté**.
 Les numéros de ligne sont ceux de **cette livraison uniquement**.
 
-**52 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
+**53 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
 
 ## `varians_synchro/__init__.py` (1 lignes)
 **Dépendances internes observées** : `core`
@@ -151,6 +151,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `physical_alignment`
 **Fonctions au premier niveau** : `_box` (l.17), `_cy` (l.28), `_overlap` (l.32), `_same_column` (l.37), `_local_pitch` (l.41), `_linked_info` (l.55), `_nearest_group` (l.78), `suggest_residual_extensions` (l.113), `apply_residual_extensions` (l.218)
 
+## `varians_synchro/resource_removal.py` (141 lignes)
+**Objet (docstring source)** : Retirer un témoin ou une ressource enregistrée (sans Qt). Le retrait se calcule sur une copie du projet, puis remplace le projet d'un bloc (tout ou rien) ; ``removal_impact`` en donne les conséquences avant que l'utilisateur confirme. Règles : - un fichier ALTO/PAGE retiré libère les pages qui lui étaient associées ; une source d'images retirée emporte ses pages ; - les groupes qui touchent des lignes disparues sont gardés : ils deviennent périmés (``physical_alignment.link_is_stale``), exclus des calculs et de l'export, et l'utilisateur les dissocie ensuite ; - retirer un témoin retire ses synchronisations et ses éditions TEI ; le témoin piv
+**Dépendances internes observées** : `imaging`, `physical_alignment`
+**Fonctions au premier niveau** : `_witness` (l.26), `_line_ids` (l.33), `_drop_resource` (l.37), `_drop_witness` (l.77), `_staged` (l.92), `removal_impact` (l.101), `_replace` (l.127), `remove_resource` (l.133), `remove_witness` (l.139)
+
 ## `varians_synchro/resource_workflow.py` (157 lignes)
 **Objet (docstring source)** : Witness-centered project resources, with non-destructive staged import. The physical-line alignment model is deliberately not touched. Source files are only inspected, never rewritten. GUI dialogs collect selections first; ``apply_witness_draft`` commits them as one coherent project change.
 **Dépendances internes observées** : `core`, `errors`, `imaging`, `page_order`, `tei_binding`
@@ -221,10 +226,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `errors`, `i18n`, `imaging`, `page_order`, `reading_stream`, `ui_widgets`
 **Classes déclarées au premier niveau** : `ReadingOrderDialog` (l.15)
 
-## `varians_synchro/ui_resources.py` (255 lignes)
+## `varians_synchro/ui_resources.py` (335 lignes)
 **Objet (docstring source)** : Fenêtre « Ajouter un témoin… » / « Modifier le témoin et ses ressources » : sigle, images, XML, TEI et Manifests IIIF, appliqués d’un bloc.
-**Dépendances internes observées** : `errors`, `i18n`, `resource_workflow`, `ui_batch_binding`, `ui_widgets`
-**Classes déclarées au premier niveau** : `WitnessResourceDialog` (l.17)
+**Dépendances internes observées** : `errors`, `i18n`, `resource_removal`, `resource_workflow`, `ui_batch_binding`, `ui_widgets`
+**Classes déclarées au premier niveau** : `WitnessResourceDialog` (l.18)
 
 ## `varians_synchro/ui_scope.py` (85 lignes)
 **Objet (docstring source)** : Fenêtre « Périmètre » : lignes d’un témoin exclues de l’étude.

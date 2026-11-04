@@ -61,6 +61,8 @@ Le module `varians_synchro/reading_stream.py` convertit l’inventaire physique 
 
 `ui_resources.py` contient une fiche de témoin transactionnelle (`WitnessResourceDialog`) et `ui_batch_binding.py` un tableau éditable d'associations (`BatchBindingDialog`). `gui.py` est maintenant un lanceur minimal sans l'ancienne fenêtre V0.5. Le parseur TEI ancien est conservé **uniquement pour la lecture des données historiques et leurs tests**, pas pour générer de nouvelles liaisons éditoriales : `store_tei_reference` crée une entrée `tei_unaligned` ; la liaison des `<lb/>` aux lignes physiques est faite par `tei_binding.py` (V0.8.2–V0.8.3).
 
+`resource_removal.py` retire une ressource enregistrée ou un témoin : `removal_impact` dit, sans rien changer, ce que le retrait entraîne (pages retirées ou libérées, lignes perdues, groupes touchés, synchronisations) ; `remove_resource` et `remove_witness` l'appliquent d'un bloc sur une copie. Les groupes qui touchent des lignes disparues ne sont pas effacés : ils deviennent périmés (`link_is_stale`). Le témoin pivot ne peut pas être retiré ; aucun fichier n'est supprimé du disque. Dans la fiche du témoin, les retraits demandés s'appliquent au brouillon, donc à « Enregistrer le témoin ».
+
 ## Périmètre des lignes (V0.6.11)
 
 `varians_synchro/line_scope.py` est le modèle de gestion des lignes « ignorées » au niveau de chaque témoin. Il conserve leur état dans `ignored_line_ids`, vérifie les références ALTO, contrôle les conflits avec toutes les sessions physiques, prépare les ajustements par copie limitée des sessions, puis effectue le commit final (source ALTO jamais éditée). Les anciennes sessions TEI directement concernées sont protégées par refus explicite.

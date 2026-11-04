@@ -141,7 +141,8 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li><b class="ui" data-tr="resources.witness.xml">Fichiers ALTO/PAGE-XML</b> : le format est reconnu d’après le contenu ;</li>
 <li><b class="ui" data-tr="resources.witness.tei">Édition TEI XML</b> : facultative, utile pour le pivot.</li>
 </ul></li>
-<li><b class="ui" data-tr="resources.witness.remove_pending">Supprimer</b> retire seulement une ressource ajoutée pendant cette ouverture de la fiche : une ressource déjà enregistrée reste dans le projet, pour ne pas casser ses associations.</li>
+<li><b class="ui" data-tr="resources.witness.remove_pending">Supprimer</b> retire la ressource sélectionnée. Une ressource ajoutée pendant cette ouverture de la fiche disparaît simplement de la liste. Pour une ressource déjà enregistrée, le logiciel dit d’abord ce que son retrait entraîne (pages retirées ou libérées, lignes, groupes touchés) ; confirmée, elle est marquée « − » et retirée à <b class="ui" data-tr="resources.witness.confirm">Enregistrer le témoin</b>. Les groupes qui touchaient ses lignes sont gardés, marqués périmés : dissociez-les ensuite (voir <a href="#perimes">Groupes périmés</a>). Aucun fichier n’est supprimé du disque.</li>
+<li><b class="ui" data-tr="resources.witness.remove_witness">Retirer le témoin…</b> retire le témoin du projet, avec ses synchronisations et ses éditions TEI, après confirmation. Le témoin pivot ne peut pas être retiré : choisissez d’abord un autre pivot.</li>
 <li><b class="ui" data-tr="resources.binding.title">Associer automatiquement les images et les ALTO/PAGE</b> propose tout de suite les associations des pages (voir <a href="#association-auto">ci-dessous</a>).</li>
 <li><b class="ui" data-tr="resources.witness.confirm">Enregistrer le témoin</b> applique tout d’un bloc ; <b class="ui" data-tr="resources.cancel">Annuler</b> ne change rien au projet.</li>
 </ul>
