@@ -257,7 +257,7 @@ class WitnessResourceDialog(QDialog):
                 staged = self.stage_current()
                 impact = removal_impact(staged, self.original_witness['id'], *removal)
             except Exception as exc:
-                QMessageBox.warning(self, tr('resources.witness.edit'), tr(str(exc)))
+                QMessageBox.warning(self, tr('resources.witness.edit'), localized_text(exc))
                 return
             path = item.data(Qt.ItemDataRole.UserRole + 2)
             answer = QMessageBox.question(
@@ -279,7 +279,7 @@ class WitnessResourceDialog(QDialog):
         try:
             impact = removal_impact(self.original_project, witness_id)
         except ValueError as exc:
-            QMessageBox.warning(self, tr('resources.witness.edit'), tr(str(exc)))
+            QMessageBox.warning(self, tr('resources.witness.edit'), localized_text(exc))
             return
         answer = QMessageBox.question(
             self, tr('resources.witness.edit'),
