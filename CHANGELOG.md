@@ -17,7 +17,7 @@
 - Création de `MAINTENANCE_PASSATION_V0856/` : architecture, flux, inventaire de modules, contrats persistants, moteurs, TEI, IIIF, exports, GUI/i18n, tests, conventions, limites et ADR.
 - Ajout de `tools/generate_module_inventory.py` (inventaire AST reproductible), `tools/check_maintenance.py` (intégrité du dossier et des empreintes) et `tests/test_maintenance_0856.py`.
 - Mise à jour des points d’entrée documentaires, version applicative `core.VERSION` ; format `.vsynch` 1 et algorithmes inchangés.
-- Voir `CHANGELOG_V0856.md` et `TESTS_V0856.md`.
+- Voir [`CHANGELOG_V0856.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/CHANGELOG_V0856.md) et [`TESTS_V0856.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/TESTS_V0856.md).
 
 ## V0.8.5.5 — Traductions intégrales des catalogues (18/10/2026)
 
@@ -25,23 +25,23 @@
 - 653 clés conservées dans chacun des sept catalogues ; paramètres techniques et séquences XML inchangés.
 - Documentation sur la validation linguistique native à effectuer ; listes historiques des replis supprimées et couverture mise à jour.
 - Moteur d’alignement, fichiers `.vsynch` et exports Varians inchangés.
-- Voir `CHANGELOG_V0855.md` et `TESTS_V0855.md`.
+- Voir [`CHANGELOG_V0855.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/CHANGELOG_V0855.md) et [`TESTS_V0855.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/TESTS_V0855.md).
 
 # V0.8.5.3 — Copies HD réutilisables et séparation des actions HTR
 
-Voir `CHANGELOG_V0853.md`.
+Voir [`CHANGELOG_V0853.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/CHANGELOG_V0853.md).
 
 # V0.8.5.2 — Correction du message de fin de téléchargement IIIF HD
 
-Voir `CHANGELOG_V0852.md` : fin de téléchargement explicitement distinguée d'une annulation, sans changer le téléchargement lui-même.
+Voir [`CHANGELOG_V0852.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/CHANGELOG_V0852.md) : fin de téléchargement explicitement distinguée d'une annulation, sans changer le téléchargement lui-même.
 
 # V0.8.5.1 — Interface, IIIF HD et finalisation
 
-Détails : `CHANGELOG_V0851.md`.
+Détails : [`CHANGELOG_V0851.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/CHANGELOG_V0851.md).
 
 # Version V0.8.5 — consolidation
 
-Voir [CHANGELOG_V085.md](CHANGELOG_V085.md) pour les modifications, garanties et limites de validation.
+Voir [CHANGELOG_V085.md](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/CHANGELOG_V085.md) pour les modifications, garanties et limites de validation.
 
 ## V0.8.4.2 — Sélection visuelle et repères
 
@@ -65,7 +65,7 @@ Voir [CHANGELOG_V085.md](CHANGELOG_V085.md) pour les modifications, garanties et
 - Contrôle intermédiaire facultatif, recherche de lignes TEI et ouverture dans le visualiseur.
 - Recherche TEI dans la synchronisation intertémoins, sans modifier les alignements.
 - Recadrage local/IIIF régional v2/v3, chargement asynchrone et avertissement si image absente.
-- Voir `CHANGELOG_V084.md`.
+- Voir [`CHANGELOG_V084.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/CHANGELOG_V084.md).
 
 ## V0.8.1.2 — Urgent : ouverture et création de projets
 
@@ -86,7 +86,7 @@ Voir [CHANGELOG_V085.md](CHANGELOG_V085.md) pour les modifications, garanties et
 - **Repères croisés isolés** : les intervalles adjacents à une paire de repères contradictoire ne sont plus traités comme sûrs par le moteur cumulatif.
 - **Recette sur Mu–F–A** et tests de charge, de réouverture, d'intégrité, de reprise d'anciens projets, de traduction et d'export.
 - Catalogues XML FR/EN complétés ; aucun changement des sources ALTO/PAGE, des images ou des sessions existantes.
-- Voir `AUDIT_INTEGRITE_V074.md` et `RAPPORT_RECETTE_V074.md`.
+- Voir [`AUDIT_INTEGRITE_V074.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/AUDIT_INTEGRITE_V074.md) et [`RAPPORT_RECETTE_V074.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/RAPPORT_RECETTE_V074.md).
 
 ---
 
@@ -140,7 +140,7 @@ Voir [CHANGELOG_V085.md](CHANGELOG_V085.md) pour les modifications, garanties et
 - Démarrage séparé avec même Python pour ne pas mélanger les runtimes Qt natifs.
 - Journal horodaté de démarrage et `faulthandler` ; lancement explicite alternatif.
 - Aucune modification des correspondances, des exports ni des projets.
-- Voir `GUIDE_STABILITE_SPYDER.md`.
+- Voir [`GUIDE_STABILITE_SPYDER.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/GUIDE_STABILITE_SPYDER.md).
 
 # V0.7.1 — Progression textuelle entre repères (J2)
 
@@ -149,7 +149,7 @@ Voir [CHANGELOG_V085.md](CHANGELOG_V085.md) pour les modifications, garanties et
 - Les groupes manuels, validés et les absences confirmées sont protégés. Les anciennes propositions automatiques incertaines peuvent être remplacées après prévisualisation et accord, de manière atomique. Aucun changement des identifiants ni du format `.vsynch`.
 - Interface : nouveau bouton principal « Synchroniser entre repères (texte) », anciennes fonctions géométriques sous « Autres opérations ». Diagnostics des repères contradictoires, lacunes unilatérales et lignes restant après les repères ; traductions FR/EN actualisées.
 - Export JSON pour Varians inchangé ; comparaison effectuée sur le projet réel Mu–F : export validé strictement identique après recalcul.
-- Tests supplémentaires sur les folios successifs, les repères n↔m, omissions, exclusions, remplacement sûr, différents rapports de ligne et performances. Documentation dans `GUIDE_PROGRESSION_TEXTUELLE.md`.
+- Tests supplémentaires sur les folios successifs, les repères n↔m, omissions, exclusions, remplacement sûr, différents rapports de ligne et performances. Documentation dans [`GUIDE_PROGRESSION_TEXTUELLE.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/GUIDE_PROGRESSION_TEXTUELLE.md).
 
 ---
 
@@ -189,7 +189,7 @@ Voir [CHANGELOG_V085.md](CHANGELOG_V085.md) pour les modifications, garanties et
 - Association aux images locales ou IIIF, propositions grâce à `Page@imageFilename`, et réimportation des sorties HTR au format PAGE.
 - Mêmes sauvegarde `.vsynch` et identifiants que les versions ALTO, champ historique `alto_sources` conservé pour les anciens projets.
 - Interface et traductions XML mises à jour en français/anglais ; prise en charge multiplateforme préservée.
-- Nouveaux tests de compatibilité PAGE/ALTO et documentation `GUIDE_PAGE_XML.md`.
+- Nouveaux tests de compatibilité PAGE/ALTO et documentation [`GUIDE_PAGE_XML.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/GUIDE_PAGE_XML.md).
 
 ---
 
@@ -232,4 +232,4 @@ Voir [CHANGELOG_V085.md](CHANGELOG_V085.md) pour les modifications, garanties et
 
 ## V0.6.9
 
-Voir `GUIDE_INTERPOLATION_COLONNES.md` pour le recalcul automatique de colonnes et la protection des corrections manuelles.
+Voir [`GUIDE_INTERPOLATION_COLONNES.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/GUIDE_INTERPOLATION_COLONNES.md) pour le recalcul automatique de colonnes et la protection des corrections manuelles.

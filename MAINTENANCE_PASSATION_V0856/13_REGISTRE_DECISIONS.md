@@ -7,7 +7,7 @@ Un ADR présente **décision / raison / effet / état / sources**. Ce registre r
 - **Décision** : enregistrer les appariements de lignes de manuscrits dans `pair_sessions`, conserver les anciennes `alignment_sessions`, lier la TEI facultativement dans `text_resources[].tei_binding`.
 - **Motivation** : un alignement entre deux témoins doit pouvoir être préparé avant l'édition TEI ; la relation philologique ne se déduit pas du texte HTR.
 - **Effet** : deux pistes de provenance indépendantes ; export physique possible sans TEI, export projet Varians complet avec au plus une TEI pivot (sans TEI : TEI vide de Varians, voir ADR-016).
-- **État** : implémenté. **Sources** : `physical_alignment.py`, `tei_binding.py`, `varians_export.py`, `FORMAT_PROJET.md`.
+- **État** : implémenté. **Sources** : `physical_alignment.py`, `tei_binding.py`, `varians_export.py`, [`FORMAT_PROJET.md`](../docs/developer/FORMAT_PROJET.md).
 
 ## ADR-002 — Choix de pivot et direction de paire distincts
 
@@ -44,31 +44,31 @@ Un ADR présente **décision / raison / effet / état / sources**. Ce registre r
 
 - **Décision** : étendre les propositions HTR par progression cumulée entre repères et repli HTR → géométrie régionale → uniforme ; ne pas remplacer les repères croisés par un modèle global.
 - **Motivation** : l'HTR incomplet et les colonnes nécessitent une estimation localement calibrée.
-- **État** : implémenté ; exactitude à vérifier éditorialement. **Sources** : `textual_progress.py`, `reading_stream.py`, `AUDIT_INTEGRITE_V074.md`.
+- **État** : implémenté ; exactitude à vérifier éditorialement. **Sources** : `textual_progress.py`, `reading_stream.py`, [`AUDIT_INTEGRITE_V074.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/AUDIT_INTEGRITE_V074.md).
 
 ## ADR-008 — Export distinct « validé » et « travail »
 
 - **Décision** : `validated/` et `working/` toujours clairement séparés, avec rapport et publication en dossier vide.
 - **Motivation** : interdire de présenter les hypothèses comme des correspondances confirmées.
-- **État** : implémenté. **Sources** : `varians_export.py`, `EXPORT_VARIANS.md`.
+- **État** : implémenté. **Sources** : `varians_export.py`, [`EXPORT_VARIANS.md`](../docs/developer/EXPORT_VARIANS.md).
 
 ## ADR-009 — Conserver ALTO/PAGE et les identifiants historiques
 
 - **Décision** : détection par racine XML ; PAGE polygones, rectangles communs, champ `alto_binding` maintenu pour les deux ; ALTO et PAGE non réécrits.
 - **Motivation** : interopérabilité avec corpus et projets enregistrés.
-- **État** : implémenté. **Sources** : `core.inspect_line_source`, `page_xml.py`, `alto_geometry.py`, `FORMAT_PROJET.md`.
+- **État** : implémenté. **Sources** : `core.inspect_line_source`, `page_xml.py`, `alto_geometry.py`, [`FORMAT_PROJET.md`](../docs/developer/FORMAT_PROJET.md).
 
 ## ADR-010 — Images HD IIIF en copies optionnelles intègres
 
 - **Décision** : enregistrement par Canvas/URL + SHA-256 ; copies locales exportées uniquement lorsque toutes les pages segmentées du même témoin sont couvertes.
 - **Motivation** : un répertoire HD incomplet ne doit pas devenir un « projet hors ligne » trompeur.
-- **État** : implémenté. **Sources** : `hd_registry.py`, `varians_project_export.py`, `GUIDE_COPIES_HD_V0853.md`.
+- **État** : implémenté. **Sources** : `hd_registry.py`, `varians_project_export.py`, [`GUIDE_COPIES_HD_V0853.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/GUIDE_COPIES_HD_V0853.md).
 
 ## ADR-011 — Qt isolé de Spyder
 
 - **Décision** : lancement dans un sous-processus lorsqu'un noyau Spyder est détecté.
 - **Motivation** : conflits d'environnements de plugins Qt / noyau.
-- **État** : implémenté ; test Windows réel à renouveler. **Sources** : `run.py`, `spyder_launch.py`, `GUIDE_STABILITE_SPYDER.md`.
+- **État** : implémenté ; test Windows réel à renouveler. **Sources** : `run.py`, `spyder_launch.py`, [`GUIDE_STABILITE_SPYDER.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/GUIDE_STABILITE_SPYDER.md).
 
 ## ADR-012 — Internationalisation externe et données scientifiques immuables
 
@@ -80,7 +80,7 @@ Un ADR présente **décision / raison / effet / état / sources**. Ce registre r
 
 - **Décision** : démarrer avec une image locale, un témoin et sans TEI, puis enrichir progressivement ; conserver des choix de configuration facultatifs.
 - **Motivation** : usage pédagogique et absence de surcharge d'installation.
-- **État** : principe produit implémenté globalement mais doit continuer à être évalué dans la GUI réelle. **Sources** : `core.new_project`, `resource_workflow.py`, `GUIDE_PERIMETRE.md` et décisions de projet.
+- **État** : principe produit implémenté globalement mais doit continuer à être évalué dans la GUI réelle. **Sources** : `core.new_project`, `resource_workflow.py`, [`GUIDE_PERIMETRE.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/GUIDE_PERIMETRE.md) et décisions de projet.
 
 ## ADR-014 — Architecture Varians multi-fichiers : ne pas anticiper indûment
 
@@ -92,7 +92,7 @@ Un ADR présente **décision / raison / effet / état / sources**. Ce registre r
 
 - **Décision** : passer `core.VERSION` à `0.8.5.6`, ajouter un dossier de passation autonome, une cartographie générée et des tests d'intégrité documentaire ; ne pas toucher aux algorithmes, catalogues ni format `.vsynch`.
 - **Motivation** : transmettre le logiciel sans l'historique de conversation et sans augmenter le risque de régression.
-- **État** : consigne de livraison de ce lot ; **voir tests** `TESTS_V0856.md`.
+- **État** : consigne de livraison de ce lot ; **voir tests** [`TESTS_V0856.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/TESTS_V0856.md).
 
 ## ADR-016 — Projet Varians sans TEI : la TEI vide de Varians, le pivot préparé par Varians
 

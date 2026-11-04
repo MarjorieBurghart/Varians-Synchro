@@ -198,4 +198,4 @@ Classes: FetchThread, ZoomableGraphicsView, ClickableLine, WitnessLineList, Line
 
 ## 8. Passation recommandée
 
-Lire successivement `ARCHITECTURE.md`, `FORMAT_PROJET.md`, `PASSATION_DEV_V085.md`, `EXPORT_VARIANS.md`, les guides TEI/IIIF, puis cette cartographie. Rejouer la suite Python et ensuite la recette Qt sur Windows. Garder une copie de la V0.8.5.3 comme référence pour les régressions d’alignement.
+Lire successivement le [dossier de passation](../../MAINTENANCE_PASSATION_V0856/00_LIRE_EN_PREMIER.md), [`ARCHITECTURE.md`](ARCHITECTURE.md), [`FORMAT_PROJET.md`](FORMAT_PROJET.md), [`EXPORT_VARIANS.md`](EXPORT_VARIANS.md), le guide utilisateur (`help/fr.html`, F1 dans le logiciel), puis cette cartographie. Rejouer la suite Python et ensuite la recette Qt sur Windows. Garder une copie de la V0.8.5.3 comme référence pour les régressions d’alignement.

@@ -20,7 +20,7 @@ python -m pytest -q
 python run.py
 ```
 
-Sous Windows, `start_windows.bat` lance `py -3 run.py` : il peut donc sélectionner un autre Python que celui du venv si celui-ci n'est pas activé. Pour les diagnostics Spyder : `python diagnostic_spyder.py`, `python diagnostic_flux_lecture.py`, `python start_isolated.py` selon le besoin ; consulter aussi `GUIDE_DEPANNAGE_SPYDER.md` et `GUIDE_STABILITE_SPYDER.md`.
+Sous Windows, `start_windows.bat` lance `py -3 run.py` : il peut donc sélectionner un autre Python que celui du venv si celui-ci n'est pas activé. Pour les diagnostics Spyder : `python diagnostic_spyder.py`, `python diagnostic_flux_lecture.py`, `python start_isolated.py` selon le besoin ; consulter aussi [`GUIDE_DEPANNAGE_SPYDER.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/GUIDE_DEPANNAGE_SPYDER.md) et [`GUIDE_STABILITE_SPYDER.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/GUIDE_STABILITE_SPYDER.md).
 
 ## 3. Premiers fichiers à ouvrir
 

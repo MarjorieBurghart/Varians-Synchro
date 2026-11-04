@@ -66,4 +66,4 @@ Installer PySide6, vérifier `python -c "import PySide6;print(PySide6.__version_
 | Qt/Spyder/localisation | `test_qt_lifecycle.py`, `test_spyder_launch.py`, `test_app_icon.py`, `test_app_icon_qt.py`, `test_i18n_xml_catalogs.py`, `test_i18n_full_0855.py` |
 | Intégrité documentaire v0.8.5.6 | `test_maintenance_0856.py`, `tools/check_maintenance.py` |
 
-**Résultats effectivement constatés pour cette livraison** : se reporter à `TESTS_V0856.md`, qui sera produit après le dernier passage des tests. Ne pas reporter les nombres de v0.8.5.5 comme s'ils validaient v0.8.5.6.
+**Résultats effectivement constatés** : pour la livraison v0.8.5.6, [`TESTS_V0856.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/TESTS_V0856.md) (historique Git) ; depuis, la CI GitHub (`.github/workflows/tests.yml`, Linux et Windows) rejoue la suite à chaque modification. Ne pas reporter les nombres d'une version comme s'ils validaient la suivante.

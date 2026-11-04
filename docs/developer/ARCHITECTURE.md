@@ -27,7 +27,7 @@ Ne jamais modifier `physical_alignment.py`, `reading_stream.py`, `textual_progre
 
 ## Refonte V0.7 : flux de lecture (nouveau)
 
-Le module `varians_synchro/reading_stream.py` convertit l’inventaire physique en un flux ordonné indépendamment des limites de page. Les fonctions publiques `reading_stream`, `anchor_intervals`, `set_page_order`, `set_region_order`, `set_line_order` ne modifient pas les identifiants `line_uid` et ne réécrivent pas les sources XML. Elles préparent le futur moteur cumulatif (V0.7.1) ; l’interpolation géométrique historique reste séparée en V0.7.0. Voir `REFONTE_V0.7.0.md`.
+Le module `varians_synchro/reading_stream.py` convertit l’inventaire physique en un flux ordonné indépendamment des limites de page. Les fonctions publiques `reading_stream`, `anchor_intervals`, `set_page_order`, `set_region_order`, `set_line_order` ne modifient pas les identifiants `line_uid` et ne réécrivent pas les sources XML. Elles préparent le futur moteur cumulatif (V0.7.1) ; l’interpolation géométrique historique reste séparée en V0.7.0. Voir [`REFONTE_V0.7.0.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/REFONTE_V0.7.0.md).
 
 ## V0.6.15 — Contrat d'export `tei-manuscript-alignment`
 
