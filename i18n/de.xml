@@ -718,4 +718,24 @@ Technische Details stehen in der Konsole oder im Startprotokoll.</string>
   <string key="alignment.error.recalculation_conflict">Neuberechnung abgebrochen: Die neuen Entsprechungen widersprechen sich.</string>
   <string key="alignment.error.invalid_state">Ungültiger Status</string>
   <string key="alignment.error.link_not_found_unchanged">Zuordnung nicht gefunden: Es wurde nichts geändert</string>
+  <string key="alignment.state.proposed">vorgeschlagen</string>
+  <string key="alignment.state.uncertain">unsicher</string>
+  <string key="alignment.state.validated">bestätigt</string>
+  <string key="alignment.kind.correspondence">Entsprechung</string>
+  <string key="alignment.htr.none">Keine Textübereinstimmung gefunden. Die HTR ist optional: Sie können direkt an den Bildern arbeiten.</string>
+  <string key="alignment.witness_choice">{witness} ({lines} XML-Zeilen)</string>
+  <string key="progress.warning.counts">(Pivot: {reference}, Ziel: {target})</string>
+  <string key="stream.warning.stale_anchor">Veralteter Anker: seine Zeilen haben sich seit der Bestätigung geändert</string>
+  <string key="ui.audit.issue.anchor_stale_anchor">Veralteter Anker: seine Zeilen haben sich seit der Bestätigung geändert</string>
+  <string key="ui.audit.issue.anchor_empty_anchor">Anker ohne Zeilen auf einer Seite</string>
+  <string key="ui.audit.issue.anchor_stale_or_ignored_anchor">Anker mit einer fehlenden oder ignorierten Zeile</string>
+  <string key="ui.audit.issue.anchor_noncontiguous_anchor">Ankerzeilen sind in der Lesereihenfolge nicht aufeinanderfolgend</string>
+  <string key="ui.audit.issue.anchor_crossing_or_overlapping_anchors">Überkreuzte oder überlappende Anker</string>
+  <string key="ui.pages.hd.choose_empty">Wählen Sie einen leeren Ordner für die HD-Bilder: Der Download überschreibt keine Datei.</string>
+  <string key="ui.xml.page_choice">{kind} — {name} (Seite {number})</string>
+  <string key="resources.binding.entry">{name} ({lines} Zeilen)</string>
+  <string key="resources.project.summary">{witness}: {pages} Seiten, {mapped} mit XML, {lines} Zeilen</string>
+  <string key="dialog.filter.project">Varians-Synchro-Projekt</string>
+  <string key="dialog.filter.images">Bilder</string>
+  <string key="viewer.status">{width} × {height} Pixel · Mausrad: Zoom; Ziehen: Verschieben</string>
 </translations>

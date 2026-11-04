@@ -718,4 +718,24 @@ Technické podrobnosti najdete v konzoli nebo ve spouštěcím protokolu.</strin
   <string key="alignment.error.recalculation_conflict">Přepočet přerušen: nové korespondence jsou ve vzájemném rozporu.</string>
   <string key="alignment.error.invalid_state">Neplatný stav</string>
   <string key="alignment.error.link_not_found_unchanged">Přiřazení nenalezeno: nic nebylo změněno</string>
+  <string key="alignment.state.proposed">navrženo</string>
+  <string key="alignment.state.uncertain">nejisté</string>
+  <string key="alignment.state.validated">potvrzeno</string>
+  <string key="alignment.kind.correspondence">korespondence</string>
+  <string key="alignment.htr.none">Nenalezena žádná textová shoda. HTR je volitelná: můžete pracovat přímo na obrázcích.</string>
+  <string key="alignment.witness_choice">{witness} ({lines} řádků XML)</string>
+  <string key="progress.warning.counts">(pivot: {reference}, cíl: {target})</string>
+  <string key="stream.warning.stale_anchor">Zastaralá kotva: její řádky se od potvrzení změnily</string>
+  <string key="ui.audit.issue.anchor_stale_anchor">Zastaralá kotva: její řádky se od potvrzení změnily</string>
+  <string key="ui.audit.issue.anchor_empty_anchor">Kotva nemá řádky na jedné straně</string>
+  <string key="ui.audit.issue.anchor_stale_or_ignored_anchor">Kotva obsahuje chybějící nebo ignorovaný řádek</string>
+  <string key="ui.audit.issue.anchor_noncontiguous_anchor">Řádky kotvy nejsou v pořadí čtení souvislé</string>
+  <string key="ui.audit.issue.anchor_crossing_or_overlapping_anchors">Křížící se nebo překrývající se kotvy</string>
+  <string key="ui.pages.hd.choose_empty">Vyberte prázdnou složku pro HD obrázky: stahování nepřepíše žádný soubor.</string>
+  <string key="ui.xml.page_choice">{kind} — {name} (strana {number})</string>
+  <string key="resources.binding.entry">{name} ({lines} řádků)</string>
+  <string key="resources.project.summary">{witness}: {pages} stran, {mapped} s XML, {lines} řádků</string>
+  <string key="dialog.filter.project">Projekt Varians-Synchro</string>
+  <string key="dialog.filter.images">Obrázky</string>
+  <string key="viewer.status">{width} × {height} pixelů · kolečko: zoom; tažení: posun</string>
 </translations>

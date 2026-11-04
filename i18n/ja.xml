@@ -718,4 +718,24 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="alignment.error.recalculation_conflict">再計算を中止しました。新しい対応どうしが矛盾しています。</string>
   <string key="alignment.error.invalid_state">無効な状態です</string>
   <string key="alignment.error.link_not_found_unchanged">対応が見つかりません。何も変更していません</string>
+  <string key="alignment.state.proposed">提案</string>
+  <string key="alignment.state.uncertain">未確定</string>
+  <string key="alignment.state.validated">承認済み</string>
+  <string key="alignment.kind.correspondence">対応</string>
+  <string key="alignment.htr.none">テキストの一致は見つかりませんでした。HTR は任意です。画像上で直接作業できます。</string>
+  <string key="alignment.witness_choice">{witness}（XML 行 {lines}）</string>
+  <string key="progress.warning.counts">（ピボット伝本 {reference}、相手側 {target}）</string>
+  <string key="stream.warning.stale_anchor">失効したアンカー：承認後に行が変わりました</string>
+  <string key="ui.audit.issue.anchor_stale_anchor">失効したアンカー：承認後に行が変わりました</string>
+  <string key="ui.audit.issue.anchor_empty_anchor">アンカーの片側に行がない</string>
+  <string key="ui.audit.issue.anchor_stale_or_ignored_anchor">存在しない行、または除外した行を含むアンカー</string>
+  <string key="ui.audit.issue.anchor_noncontiguous_anchor">アンカー内の行が読み順で連続していない</string>
+  <string key="ui.audit.issue.anchor_crossing_or_overlapping_anchors">交差または重複するアンカー</string>
+  <string key="ui.pages.hd.choose_empty">HD 画像用に空のフォルダーを選択してください。ダウンロードはファイルを上書きしません。</string>
+  <string key="ui.xml.page_choice">{kind} — {name}（{number} ページ）</string>
+  <string key="resources.binding.entry">{name}（{lines} 行）</string>
+  <string key="resources.project.summary">{witness}：{pages} ページ、XML あり {mapped}、{lines} 行</string>
+  <string key="dialog.filter.project">Varians-Synchro プロジェクト</string>
+  <string key="dialog.filter.images">画像</string>
+  <string key="viewer.status">{width} × {height} ピクセル · ホイール：ズーム、ドラッグ：移動</string>
 </translations>
