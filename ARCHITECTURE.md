@@ -4,7 +4,7 @@
 
 `bulk_binding.py` fournit le noyau d'appariement image ↔ source ALTO/PAGE. Il prépare une structure de prévisualisation et son empreinte (IDs pages, ordre, associations courantes, empreintes sources). Après choix explicite de l'utilisateur, le commit refuse les duplications et ressources modifiées et ne réécrit aucun identifiant ni ordre. Le repli par ordre naturel est limité aux lots locaux de même cardinalité et déclenche une confirmation particulière. L'affichage des miniatures est différé aux rangées visibles.
 
-`guided_ui.py` contient une fiche de témoin transactionnelle (`WitnessResourceDialog`) et un tableau éditable d'associations (`BatchBindingDialog`). `gui.py` est maintenant un lanceur minimal sans l'ancienne fenêtre V0.5. Le parseur TEI ancien est conservé **uniquement pour la lecture des données historiques et leurs tests**, pas pour générer de nouvelles liaisons éditoriales : `store_tei_reference` crée une entrée `tei_unaligned` ; le moteur de liaison viendra en V0.8.2–V0.8.3.
+`ui_resources.py` contient une fiche de témoin transactionnelle (`WitnessResourceDialog`) et `ui_batch_binding.py` un tableau éditable d'associations (`BatchBindingDialog`). `gui.py` est maintenant un lanceur minimal sans l'ancienne fenêtre V0.5. Le parseur TEI ancien est conservé **uniquement pour la lecture des données historiques et leurs tests**, pas pour générer de nouvelles liaisons éditoriales : `store_tei_reference` crée une entrée `tei_unaligned` ; le moteur de liaison viendra en V0.8.2–V0.8.3.
 
 Ne jamais modifier `physical_alignment.py`, `reading_stream.py`, `textual_progress.py`, `varians_export.py` sans tests spécifiques de non-régression : les identifiants déjà utilisés dans Varians doivent rester stables.
 
@@ -19,7 +19,7 @@ Ne jamais modifier `physical_alignment.py`, `reading_stream.py`, `textual_progre
 
 # Architecture V0.7.1 — Nouveau moteur de progression textuelle
 
-`reading_stream.py` forme les lignes physiques continues. `textual_progress.py` estime une progression textuelle normalisée (HTR quantitative → longueur de ligne → poids uniforme) et propose des groupes entre repères validés, en respectant toutes les associations protégées. `guided_ui.py` propose une prévisualisation avec sélection et n’enregistre rien sans confirmation. `physical_alignment.replace_revisable_pair_proposals()` applique atomiquement des changements limités aux propositions automatiques encore incertaines. `varians_export.py` exporte les JSON toujours conformes aux clés physiques `page_id::ordinal` pour Varians.
+`reading_stream.py` forme les lignes physiques continues. `textual_progress.py` estime une progression textuelle normalisée (HTR quantitative → longueur de ligne → poids uniforme) et propose des groupes entre repères validés, en respectant toutes les associations protégées. `ui_pair.py` propose une prévisualisation avec sélection et n’enregistre rien sans confirmation. `physical_alignment.replace_revisable_pair_proposals()` applique atomiquement des changements limités aux propositions automatiques encore incertaines. `varians_export.py` exporte les JSON toujours conformes aux clés physiques `page_id::ordinal` pour Varians.
 
 **Les couches de sources ALTO/PAGE, les images IIIF/locales, la TEI et les identifiants des lignes demeurent inchangés.** Les anciens modules `interpolation.py` et `residual_alignment.py` sont seulement conservés sous le menu de compatibilité ; ils ne sont plus le chemin principal. La V0.7.1 n’invente pas d’absence et ne vérifie pas le contenu philologique des deux textes. La production automatisée de n↔m plus fins et l’ergonomie de vérification seront perfectionnées après les tests utilisateurs.
 
@@ -50,8 +50,8 @@ Le calcul ne déduit aucune absence, aucune identité textuelle certifiée ni au
 ## Principes
 
 - Les modules `core`, `imaging`, `physical_alignment`, `alignment`, `automatic` et `review` n'importent pas Qt ; ils sont testables sans interface graphique.
-- La couche `guided_ui.py` orchestre les cas d'usage et appelle les services, sans écrire de TEI ou d'ALTO.
-- La couche `gui.py` conserve les fonctionnalités historiques V0.5.x de synchronisation TEI. `guided_ui.make_guided_window` fournit désormais la fenêtre principale.
+- Les fenêtres (modules `ui_*`, une par module) orchestrent les cas d'usage et appellent les services, sans écrire de TEI ou d'ALTO.
+- `gui.py` lance l'application ; `guided_ui.make_guided_window` fournit la fenêtre principale (`ui_main_window.GuidedWindow`) et ne charge PySide6 qu'à son appel.
 - `qt_lifecycle.py` protège le singleton QApplication lorsque l'application est lancée dans Spyder.
 
 ## Deux familles de sessions, sans confusion
@@ -86,7 +86,7 @@ La V0.6 stocke des chemins locaux absolus, ne sait pas réconcilier automatiquem
 - `page_order.py` centralise l'ordre documentaire (`ordered_pages`) sans réécrire les identifiants ni les liens sauvegardés. Ordre de Canvas IIIF prioritaire ; tri par folios ou noms naturels pour les images locales ; un `reading_order` explicite sera respecté s'il est renseigné pour toutes les pages.
 - `physical_alignment.physical_lines()` réutilise cet ordre, ce qui corrige aussi la vue textuelle des projets V0.6.0.
 - `viewer.LineImagePanel` est un composant réutilisable par témoin : page, zoom, dessin/interaction des rectangles, sélection persistante des identifiants de lignes. `PageViewer` reste une enveloppe compatible avec l'aperçu d'une page.
-- `guided_ui.PairDialog` utilise deux `LineImagePanel` en parallèle comme mode principal et réserve les listes HTR à un onglet secondaire.
+- `ui_pair.PairDialog` utilise deux `LineImagePanel` en parallèle comme mode principal et réserve les listes HTR à un onglet secondaire.
 - L'image est chargée dans un QThread ; les `QPixmap` et objets graphiques sont créés uniquement dans le fil de l'interface. Une réponse IIIF tardive ne remplace pas l'image d'une autre page (compteur de requête).
 - Pour une image IIIF, la demande initiale est limitée à une largeur de 4 200 pixels, avec replis en cas de refus explicite de taille ; pas de téléchargement de l'intégralité du Manifest.
 - Les rectangles ALTO sont projetés par des coefficients de redimensionnement `largeur image / largeur ALTO`, `hauteur image / hauteur ALTO`. Ce calcul n'est pas suffisant pour les documents recadrés/tournés ; ces cas requièrent une calibration future.

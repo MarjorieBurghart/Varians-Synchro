@@ -6,7 +6,7 @@
 
 | Groupe | Modules | Fonctions et décisions clés |
 |---|---|---|
-| Application | `gui`, `guided_ui`, `viewer`, `qt_lifecycle`, `spyder_launch` | Shell PySide6, états des fenêtres, sélection, images, processus Spyder |
+| Application | `gui`, `guided_ui`, `ui_*`, `viewer`, `qt_lifecycle`, `error_report`, `spyder_launch` | Shell PySide6, fenêtres, sélection, images, erreurs imprévues, processus Spyder |
 | Projet, ressources | `core`, `project_state`, `resource_workflow`, `bulk_binding` | Format `.vsynch`, sauvegarde/backup, témoins, ressources, liaisons page↔XML |
 | Pages et géométries | `imaging`, `page_xml`, `alto_geometry`, `hd_registry`, `page_order`, `page_management` | IIIF, ALTO/PAGE, polygones, copies HD, folios |
 | Lignes et correspondances | `physical_alignment`, `reading_stream`, `line_scope`, `correspondence_navigation`, `selection_policy`, `overlay_selection`, `overlay_filters` | UID, flux physique, groupes, exclusion, navigation et surlignages |
@@ -33,6 +33,19 @@
 
 ## Points d'attention pour une refactorisation
 
-`guided_ui.make_guided_window()` est une **factory** qui définit des composants Qt localement et relie de nombreuses fonctions métier. Ne pas déduire de l'absence de classes « top-level » que ce module n'a pas de classes. Le module `viewer.py` définit plusieurs classes Qt. `alignment.py` est une couche historique TEI conservée ; ne pas la supprimer tant que des projets antérieurs la nécessitent. L'exportateur `varians_project_export.py` n'est **pas** un simple wrapper de `varians_export.py` : il prépare également XML projet, TEI copiée, cache IIIF et ressources sous contraintes propres.
+`guided_ui.make_guided_window()` charge PySide6 et rend la fenêtre principale ; les fenêtres sont dans les modules `ui_*`, une par module, et s'importent directement :
+
+| Module | Fenêtre |
+|---|---|
+| `ui_main_window` | fenêtre principale `GuidedWindow` (projet, pages, synchronisation, avancement, exports) |
+| `ui_pair` | `PairDialog` : synchronisation visuelle d'une paire de témoins (environ 1 000 lignes) |
+| `ui_pages` | `PagesDialog` : images et associations ALTO/PAGE, copies HD, export HTR |
+| `ui_batch_binding` | `BatchBindingDialog` : association automatique par lot |
+| `ui_resources` | `WitnessResourceDialog` : ajout et modification d'un témoin |
+| `ui_tei_binding` | `TEIPhysicalBindingDialog` : liaison TEI ↔ lignes physiques |
+| `ui_reading_order`, `ui_scope` | ordre de lecture ; périmètre physique d'un témoin |
+| `ui_widgets` | widgets Qt qui traduisent leurs textes (`QLabel`, `QMessageBox`…) et `_run_modal` |
+
+Les fenêtres utilisent les widgets de `ui_widgets` à la place de ceux de PySide6 : un texte qui leur est passé est traduit. Un test qui remplace une boîte de dialogue (`QMessageBox.question`…) remplace la méthode de la classe de `ui_widgets`. Le module `viewer.py` définit plusieurs classes Qt. `alignment.py` est une couche historique TEI conservée ; ne pas la supprimer tant que des projets antérieurs la nécessitent. L'exportateur `varians_project_export.py` n'est **pas** un simple wrapper de `varians_export.py` : il prépare également XML projet, TEI copiée, cache IIIF et ressources sous contraintes propres.
 
 **Pour un changement donné**, identifier (1) contrat persistant, (2) branche métier, (3) appel GUI, (4) validations, (5) exports dépendants, (6) tests ; ne pas modifier un seul module en supposant que le flux s'y termine.

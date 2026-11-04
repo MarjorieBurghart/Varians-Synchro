@@ -7,7 +7,7 @@
 | Haute | Compatibilité export projet vérifiée avec Varians 0.9.4.0 seulement (`tests/test_varians_094_compat.py`) | Une nouvelle version de Varians peut changer ses attentes | Changer `VARIANS_REF` dans la CI et faire passer ces tests |
 | Haute | Origine scientifique des absences et validations | Faux positifs philologiques irréversibles si acceptés en bloc | Prévisualisation, provenance et contrôle humain |
 | Haute | Copies HD partielles ou modifiées | Canvas manquants, ressources cassées | Contrôle SHA-256 et couverture complète **par témoin** |
-| Moyenne | `guided_ui.py` monolithique | Refactoring délicat et tests GUI coûteux | Découpage progressif sous tests régression ouverture/enregistrement |
+| Moyenne | `ui_pair.py` encore dense (environ 1 000 lignes, une seule classe) | Refactoring délicat et tests GUI coûteux | Découpage progressif sous tests régression ; les autres fenêtres ont chacune leur module `ui_*` |
 | Moyenne | Couverture Qt limitée lorsque PySide6 absent | Scénarios interactifs non vérifiés par CI headless | Recette GUI sur Windows + tests Qt sur Linux/macOS si disponibles |
 | Moyenne | Chemins absolus vers sources externes | Projet exporté non entièrement portable | Rapport explicite, relocalisation manuelle contrôlée |
 | Moyenne | Serveurs IIIF intermittents, quota, variantes v2/v3 | Vignettes et téléchargement non disponibles | Diagnostic réseau et distinction de panne vs données absentes |

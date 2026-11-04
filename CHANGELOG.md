@@ -1,3 +1,11 @@
+## Non publié (depuis V0.8.5.6)
+
+- Dépôt GitHub : CI Linux et Windows, empreintes SHA remplacées par l’historique Git.
+- Export du projet pour Varians vérifié en l’ouvrant avec le vrai code de Varians 0.9.4.0 ; ordre de lecture corrigé et lignes hors périmètre respectés.
+- Correspondances périmées après une nouvelle segmentation : avertissement avant de changer le XML d’une page, marque dans la liste, exclusion des calculs, revalidation.
+- Interface : barre de progression du téléchargement HD, fenêtres libérées après fermeture, export HTR hors du fil de l’interface avec annulation, erreurs imprévues affichées, « Annuler » de la liaison TEI sans effet sur le projet, espaces rétablies dans les traductions.
+- Code : `guided_ui.py` (3 300 lignes) découpé en modules `ui_*`, une fenêtre par module, sans changement du code des classes ; `make_guided_window()` sans paramètre.
+
 ## V0.8.5.6 — dossier autonome de maintenance et passation (19/10/2026)
 
 - Création de `MAINTENANCE_PASSATION_V0856/` : architecture, flux, inventaire de modules, contrats persistants, moteurs, TEI, IIIF, exports, GUI/i18n, tests, conventions, limites et ADR.

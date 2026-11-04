@@ -49,7 +49,7 @@ def inventory_text() -> str:
         rows.append('')
     rows += [
         '## Attention à la lecture', '',
-        'Les fonctions et classes **internes à** `guided_ui.make_guided_window`, les méthodes des classes, les fonctions de tests et les importations dynamiques ne sont pas détaillés ici. Cette liste est **un point d’entrée**, pas une analyse d’appels complète. Les dépendances proviennent d’une inspection syntaxique (AST) et peuvent inclure des chemins conditionnels. Pour les contrats, consulter les chapitres métiers du dossier.', ''
+        'Les méthodes des classes (notamment celles des fenêtres `ui_*`), les fonctions de tests et les importations dynamiques ne sont pas détaillés ici. Cette liste est **un point d’entrée**, pas une analyse d’appels complète. Les dépendances proviennent d’une inspection syntaxique (AST) et peuvent inclure des chemins conditionnels. Pour les contrats, consulter les chapitres métiers du dossier.', ''
     ]
     return '\n'.join(rows)
 
