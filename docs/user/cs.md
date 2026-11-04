@@ -28,6 +28,8 @@ TEI musí obsahovat řádky <lb edRef="#SIGLA"/> přiřazené svědkovi. Porovne
 
 Ve třetím kroku vyberte dvojici svědků, určete odpovídající kotvy a zkontrolujte návrhy. Běžné kliknutí nahradí výběr, Ctrl+klik přidá či odebere řádek, Shift+klik vybere rozsah.
 
+Již zarovnané dvojice jsou se svým postupem uvedeny pod tlačítkem „Zarovnat svědky“: dvojklikem na dvojici nebo klávesou Enter znovu otevřete její zarovnání, jedním kliknutím ji vyberete v obou nabídkách.
+
 ## Ověření a výjimky
 
 Potvrďte správné vazby a opravte nejisté. Potvrzená absence se vztahuje jen k dané dvojici. Ručně vytvořené a potvrzené vazby zůstávají chráněné.

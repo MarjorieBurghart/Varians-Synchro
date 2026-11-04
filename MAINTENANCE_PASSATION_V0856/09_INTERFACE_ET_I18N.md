@@ -24,6 +24,10 @@ Le code des fenêtres est dense, celui de `ui_pair.py` surtout. Ses quatre fenê
 
 `error_report.install()` (appelé par `gui.main`) pose un crochet sur `sys.excepthook` : une exception levée dans une action de l'interface (slot Qt) reste écrite dans la console ou le journal, et un message « Action impossible » s'affiche en plus (`error.unexpected.*`, traduit ; le texte de l'erreur l'est s'il figure dans les catalogues). Auparavant, rien ne se passait à l'écran. Test : `tests/test_error_report_qt.py`.
 
+## Étape 3 : liste des paires
+
+Sous le bouton « Aligner les témoins », `GuidedWindow.align_status` (`_PairList`) liste une ligne par session de `pair_sessions` (`ui.alignment.pair_status`), avec l'identifiant de la session en `Qt.ItemDataRole.UserRole` ; une ligne d'erreur ou « aucune synchronisation » n'en a pas et reste inerte. Un double-clic ou Entrée (traitée par la liste elle-même : sous macOS, Entrée n'active pas un élément) ouvrent la paire par le même chemin que le bouton (`_open_pair` → `create_pair_session`, qui rend la session existante, dans son sens) ; un simple clic (`currentItemChanged`) met la paire dans les deux menus. `_list_pairs` reconstruit la liste à chaque `refresh`, signaux bloqués : la ligne choisie est gardée et les menus ne bougent pas. Test : `tests/test_alignment_list_qt.py`.
+
 ## Icône de l'application
 
 `gui.main` passe `app_icon.application_icon` à `qt_lifecycle.launch`, qui l'appelle une fois l'application Qt créée : l'icône devient celle de l'application (toutes ses fenêtres, boîtes sans parent comprises) quand Varians-Synchro possède l'application, et seulement celle de sa fenêtre principale dans la console Qt d'un autre programme. Sous Windows, `app_icon.use_own_taskbar_entry` donne au processus l'identité `Varians.VariansSynchro` (`SetCurrentProcessExplicitAppUserModelID`) avant la première fenêtre ; sans elle, la barre des tâches range la fenêtre sous `python.exe` et montre l'icône de Python. Elle n'est prise que si l'application Qt n'existe pas encore.

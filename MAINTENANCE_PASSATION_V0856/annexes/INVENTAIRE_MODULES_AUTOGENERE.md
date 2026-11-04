@@ -178,10 +178,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `bulk_binding`, `i18n`, `ui_widgets`
 **Classes déclarées au premier niveau** : `ProtectedBindingComboBox` (l.13), `BatchBindingDialog` (l.25)
 
-## `varians_synchro/ui_main_window.py` (604 lignes)
+## `varians_synchro/ui_main_window.py` (673 lignes)
 **Objet (docstring source)** : Fenêtre principale de Varians-Synchro : projet et témoins, pages, synchronisation, avancement et exports.
 **Dépendances internes observées** : `core`, `i18n`, `physical_alignment`, `project_state`, `resource_workflow`, `tei_binding`, `ui_batch_binding`, `ui_pages`, `ui_pair`, `ui_resources`, `ui_scope`, `ui_tei_binding`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`
-**Classes déclarées au premier niveau** : `GuidedWindow` (l.26)
+**Classes déclarées au premier niveau** : `_PairList` (l.26), `GuidedWindow` (l.43)
 
 ## `varians_synchro/ui_pages.py` (580 lignes)
 **Objet (docstring source)** : Fenêtre « Images et associations ALTO/PAGE » d’un témoin : ordre des pages, association des XML, copies HD et export pour une HTR.

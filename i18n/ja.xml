@@ -606,6 +606,8 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="ui.pages.scope.tip">伝本を選び、編集対象外の ALTO/PAGE 行を指定します。</string>
   <string key="ui.pages.tei.tip">TEI 行と指定した範囲を比較し、画像を確認してから対応付けを確定します。</string>
   <string key="ui.alignment.open.tip">基準伝本と別の伝本の行の視覚的照合を開きます。</string>
+  <string key="ui.alignment.pair_status">{reference} ↔ {target}：{groups} グループ、{reference_covered}/{reference_total} 行と {target_covered}/{target_total} 行</string>
+  <string key="ui.alignment.list.tip">ペアをダブルクリックするか Enter キーを押すと、その整列を開きます。クリックすると、2 つのメニューでそのペアが選択されます。</string>
   <string key="ui.final.export_project.action">入力済み Varians プロジェクトを作成…</string>
   <string key="ui.final.export_project.tip">project.xml、参照元 TEI のコピー、伝本情報、対応付け JSON を含むプロジェクトフォルダーを作成します。インストール済みの Varians との互換性を確認してください。</string>
   <string key="ui.final.export_project.no_tei">基準伝本に TEI 版が登録されていません。Varians の「新しい翻刻を開始」と同じく、Varians プロジェクトには空の TEI 版が入ります。</string>

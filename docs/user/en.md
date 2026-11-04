@@ -28,6 +28,8 @@ The TEI must contain witness-specific <lb edRef="#ID"/> elements. Compare counts
 
 In step 3 choose two witnesses, place homologous anchors, generate cumulative-text-progress suggestions and review them. Single-click replaces the witness selection across all pages; Ctrl-click toggles an item; Shift-click selects a range. Counterpart highlighting is not a selection.
 
+Pairs already aligned are listed below the “Align witnesses” button with their progress: double-click a pair, or press Enter, to reopen its alignment; a single click selects it in the two menus.
+
 ## Validate and manage exceptions
 
 Validate correct groups, revise uncertain groups and confirm genuine omissions pair by pair. Globally ignored lines are outside the witness scope. Manual and validated groups are protected against automatic recalculation.
