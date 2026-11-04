@@ -119,7 +119,8 @@ class GuidedWindow(QMainWindow):
     def _update_save_indicator(self):
         changed = self._changes.is_modified(self.project)
         self.setWindowModified(changed)
-        name = 'Projet : ' + self.project['name'] + (f'  ·  {Path(self.path).name}' if self.path else '  ·  ' + tr('project.unsaved_file'))
+        name = (tr('project.title', name=self.project['name'])
+                + '  ·  ' + (Path(self.path).name if self.path else tr('project.unsaved_file')))
         self.name_label.setText(name + (tr('project.unsaved_marker') if changed else ''))
 
     def _confirm_save_or_discard(self) -> bool:
@@ -479,8 +480,8 @@ class GuidedWindow(QMainWindow):
                     QTreeWidgetItem(row, ['TEI · ' + Path(r['path']).name,
                         (tr('tei.binding.status.' + tei_binding_status(self.project, w['id'], r['id'])['status'])
                          if r.get('tei_binding') else tr('resources.project.tei_pending'))])
-            all_rows.append(f"{w['id']}: {info['pages']} pages, {info['mapped']} avec XML, "
-                            f"{len(physical_lines(w))} lignes")
+            all_rows.append(tr('resources.project.summary', witness=w['id'], pages=info['pages'],
+                               mapped=info['mapped'], lines=len(physical_lines(w))))
         self.inventory.expandAll()
         self.page_info.setPlainText('\n'.join(all_rows) if all_rows
                                     else tr('resources.project.no_witness'))
@@ -490,7 +491,8 @@ class GuidedWindow(QMainWindow):
             selector.blockSignals(True)
             selector.clear()
             for w in self.project['witnesses']:
-                selector.addItem(f"{w['id']} ({len(physical_lines(w))} lignes XML)", w['id'])
+                selector.addItem(tr('alignment.witness_choice', witness=w['id'],
+                                    lines=len(physical_lines(w))), w['id'])
             index = selector.findData(selection)
             if (selector is self.reference_box and index < 0
                     and self.project.get('pivot_witness_id')):
@@ -519,7 +521,7 @@ class GuidedWindow(QMainWindow):
         from .core import save_project
         filename = (value.strip() or tr('project.default_name')) + '.vsynch'
         path, _ = QFileDialog.getSaveFileName(self, tr('resources.project.choose_path'),
-                                              filename, 'Projet Varians-Synchro (*.vsynch)')
+                                              filename, tr('dialog.filter.project') + ' (*.vsynch)')
         if not path:
             return
         if not path.lower().endswith('.vsynch'):
@@ -542,7 +544,7 @@ class GuidedWindow(QMainWindow):
         self.refresh()
 
     def open(self):
-        path, _ = QFileDialog.getOpenFileName(self, tr('ui.ouvrir.un.projet'), '', 'Projet (*.vsynch)')
+        path, _ = QFileDialog.getOpenFileName(self, tr('ui.ouvrir.un.projet'), '', tr('dialog.filter.project') + ' (*.vsynch)')
         if not path:
             return
         try:
@@ -565,7 +567,7 @@ class GuidedWindow(QMainWindow):
         """Return False on Save As cancellation or write failure."""
         path = self.path or QFileDialog.getSaveFileName(
             self, tr('common.save'), 'projet.vsynch',
-            'Projet Varians-Synchro (*.vsynch)')[0]
+            tr('dialog.filter.project') + ' (*.vsynch)')[0]
         if not path:
             return False
         try:
