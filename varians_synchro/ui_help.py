@@ -21,6 +21,7 @@ from PySide6.QtWidgets import (QDialogButtonBox, QHBoxLayout, QLabel, QLineEdit,
                                QVBoxLayout)
 
 from .help_search import Section, Utf16Positions, search
+from .errors import localized_text
 from .i18n import get_language, tr
 from .ui_widgets import QDialog, call_soon
 
@@ -78,7 +79,7 @@ class HelpDialog(QDialog):
             try:
                 self.browser.setHtml(path.read_text(encoding='utf-8'))
             except (OSError, UnicodeDecodeError) as exc:
-                self.browser.setPlainText(tr('help.missing') + '\n\n' + str(exc))
+                self.browser.setPlainText(tr('help.missing') + '\n\n' + localized_text(exc))
         splitter = QSplitter(Qt.Orientation.Horizontal, self)
         splitter.addWidget(self.results)
         splitter.addWidget(self.browser)

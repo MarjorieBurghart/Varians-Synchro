@@ -12,6 +12,7 @@ import re
 from pathlib import Path
 
 from .page_order import ordered_pages, _natural
+from .errors import Localized, localized
 
 
 def _stem(value):
@@ -194,8 +195,7 @@ def apply_binding_choices(witness, plan, selections):
         details = '; '.join(
             f"{conflict['xml']} → {', '.join(p['label'] for p in conflict['pages'])}"
             for conflict in conflicts)
-        raise ValueError('Une même page XML ne peut pas être attribuée à plusieurs images : '
-                         + details)
+        raise localized(ValueError, 'error.binding.xml_page_twice', details=details)
     # Everything has been checked: modifying the page dictionaries is safe.
     # A page bound to another XML loses the reading order made for its old lines.
     from .reading_stream import rebind_page

@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 
 from .imaging import mapped_alto_page
 from .page_order import ordered_pages
+from .errors import Localized, localized
 
 STATES = {'proposed', 'uncertain', 'validated'}
 KINDS = {'correspondence', 'absence'}
@@ -506,10 +507,10 @@ def verify_pair_sessions(project):
         try:
             status = pair_progress(project, session)
             if status['stale_references']:
-                alerts.append(f"{session['reference_witness_id']} ↔ {session['target_witness_id']} : "
-                              f"{status['stale_references']} ligne(s) modifiée(s) ou absente(s)")
+                alerts.append(Localized('error.pairs.stale_lines', reference=session['reference_witness_id'],
+                                        target=session['target_witness_id'], count=status['stale_references']))
         except (ValueError, KeyError) as exc:
-            alerts.append(f"Session {session.get('id')} : {exc}")
+            alerts.append(Localized('error.pairs.session_error', session=session.get('id'), error=exc))
     return alerts
 
 
@@ -566,8 +567,7 @@ def suggest_htr_pair_alignment(project, session, min_support=.38):
         })
     warnings = list(result['warnings'])
     if coarse_count:
-        warnings.append(f'{coarse_count} groupe(s) couvrent plusieurs lignes de chaque côté : '
-                        'preuve textuelle, précision des lignes insuffisante.')
+        warnings.append(Localized('error.htr.coarse_groups', count=coarse_count))
     return {'proposals': candidates, 'warnings': warnings,
             'unmatched_reference': result['unmatched_base'],
             'unmatched_target': result['unmatched_target']}

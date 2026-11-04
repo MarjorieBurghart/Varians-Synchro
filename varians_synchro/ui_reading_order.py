@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from PySide6.QtWidgets import QHBoxLayout, QVBoxLayout
 
+from .errors import localized_text
 from .i18n import tr
 from .imaging import mapped_alto_page
 from .reading_stream import (anchor_intervals, page_regions, reading_stream,
@@ -181,4 +182,4 @@ class ReadingOrderDialog(QDialog):
                 details.append(f"! {reason} ({warning['link_id']})")
             QMessageBox.information(self, tr('stream.preview'), summary + '\n\n' + '\n'.join(details))
         except Exception as exc:
-            QMessageBox.warning(self, tr('stream.preview'), str(exc))
+            QMessageBox.warning(self, tr('stream.preview'), localized_text(exc))

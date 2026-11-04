@@ -101,6 +101,13 @@ def tr(key_or_legacy_text: str, **values) -> str:
     return value.format(**values) if values else value
 
 
+def french(key: str, **values) -> str:
+    """Le texte français de *key*, quelle que soit la langue de l'interface :
+    celui des messages d'erreur et des journaux (voir ``errors.py``)."""
+    value = _CATALOGS['fr'].get(key, key)
+    return value.format(**values) if values else value
+
+
 def translate_template(key_or_legacy_text: str, **values) -> str:
     return tr(key_or_legacy_text, **values)
 

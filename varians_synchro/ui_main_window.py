@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (QApplication, QHBoxLayout, QListWidgetItem,
                                QStackedWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
 
 from .core import check_alto_files, load_project, new_project, save_project, VERSION
+from .errors import localized_text
 from .i18n import get_language, language_labels, set_language, tr
 from .physical_alignment import (create_pair_session, pair_progress, physical_lines,
                                  verify_pair_sessions)
@@ -162,7 +163,7 @@ class GuidedWindow(QMainWindow):
             task()
             self.refresh()
         except Exception as exc:
-            QMessageBox.critical(self,tr('Opération impossible'),str(exc))
+            QMessageBox.critical(self,tr('Opération impossible'),localized_text(exc))
 
     def _build_project_tab(self):
         page = QWidget()
@@ -340,7 +341,7 @@ class GuidedWindow(QMainWindow):
             QMessageBox.information(self, tr('export.varians.title'),
                 tr('export.varians.success', path=directory, summary=summary))
         except Exception as exc:
-            QMessageBox.critical(self, tr('export.varians.title'), str(exc))
+            QMessageBox.critical(self, tr('export.varians.title'), localized_text(exc))
 
     def _build_progress_tab(self):
         page = QWidget()
@@ -402,7 +403,7 @@ class GuidedWindow(QMainWindow):
         try:
             export_varians_project(self.project, base, folder)
         except Exception as exc:
-            QMessageBox.critical(self, tr('ui.final.export_project.action'), str(exc))
+            QMessageBox.critical(self, tr('ui.final.export_project.action'), localized_text(exc))
         else:
             QMessageBox.information(self, tr('ui.final.export_project.action'),
                 tr('ui.final.export_project.success', path=str(Path(folder) / 'project.xml'))
@@ -443,7 +444,7 @@ class GuidedWindow(QMainWindow):
             QMessageBox.information(self, tr('audit.title'), headline + '\n' +
                                     tr('audit.details'))
         except Exception as exc:
-            QMessageBox.critical(self, tr('audit.title'), str(exc))
+            QMessageBox.critical(self, tr('audit.title'), localized_text(exc))
 
     def refresh(self):
         from .resource_workflow import resource_summary
@@ -510,7 +511,7 @@ class GuidedWindow(QMainWindow):
         if legacy_count:
             report += tr('ui.final.legacy_sessions', count=legacy_count) + '\n'
         problems = verify_pair_sessions(self.project) + check_alto_files(self.project)
-        report += '\n'.join(problems) if problems else tr('ui.final.no_problems')
+        report += '\n'.join(map(localized_text, problems)) if problems else tr('ui.final.no_problems')
         self.progress.setPlainText(report)
         self._update_save_indicator()
 
@@ -535,7 +536,7 @@ class GuidedWindow(QMainWindow):
         try:
             save_project(new_data, path)
         except Exception as exc:
-            QMessageBox.critical(self, tr('project.save_error'), str(exc))
+            QMessageBox.critical(self, tr('project.save_error'), localized_text(exc))
             return
         # Only replace the in-memory document after the new file is saved.
         self.project = new_data
@@ -550,7 +551,7 @@ class GuidedWindow(QMainWindow):
         try:
             incoming = load_project(path)
         except Exception as exc:
-            QMessageBox.critical(self, tr('project.open_error'), str(exc))
+            QMessageBox.critical(self, tr('project.open_error'), localized_text(exc))
             return
         if not self._confirm_save_or_discard():
             return
@@ -573,7 +574,7 @@ class GuidedWindow(QMainWindow):
         try:
             save_project(self.project, path)
         except Exception as exc:
-            QMessageBox.critical(self, tr('project.save_error'), str(exc))
+            QMessageBox.critical(self, tr('project.save_error'), localized_text(exc))
             return False
         self.path = path
         self._changes.mark_saved(self.project)
@@ -602,7 +603,7 @@ class GuidedWindow(QMainWindow):
             if _run_modal(dialog) == QDialog.DialogCode.Accepted:
                 self.refresh()
         except Exception as exc:
-            QMessageBox.warning(self, tr('resources.binding.title'), str(exc))
+            QMessageBox.warning(self, tr('resources.binding.title'), localized_text(exc))
 
     def manage_pages(self):
         w=self.choose_witness()
@@ -622,7 +623,7 @@ class GuidedWindow(QMainWindow):
             try:
                 progress = pair_progress(self.project, session)
             except ValueError as exc:
-                pairs.addItem(QListWidgetItem(tr(str(exc))))
+                pairs.addItem(QListWidgetItem(localized_text(exc)))
                 continue
             item = QListWidgetItem(tr(
                 'ui.alignment.pair_status', reference=session['reference_witness_id'],
@@ -670,4 +671,4 @@ class GuidedWindow(QMainWindow):
             session=create_pair_session(self.project,a,b)
             dlg=PairDialog(self.project,session,self);_run_modal(dlg);self.refresh()
         except Exception as exc:
-            QMessageBox.warning(self,tr('Synchronisation'),str(exc))
+            QMessageBox.warning(self,tr('Synchronisation'),localized_text(exc))

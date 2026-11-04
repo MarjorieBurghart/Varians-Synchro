@@ -86,16 +86,16 @@ def verify_before_review(project, session, ids):
     wanted = set(ids)
     links = {link['id']: link for link in session.get('links', [])}
     if len(wanted) != len(ids) or not wanted or wanted - links.keys():
-        raise ValueError('Review selection is empty, duplicated or no longer exists')
+        raise ValueError('Sélection à valider vide, en double ou disparue.')
     a, b = pair_indices(project, session)
     for uid in wanted:
         link = links[uid]
         if link.get('kind') != 'correspondence':
-            raise ValueError('An absence cannot be validated as a correspondence')
+            raise ValueError('Une absence ne peut pas être validée comme correspondance.')
         for line_id in link.get('reference_ids', []) + link.get('target_ids', []):
             current = a.get(line_id) or b.get(line_id)
             if current is None or link.get('fingerprints', {}).get(line_id) != current['fingerprint']:
-                raise ValueError('An ALTO/PAGE line has changed: review its association before validation')
+                raise ValueError('Une ligne ALTO/PAGE a changé : vérifiez son association avant de la valider.')
     return links
 
 

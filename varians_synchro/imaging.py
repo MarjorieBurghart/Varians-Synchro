@@ -10,6 +10,7 @@ import zipfile
 from pathlib import Path
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
+from .errors import Localized, localized
 
 MAX_MANIFEST_BYTES = 20_000_000
 MAX_IMAGE_BYTES = 80_000_000
@@ -217,7 +218,7 @@ def export_iiif_htr_zip(witness, page_ids, output_path, max_width=2500, *,
                 fname=f'{witness["id"]}_{num:04d}.jpg'
                 body=image_bytes(p,max_width)
                 if not body.startswith(b'\xff\xd8'):
-                    raise ValueError(f'Réponse non JPEG pour {p["label"]} ; export interrompu')
+                    raise localized(ValueError, 'error.imaging.export_not_jpeg', page=p['label'])
                 z.writestr(fname,body)
                 items.append({'file':fname,'canvas_id':p['id'],'label':p['label'],
                               'image_request_url':image_request_url(p,max_width),
@@ -281,8 +282,7 @@ def iiif_hd_url(page):
     canvas = page.get('canvas') or {}
     service = canvas.get('image_service')
     if not isinstance(service, str) or urlparse(service).scheme not in ('http', 'https'):
-        raise ValueError('Ce Canvas ne fournit pas de service IIIF Image API pour la HD : '
-                         + str(page.get('label') or page.get('id')))
+        raise localized(ValueError, 'error.imaging.no_image_service', page=str(page.get('label') or page.get('id')))
     version = canvas.get('iiif_image_version', 2)
     if version not in (2, 3):
         raise ValueError('Version Image API IIIF non reconnue')
@@ -346,11 +346,10 @@ def export_iiif_hd_images(witness, page_ids, destination, *, cancelled=None,
                         signature = chunk[:3]
                     total += len(chunk)
                     if total > max_image_bytes:
-                        raise ValueError('Image HD trop volumineuse : ' + str(page.get('label')))
+                        raise localized(ValueError, 'error.imaging.hd_too_large', page=str(page.get('label')))
                     outfile.write(chunk)
             if signature != b'\xff\xd8\xff':
-                raise ValueError('Le service IIIF n’a pas retourné une image JPEG : '
-                                 + str(page.get('label')))
+                raise localized(ValueError, 'error.imaging.hd_not_jpeg', page=str(page.get('label')))
             manifest['pages'].append({'file': filename, 'canvas_id': page['id'],
                                       'label': page.get('label'), 'iiif_image_url': url,
                                       'size_bytes': total})

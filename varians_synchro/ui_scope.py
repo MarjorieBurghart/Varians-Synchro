@@ -5,6 +5,7 @@ import copy
 
 from PySide6.QtWidgets import QHBoxLayout, QMessageBox as QtMessageBox, QVBoxLayout
 
+from .errors import localized_text
 from .i18n import tr
 from .line_scope import ignored_ids, linked_scope_conflicts, update_ignored_lines
 from .ui_widgets import QDialog, QLabel, QMessageBox, QPushButton
@@ -76,7 +77,7 @@ class SingleWitnessScopeDialog(QDialog):
             self.panel.clear_selection()
             self.update_styles()
         except Exception as exc:
-            QMessageBox.warning(self, tr('tei.scope.title'), str(exc))
+            QMessageBox.warning(self, tr('tei.scope.title'), localized_text(exc))
 
     def commit(self):
         self.original_project.clear()
