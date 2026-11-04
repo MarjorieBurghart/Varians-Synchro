@@ -4,9 +4,9 @@
   <string key="ui.orange.selection.rose.correspondance.consultee.vert.manuel">arancione = selezione · rosa = corrispondenza visualizzata · verde = manuale · blu = automatico · rosso = assenza · tratteggiato = da verificare</string>
   <string key="ui.certaines.lignes.liees.sont.introuvables.dans.les">Alcune righe collegate non si trovano negli ALTO attuali.</string>
   <string key="ui.correspondance.enregistree.mais.lignes.introuvables.dans.les">Collegamento registrato, ma righe non trovate negli ALTO attuali.</string>
-  <string key="ui.correspondance.affichee">Corrispondenza visualizzata:</string>
-  <string key="ui.ligne.s.dans">righe in</string>
-  <string key="ui.rose.non.selectionnees">(rosa, non selezionate).</string>
+  <string key="ui.correspondance.affichee">Corrispondenza visualizzata: </string>
+  <string key="ui.ligne.s.dans"> righe in </string>
+  <string key="ui.rose.non.selectionnees"> (rosa, non selezionate).</string>
   <string key="alignment.counterpart.absent">Assenza confermata: nessuna riga nell'altro manoscritto.</string>
   <string key="alignment.counterpart.none">Nessuna corrispondenza registrata per questa riga.</string>
   <string key="alignment.counterpart.hint">Corrispondenza evidenziata in rosa, non selezionata per il lavoro.</string>
@@ -124,10 +124,10 @@
   <string key="viewer.fit_page">Adatta</string>
   <string key="viewer.fit_page.tip">Mostra l'intera pagina</string>
   <string key="common.line">Riga</string>
-  <string key="ui.ligne.s.selectionnee.s">righe selezionate</string>
+  <string key="ui.ligne.s.selectionnee.s"> righe selezionate</string>
   <string key="ui.cliquer.pour.selectionner.ctrl.maj.selection.multiple">Clic per selezionare (Ctrl/Maiusc: selezione multipla)</string>
   <string key="ui.groupes.proposes.aucune.validation.automatique.selectionnez.ceux">Gruppi proposti; nessuna convalida automatica. Seleziona quelli da conservare (Ctrl+A per tutti).</string>
-  <string key="ui.colonne.s.exploitables">intervalli di colonna utilizzabili</string>
+  <string key="ui.colonne.s.exploitables"> intervalli di colonna utilizzabili </string>
   <string key="viewer.focus_line">Ingrandisci riga selezionata</string>
   <string key="viewer.alto.toggle">Contorni delle righe</string>
   <string key="viewer.htr.toggle">Testo HTR</string>
@@ -140,9 +140,9 @@ selezione</string>
   <string key="viewer.loading">Caricamento immagine…</string>
   <string key="viewer.open_local">Apertura immagine locale…</string>
   <string key="ui.format.dimage.non.reconnu.par.qt">Formato immagine non riconosciuto da Qt.</string>
-  <string key="viewer.image_unavailable.prefix">Immagine non disponibile:</string>
-  <string key="ui.attention.proportions.image.alto.differentes.verifier.les">· ATTENZIONE: proporzioni immagine/ALTO diverse; verifica contorni</string>
-  <string key="ui.dimensions.alto.inconnues.cadres.indisponibles">· dimensioni ALTO sconosciute; contorni non disponibili</string>
+  <string key="viewer.image_unavailable.prefix">Immagine non disponibile: </string>
+  <string key="ui.attention.proportions.image.alto.differentes.verifier.les"> · ATTENZIONE: proporzioni immagine/ALTO diverse; verifica contorni</string>
+  <string key="ui.dimensions.alto.inconnues.cadres.indisponibles"> · dimensioni ALTO sconosciute; contorni non disponibili</string>
   <string key="common.page">Pagina</string>
   <string key="ui.erreur">Errore</string>
   <string key="common.open">Apri</string>
@@ -156,12 +156,12 @@ selezione</string>
   <string key="ui.proposer.automatiquement">Proporre automaticamente</string>
   <string key="ui.exporter.json.varians">Esportare JSON per Varians</string>
   <string key="ui.propositions.automatiques.a.verifier">Suggerimenti automatici — verifica necessaria</string>
-  <string key="ui.atelier.dalignement">– Laboratorio di allineamento</string>
-  <string key="ui.atelier.dalignement.2">— Laboratorio di allineamento</string>
+  <string key="ui.atelier.dalignement"> – Laboratorio di allineamento</string>
+  <string key="ui.atelier.dalignement.2"> — Laboratorio di allineamento</string>
   <string key="ui.reference.s.a.controler">riferimenti da verificare</string>
-  <string key="ui.intervalle.s.ignore.s">intervalli ignorati.</string>
-  <string key="ui.lignes">righe  ·</string>
-  <string key="ui.groupes">gruppi  ·</string>
+  <string key="ui.intervalle.s.ignore.s"> intervalli ignorati.</string>
+  <string key="ui.lignes"> righe  · </string>
+  <string key="ui.groupes"> gruppi  · </string>
   <string key="ui.un.texte.ancien.est.conserve.comme.pivot">Un testo precedente è stato conservato come riferimento facoltativo.</string>
   <string key="ui.pages.associees.a.un.alto">pagine associate ad ALTO</string>
   <string key="ui.aucune.association.non.ambigue.trouvee.par.les">Nessuna corrispondenza univoca trovata in base ai nomi dei file.
@@ -206,7 +206,7 @@ Applicare?</string>
   <string key="alignment.filter.tip">Filtra i contorni sulle due immagini senza modificare gli allineamenti.</string>
   <string key="alignment.legend.title">Legenda: </string>
   <string key="ui.orange.selection.active.vert.plein.synchronisation.manuelle">arancione = selezione attiva · verde continuo = allineamento manuale convalidato · verde tratteggiato = manuale da verificare · blu continuo = automatico convalidato · blu tratteggiato = automatico da verificare · rosso tratteggiato = assenza confermata</string>
-  <string key="alignment.suggested_lines.prefix">Righe proposte:</string>
+  <string key="alignment.suggested_lines.prefix">Righe proposte: </string>
   <string key="ui.nombre.de.lignes.trop.different.entre.les">Numero di righe troppo diverso tra i testimoni.</string>
   <string key="ui.liens.existants.non.monotones.ou.traversant.une">Collegamenti esistenti non monotoni o oltre un limite: colonna non ricalcolata.</string>
   <string key="ui.certaines.zones.sont.delimitees.par.des.liens">Alcune zone sono delimitate da collegamenti incerti: controllali.</string>
@@ -242,7 +242,7 @@ Sì: esportazione esplorativa.
 No: solo collegamenti convalidati.</string>
   <string key="alignment.export.varians_title">Esportare in Varians</string>
   <string key="alignment.export.result_title">Esportazione JSON</string>
-  <string key="alignment.auto.unreliable">Nessun suggerimento testuale affidabile. Verificare la disponibilità HTR e le ancore.</string>
+  <string key="alignment.auto.unreliable">Nessun suggerimento testuale affidabile. Verificare la disponibilità HTR e le ancore. </string>
   <string key="source.alto.replace_title">Sostituire ALTO</string>
   <string key="source.alto.no_files">Importare i file ALTO per questo testimone.</string>
   <string key="source.alto.select">File ALTO e pagina</string>
@@ -304,7 +304,7 @@ No: solo collegamenti convalidati.</string>
   <string key="scope.confirm.text">Alcune righe appartengono a {count} gruppi, anche in confronti diversi. Ignorarle rimuove i relativi collegamenti, preservando le altre righe quando possibile. Continuare?</string>
   <string key="scope.changed">Ambito modificato: {count} righe. Salva il file .vsynch.</string>
   <string key="scope.progress">ignorate: {left} / {right}</string>
-  <string key="scope.text.prefix">[ignorata]</string>
+  <string key="scope.text.prefix">[ignorata] </string>
   <string key="scope.no_htr">[senza HTR]</string>
   <string key="scope.legend">Viola = senza collegamento · verde = manuale · blu = automatico · grigio tratteggiato = ignorata · arancione = selezione · rosa = corrispondenza · rosso = assenza · tratteggio = da verificare</string>
   <string key="scope.error.link_ignored">Reintegra le righe ignorate prima di collegarle.</string>
@@ -312,8 +312,8 @@ No: solo collegamenti convalidati.</string>
   <string key="scope.error.legacy_tei">La riga è legata a una vecchia sessione TEI; scollegala nell'utensile TEI prima di ignorarla.</string>
   <string key="viewer.compact_overlay">Indicatori discreti</string>
   <string key="viewer.compact_overlay.tip">Mostra brevi segni di riga invece dei contorni ALTO completi. Disattiva per i contorni interi.</string>
-  <string key="viewer.polygon_count">· {count} contorni poligonali di riga</string>
-  <string key="viewer.no_polygon">· nessun contorno poligonale di riga</string>
+  <string key="viewer.polygon_count"> · {count} contorni poligonali di riga</string>
+  <string key="viewer.no_polygon"> · nessun contorno poligonale di riga</string>
   <string key="ui.xml.import_title">Importare file ALTO o PAGE-XML</string>
   <string key="ui.xml.source">Sorgente delle righe XML</string>
   <string key="ui.xml.select_page">Pagina ALTO o PAGE da associare</string>
@@ -330,7 +330,7 @@ No: solo collegamenti convalidati.</string>
   <string key="ui.xml.import_button">Importare ALTO o PAGE</string>
   <string key="ui.xml.workflow_only">Solo immagini e ALTO/PAGE</string>
   <string key="ui.xml.visual_tab">Immagini e righe XML (principale)</string>
-  <string key="ui.xml.pages_title">Immagini e associazioni ALTO/PAGE —</string>
+  <string key="ui.xml.pages_title">Immagini e associazioni ALTO/PAGE — </string>
   <string key="ui.xml.replace_title">Sostituisci sorgente XML</string>
   <string key="ui.xml.skipped_lines"> ; ignorate {count} righe prive di contorni</string>
   <string key="ui.xml.unverified_bindings">Le associazioni proposte devono essere verificate: controllare i contorni delle righe sulle immagini.
@@ -381,7 +381,7 @@ Consultare rapport_export.json e la guida: le chiavi si riferiscono alle righe f
   <string key="stream.move_down">Sposta giù</string>
   <string key="stream.reset_lines">Ripristina ordine delle righe</string>
   <string key="stream.preview">Mostra intervalli tra ancore</string>
-  <string key="stream.ignored">[ignorata]</string>
+  <string key="stream.ignored">[ignorata] </string>
   <string key="stream.status">{pages} pagine associate, {lines} righe attive nel flusso di lettura.</string>
   <string key="stream.preview.summary">{anchors} ancore convalidate, {intervals} intervalli continui, {warnings} avvisi.</string>
   <string key="stream.warning.empty_anchor">Ancora senza righe su uno dei lati</string>
@@ -429,7 +429,7 @@ Consultare rapport_export.json e la guida: le chiavi si riferiscono alle righe f
   <string key="review.local.preview">Ricalcolo limitato a questo intervallo: {count} suggerimenti.</string>
   <string key="review.counts">{pending} gruppi da verificare · {validated} convalidati · {absences} assenze</string>
   <string key="project.unsaved_file">non salvato</string>
-  <string key="project.unsaved_marker">● Modifiche non salvate</string>
+  <string key="project.unsaved_marker"> ● Modifiche non salvate</string>
   <string key="project.unsaved.title">Modifiche non salvate</string>
   <string key="project.unsaved.question">Il progetto «{name}» contiene modifiche non salvate.</string>
   <string key="project.unsaved.explanation">Vuoi salvare il progetto prima di continuare? Scegliendo «Non salvare», le modifiche andranno perse.</string>

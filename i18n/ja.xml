@@ -127,7 +127,7 @@
   <string key="ui.ligne.s.selectionnee.s">行を選択</string>
   <string key="ui.cliquer.pour.selectionner.ctrl.maj.selection.multiple">クリックして選択（Ctrl/Shift：複数選択）</string>
   <string key="ui.groupes.proposes.aucune.validation.automatique.selectionnez.ceux">グループは候補であり自動承認されません。保存するものを選択（Ctrl+A ですべて）。</string>
-  <string key="ui.colonne.s.exploitables">利用可能な段の区間</string>
+  <string key="ui.colonne.s.exploitables">利用可能な段の区間 </string>
   <string key="viewer.focus_line">選択行を拡大</string>
   <string key="viewer.alto.toggle">行の輪郭</string>
   <string key="viewer.htr.toggle">HTR テキスト</string>
@@ -160,8 +160,8 @@
   <string key="ui.atelier.dalignement.2">— 整列作業室</string>
   <string key="ui.reference.s.a.controler">要確認の参照</string>
   <string key="ui.intervalle.s.ignore.s">無視した区間</string>
-  <string key="ui.lignes">行  ·</string>
-  <string key="ui.groupes">グループ  ·</string>
+  <string key="ui.lignes">行  · </string>
+  <string key="ui.groupes">グループ  · </string>
   <string key="ui.un.texte.ancien.est.conserve.comme.pivot">以前のテキストを任意の参照資料として保存しました。</string>
   <string key="ui.pages.associees.a.un.alto">ALTO に対応付けられたページ</string>
   <string key="ui.aucune.association.non.ambigue.trouvee.par.les">ファイル名から一意の対応は見つかりませんでした。
@@ -304,7 +304,7 @@
   <string key="scope.confirm.text">一部の行は {count} グループに含まれます（複数の伝本ペアを含む場合あり）。無視すると対応が解除されますが、可能な限り他の行を保持します。続行しますか？</string>
   <string key="scope.changed">対象範囲を変更しました：{count} 行。.vsynch を保存してください。</string>
   <string key="scope.progress">無視：{left} / {right}</string>
-  <string key="scope.text.prefix">［無視］</string>
+  <string key="scope.text.prefix">［無視］ </string>
   <string key="scope.no_htr">［HTR なし］</string>
   <string key="scope.legend">紫＝未対応 · 緑＝手動 · 青＝自動 · 灰色点線＝無視 · 橙＝選択 · ピンク＝対応 · 赤＝欠落 · 点線＝要確認</string>
   <string key="scope.error.link_ignored">無視した行を関連付ける前に対象へ戻してください。</string>
@@ -330,7 +330,7 @@
   <string key="ui.xml.import_button">ALTO または PAGE をインポート</string>
   <string key="ui.xml.workflow_only">画像と ALTO/PAGE のみ</string>
   <string key="ui.xml.visual_tab">画像と XML 行（主画面）</string>
-  <string key="ui.xml.pages_title">画像と ALTO/PAGE の対応 —</string>
+  <string key="ui.xml.pages_title">画像と ALTO/PAGE の対応 — </string>
   <string key="ui.xml.replace_title">XML データ元を置き換える</string>
   <string key="ui.xml.skipped_lines"> ; 輪郭のない {count} 行をスキップ</string>
   <string key="ui.xml.unverified_bindings">提案された関連付けには確認が必要です。画像上で行の輪郭を確認してください。
@@ -381,7 +381,7 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="stream.move_down">下へ</string>
   <string key="stream.reset_lines">行順をリセット</string>
   <string key="stream.preview">アンカー間の区間を表示</string>
-  <string key="stream.ignored">［無視］</string>
+  <string key="stream.ignored">［無視］ </string>
   <string key="stream.status">関連付け済みページ {pages}、読書順の有効行 {lines}</string>
   <string key="stream.preview.summary">承認アンカー {anchors}、連続区間 {intervals}、警告 {warnings}</string>
   <string key="stream.warning.empty_anchor">アンカーの片側に行がない</string>

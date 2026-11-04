@@ -4,9 +4,9 @@
   <string key="ui.orange.selection.rose.correspondance.consultee.vert.manuel">Orange = Auswahl · Rosa = angezeigte Entsprechung · Grün = manuell · Blau = automatisch · Rot = Fehlen · gestrichelt = zu prüfen</string>
   <string key="ui.certaines.lignes.liees.sont.introuvables.dans.les">Einige verknüpfte Zeilen fehlen in den aktuellen ALTO-Dateien.</string>
   <string key="ui.correspondance.enregistree.mais.lignes.introuvables.dans.les">Link gespeichert, aber Zeilen fehlen in den aktuellen ALTO.</string>
-  <string key="ui.correspondance.affichee">Angezeigte Entsprechung:</string>
-  <string key="ui.ligne.s.dans">Zeile(n) in</string>
-  <string key="ui.rose.non.selectionnees">(rosa, nicht ausgewählt).</string>
+  <string key="ui.correspondance.affichee">Angezeigte Entsprechung: </string>
+  <string key="ui.ligne.s.dans"> Zeile(n) in </string>
+  <string key="ui.rose.non.selectionnees"> (rosa, nicht ausgewählt).</string>
   <string key="alignment.counterpart.absent">Bestätigte Auslassung: keine Zeile in der anderen Handschrift.</string>
   <string key="alignment.counterpart.none">Für diese Zeile ist keine Entsprechung gespeichert.</string>
   <string key="alignment.counterpart.hint">Entsprechung rosa angezeigt, ohne Arbeitsauswahl.</string>
@@ -124,10 +124,10 @@
   <string key="viewer.fit_page">Anpassen</string>
   <string key="viewer.fit_page.tip">Ganze Seite anzeigen</string>
   <string key="common.line">Zeile</string>
-  <string key="ui.ligne.s.selectionnee.s">Zeile(n) ausgewählt</string>
+  <string key="ui.ligne.s.selectionnee.s"> Zeile(n) ausgewählt</string>
   <string key="ui.cliquer.pour.selectionner.ctrl.maj.selection.multiple">Klicken zum Auswählen (Strg/Umschalt: Mehrfachauswahl)</string>
   <string key="ui.groupes.proposes.aucune.validation.automatique.selectionnez.ceux">Gruppen vorgeschlagen; keine automatische Bestätigung. Wählen Sie die zu speichernden Gruppen (Strg+A für alle).</string>
-  <string key="ui.colonne.s.exploitables">nutzbare Spaltenintervalle</string>
+  <string key="ui.colonne.s.exploitables"> nutzbare Spaltenintervalle </string>
   <string key="viewer.focus_line">Ausgewählte Zeile vergrößern</string>
   <string key="viewer.alto.toggle">Zeilenumrisse</string>
   <string key="viewer.htr.toggle">HTR-Text</string>
@@ -140,9 +140,9 @@ löschen</string>
   <string key="viewer.loading">Bild wird geladen…</string>
   <string key="viewer.open_local">Lokales Bild wird geöffnet…</string>
   <string key="ui.format.dimage.non.reconnu.par.qt">Bildformat von Qt nicht erkannt.</string>
-  <string key="viewer.image_unavailable.prefix">Bild nicht verfügbar:</string>
-  <string key="ui.attention.proportions.image.alto.differentes.verifier.les">· WARNUNG: Bild- und ALTO-Proportionen unterschiedlich; Umrisse prüfen</string>
-  <string key="ui.dimensions.alto.inconnues.cadres.indisponibles">· ALTO-Abmessungen unbekannt; Umrisse nicht verfügbar</string>
+  <string key="viewer.image_unavailable.prefix">Bild nicht verfügbar: </string>
+  <string key="ui.attention.proportions.image.alto.differentes.verifier.les"> · WARNUNG: Bild- und ALTO-Proportionen unterschiedlich; Umrisse prüfen</string>
+  <string key="ui.dimensions.alto.inconnues.cadres.indisponibles"> · ALTO-Abmessungen unbekannt; Umrisse nicht verfügbar</string>
   <string key="common.page">Seite</string>
   <string key="ui.erreur">Fehler</string>
   <string key="common.open">Öffnen</string>
@@ -156,12 +156,12 @@ löschen</string>
   <string key="ui.proposer.automatiquement">Automatisch vorschlagen</string>
   <string key="ui.exporter.json.varians">Varians-JSON exportieren</string>
   <string key="ui.propositions.automatiques.a.verifier">Automatische Vorschläge – Überprüfung erforderlich</string>
-  <string key="ui.atelier.dalignement">– Abgleichwerkstatt</string>
-  <string key="ui.atelier.dalignement.2">— Abgleichwerkstatt</string>
+  <string key="ui.atelier.dalignement"> – Abgleichwerkstatt</string>
+  <string key="ui.atelier.dalignement.2"> — Abgleichwerkstatt</string>
   <string key="ui.reference.s.a.controler">Referenzen zu prüfen</string>
-  <string key="ui.intervalle.s.ignore.s">ignorierte Intervalle.</string>
-  <string key="ui.lignes">Zeilen  ·</string>
-  <string key="ui.groupes">Gruppen  ·</string>
+  <string key="ui.intervalle.s.ignore.s"> ignorierte Intervalle.</string>
+  <string key="ui.lignes"> Zeilen  · </string>
+  <string key="ui.groupes"> Gruppen  · </string>
   <string key="ui.un.texte.ancien.est.conserve.comme.pivot">Ein früherer Text wurde als optionale Referenz gespeichert.</string>
   <string key="ui.pages.associees.a.un.alto">mit ALTO verknüpfte Seiten</string>
   <string key="ui.aucune.association.non.ambigue.trouvee.par.les">Keine eindeutigen Übereinstimmungen anhand der Dateinamen gefunden.
@@ -206,7 +206,7 @@ Sie wurden nicht überprüft: Kontrollieren Sie die ALTO-Rahmen auf den Bildern.
   <string key="alignment.filter.tip">Zeilenumrisse beider Bilder filtern, ohne gespeicherte Links zu ändern.</string>
   <string key="alignment.legend.title">Legende: </string>
   <string key="ui.orange.selection.active.vert.plein.synchronisation.manuelle">Orange = aktive Auswahl · durchgezogenes Grün = bestätigte manuelle Synchronisierung · gestricheltes Grün = manuell, zu prüfen · durchgezogenes Blau = bestätigte automatische Synchronisierung · gestricheltes Blau = automatisch, zu prüfen · gestricheltes Rot = bestätigtes Fehlen</string>
-  <string key="alignment.suggested_lines.prefix">Vorgeschlagene Zeilen:</string>
+  <string key="alignment.suggested_lines.prefix">Vorgeschlagene Zeilen: </string>
   <string key="ui.nombre.de.lignes.trop.different.entre.les">Zu unterschiedliche Zeilenzahl zwischen Zeugen.</string>
   <string key="ui.liens.existants.non.monotones.ou.traversant.une">Vorhandene Links sind nicht monoton oder überschreiten eine Grenze: Spalte nicht neu berechnet.</string>
   <string key="ui.certaines.zones.sont.delimitees.par.des.liens">Einige Bereiche sind durch noch unsichere Links begrenzt: bitte prüfen.</string>
@@ -242,7 +242,7 @@ Ja: explorativer Export.
 Nein: nur bestätigte Verbindungen.</string>
   <string key="alignment.export.varians_title">Nach Varians exportieren</string>
   <string key="alignment.export.result_title">JSON-Export</string>
-  <string key="alignment.auto.unreliable">Keine zuverlässigen Textvorschläge. Prüfen Sie HTR-Verfügbarkeit und Anker.</string>
+  <string key="alignment.auto.unreliable">Keine zuverlässigen Textvorschläge. Prüfen Sie HTR-Verfügbarkeit und Anker. </string>
   <string key="source.alto.replace_title">ALTO ersetzen</string>
   <string key="source.alto.no_files">Importieren Sie ALTO-Dateien für diesen Textzeugen.</string>
   <string key="source.alto.select">ALTO-Datei und Seite</string>
@@ -304,7 +304,7 @@ Nein: nur bestätigte Verbindungen.</string>
   <string key="scope.confirm.text">Einige Zeilen gehören zu {count} Gruppen, eventuell in mehreren Vergleichen. Durch Ignorieren werden ihre Links gelöst; andere Zeilen bleiben wenn möglich bestehen. Fortfahren?</string>
   <string key="scope.changed">Umfang geändert: {count} Zeile(n). Speichern Sie die .vsynch-Datei.</string>
   <string key="scope.progress">ignoriert: {left} / {right}</string>
-  <string key="scope.text.prefix">[ignoriert]</string>
+  <string key="scope.text.prefix">[ignoriert] </string>
   <string key="scope.no_htr">[ohne HTR]</string>
   <string key="scope.legend">Violett = unverknüpft · Grün = manuell · Blau = automatisch · Grau gestrichelt = ignoriert · Orange = Auswahl · Rosa = Gegenstück · Rot = Auslassung · gestrichelt = prüfen</string>
   <string key="scope.error.link_ignored">Nehmen Sie ignorierte Zeilen wieder auf, bevor Sie sie verknüpfen.</string>
@@ -312,8 +312,8 @@ Nein: nur bestätigte Verbindungen.</string>
   <string key="scope.error.legacy_tei">Diese Zeile ist mit einer alten TEI-Sitzung verknüpft; lösen Sie den Link im TEI-Werkzeug, bevor Sie sie ignorieren.</string>
   <string key="viewer.compact_overlay">Dezente Markierungen</string>
   <string key="viewer.compact_overlay.tip">Kurze Zeilenmarkierungen statt großer ALTO-Rahmen anzeigen. Deaktivieren für vollständige Umrisse.</string>
-  <string key="viewer.polygon_count">· {count} polygonale Zeilenumrisse</string>
-  <string key="viewer.no_polygon">· keine polygonalen Zeilenumrisse</string>
+  <string key="viewer.polygon_count"> · {count} polygonale Zeilenumrisse</string>
+  <string key="viewer.no_polygon"> · keine polygonalen Zeilenumrisse</string>
   <string key="ui.xml.import_title">ALTO- oder PAGE-XML-Dateien importieren</string>
   <string key="ui.xml.source">XML-Zeilenquelle</string>
   <string key="ui.xml.select_page">ALTO- oder PAGE-Seite zum Zuordnen</string>
@@ -330,7 +330,7 @@ Nein: nur bestätigte Verbindungen.</string>
   <string key="ui.xml.import_button">ALTO oder PAGE importieren</string>
   <string key="ui.xml.workflow_only">Nur Bilder und ALTO/PAGE</string>
   <string key="ui.xml.visual_tab">Bilder und XML-Zeilen (Hauptansicht)</string>
-  <string key="ui.xml.pages_title">Bilder und ALTO/PAGE-Zuordnungen —</string>
+  <string key="ui.xml.pages_title">Bilder und ALTO/PAGE-Zuordnungen — </string>
   <string key="ui.xml.replace_title">XML-Quelle ersetzen</string>
   <string key="ui.xml.skipped_lines"> ; {count} Zeile(n) ohne Umrisse übersprungen</string>
   <string key="ui.xml.unverified_bindings">Vorgeschlagene Zuordnungen müssen geprüft werden: Kontrollieren Sie die Zeilenumrisse auf den Bildern.
@@ -381,7 +381,7 @@ Siehe rapport_export.json und Anleitung: Bis zur Zuordnung einer TEI-Edition bez
   <string key="stream.move_down">Nach unten</string>
   <string key="stream.reset_lines">Zeilenreihenfolge zurücksetzen</string>
   <string key="stream.preview">Intervalle zwischen Ankern anzeigen</string>
-  <string key="stream.ignored">[ignoriert]</string>
+  <string key="stream.ignored">[ignoriert] </string>
   <string key="stream.status">{pages} zugeordnete Seiten, {lines} aktive Zeilen im Lesefluss.</string>
   <string key="stream.preview.summary">{anchors} bestätigte Anker, {intervals} kontinuierliche Intervalle, {warnings} Warnungen.</string>
   <string key="stream.warning.empty_anchor">Anker ohne Zeilen auf einer Seite</string>
@@ -429,7 +429,7 @@ Siehe rapport_export.json und Anleitung: Bis zur Zuordnung einer TEI-Edition bez
   <string key="review.local.preview">Neuberechnung auf dieses Intervall begrenzt: {count} Vorschläge.</string>
   <string key="review.counts">{pending} Gruppen zu prüfen · {validated} bestätigt · {absences} Auslassungen</string>
   <string key="project.unsaved_file">nicht gespeichert</string>
-  <string key="project.unsaved_marker">● Ungespeicherte Änderungen</string>
+  <string key="project.unsaved_marker"> ● Ungespeicherte Änderungen</string>
   <string key="project.unsaved.title">Ungespeicherte Änderungen</string>
   <string key="project.unsaved.question">Das Projekt „{name}“ enthält ungespeicherte Änderungen.</string>
   <string key="project.unsaved.explanation">Möchten Sie das Projekt vor dem Fortfahren speichern? Bei „Nicht speichern“ gehen ungespeicherte Änderungen verloren.</string>
