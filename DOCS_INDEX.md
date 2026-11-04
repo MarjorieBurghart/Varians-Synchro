@@ -3,7 +3,7 @@
 **Dossier autonome de maintenance et passation (français) :** [Commencer ici](MAINTENANCE_PASSATION_V0856/00_LIRE_EN_PREMIER.md). Complète mais ne remplace pas les guides utilisateur et développeur multilingues.
 
 
-User guide (shown in the application by « Ouvrir le guide utilisateur » or F1): [fr](help/fr.html) — translations in progress.
+User guides (shown in the application by « Ouvrir le guide utilisateur » or F1): [fr](help/fr.html), [en](help/en.html), [de](help/de.html), [cs](help/cs.html), [it](help/it.html), [ru](help/ru.html), [ja](help/ja.html)
 
 Developer guides: [fr](docs/developer/fr.md), [en](docs/developer/en.md), [de](docs/developer/de.md), [cs](docs/developer/cs.md), [it](docs/developer/it.md), [ru](docs/developer/ru.md), [ja](docs/developer/ja.md)
 

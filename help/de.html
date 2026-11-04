@@ -99,13 +99,13 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Ordnen Sie unter <b class="ui" data-tr="navigation.pages">2 · Ressourcen zuordnen</b> ihre Seiten den ALTO/PAGE-Dateien zu und geben Sie ihre zu ignorierenden Zeilen an.</li>
 <li>Behalten Sie unter <b class="ui" data-tr="navigation.alignment">3 · Zeugen abgleichen</b> den Pivot bei <b class="ui" data-tr="alignment.reference.label">Technischer Pivot</b>, wählen Sie den neuen Zeugen bei <b class="ui" data-tr="alignment.target.label">Vergleichszeuge</b>, gleichen Sie ab und bestätigen Sie.</li>
 <li><b class="ui" data-tr="common.save">Speichern</b>.</li>
-<li>Unter <b class="ui" data-tr="navigation.progress">4 · Abschließen</b>: <b class="ui" data-tr="export.varians.action">Varians-JSON exportieren…</b>; wählen Sie den Pivot als Referenzzeugen und einen leeren Ordner. Die Datei des neuen Zeugen ist <code>validated/&lt;sigle&gt;.json</code> (bestätigte Entsprechungen); <code>working/&lt;sigle&gt;.json</code> enthält zusätzlich die nicht bestätigten Vorschläge. Siehe <a href="#export-json">Varians-JSON exportieren</a>.</li>
+<li>Unter <b class="ui" data-tr="navigation.progress">4 · Abschließen</b>: <b class="ui" data-tr="export.varians.action">Varians-JSON exportieren…</b>; wählen Sie den Pivot als Referenzzeugen und einen leeren Ordner. Die Datei des neuen Zeugen ist <code>validated/&lt;Sigle&gt;.json</code> (bestätigte Entsprechungen); <code>working/&lt;Sigle&gt;.json</code> enthält zusätzlich die nicht bestätigten Vorschläge. Siehe <a href="#export-json">Varians-JSON exportieren</a>.</li>
 </ol>
 <div class="warn"><strong>Verändern Sie den Pivot nicht</strong> (seine Seiten, deren ALTO/PAGE-Dateien, seine ignorierten Zeilen, seine Lesereihenfolge): Seine Zeilen würden ihre Position oder ihre Anzahl ändern und nicht mehr den <code>&lt;lb/&gt;</code> der Edition entsprechen. Wenn Sie es doch tun müssen, ersetzen Sie in Varians auch die Synchronisierung des Pivots durch <code>validated/&lt;pivot&gt;.json</code> und prüfen Sie, ob die Zahl seiner Zeilen noch der Zahl seiner <code>&lt;lb/&gt;</code> entspricht.</div>
 <h3>In Varians</h3>
 <ol>
 <li><b class="varians" data-varians="menu.file">Datei</b> → <b class="varians" data-varians="menu.project_settings">Projekteinstellungen…</b>; in der Liste der Zeugen <b class="varians" data-varians="project.witness.add">Hinzufügen…</b>.</li>
-<li>Geben Sie die Sigle, die Bilder (<b class="varians" data-varians="project.witness.images">Bildquelle</b>) und unter <b class="varians" data-varians="project.witness.alignment.optional">Synchronisierungsdatei (optional)</b> die Datei <code>validated/&lt;sigle&gt;.json</code> an. Kreuzen Sie <b class="varians" data-varians="project.witness.alignment.copy">Synchronisierung in das Projekt kopieren</b> an: So bleibt das Projekt vollständig, wenn Sie es verschieben.</li>
+<li>Geben Sie die Sigle, die Bilder (<b class="varians" data-varians="project.witness.images">Bildquelle</b>) und unter <b class="varians" data-varians="project.witness.alignment.optional">Synchronisierungsdatei (optional)</b> die Datei <code>validated/&lt;Sigle&gt;.json</code> an. Kreuzen Sie <b class="varians" data-varians="project.witness.alignment.copy">Synchronisierung in das Projekt kopieren</b> an: So bleibt das Projekt vollständig, wenn Sie es verschieben.</li>
 <li>Prüfen Sie mit <b class="varians" data-varians="menu.display">Ansicht</b> → <b class="varians" data-varians="diagnostics.menu">Handschriften prüfen…</b>: Der neue Zeuge muss gültige Verknüpfungen zum Pivot haben.</li>
 </ol>
 <h3>Einen vorhandenen Zeugen aktualisieren</h3>
@@ -202,7 +202,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </table>
 <p><b class="ui" data-tr="alignment.filter.title">Sichtbare Umrisse</b> beschränkt die Anzeige auf <b class="ui" data-tr="alignment.filter.unlinked">Nicht verknüpfte Zeilen</b> oder auf <b class="ui" data-tr="alignment.filter.automatic_review">Automatische Links zur Prüfung</b>, damit Sie sehen, was noch zu tun ist.</p>
 <h3 id="revision">Die Gruppenliste</h3>
-<p>Unten filtert <b class="ui" data-tr="review.queue.label">Prüfung</b> die Gruppen: <b class="ui" data-tr="review.filter.all">Alle Gruppen</b>, <b class="ui" data-tr="review.filter.pending">Zu prüfen</b>, <b class="ui" data-tr="review.filter.validated">Bestätigt</b>, <b class="ui" data-tr="review.filter.absences">Bestätigte Auslassungen</b>, <b class="ui" data-tr="review.filter.stale">Veraltet</b>. Jede Gruppe wird dort durch ihren Status und ihre Zeilen beschrieben; die Zeilen heißen <code>page:rang</code> (Seitenbezeichnung, Position der Zeile). Sie können mehrere Gruppen auswählen (<kbd>Strg</kbd>, <kbd>Umschalt</kbd>), um sie mit <b class="ui" data-tr="review.validate.selected">Auswahl bestätigen…</b> zu bestätigen.</p>
+<p>Unten filtert <b class="ui" data-tr="review.queue.label">Prüfung</b> die Gruppen: <b class="ui" data-tr="review.filter.all">Alle Gruppen</b>, <b class="ui" data-tr="review.filter.pending">Zu prüfen</b>, <b class="ui" data-tr="review.filter.validated">Bestätigt</b>, <b class="ui" data-tr="review.filter.absences">Bestätigte Auslassungen</b>, <b class="ui" data-tr="review.filter.stale">Veraltet</b>. Jede Gruppe wird dort durch ihren Status und ihre Zeilen beschrieben; die Zeilen heißen <code>Seite:Zeile</code> (Seitenbezeichnung, Position der Zeile). Sie können mehrere Gruppen auswählen (<kbd>Strg</kbd>, <kbd>Umschalt</kbd>), um sie mit <b class="ui" data-tr="review.validate.selected">Auswahl bestätigen…</b> zu bestätigen.</p>
 <p><b class="ui" data-tr="review.recalculate.next">Lokal neu berechnen…</b> berechnet die Vorschläge nur für das Intervall nach dem gewählten Anker neu, zum Beispiel nachdem Sie einen Anker hinzugefügt haben.</p>
 <h3 id="absences">Bestätigte Auslassungen</h3>
 <p>Haben Zeilen eines Zeugen keine Entsprechung im anderen, wählen Sie sie auf nur einer Seite aus, dann <b class="ui" data-tr="alignment.action.more">Weitere Aktionen</b> → <b class="ui" data-tr="exception.action.confirm">Fehlen der ausgewählten Zeilen bestätigen (Strg+Umschalt+A)</b>. Sie gelten dann nicht mehr als „nicht verknüpft“ und erscheinen rot. <b class="ui" data-tr="exception.action.revoke">Ausgewählte Auslassungen aus der Liste entfernen</b> hebt eine Auslassung auf, die mit dem Filter <b class="ui" data-tr="review.filter.absences">Bestätigte Auslassungen</b> ausgewählt wurde.</p>
@@ -226,7 +226,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ul>
 <li><code>project.xml</code>: die Zeugen, ihre Bilder (IIIF-Manifest oder Pfade der lokalen Bilder) und der Pivot;</li>
 <li><code>xml/edition.xml</code>: die TEI-Edition des Pivots oder eine leere TEI, wenn er keine hat;</li>
-<li><code>alignments/&lt;sigle&gt;.json</code>: die Synchronisierung jedes Zeugen, <strong>nur bestätigte Entsprechungen</strong>;</li>
+<li><code>alignments/&lt;Sigle&gt;.json</code>: die Synchronisierung jedes Zeugen, <strong>nur bestätigte Entsprechungen</strong>;</li>
 <li><code>rendering/</code>, <code>i18n/</code>, <code>web_output/</code>: die üblichen Ordner eines Varians-Projekts;</li>
 <li><code>RAPPORT_EXPORT_VARIANS.txt</code>: der Exportbericht;</li>
 <li>gegebenenfalls <code>iiif/</code>: die HD-Kopien der IIIF-Bilder, wenn alle benötigten Seiten eine haben.</li>
@@ -235,8 +235,8 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3 id="export-json">Varians-JSON exportieren</h3>
 <p><b class="ui" data-tr="export.varians.action">Varians-JSON exportieren…</b> dient dazu, Zeugen in einem bestehenden Varians-Projekt hinzuzufügen oder zu aktualisieren (<a href="#ajout-temoin">Weg B</a>). Wählen Sie den Referenzzeugen (den Pivot des Varians-Projekts), bestätigen Sie und wählen Sie dann einen leeren Ordner. Die Software schreibt dorthin:</p>
 <ul>
-<li><code>validated/&lt;sigle&gt;.json</code>: eine Datei pro Zeuge, nur bestätigte Entsprechungen;</li>
-<li><code>working/&lt;sigle&gt;.json</code>: dieselben, dazu die nicht bestätigten Vorschläge;</li>
+<li><code>validated/&lt;Sigle&gt;.json</code>: eine Datei pro Zeuge, nur bestätigte Entsprechungen;</li>
+<li><code>working/&lt;Sigle&gt;.json</code>: dieselben, dazu die nicht bestätigten Vorschläge;</li>
 <li><code>rapport_export.json</code>: die Zahlen und Prüfungen des Exports.</li>
 </ul>
 <p>Varians kennt die Status von Varians-Synchro nicht: Importieren Sie <code>validated/</code>, außer für einen bewussten Test. Exportiert werden nur direkte Synchronisierungen mit dem Referenzzeugen, ohne Ableitung über einen dritten Zeugen. Hat ein Zeuge keine exportierbare Entsprechung, meldet die Software dies vor dem Export und nennt die Ursache.</p>
@@ -277,7 +277,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <tr><td><code class="field">pages[].lines[].polygon</code></td><td>Optional: der Umriss der Zeile (PAGE-Dateien), eine Liste von Punkten <code>[x, y]</code>.</td></tr>
 <tr><td><code class="field">pages[].lines[].alto_id</code></td><td>Die Kennung der Zeile in der ALTO/PAGE-Datei.</td></tr>
 <tr><td><code class="field">pages[].lines[].alto</code></td><td>Der HTR-Text der Zeile (leer, wenn es keinen gibt).</td></tr>
-<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>Nur bei den anderen Zeugen: die Zeilen des Pivots, denen die Zeile entspricht, in der Form <code>"id_de_page::rang"</code> (<code class="field">pages[].id</code> und <code class="field">pages[].lines[].line</code> einer Zeile des Pivots). Eine Zeile einer n↔m-Gruppe trägt die Schlüssel aller Pivot-Zeilen der Gruppe. Eine Zeile ohne Entsprechung (nicht verknüpft, bestätigte Auslassung, nicht bestätigte Gruppe in <code>validated/</code>) hat dieses Feld nicht.</td></tr>
+<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>Nur bei den anderen Zeugen: die Zeilen des Pivots, denen die Zeile entspricht, in der Form <code>"Seiten-ID::Zeile"</code> (<code class="field">pages[].id</code> und <code class="field">pages[].lines[].line</code> einer Zeile des Pivots). Eine Zeile einer n↔m-Gruppe trägt die Schlüssel aller Pivot-Zeilen der Gruppe. Eine Zeile ohne Entsprechung (nicht verknüpft, bestätigte Auslassung, nicht bestätigte Gruppe in <code>validated/</code>) hat dieses Feld nicht.</td></tr>
 <tr><td><code class="field">pages[].lines[].vsynch_state</code></td><td>Der Status der Gruppe in Varians-Synchro: <code>validated</code>, <code>uncertain</code> oder <code>proposed</code> (die beiden letzten nur in <code>working/</code>). Nur zur Information: Varians verwendet ihn nicht.</td></tr>
 <tr><td><code class="field">pages[].lines[].vsynch_origin</code></td><td>Die Herkunft der Gruppe (<code>manual</code>, <code>manual-correction</code>, <code>automatic-textual-progress-v071</code>, <code>automatic-htr-htr</code>…). Nur zur Information.</td></tr>
 <tr><td><code class="field">pages[].lines[].score</code></td><td>Optional: die Konfidenz eines automatischen Vorschlags, zwischen 0 und 1. Nur zur Information.</td></tr>
@@ -285,7 +285,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3>Was Varians damit macht</h3>
 <ul>
 <li>Die Zeilen der Pivot-Datei entsprechen, in der Reihenfolge der Datei, eins zu eins den <code>&lt;lb edRef="#PIVOT"/&gt;</code> der Edition: die erste Zeile dem ersten <code>&lt;lb/&gt;</code> und so weiter. Varians prüft, ob die Anzahlen gleich sind.</li>
-<li>Ein Schlüssel des Pivots lautet <code>id_de_page::rang</code>: Er bleibt gültig, solange die Seite ihre Kennung und ihre ALTO/PAGE-Datei behält. Deshalb muss der neue Zeuge eines bestehenden Projekts im selben Projekt <code>.vsynch</code> abgeglichen werden (<a href="#ajout-temoin">Weg B</a>).</li>
+<li>Ein Schlüssel des Pivots lautet <code>Seiten-ID::Zeile</code>: Er bleibt gültig, solange die Seite ihre Kennung und ihre ALTO/PAGE-Datei behält. Deshalb muss der neue Zeuge eines bestehenden Projekts im selben Projekt <code>.vsynch</code> abgeglichen werden (<a href="#ajout-temoin">Weg B</a>).</li>
 <li>Wenn der Text eine Zeile des Pivots erreicht, zeigt Varians in jedem anderen Zeugen die Zeile oder die Zeilen, deren <code>base_keys</code> auf sie verweisen.</li>
 </ul>
 <h3>Beispiel</h3>
@@ -307,7 +307,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3>Die Projektdatei</h3>
 <ul>
 <li>Die gesamte Arbeit steht in der Datei <code>.vsynch</code>: Zeugen, Inhalt der importierten ALTO/PAGE-Dateien, Zuordnungen, ignorierte Zeilen, Lesereihenfolge, Synchronisierungen. Die Quelldateien werden nie verändert.</li>
-<li>Das Speichern ist sicher: Die Datei wird in einem Schritt ersetzt, und die vorherige Version bleibt in <code>&lt;projet&gt;.vsynch.bak</code> erhalten. Um zu ihr zurückzukehren, kopieren Sie diese <code>.bak</code>-Datei unter einem neuen Namen mit der Endung <code>.vsynch</code> und öffnen Sie die Kopie.</li>
+<li>Das Speichern ist sicher: Die Datei wird in einem Schritt ersetzt, und die vorherige Version bleibt in <code>&lt;Projekt&gt;.vsynch.bak</code> erhalten. Um zu ihr zurückzukehren, kopieren Sie diese <code>.bak</code>-Datei unter einem neuen Namen mit der Endung <code>.vsynch</code> und öffnen Sie die Kopie.</li>
 <li>Es gibt keinen Befehl „Speichern unter“: Um eine Version aufzubewahren, kopieren Sie die Datei <code>.vsynch</code>.</li>
 <li>Ein Projekt mit relativen Pfaden (wie das mitgelieferte Beispiel) lässt sich aus jedem Ordner öffnen; beim Speichern werden die Pfade vollständig geschrieben.</li>
 <li>Wird eine ALTO/PAGE-Datei nach dem Import auf dem Datenträger geändert, ändert das nichts am Projekt; die Zusammenfassung meldet es. Für eine korrigierte Segmentierung importieren Sie die neue Datei und ordnen sie der Seite zu (die betroffenen Gruppen werden veraltet).</li>

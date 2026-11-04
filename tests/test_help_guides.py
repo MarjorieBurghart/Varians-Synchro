@@ -68,9 +68,8 @@ def _outline(path):
     return parser
 
 
-def test_there_is_a_french_guide():
-    assert (HELP / 'fr.html').is_file()
-    assert {path.stem for path in GUIDES} <= set(LANGUAGES)
+def test_there_is_a_guide_in_each_language():
+    assert {path.stem for path in GUIDES} == set(LANGUAGES)
 
 
 @pytest.mark.parametrize('path', GUIDES, ids=lambda p: p.stem)

@@ -99,13 +99,13 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>In <b class="ui" data-tr="navigation.pages">2 · Associate resources</b>, associate its pages with their ALTO/PAGE files and mark its lines to ignore.</li>
 <li>In <b class="ui" data-tr="navigation.alignment">3 · Align witnesses</b>, keep the pivot in <b class="ui" data-tr="alignment.reference.label">Technical reference</b>, choose the new witness in <b class="ui" data-tr="alignment.target.label">Witness to align</b>, then align and validate.</li>
 <li><b class="ui" data-tr="common.save">Save</b>.</li>
-<li>In <b class="ui" data-tr="navigation.progress">4 · Finalize</b>, <b class="ui" data-tr="export.varians.action">Export JSON for Varians…</b>: choose the pivot as the reference witness, and an empty folder. The file of the new witness is <code>validated/&lt;sigle&gt;.json</code> (validated correspondences); <code>working/&lt;sigle&gt;.json</code> also contains the unvalidated suggestions. See <a href="#export-json">Export JSON for Varians</a>.</li>
+<li>In <b class="ui" data-tr="navigation.progress">4 · Finalize</b>, <b class="ui" data-tr="export.varians.action">Export JSON for Varians…</b>: choose the pivot as the reference witness, and an empty folder. The file of the new witness is <code>validated/&lt;siglum&gt;.json</code> (validated correspondences); <code>working/&lt;siglum&gt;.json</code> also contains the unvalidated suggestions. See <a href="#export-json">Export JSON for Varians</a>.</li>
 </ol>
 <div class="warn"><strong>Do not modify the pivot</strong> (its pages, their ALTO/PAGE files, its ignored lines, its reading order): its lines would change position or number, and would no longer match the <code>&lt;lb/&gt;</code> elements of the edition. If you must modify it, also replace the alignment file of the pivot in Varians with <code>validated/&lt;pivot&gt;.json</code>, and check that its number of lines still equals its number of <code>&lt;lb/&gt;</code> elements.</div>
 <h3>In Varians</h3>
 <ol>
 <li><b class="varians" data-varians="menu.file">File</b> → <b class="varians" data-varians="menu.project_settings">Project settings…</b>; in the list of witnesses, <b class="varians" data-varians="project.witness.add">Add…</b>.</li>
-<li>Enter the siglum, the images (<b class="varians" data-varians="project.witness.images">Image source</b>) and, in <b class="varians" data-varians="project.witness.alignment.optional">Synchronization file (optional)</b>, the file <code>validated/&lt;sigle&gt;.json</code>. Check <b class="varians" data-varians="project.witness.alignment.copy">Copy synchronization into the project</b>: the project then stays complete if you move it.</li>
+<li>Enter the siglum, the images (<b class="varians" data-varians="project.witness.images">Image source</b>) and, in <b class="varians" data-varians="project.witness.alignment.optional">Synchronization file (optional)</b>, the file <code>validated/&lt;siglum&gt;.json</code>. Check <b class="varians" data-varians="project.witness.alignment.copy">Copy synchronization into the project</b>: the project then stays complete if you move it.</li>
 <li>Check with <b class="varians" data-varians="menu.display">View</b> → <b class="varians" data-varians="diagnostics.menu">Witness diagnostics…</b>: the new witness must have valid links to the pivot.</li>
 </ol>
 <h3>Updating a witness already in the project</h3>
@@ -163,7 +163,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3 id="perimetre">Lines to ignore (scope)</h3>
 <p><b class="ui" data-tr="tei.scope.action">Choose lines to ignore on witness images…</b>: on the images, select the lines outside the text under study, even across several pages, then <b class="ui" data-tr="tei.scope.ignore">Ignore selected lines</b> (or <b class="ui" data-tr="tei.scope.restore">Restore selected lines</b>). <b class="ui" data-tr="tei.scope.save">Save scope</b> applies the changes; <b class="ui" data-tr="resources.cancel">Cancel</b> changes nothing. The same setting is available in the alignment window (<b class="ui" data-tr="scope.menu">Scope ▾</b>).</p>
 <h3 id="tei">Link the TEI edition (optional)</h3>
-<p><b class="ui" data-tr="tei.binding.action">Link the TEI edition to ALTO/PAGE lines…</b> matches the <code>&lt;lb edRef="#SIGLE"/&gt;</code> elements of a TEI edition with the active lines of the witness, in reading order. The numbers must be equal: the window compares them and reports what is blocking (lines to ignore that were not marked, ambiguous readings in an apparatus). Check a few lines, in particular with <b class="ui" data-tr="tei.visual.begin">Beginning</b> and <b class="ui" data-tr="tei.visual.end">End</b>, on the text and the cropped image, then <b class="ui" data-tr="tei.binding.apply">Confirm bindings</b>.</p>
+<p><b class="ui" data-tr="tei.binding.action">Link the TEI edition to ALTO/PAGE lines…</b> matches the <code>&lt;lb edRef="#SIGLUM"/&gt;</code> elements of a TEI edition with the active lines of the witness, in reading order. The numbers must be equal: the window compares them and reports what is blocking (lines to ignore that were not marked, ambiguous readings in an apparatus). Check a few lines, in particular with <b class="ui" data-tr="tei.visual.begin">Beginning</b> and <b class="ui" data-tr="tei.visual.end">End</b>, on the text and the cropped image, then <b class="ui" data-tr="tei.binding.apply">Confirm bindings</b>.</p>
 <p>The binding is not required for export: it serves to check that the number of lines of the pivot matches its <code>&lt;lb/&gt;</code> elements, and it makes the alignment window show the TEI text instead of the HTR text. Its status changes to <b class="ui" data-tr="tei.binding.status.stale">needs review (sources changed)</b> if the edition, the scope, the order or the segmentation changes.</p>
 
 <h2 id="etape3">8. Step 3: align witnesses</h2>
@@ -202,7 +202,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </table>
 <p><b class="ui" data-tr="alignment.filter.title">Visible frames</b> limits the display to <b class="ui" data-tr="alignment.filter.unlinked">Unlinked lines</b> or to <b class="ui" data-tr="alignment.filter.automatic_review">Automatic links to review</b>, to spot what remains to be done.</p>
 <h3 id="revision">The list of groups</h3>
-<p>At the bottom, <b class="ui" data-tr="review.queue.label">Review</b> filters the groups: <b class="ui" data-tr="review.filter.all">All groups</b>, <b class="ui" data-tr="review.filter.pending">To review</b>, <b class="ui" data-tr="review.filter.validated">Validated</b>, <b class="ui" data-tr="review.filter.absences">Confirmed absences</b>, <b class="ui" data-tr="review.filter.stale">Stale</b>. Each group is described there by its state and its lines, named <code>page:rang</code> (page label, line position). You can select several groups (<kbd>Ctrl</kbd>, <kbd>Shift</kbd>) and use <b class="ui" data-tr="review.validate.selected">Validate selected…</b>.</p>
+<p>At the bottom, <b class="ui" data-tr="review.queue.label">Review</b> filters the groups: <b class="ui" data-tr="review.filter.all">All groups</b>, <b class="ui" data-tr="review.filter.pending">To review</b>, <b class="ui" data-tr="review.filter.validated">Validated</b>, <b class="ui" data-tr="review.filter.absences">Confirmed absences</b>, <b class="ui" data-tr="review.filter.stale">Stale</b>. Each group is described there by its state and its lines, named <code>page:line</code> (page label, line position). You can select several groups (<kbd>Ctrl</kbd>, <kbd>Shift</kbd>) and use <b class="ui" data-tr="review.validate.selected">Validate selected…</b>.</p>
 <p><b class="ui" data-tr="review.recalculate.next">Recalculate gap…</b> redoes the suggestions for the interval that follows the chosen anchor only, for example after adding an anchor.</p>
 <h3 id="absences">Confirmed absences</h3>
 <p>When lines of one witness have no equivalent in the other, select them on one side only, then <b class="ui" data-tr="alignment.action.more">More actions</b> → <b class="ui" data-tr="exception.action.confirm">Confirm absence for selected lines (Ctrl+Shift+A)</b>. They are no longer “unlinked” and appear in red. <b class="ui" data-tr="exception.action.revoke">Remove selected absences from review list</b> cancels an absence chosen with the <b class="ui" data-tr="review.filter.absences">Confirmed absences</b> filter.</p>
@@ -226,7 +226,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ul>
 <li><code>project.xml</code>: the witnesses, their images (IIIF Manifest, or paths of the local images) and the pivot;</li>
 <li><code>xml/edition.xml</code>: the TEI edition of the pivot, or an empty TEI if it has none;</li>
-<li><code>alignments/&lt;sigle&gt;.json</code>: the alignment file of each witness, <strong>validated correspondences only</strong>;</li>
+<li><code>alignments/&lt;siglum&gt;.json</code>: the alignment file of each witness, <strong>validated correspondences only</strong>;</li>
 <li><code>rendering/</code>, <code>i18n/</code>, <code>web_output/</code>: the usual folders of a Varians project;</li>
 <li><code>RAPPORT_EXPORT_VARIANS.txt</code>: the export report;</li>
 <li>possibly <code>iiif/</code>: the HD copies of the IIIF images, if every relevant page has one.</li>
@@ -235,8 +235,8 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3 id="export-json">Export JSON for Varians</h3>
 <p><b class="ui" data-tr="export.varians.action">Export JSON for Varians…</b> is used to add or update witnesses in an existing Varians project (<a href="#ajout-temoin">Workflow B</a>). Choose the reference witness (the pivot of the Varians project), confirm, then choose an empty folder. The software writes into it:</p>
 <ul>
-<li><code>validated/&lt;sigle&gt;.json</code>: one file per witness, validated correspondences only;</li>
-<li><code>working/&lt;sigle&gt;.json</code>: the same, plus the unvalidated suggestions;</li>
+<li><code>validated/&lt;siglum&gt;.json</code>: one file per witness, validated correspondences only;</li>
+<li><code>working/&lt;siglum&gt;.json</code>: the same, plus the unvalidated suggestions;</li>
 <li><code>rapport_export.json</code>: the counts and checks of the export.</li>
 </ul>
 <p>Varians does not know the states used by Varians-Synchro: import <code>validated/</code>, except for a deliberate test. Only direct alignments with the reference witness are exported, with no inference through a third witness. If a witness has no exportable correspondence, the software says so before the export, and gives the reason.</p>
@@ -277,7 +277,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <tr><td><code class="field">pages[].lines[].polygon</code></td><td>Optional: the outline of the line (PAGE files), as a list of <code>[x, y]</code> points.</td></tr>
 <tr><td><code class="field">pages[].lines[].alto_id</code></td><td>The identifier of the line in the ALTO/PAGE file.</td></tr>
 <tr><td><code class="field">pages[].lines[].alto</code></td><td>The HTR text of the line (empty if there is none).</td></tr>
-<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>Other witnesses only: the pivot lines to which the line corresponds, in the form <code>"id_de_page::rang"</code> (<code class="field">pages[].id</code> and <code class="field">pages[].lines[].line</code> of a pivot line). A line in an n↔m group carries the keys of all the pivot lines of the group. A line without a correspondence (unlinked line, confirmed absence, unvalidated group in <code>validated/</code>) does not have this field.</td></tr>
+<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>Other witnesses only: the pivot lines to which the line corresponds, in the form <code>"page_id::line"</code> (<code class="field">pages[].id</code> and <code class="field">pages[].lines[].line</code> of a pivot line). A line in an n↔m group carries the keys of all the pivot lines of the group. A line without a correspondence (unlinked line, confirmed absence, unvalidated group in <code>validated/</code>) does not have this field.</td></tr>
 <tr><td><code class="field">pages[].lines[].vsynch_state</code></td><td>The state of the group in Varians-Synchro: <code>validated</code>, <code>uncertain</code> or <code>proposed</code> (the last two only in <code>working/</code>). For information only: Varians does not use it.</td></tr>
 <tr><td><code class="field">pages[].lines[].vsynch_origin</code></td><td>The origin of the group (<code>manual</code>, <code>manual-correction</code>, <code>automatic-textual-progress-v071</code>, <code>automatic-htr-htr</code>…). For information only.</td></tr>
 <tr><td><code class="field">pages[].lines[].score</code></td><td>Optional: the confidence of an automatic suggestion, between 0 and 1. For information only.</td></tr>
@@ -285,7 +285,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3>What Varians does with them</h3>
 <ul>
 <li>The lines in the file of the pivot, in file order, correspond one by one to the <code>&lt;lb edRef="#PIVOT"/&gt;</code> elements of the edition: the first line to the first <code>&lt;lb/&gt;</code>, and so on. Varians checks that the numbers are equal.</li>
-<li>A pivot key is <code>id_de_page::rang</code>: it remains valid as long as the page keeps its identifier and its ALTO/PAGE file. This is why the new witness of an existing project must be aligned in the same <code>.vsynch</code> project (<a href="#ajout-temoin">Workflow B</a>).</li>
+<li>A pivot key is <code>page_id::line</code>: it remains valid as long as the page keeps its identifier and its ALTO/PAGE file. This is why the new witness of an existing project must be aligned in the same <code>.vsynch</code> project (<a href="#ajout-temoin">Workflow B</a>).</li>
 <li>When the text reaches a line of the pivot, Varians shows, in each other witness, the line or lines whose <code>base_keys</code> designate it.</li>
 </ul>
 <h3>Example</h3>
@@ -307,7 +307,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3>The project file</h3>
 <ul>
 <li>All the work is in the <code>.vsynch</code> file: witnesses, content of the imported ALTO/PAGE files, associations, ignored lines, reading order, alignments. The source files are never modified.</li>
-<li>Saving is safe: the file is replaced in a single operation, and the previous version is kept in <code>&lt;projet&gt;.vsynch.bak</code>. To go back, copy this <code>.bak</code> file under a new name ending in <code>.vsynch</code> and open it.</li>
+<li>Saving is safe: the file is replaced in a single operation, and the previous version is kept in <code>&lt;project&gt;.vsynch.bak</code>. To go back, copy this <code>.bak</code> file under a new name ending in <code>.vsynch</code> and open it.</li>
 <li>There is no “Save As” command: to keep a version, copy the <code>.vsynch</code> file.</li>
 <li>A project with relative paths (such as the supplied sample) opens from any folder; on saving, the paths are written in full.</li>
 <li>Modifying an ALTO/PAGE file on disk after import does not change the project; the summary reports it. For a corrected segmentation, import the new file and associate it with the page (the affected groups become stale).</li>

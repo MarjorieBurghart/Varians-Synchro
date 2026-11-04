@@ -99,13 +99,13 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>В разделе <b class="ui" data-tr="navigation.pages">2 · Связывание ресурсов</b> свяжите его страницы с их файлами ALTO/PAGE и укажите его игнорируемые строки.</li>
 <li>В разделе <b class="ui" data-tr="navigation.alignment">3 · Выравнивание свидетелей</b> оставьте опорного свидетеля в поле <b class="ui" data-tr="alignment.reference.label">Технический опорный свидетель</b>, выберите нового свидетеля в поле <b class="ui" data-tr="alignment.target.label">Сравниваемый свидетель</b>, выровняйте и подтвердите.</li>
 <li><b class="ui" data-tr="common.save">Сохранить</b>.</li>
-<li>В разделе <b class="ui" data-tr="navigation.progress">4 · Завершение</b> — <b class="ui" data-tr="export.varians.action">Экспортировать JSON для Varians…</b>: выберите опорного свидетеля в качестве свидетеля отсчёта и пустую папку. Файл нового свидетеля — <code>validated/&lt;sigle&gt;.json</code> (подтверждённые соответствия); <code>working/&lt;sigle&gt;.json</code> содержит также неподтверждённые предложения. См. <a href="#export-json">Экспортировать JSON для Varians</a>.</li>
+<li>В разделе <b class="ui" data-tr="navigation.progress">4 · Завершение</b> — <b class="ui" data-tr="export.varians.action">Экспортировать JSON для Varians…</b>: выберите опорного свидетеля в качестве свидетеля отсчёта и пустую папку. Файл нового свидетеля — <code>validated/&lt;сигла&gt;.json</code> (подтверждённые соответствия); <code>working/&lt;сигла&gt;.json</code> содержит также неподтверждённые предложения. См. <a href="#export-json">Экспортировать JSON для Varians</a>.</li>
 </ol>
 <div class="warn"><strong>Не изменяйте опорного свидетеля</strong> (его страницы, их файлы ALTO/PAGE, его игнорируемые строки, его порядок чтения): у его строк изменились бы номера или число, и они перестали бы соответствовать <code>&lt;lb/&gt;</code> издания. Если это всё же необходимо, замените в Varians и синхронизацию опорного свидетеля файлом <code>validated/&lt;pivot&gt;.json</code> и проверьте, что число его строк по-прежнему равно числу его <code>&lt;lb/&gt;</code>.</div>
 <h3>В Varians</h3>
 <ol>
 <li><b class="varians" data-varians="menu.file">Файл</b> → <b class="varians" data-varians="menu.project_settings">Параметры проекта…</b>; в списке свидетелей — <b class="varians" data-varians="project.witness.add">Добавить…</b>.</li>
-<li>Укажите сиглу, изображения (<b class="varians" data-varians="project.witness.images">Источник изображений</b>) и в поле <b class="varians" data-varians="project.witness.alignment.optional">Файл синхронизации (необязательно)</b> — файл <code>validated/&lt;sigle&gt;.json</code>. Отметьте <b class="varians" data-varians="project.witness.alignment.copy">Копировать синхронизацию в проект</b>: так проект останется полным, если вы его переместите.</li>
+<li>Укажите сиглу, изображения (<b class="varians" data-varians="project.witness.images">Источник изображений</b>) и в поле <b class="varians" data-varians="project.witness.alignment.optional">Файл синхронизации (необязательно)</b> — файл <code>validated/&lt;сигла&gt;.json</code>. Отметьте <b class="varians" data-varians="project.witness.alignment.copy">Копировать синхронизацию в проект</b>: так проект останется полным, если вы его переместите.</li>
 <li>Проверьте результат: <b class="varians" data-varians="menu.display">Вид</b> → <b class="varians" data-varians="diagnostics.menu">Диагностика рукописей…</b>. У нового свидетеля должны быть действительные связи с опорным.</li>
 </ol>
 <h3>Обновление свидетеля, уже включённого в проект</h3>
@@ -163,7 +163,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3 id="perimetre">Игнорируемые строки (объём)</h3>
 <p><b class="ui" data-tr="tei.scope.action">Указать игнорируемые строки на изображениях свидетеля…</b>: выделите на изображениях строки вне изучаемого текста, в том числе на нескольких страницах, затем нажмите <b class="ui" data-tr="tei.scope.ignore">Игнорировать выбранные строки</b> (или <b class="ui" data-tr="tei.scope.restore">Вернуть выбранные строки</b>). <b class="ui" data-tr="tei.scope.save">Сохранить объём</b> применяет изменения; <b class="ui" data-tr="resources.cancel">Отмена</b> ничего не меняет. Та же настройка есть в окне синхронизации (<b class="ui" data-tr="scope.menu">Объём ▾</b>).</p>
 <h3 id="tei">Связать издание TEI (необязательно)</h3>
-<p><b class="ui" data-tr="tei.binding.action">Связать издание TEI со строками ALTO/PAGE…</b> сопоставляет элементы <code>&lt;lb edRef="#SIGLE"/&gt;</code> издания TEI с активными строками свидетеля в порядке чтения. Их число должно совпадать: окно сравнивает его и сообщает, что мешает привязке (забытые игнорируемые строки, неоднозначные чтения аппарата). Проверьте несколько строк по тексту и по кадрированному изображению, в частности кнопками <b class="ui" data-tr="tei.visual.begin">Начало</b> и <b class="ui" data-tr="tei.visual.end">Конец</b>, затем нажмите <b class="ui" data-tr="tei.binding.apply">Подтвердить связи</b>.</p>
+<p><b class="ui" data-tr="tei.binding.action">Связать издание TEI со строками ALTO/PAGE…</b> сопоставляет элементы <code>&lt;lb edRef="#СИГЛА"/&gt;</code> издания TEI с активными строками свидетеля в порядке чтения. Их число должно совпадать: окно сравнивает его и сообщает, что мешает привязке (забытые игнорируемые строки, неоднозначные чтения аппарата). Проверьте несколько строк по тексту и по кадрированному изображению, в частности кнопками <b class="ui" data-tr="tei.visual.begin">Начало</b> и <b class="ui" data-tr="tei.visual.end">Конец</b>, затем нажмите <b class="ui" data-tr="tei.binding.apply">Подтвердить связи</b>.</p>
 <p>Для экспорта привязка не нужна: она позволяет проверить, что число строк опорного свидетеля действительно соответствует числу его <code>&lt;lb/&gt;</code>, а в окне синхронизации благодаря ей показывается текст TEI вместо текста HTR. Её состояние меняется на <b class="ui" data-tr="tei.binding.status.stale">требуется проверка (источники изменены)</b>, если изменились издание, объём, порядок или сегментация.</p>
 
 <h2 id="etape3">8. Шаг 3: выравнивание свидетелей</h2>
@@ -202,7 +202,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </table>
 <p><b class="ui" data-tr="alignment.filter.title">Видимые контуры</b> позволяет показывать только <b class="ui" data-tr="alignment.filter.unlinked">Несвязанные строки</b> или только <b class="ui" data-tr="alignment.filter.automatic_review">Автоматические связи на проверку</b>, чтобы найти то, что осталось сделать.</p>
 <h3 id="revision">Список групп</h3>
-<p>Внизу поле <b class="ui" data-tr="review.queue.label">Проверка</b> фильтрует группы: <b class="ui" data-tr="review.filter.all">Все группы</b>, <b class="ui" data-tr="review.filter.pending">На проверку</b>, <b class="ui" data-tr="review.filter.validated">Подтверждённые</b>, <b class="ui" data-tr="review.filter.absences">Подтверждённые отсутствия</b>, <b class="ui" data-tr="review.filter.stale">Устаревшие</b>. Каждая группа описана в списке своим состоянием и строками, обозначенными как <code>page:rang</code> (метка страницы, номер строки). Можно выделить несколько групп (<kbd>Ctrl</kbd>, <kbd>Shift</kbd>) и выполнить <b class="ui" data-tr="review.validate.selected">Подтвердить выделенное…</b>.</p>
+<p>Внизу поле <b class="ui" data-tr="review.queue.label">Проверка</b> фильтрует группы: <b class="ui" data-tr="review.filter.all">Все группы</b>, <b class="ui" data-tr="review.filter.pending">На проверку</b>, <b class="ui" data-tr="review.filter.validated">Подтверждённые</b>, <b class="ui" data-tr="review.filter.absences">Подтверждённые отсутствия</b>, <b class="ui" data-tr="review.filter.stale">Устаревшие</b>. Каждая группа описана в списке своим состоянием и строками, обозначенными как <code>страница:строка</code> (метка страницы, номер строки). Можно выделить несколько групп (<kbd>Ctrl</kbd>, <kbd>Shift</kbd>) и выполнить <b class="ui" data-tr="review.validate.selected">Подтвердить выделенное…</b>.</p>
 <p><b class="ui" data-tr="review.recalculate.next">Локальный пересчёт…</b> заново рассчитывает предложения только для интервала, следующего за выбранной опорной точкой, например после добавления новой опорной точки.</p>
 <h3 id="absences">Подтверждённые отсутствия</h3>
 <p>Если у строк одного свидетеля нет соответствия в другом, выделите их только с одной стороны, затем выберите <b class="ui" data-tr="alignment.action.more">Другие действия</b> → <b class="ui" data-tr="exception.action.confirm">Подтвердить отсутствие выбранных строк (Ctrl+Shift+A)</b>. Они перестают быть «несвязанными» и показываются красным. <b class="ui" data-tr="exception.action.revoke">Удалить выбранные отсутствия из списка</b> отменяет отсутствие, выбранное с фильтром <b class="ui" data-tr="review.filter.absences">Подтверждённые отсутствия</b>.</p>
@@ -226,7 +226,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ul>
 <li><code>project.xml</code>: свидетели, их изображения (манифест IIIF или пути к локальным изображениям) и опорный свидетель;</li>
 <li><code>xml/edition.xml</code>: издание TEI опорного свидетеля или пустое издание TEI, если его нет;</li>
-<li><code>alignments/&lt;sigle&gt;.json</code>: синхронизация каждого свидетеля, <strong>только подтверждённые соответствия</strong>;</li>
+<li><code>alignments/&lt;сигла&gt;.json</code>: синхронизация каждого свидетеля, <strong>только подтверждённые соответствия</strong>;</li>
 <li><code>rendering/</code>, <code>i18n/</code>, <code>web_output/</code>: обычные папки проекта Varians;</li>
 <li><code>RAPPORT_EXPORT_VARIANS.txt</code>: отчёт об экспорте;</li>
 <li>в некоторых случаях <code>iiif/</code>: HD-копии изображений IIIF, если они есть у всех нужных страниц.</li>
@@ -235,8 +235,8 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3 id="export-json">Экспортировать JSON для Varians</h3>
 <p><b class="ui" data-tr="export.varians.action">Экспортировать JSON для Varians…</b> служит для добавления или обновления свидетелей в существующем проекте Varians (<a href="#ajout-temoin">Сценарий B</a>). Выберите свидетеля отсчёта (опорного свидетеля проекта Varians), подтвердите, затем выберите пустую папку. Программа записывает в неё:</p>
 <ul>
-<li><code>validated/&lt;sigle&gt;.json</code>: по файлу на свидетеля, только подтверждённые соответствия;</li>
-<li><code>working/&lt;sigle&gt;.json</code>: те же соответствия плюс неподтверждённые предложения;</li>
+<li><code>validated/&lt;сигла&gt;.json</code>: по файлу на свидетеля, только подтверждённые соответствия;</li>
+<li><code>working/&lt;сигла&gt;.json</code>: те же соответствия плюс неподтверждённые предложения;</li>
 <li><code>rapport_export.json</code>: подсчёты и проверки экспорта.</li>
 </ul>
 <p>Varians не знает состояний Varians-Synchro: импортируйте <code>validated/</code>, если только вы сознательно не проводите эксперимент. Экспортируются только прямые синхронизации со свидетелем отсчёта, без выведения через третьего свидетеля. Если у свидетеля нет ни одного соответствия, пригодного для экспорта, программа сообщает об этом до экспорта и называет причину.</p>
@@ -277,7 +277,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <tr><td><code class="field">pages[].lines[].polygon</code></td><td>Необязательно: контур строки (файлы PAGE), список точек <code>[x, y]</code>.</td></tr>
 <tr><td><code class="field">pages[].lines[].alto_id</code></td><td>Идентификатор строки в файле ALTO/PAGE.</td></tr>
 <tr><td><code class="field">pages[].lines[].alto</code></td><td>Текст HTR строки (пустой, если его нет).</td></tr>
-<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>Только для других свидетелей: строки опорного свидетеля, которым соответствует строка, в виде <code>"id_de_page::rang"</code> (<code class="field">pages[].id</code> и <code class="field">pages[].lines[].line</code> строки опорного свидетеля). Строка группы n↔m содержит ключи всех строк опорного свидетеля из этой группы. У строки без соответствия (несвязанной, с подтверждённым отсутствием, из неподтверждённой группы в <code>validated/</code>) этого поля нет.</td></tr>
+<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>Только для других свидетелей: строки опорного свидетеля, которым соответствует строка, в виде <code>"id_страницы::строка"</code> (<code class="field">pages[].id</code> и <code class="field">pages[].lines[].line</code> строки опорного свидетеля). Строка группы n↔m содержит ключи всех строк опорного свидетеля из этой группы. У строки без соответствия (несвязанной, с подтверждённым отсутствием, из неподтверждённой группы в <code>validated/</code>) этого поля нет.</td></tr>
 <tr><td><code class="field">pages[].lines[].vsynch_state</code></td><td>Состояние группы в Varians-Synchro: <code>validated</code>, <code>uncertain</code> или <code>proposed</code> (два последних — только в <code>working/</code>). Только для сведения: Varians его не использует.</td></tr>
 <tr><td><code class="field">pages[].lines[].vsynch_origin</code></td><td>Происхождение группы (<code>manual</code>, <code>manual-correction</code>, <code>automatic-textual-progress-v071</code>, <code>automatic-htr-htr</code>…). Только для сведения.</td></tr>
 <tr><td><code class="field">pages[].lines[].score</code></td><td>Необязательно: уверенность автоматического предложения, от 0 до 1. Только для сведения.</td></tr>
@@ -285,7 +285,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3>Как их использует Varians</h3>
 <ul>
 <li>Строки файла опорного свидетеля, в порядке файла, по одной соответствуют элементам <code>&lt;lb edRef="#PIVOT"/&gt;</code> издания: первая строка — первому <code>&lt;lb/&gt;</code>, и так далее. Varians проверяет, что их число совпадает.</li>
-<li>Ключ опорного свидетеля имеет вид <code>id_de_page::rang</code>: он остаётся действительным, пока страница сохраняет свой идентификатор и свой файл ALTO/PAGE. Поэтому нового свидетеля существующего проекта нужно выравнивать в том же проекте <code>.vsynch</code> (<a href="#ajout-temoin">Сценарий B</a>).</li>
+<li>Ключ опорного свидетеля имеет вид <code>id_страницы::строка</code>: он остаётся действительным, пока страница сохраняет свой идентификатор и свой файл ALTO/PAGE. Поэтому нового свидетеля существующего проекта нужно выравнивать в том же проекте <code>.vsynch</code> (<a href="#ajout-temoin">Сценарий B</a>).</li>
 <li>Когда текст доходит до строки опорного свидетеля, Varians показывает у каждого другого свидетеля строку или строки, чьи <code>base_keys</code> указывают на неё.</li>
 </ul>
 <h3>Пример</h3>
@@ -307,7 +307,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3>Файл проекта</h3>
 <ul>
 <li>Вся работа хранится в файле <code>.vsynch</code>: свидетели, содержимое импортированных файлов ALTO/PAGE, связи, игнорируемые строки, порядок чтения, синхронизации. Исходные файлы никогда не изменяются.</li>
-<li>Сохранение надёжно: файл заменяется за одну операцию, а предыдущая версия сохраняется в <code>&lt;projet&gt;.vsynch.bak</code>. Чтобы вернуться к ней, скопируйте этот <code>.bak</code> под новым именем с расширением <code>.vsynch</code> и откройте его.</li>
+<li>Сохранение надёжно: файл заменяется за одну операцию, а предыдущая версия сохраняется в <code>&lt;проект&gt;.vsynch.bak</code>. Чтобы вернуться к ней, скопируйте этот <code>.bak</code> под новым именем с расширением <code>.vsynch</code> и откройте его.</li>
 <li>Команды «Сохранить как» нет: чтобы сохранить версию, скопируйте файл <code>.vsynch</code>.</li>
 <li>Проект с относительными путями (как поставляемый пример) открывается из любой папки; при сохранении пути записываются полностью.</li>
 <li>Изменение файла ALTO/PAGE на диске после импорта не меняет проект; об этом сообщает сводка. Чтобы использовать исправленную сегментацию, импортируйте новый файл и свяжите его со страницей (затронутые группы станут устаревшими).</li>

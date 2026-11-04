@@ -99,13 +99,13 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>In <b class="ui" data-tr="navigation.pages">2 · Associare le risorse</b>, associate le sue pagine ai loro file ALTO/PAGE e indicate le sue righe da ignorare.</li>
 <li>In <b class="ui" data-tr="navigation.alignment">3 · Allineare i testimoni</b>, lasciate il pivot in <b class="ui" data-tr="alignment.reference.label">Pivot tecnico</b>, scegliete il nuovo testimone in <b class="ui" data-tr="alignment.target.label">Testimone da allineare</b>, allineate e convalidate.</li>
 <li><b class="ui" data-tr="common.save">Salva</b>.</li>
-<li>In <b class="ui" data-tr="navigation.progress">4 · Finalizzare</b>, <b class="ui" data-tr="export.varians.action">Esporta JSON per Varians…</b>: scegliete il pivot come testimone di riferimento e una cartella vuota. Il file del nuovo testimone è <code>validated/&lt;sigle&gt;.json</code> (corrispondenze convalidate); <code>working/&lt;sigle&gt;.json</code> contiene anche le proposte non convalidate. Vedere <a href="#export-json">Esportare JSON per Varians</a>.</li>
+<li>In <b class="ui" data-tr="navigation.progress">4 · Finalizzare</b>, <b class="ui" data-tr="export.varians.action">Esporta JSON per Varians…</b>: scegliete il pivot come testimone di riferimento e una cartella vuota. Il file del nuovo testimone è <code>validated/&lt;sigla&gt;.json</code> (corrispondenze convalidate); <code>working/&lt;sigla&gt;.json</code> contiene anche le proposte non convalidate. Vedere <a href="#export-json">Esportare JSON per Varians</a>.</li>
 </ol>
 <div class="warn"><strong>Non modificate il pivot</strong> (le sue pagine, i loro file ALTO/PAGE, le sue righe ignorate, il suo ordine di lettura): le sue righe cambierebbero di posizione o di numero, e non corrisponderebbero più ai <code>&lt;lb/&gt;</code> dell’edizione. Se dovete farlo, sostituite anche la sincronizzazione del pivot in Varians con <code>validated/&lt;pivot&gt;.json</code>, e verificate che il numero delle sue righe sia sempre uguale a quello dei suoi <code>&lt;lb/&gt;</code>.</div>
 <h3>In Varians</h3>
 <ol>
 <li><b class="varians" data-varians="menu.file">File</b> → <b class="varians" data-varians="menu.project_settings">Impostazioni progetto…</b>; nell’elenco dei testimoni, <b class="varians" data-varians="project.witness.add">Aggiungi…</b>.</li>
-<li>Indicate la sigla, le immagini (<b class="varians" data-varians="project.witness.images">Sorgente immagini</b>) e, in <b class="varians" data-varians="project.witness.alignment.optional">File di sincronizzazione (facoltativo)</b>, il file <code>validated/&lt;sigle&gt;.json</code>. Spuntate <b class="varians" data-varians="project.witness.alignment.copy">Copia la sincronizzazione nel progetto</b>: così il progetto resta completo se lo spostate.</li>
+<li>Indicate la sigla, le immagini (<b class="varians" data-varians="project.witness.images">Sorgente immagini</b>) e, in <b class="varians" data-varians="project.witness.alignment.optional">File di sincronizzazione (facoltativo)</b>, il file <code>validated/&lt;sigla&gt;.json</code>. Spuntate <b class="varians" data-varians="project.witness.alignment.copy">Copia la sincronizzazione nel progetto</b>: così il progetto resta completo se lo spostate.</li>
 <li>Verificate con <b class="varians" data-varians="menu.display">Visualizza</b> → <b class="varians" data-varians="diagnostics.menu">Diagnostica dei testimoni…</b>: il nuovo testimone deve avere collegamenti validi al pivot.</li>
 </ol>
 <h3>Aggiornare un testimone già presente</h3>
@@ -163,7 +163,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3 id="perimetre">Righe da ignorare (ambito)</h3>
 <p><b class="ui" data-tr="tei.scope.action">Definisci le righe da ignorare nelle immagini del testimone…</b>: selezionate sulle immagini le righe fuori dal testo studiato, anche su più pagine, poi fate clic su <b class="ui" data-tr="tei.scope.ignore">Ignora le righe selezionate</b> (o <b class="ui" data-tr="tei.scope.restore">Reintegra le righe selezionate</b>). <b class="ui" data-tr="tei.scope.save">Salva l'ambito</b> applica le modifiche; <b class="ui" data-tr="resources.cancel">Annulla</b> non cambia nulla. La stessa impostazione esiste nella finestra di sincronizzazione (<b class="ui" data-tr="scope.menu">Ambito ▾</b>).</p>
 <h3 id="tei">Collegare l’edizione TEI (facoltativo)</h3>
-<p><b class="ui" data-tr="tei.binding.action">Collega l'edizione TEI alle righe ALTO/PAGE…</b> mette in corrispondenza i <code>&lt;lb edRef="#SIGLE"/&gt;</code> di un’edizione TEI con le righe attive del testimone, nell’ordine di lettura. I due numeri devono essere uguali: la finestra li confronta e segnala ciò che blocca (righe da ignorare dimenticate, lezioni ambigue di un apparato). Verificate alcune righe, in particolare con <b class="ui" data-tr="tei.visual.begin">Inizio</b> e <b class="ui" data-tr="tei.visual.end">Fine</b>, sul testo e sull’immagine ritagliata, poi fate clic su <b class="ui" data-tr="tei.binding.apply">Conferma i collegamenti</b>.</p>
+<p><b class="ui" data-tr="tei.binding.action">Collega l'edizione TEI alle righe ALTO/PAGE…</b> mette in corrispondenza i <code>&lt;lb edRef="#SIGLA"/&gt;</code> di un’edizione TEI con le righe attive del testimone, nell’ordine di lettura. I due numeri devono essere uguali: la finestra li confronta e segnala ciò che blocca (righe da ignorare dimenticate, lezioni ambigue di un apparato). Verificate alcune righe, in particolare con <b class="ui" data-tr="tei.visual.begin">Inizio</b> e <b class="ui" data-tr="tei.visual.end">Fine</b>, sul testo e sull’immagine ritagliata, poi fate clic su <b class="ui" data-tr="tei.binding.apply">Conferma i collegamenti</b>.</p>
 <p>Il collegamento non è necessario per l’esportazione: serve a verificare che il numero di righe del pivot corrisponda davvero ai suoi <code>&lt;lb/&gt;</code>, e fa mostrare il testo TEI al posto del testo HTR nella finestra di sincronizzazione. Il suo stato passa a <b class="ui" data-tr="tei.binding.status.stale">da riverificare (sorgenti modificate)</b> se cambiano l’edizione, l’ambito, l’ordine o la segmentazione.</p>
 
 <h2 id="etape3">8. Fase 3: allineare i testimoni</h2>
@@ -202,7 +202,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </table>
 <p><b class="ui" data-tr="alignment.filter.title">Contorni visibili</b> limita la visualizzazione alle <b class="ui" data-tr="alignment.filter.unlinked">Righe non collegate</b> o ai <b class="ui" data-tr="alignment.filter.automatic_review">Collegamenti automatici da verificare</b>, per individuare ciò che resta da fare.</p>
 <h3 id="revision">L’elenco dei gruppi</h3>
-<p>In basso, <b class="ui" data-tr="review.queue.label">Verifica</b> filtra i gruppi: <b class="ui" data-tr="review.filter.all">Tutti i gruppi</b>, <b class="ui" data-tr="review.filter.pending">Da verificare</b>, <b class="ui" data-tr="review.filter.validated">Convalidati</b>, <b class="ui" data-tr="review.filter.absences">Assenze confermate</b>, <b class="ui" data-tr="review.filter.stale">Obsoleti</b>. Ogni gruppo vi è descritto dal suo stato e dalle sue righe, indicate come <code>page:rang</code> (etichetta della pagina, posizione della riga). Se ne possono selezionare più d’uno (<kbd>Ctrl</kbd>, <kbd>Maiusc</kbd>) per <b class="ui" data-tr="review.validate.selected">Convalida selezione…</b>.</p>
+<p>In basso, <b class="ui" data-tr="review.queue.label">Verifica</b> filtra i gruppi: <b class="ui" data-tr="review.filter.all">Tutti i gruppi</b>, <b class="ui" data-tr="review.filter.pending">Da verificare</b>, <b class="ui" data-tr="review.filter.validated">Convalidati</b>, <b class="ui" data-tr="review.filter.absences">Assenze confermate</b>, <b class="ui" data-tr="review.filter.stale">Obsoleti</b>. Ogni gruppo vi è descritto dal suo stato e dalle sue righe, indicate come <code>pagina:riga</code> (etichetta della pagina, posizione della riga). Se ne possono selezionare più d’uno (<kbd>Ctrl</kbd>, <kbd>Maiusc</kbd>) per <b class="ui" data-tr="review.validate.selected">Convalida selezione…</b>.</p>
 <p><b class="ui" data-tr="review.recalculate.next">Ricalcolo locale…</b> rifà le proposte del solo intervallo che segue l’ancora scelta, per esempio dopo che avete aggiunto un’ancora.</p>
 <h3 id="absences">Assenze confermate</h3>
 <p>Quando alcune righe di un testimone non hanno equivalente nell’altro, selezionatele da un solo lato, poi scegliete <b class="ui" data-tr="alignment.action.more">Altre operazioni</b> → <b class="ui" data-tr="exception.action.confirm">Conferma l'assenza delle righe selezionate (Ctrl+Maiusc+A)</b>. Le righe non sono più «non collegate» e compaiono in rosso. <b class="ui" data-tr="exception.action.revoke">Rimuovi le assenze selezionate dall'elenco</b> annulla un’assenza scelta con il filtro <b class="ui" data-tr="review.filter.absences">Assenze confermate</b>.</p>
@@ -226,7 +226,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ul>
 <li><code>project.xml</code>: i testimoni, le loro immagini (Manifest IIIF, o percorsi delle immagini locali) e il pivot;</li>
 <li><code>xml/edition.xml</code>: l’edizione TEI del pivot, o una TEI vuota se il pivot non ne ha;</li>
-<li><code>alignments/&lt;sigle&gt;.json</code>: la sincronizzazione di ogni testimone, <strong>solo corrispondenze convalidate</strong>;</li>
+<li><code>alignments/&lt;sigla&gt;.json</code>: la sincronizzazione di ogni testimone, <strong>solo corrispondenze convalidate</strong>;</li>
 <li><code>rendering/</code>, <code>i18n/</code>, <code>web_output/</code>: le cartelle consuete di un progetto Varians;</li>
 <li><code>RAPPORT_EXPORT_VARIANS.txt</code>: il resoconto dell’esportazione;</li>
 <li>eventualmente <code>iiif/</code>: le copie HD delle immagini IIIF, se tutte le pagine utili ne hanno una.</li>
@@ -235,8 +235,8 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3 id="export-json">Esportare JSON per Varians</h3>
 <p><b class="ui" data-tr="export.varians.action">Esporta JSON per Varians…</b> serve ad aggiungere o aggiornare testimoni in un progetto Varians esistente (<a href="#ajout-temoin">Percorso B</a>). Scegliete il testimone di riferimento (il pivot del progetto Varians), confermate, poi scegliete una cartella vuota. Il programma vi scrive:</p>
 <ul>
-<li><code>validated/&lt;sigle&gt;.json</code>: un file per testimone, solo corrispondenze convalidate;</li>
-<li><code>working/&lt;sigle&gt;.json</code>: le stesse, più le proposte non convalidate;</li>
+<li><code>validated/&lt;sigla&gt;.json</code>: un file per testimone, solo corrispondenze convalidate;</li>
+<li><code>working/&lt;sigla&gt;.json</code>: le stesse, più le proposte non convalidate;</li>
 <li><code>rapport_export.json</code>: i conteggi e i controlli dell’esportazione.</li>
 </ul>
 <p>Varians non conosce gli stati di Varians-Synchro: importate <code>validated/</code>, salvo per una prova fatta con cognizione di causa. Sono esportate solo le sincronizzazioni dirette con il testimone di riferimento, senza deduzioni tramite un terzo testimone. Se un testimone non ha alcuna corrispondenza esportabile, il programma lo segnala prima dell’esportazione, indicandone la causa.</p>
@@ -277,7 +277,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <tr><td><code class="field">pages[].lines[].polygon</code></td><td>Facoltativo: il contorno della riga (file PAGE), elenco di punti <code>[x, y]</code>.</td></tr>
 <tr><td><code class="field">pages[].lines[].alto_id</code></td><td>L’identificativo della riga nel file ALTO/PAGE.</td></tr>
 <tr><td><code class="field">pages[].lines[].alto</code></td><td>Il testo HTR della riga (vuoto se non c’è).</td></tr>
-<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>Solo per gli altri testimoni: le righe del pivot a cui la riga corrisponde, nella forma <code>"id_de_page::rang"</code> (<code class="field">pages[].id</code> e <code class="field">pages[].lines[].line</code> di una riga del pivot). Una riga di un gruppo n↔m porta le chiavi di tutte le righe del pivot del gruppo. Una riga senza corrispondenza (non collegata, assenza confermata, gruppo non convalidato in <code>validated/</code>) non ha questo campo.</td></tr>
+<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>Solo per gli altri testimoni: le righe del pivot a cui la riga corrisponde, nella forma <code>"id_pagina::riga"</code> (<code class="field">pages[].id</code> e <code class="field">pages[].lines[].line</code> di una riga del pivot). Una riga di un gruppo n↔m porta le chiavi di tutte le righe del pivot del gruppo. Una riga senza corrispondenza (non collegata, assenza confermata, gruppo non convalidato in <code>validated/</code>) non ha questo campo.</td></tr>
 <tr><td><code class="field">pages[].lines[].vsynch_state</code></td><td>Lo stato del gruppo in Varians-Synchro: <code>validated</code>, <code>uncertain</code> o <code>proposed</code> (questi ultimi due solo in <code>working/</code>). Informativo: Varians non lo usa.</td></tr>
 <tr><td><code class="field">pages[].lines[].vsynch_origin</code></td><td>L’origine del gruppo (<code>manual</code>, <code>manual-correction</code>, <code>automatic-textual-progress-v071</code>, <code>automatic-htr-htr</code>…). Informativo.</td></tr>
 <tr><td><code class="field">pages[].lines[].score</code></td><td>Facoltativo: il grado di confidenza di una proposta automatica, tra 0 e 1. Informativo.</td></tr>
@@ -285,7 +285,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3>Che cosa ne fa Varians</h3>
 <ul>
 <li>Le righe del file del pivot, nell’ordine del file, corrispondono una a una ai <code>&lt;lb edRef="#PIVOT"/&gt;</code> dell’edizione: la prima riga al primo <code>&lt;lb/&gt;</code>, e così via. Varians verifica che i numeri siano uguali.</li>
-<li>Una chiave del pivot è <code>id_de_page::rang</code>: resta valida finché la pagina conserva il suo identificativo e il suo file ALTO/PAGE. Per questo il nuovo testimone di un progetto esistente deve essere allineato nello stesso progetto <code>.vsynch</code> (<a href="#ajout-temoin">Percorso B</a>).</li>
+<li>Una chiave del pivot è <code>id_pagina::riga</code>: resta valida finché la pagina conserva il suo identificativo e il suo file ALTO/PAGE. Per questo il nuovo testimone di un progetto esistente deve essere allineato nello stesso progetto <code>.vsynch</code> (<a href="#ajout-temoin">Percorso B</a>).</li>
 <li>Quando il testo arriva a una riga del pivot, Varians mostra, in ogni altro testimone, la riga o le righe i cui <code>base_keys</code> la designano.</li>
 </ul>
 <h3>Esempio</h3>
@@ -307,7 +307,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3>Il file di progetto</h3>
 <ul>
 <li>Tutto il lavoro si trova nel file <code>.vsynch</code>: testimoni, contenuto dei file ALTO/PAGE importati, associazioni, righe ignorate, ordine di lettura, sincronizzazioni. I file sorgente non vengono mai modificati.</li>
-<li>Il salvataggio è sicuro: il file viene sostituito in un’unica operazione, e la versione precedente è conservata in <code>&lt;projet&gt;.vsynch.bak</code>. Per tornare indietro, copiate questo <code>.bak</code> con un nuovo nome con estensione <code>.vsynch</code> e apritelo.</li>
+<li>Il salvataggio è sicuro: il file viene sostituito in un’unica operazione, e la versione precedente è conservata in <code>&lt;progetto&gt;.vsynch.bak</code>. Per tornare indietro, copiate questo <code>.bak</code> con un nuovo nome con estensione <code>.vsynch</code> e apritelo.</li>
 <li>Non esiste un comando «Salva con nome»: per conservare una versione, copiate il file <code>.vsynch</code>.</li>
 <li>Un progetto con percorsi relativi (come l’esempio fornito) si apre da qualsiasi cartella; al salvataggio, i percorsi vengono scritti per intero.</li>
 <li>Modificare un file ALTO/PAGE sul disco dopo l’importazione non cambia il progetto; il riepilogo lo segnala. Per una segmentazione corretta, importate il nuovo file e associatelo alla pagina (i gruppi interessati diventano obsoleti).</li>

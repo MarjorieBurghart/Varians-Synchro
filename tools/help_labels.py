@@ -29,8 +29,8 @@ MARK = re.compile(r'<b class="(ui|varians)" data-(tr|varians)="([^"]+)">([^<]*)<
 
 
 def screen_text(text: str) -> str:
-    """Le libellé tel que le guide le cite : sans deux-points final."""
-    return re.sub(r'[\s  ]*:$', '', text.strip())
+    """Le libellé tel que le guide le cite : sans deux-points final (« : » ou « ： »)."""
+    return re.sub(r'[\s  ]*[:：]$', '', text.strip())
 
 
 def synchro_label(key: str, language: str) -> str:

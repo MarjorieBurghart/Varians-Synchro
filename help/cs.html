@@ -99,13 +99,13 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>V kroku <b class="ui" data-tr="navigation.pages">2 · Přiřazení zdrojů</b> přiřaďte jeho stránky k jejich souborům ALTO/PAGE a určete jeho řádky k ignorování.</li>
 <li>V kroku <b class="ui" data-tr="navigation.alignment">3 · Zarovnání svědků</b> ponechte pivot v poli <b class="ui" data-tr="alignment.reference.label">Technický pivot</b>, zvolte nového svědka v poli <b class="ui" data-tr="alignment.target.label">Zarovnávaný svědek</b>, zarovnejte a potvrďte.</li>
 <li><b class="ui" data-tr="common.save">Uložit</b>.</li>
-<li>V kroku <b class="ui" data-tr="navigation.progress">4 · Dokončení</b> použijte <b class="ui" data-tr="export.varians.action">Exportovat JSON pro Varians…</b>: jako referenčního svědka zvolte pivot a vyberte prázdnou složku. Soubor nového svědka je <code>validated/&lt;sigle&gt;.json</code> (potvrzené korespondence); <code>working/&lt;sigle&gt;.json</code> obsahuje i nepotvrzené návrhy. Viz <a href="#export-json">Exportovat JSON pro Varians</a>.</li>
+<li>V kroku <b class="ui" data-tr="navigation.progress">4 · Dokončení</b> použijte <b class="ui" data-tr="export.varians.action">Exportovat JSON pro Varians…</b>: jako referenčního svědka zvolte pivot a vyberte prázdnou složku. Soubor nového svědka je <code>validated/&lt;sigla&gt;.json</code> (potvrzené korespondence); <code>working/&lt;sigla&gt;.json</code> obsahuje i nepotvrzené návrhy. Viz <a href="#export-json">Exportovat JSON pro Varians</a>.</li>
 </ol>
 <div class="warn"><strong>Neměňte pivot</strong> (jeho stránky, jejich soubory ALTO/PAGE, jeho ignorované řádky, jeho pořadí čtení): jeho řádky by změnily pořadová čísla nebo počet a už by neodpovídaly <code>&lt;lb/&gt;</code> edice. Pokud to udělat musíte, nahraďte ve Varians také zarovnání pivotu souborem <code>validated/&lt;pivot&gt;.json</code> a ověřte, že počet jeho řádků stále odpovídá počtu jeho <code>&lt;lb/&gt;</code>.</div>
 <h3>Ve Varians</h3>
 <ol>
 <li><b class="varians" data-varians="menu.file">Soubor</b> → <b class="varians" data-varians="menu.project_settings">Nastavení projektu…</b>; v seznamu svědků <b class="varians" data-varians="project.witness.add">Přidat…</b>.</li>
-<li>Zadejte siglu, obrázky (<b class="varians" data-varians="project.witness.images">Zdroj obrázků</b>) a v poli <b class="varians" data-varians="project.witness.alignment.optional">Soubor synchronizace (volitelný)</b> soubor <code>validated/&lt;sigle&gt;.json</code>. Zaškrtněte <b class="varians" data-varians="project.witness.alignment.copy">Kopírovat synchronizaci do projektu</b>: projekt tak zůstane úplný, i když jej přesunete.</li>
+<li>Zadejte siglu, obrázky (<b class="varians" data-varians="project.witness.images">Zdroj obrázků</b>) a v poli <b class="varians" data-varians="project.witness.alignment.optional">Soubor synchronizace (volitelný)</b> soubor <code>validated/&lt;sigla&gt;.json</code>. Zaškrtněte <b class="varians" data-varians="project.witness.alignment.copy">Kopírovat synchronizaci do projektu</b>: projekt tak zůstane úplný, i když jej přesunete.</li>
 <li>Zkontrolujte pomocí <b class="varians" data-varians="menu.display">Zobrazení</b> → <b class="varians" data-varians="diagnostics.menu">Diagnostika rukopisů…</b>: nový svědek musí mít platné vazby na pivot.</li>
 </ol>
 <h3>Aktualizace již přítomného svědka</h3>
@@ -163,7 +163,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3 id="perimetre">Řádky k ignorování (rozsah)</h3>
 <p><b class="ui" data-tr="tei.scope.action">Určit řádky ignorované na obrázcích svědka…</b>: na obrázcích vyberte řádky mimo zkoumaný text, i na více stránkách, a pak použijte <b class="ui" data-tr="tei.scope.ignore">Ignorovat vybrané řádky</b> (nebo <b class="ui" data-tr="tei.scope.restore">Obnovit vybrané řádky</b>). <b class="ui" data-tr="tei.scope.save">Uložit rozsah</b> změny použije; <b class="ui" data-tr="resources.cancel">Zrušit</b> nic nezmění. Stejné nastavení je k dispozici i v okně zarovnání (<b class="ui" data-tr="scope.menu">Rozsah ▾</b>).</p>
 <h3 id="tei">Propojení edice TEI (volitelné)</h3>
-<p><b class="ui" data-tr="tei.binding.action">Propojit edici TEI s řádky ALTO/PAGE…</b> přiřadí značky <code>&lt;lb edRef="#SIGLE"/&gt;</code> edice TEI k aktivním řádkům svědka, v pořadí čtení. Počty musí být stejné: okno je porovná a uvede, co propojení brání (zapomenuté řádky k ignorování, nejednoznačná čtení v aparátu). Zkontrolujte několik řádků, zejména pomocí <b class="ui" data-tr="tei.visual.begin">Začátek</b> a <b class="ui" data-tr="tei.visual.end">Konec</b>, na textu i na oříznutém obrázku, a pak klikněte na <b class="ui" data-tr="tei.binding.apply">Potvrdit propojení</b>.</p>
+<p><b class="ui" data-tr="tei.binding.action">Propojit edici TEI s řádky ALTO/PAGE…</b> přiřadí značky <code>&lt;lb edRef="#SIGLA"/&gt;</code> edice TEI k aktivním řádkům svědka, v pořadí čtení. Počty musí být stejné: okno je porovná a uvede, co propojení brání (zapomenuté řádky k ignorování, nejednoznačná čtení v aparátu). Zkontrolujte několik řádků, zejména pomocí <b class="ui" data-tr="tei.visual.begin">Začátek</b> a <b class="ui" data-tr="tei.visual.end">Konec</b>, na textu i na oříznutém obrázku, a pak klikněte na <b class="ui" data-tr="tei.binding.apply">Potvrdit propojení</b>.</p>
 <p>Propojení není pro export nutné: slouží k ověření, že počet řádků pivotu skutečně odpovídá jeho <code>&lt;lb/&gt;</code>, a díky němu okno zarovnání zobrazuje text TEI místo textu HTR. Pokud se změní edice, rozsah, pořadí nebo segmentace, přejde propojení do stavu <b class="ui" data-tr="tei.binding.status.stale">nutno znovu ověřit (změněné zdroje)</b>.</p>
 
 <h2 id="etape3">8. Krok 3: zarovnání svědků</h2>
@@ -202,7 +202,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </table>
 <p><b class="ui" data-tr="alignment.filter.title">Viditelné obrysy</b> omezí zobrazení na <b class="ui" data-tr="alignment.filter.unlinked">Nepropojené řádky</b> nebo na <b class="ui" data-tr="alignment.filter.automatic_review">Automatické vazby ke kontrole</b>, abyste snadno našli, co zbývá udělat.</p>
 <h3 id="revision">Seznam skupin</h3>
-<p>Dole filtruje pole <b class="ui" data-tr="review.queue.label">Kontrola</b> skupiny: <b class="ui" data-tr="review.filter.all">Všechny skupiny</b>, <b class="ui" data-tr="review.filter.pending">Ke kontrole</b>, <b class="ui" data-tr="review.filter.validated">Potvrzené</b>, <b class="ui" data-tr="review.filter.absences">Potvrzené absence</b>, <b class="ui" data-tr="review.filter.stale">Zastaralé</b>. Každá skupina je v seznamu popsána svým stavem a svými řádky ve tvaru <code>page:rang</code> (popisek stránky, pořadové číslo řádku). Lze jich vybrat několik (<kbd>Ctrl</kbd>, <kbd>Shift</kbd>) a použít <b class="ui" data-tr="review.validate.selected">Potvrdit výběr…</b>.</p>
+<p>Dole filtruje pole <b class="ui" data-tr="review.queue.label">Kontrola</b> skupiny: <b class="ui" data-tr="review.filter.all">Všechny skupiny</b>, <b class="ui" data-tr="review.filter.pending">Ke kontrole</b>, <b class="ui" data-tr="review.filter.validated">Potvrzené</b>, <b class="ui" data-tr="review.filter.absences">Potvrzené absence</b>, <b class="ui" data-tr="review.filter.stale">Zastaralé</b>. Každá skupina je v seznamu popsána svým stavem a svými řádky ve tvaru <code>strana:řádek</code> (popisek stránky, pořadové číslo řádku). Lze jich vybrat několik (<kbd>Ctrl</kbd>, <kbd>Shift</kbd>) a použít <b class="ui" data-tr="review.validate.selected">Potvrdit výběr…</b>.</p>
 <p><b class="ui" data-tr="review.recalculate.next">Lokálně přepočítat…</b> znovu vytvoří návrhy jen v intervalu, který následuje po zvolené kotvě, například po přidání kotvy.</p>
 <h3 id="absences">Potvrzené absence</h3>
 <p>Když řádky jednoho svědka nemají protějšek v druhém, vyberte je jen na jedné straně a pak použijte <b class="ui" data-tr="alignment.action.more">Další operace</b> → <b class="ui" data-tr="exception.action.confirm">Potvrdit absenci vybraných řádků (Ctrl+Shift+A)</b>. Řádky přestanou být „nepropojené“ a zobrazí se červeně. <b class="ui" data-tr="exception.action.revoke">Odebrat vybrané absence ze seznamu</b> zruší absenci zvolenou s filtrem <b class="ui" data-tr="review.filter.absences">Potvrzené absence</b>.</p>
@@ -226,7 +226,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ul>
 <li><code>project.xml</code>: svědkové, jejich obrázky (Manifest IIIF nebo cesty k místním obrázkům) a pivot;</li>
 <li><code>xml/edition.xml</code>: edice TEI pivotu, nebo prázdná edice TEI, pokud pivot žádnou nemá;</li>
-<li><code>alignments/&lt;sigle&gt;.json</code>: zarovnání každého svědka, <strong>pouze potvrzené korespondence</strong>;</li>
+<li><code>alignments/&lt;sigla&gt;.json</code>: zarovnání každého svědka, <strong>pouze potvrzené korespondence</strong>;</li>
 <li><code>rendering/</code>, <code>i18n/</code>, <code>web_output/</code>: obvyklé složky projektu Varians;</li>
 <li><code>RAPPORT_EXPORT_VARIANS.txt</code>: zpráva o exportu;</li>
 <li>případně <code>iiif/</code>: kopie obrázků IIIF v HD, má-li kopii každá potřebná stránka.</li>
@@ -235,8 +235,8 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3 id="export-json">Exportovat JSON pro Varians</h3>
 <p><b class="ui" data-tr="export.varians.action">Exportovat JSON pro Varians…</b> slouží k přidání nebo aktualizaci svědků v existujícím projektu Varians (<a href="#ajout-temoin">Postup B</a>). Zvolte referenčního svědka (pivot projektu Varians), potvrďte a pak vyberte prázdnou složku. Program do ní zapíše:</p>
 <ul>
-<li><code>validated/&lt;sigle&gt;.json</code>: jeden soubor pro každého svědka, pouze potvrzené korespondence;</li>
-<li><code>working/&lt;sigle&gt;.json</code>: tytéž korespondence a navíc nepotvrzené návrhy;</li>
+<li><code>validated/&lt;sigla&gt;.json</code>: jeden soubor pro každého svědka, pouze potvrzené korespondence;</li>
+<li><code>working/&lt;sigla&gt;.json</code>: tytéž korespondence a navíc nepotvrzené návrhy;</li>
 <li><code>rapport_export.json</code>: počty a kontroly exportu.</li>
 </ul>
 <p>Varians nezná stavy z Varians-Synchro: importujte <code>validated/</code>, pokud nejde o vědomý pokus. Exportují se jen přímá zarovnání s referenčním svědkem, bez odvozování přes třetího svědka. Nemá-li svědek žádnou exportovatelnou korespondenci, program to před exportem oznámí i s příčinou.</p>
@@ -277,7 +277,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <tr><td><code class="field">pages[].lines[].polygon</code></td><td>Volitelné: obrys řádku (soubory PAGE), seznam bodů <code>[x, y]</code>.</td></tr>
 <tr><td><code class="field">pages[].lines[].alto_id</code></td><td>Identifikátor řádku v souboru ALTO/PAGE.</td></tr>
 <tr><td><code class="field">pages[].lines[].alto</code></td><td>Text HTR řádku (prázdný, pokud žádný není).</td></tr>
-<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>Jen u ostatních svědků: řádky pivotu, jimž řádek odpovídá, ve tvaru <code>"id_de_page::rang"</code> (<code class="field">pages[].id</code> a <code class="field">pages[].lines[].line</code> řádku pivotu). Řádek skupiny n↔m nese klíče všech řádků pivotu ve skupině. Řádek bez korespondence (nepropojený, potvrzená absence, nepotvrzená skupina ve <code>validated/</code>) toto pole nemá.</td></tr>
+<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>Jen u ostatních svědků: řádky pivotu, jimž řádek odpovídá, ve tvaru <code>"id_strany::řádek"</code> (<code class="field">pages[].id</code> a <code class="field">pages[].lines[].line</code> řádku pivotu). Řádek skupiny n↔m nese klíče všech řádků pivotu ve skupině. Řádek bez korespondence (nepropojený, potvrzená absence, nepotvrzená skupina ve <code>validated/</code>) toto pole nemá.</td></tr>
 <tr><td><code class="field">pages[].lines[].vsynch_state</code></td><td>Stav skupiny ve Varians-Synchro: <code>validated</code>, <code>uncertain</code> nebo <code>proposed</code> (poslední dva jen ve <code>working/</code>). Informativní: Varians jej nepoužívá.</td></tr>
 <tr><td><code class="field">pages[].lines[].vsynch_origin</code></td><td>Původ skupiny (<code>manual</code>, <code>manual-correction</code>, <code>automatic-textual-progress-v071</code>, <code>automatic-htr-htr</code>…). Informativní.</td></tr>
 <tr><td><code class="field">pages[].lines[].score</code></td><td>Volitelné: spolehlivost automatického návrhu, mezi 0 a 1. Informativní.</td></tr>
@@ -285,7 +285,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3>Co s nimi dělá Varians</h3>
 <ul>
 <li>Řádky souboru pivotu odpovídají, v pořadí souboru, jeden po druhém značkám <code>&lt;lb edRef="#PIVOT"/&gt;</code> edice: první řádek prvnímu <code>&lt;lb/&gt;</code> a tak dále. Varians ověřuje, že se počty shodují.</li>
-<li>Klíč pivotu má tvar <code>id_de_page::rang</code>: zůstává platný, dokud si stránka ponechá svůj identifikátor a svůj soubor ALTO/PAGE. Proto musí být nový svědek existujícího projektu zarovnán v tomtéž projektu <code>.vsynch</code> (<a href="#ajout-temoin">Postup B</a>).</li>
+<li>Klíč pivotu má tvar <code>id_strany::řádek</code>: zůstává platný, dokud si stránka ponechá svůj identifikátor a svůj soubor ALTO/PAGE. Proto musí být nový svědek existujícího projektu zarovnán v tomtéž projektu <code>.vsynch</code> (<a href="#ajout-temoin">Postup B</a>).</li>
 <li>Když se text dostane k řádku pivotu, Varians v každém dalším svědkovi ukáže řádek nebo řádky, jejichž <code>base_keys</code> na něj odkazují.</li>
 </ul>
 <h3>Příklad</h3>
@@ -307,7 +307,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3>Soubor projektu</h3>
 <ul>
 <li>Veškerá práce je v souboru <code>.vsynch</code>: svědkové, obsah importovaných souborů ALTO/PAGE, přiřazení, ignorované řádky, pořadí čtení, zarovnání. Zdrojové soubory se nikdy nemění.</li>
-<li>Ukládání je bezpečné: soubor se nahradí najednou a předchozí verze se uchová v <code>&lt;projet&gt;.vsynch.bak</code>. Chcete-li se vrátit k předchozí verzi, zkopírujte tento <code>.bak</code> pod novým názvem s příponou <code>.vsynch</code> a otevřete jej.</li>
+<li>Ukládání je bezpečné: soubor se nahradí najednou a předchozí verze se uchová v <code>&lt;projekt&gt;.vsynch.bak</code>. Chcete-li se vrátit k předchozí verzi, zkopírujte tento <code>.bak</code> pod novým názvem s příponou <code>.vsynch</code> a otevřete jej.</li>
 <li>Příkaz „Uložit jako“ neexistuje: chcete-li si uchovat verzi, zkopírujte soubor <code>.vsynch</code>.</li>
 <li>Projekt s relativními cestami (jako dodaný příklad) lze otevřít z libovolné složky; při uložení se cesty zapíší v úplném tvaru.</li>
 <li>Změna souboru ALTO/PAGE na disku po importu projekt nezmění; přehled na to upozorní. U opravené segmentace importujte nový soubor a přiřaďte jej ke stránce (dotčené skupiny se stanou zastaralými).</li>
