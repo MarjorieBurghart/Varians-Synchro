@@ -22,7 +22,9 @@ def main():
         print('La fenêtre est indépendante : fermer Spyder ne fermera pas le projet.')
         return 0
     # In case of a fatal native Qt crash, record as much as Python can provide.
-    faulthandler.enable()
+    # La version Windows construite n'a pas de console : sys.stderr vaut None.
+    if sys.stderr is not None:
+        faulthandler.enable()
     from varians_synchro.gui import main as qt_main
     return qt_main()
 

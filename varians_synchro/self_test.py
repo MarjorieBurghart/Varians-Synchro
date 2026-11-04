@@ -19,6 +19,11 @@ construite par PyInstaller (``packaging/``) : une application Windows sans
 console n'a pas de sortie standard, d'où le rapport écrit dans un fichier.
 Le code de sortie est 0 si tout va bien, 1 sinon. Aucun réglage de
 l'utilisateur n'est écrit, et rien n'est laissé dans le dossier installé.
+
+Le projet d'exemple vérifié est celui des données du programme (à côté du
+paquet ``varians_synchro`` ; ``_internal`` dans une version construite),
+pas la copie posée pour l'utilisateur à côté de l'exécutable : un paquet
+``.app`` glissé dans Applications se vérifie donc toujours.
 """
 from __future__ import annotations
 
@@ -39,25 +44,10 @@ def frozen() -> bool:
     return bool(getattr(sys, 'frozen', False))
 
 
-def installation_folder(*, frozen=None, executable=None, system=None) -> Path:
-    """Dossier de l'installation, où sont le projet d'exemple et le
-    LISEZMOI : la racine des sources ; dans une version construite, le
-    dossier de l'exécutable (Windows, Linux) ou celui du paquet ``.app``
-    (macOS)."""
-    frozen = globals()['frozen']() if frozen is None else frozen
-    if not frozen:
-        return Path(__file__).resolve().parents[1]
-    executable = Path(executable or sys.executable)
-    system = system or sys.platform
-    if system == 'darwin':
-        return executable.parents[3]           # X.app/Contents/MacOS/exécutable
-    return executable.parent
-
-
 def _data_folder() -> Path:
-    """Dossier des données lues par le code (``i18n``, ``help``, ``icons``) :
-    à côté du paquet ``varians_synchro`` (``_internal`` dans une version
-    construite)."""
+    """Dossier des données lues par le code (``i18n``, ``help``, ``icons``,
+    projet d'exemple) : à côté du paquet ``varians_synchro`` (``_internal``
+    dans une version construite)."""
     return Path(__file__).resolve().parents[1]
 
 
@@ -95,21 +85,21 @@ def _help(root):
     return f'{len(LANGUAGES)} langues'
 
 
-def _resources(root, installation):
+def _resources(root):
     from .app_icon import ICON_SIZES
     expected = [root / 'icons' / f'varians_synchro_{size}.png' for size in ICON_SIZES]
-    expected += [installation / DEMO / 'exemple.vsynch']
+    expected += [root / DEMO / 'exemple.vsynch']
     missing = [str(path) for path in expected if not path.is_file()]
     if missing:
         raise AssertionError('absent : ' + ', '.join(missing))
     return f'{len(ICON_SIZES)} icônes, projet d\'exemple'
 
 
-def _project(installation, folder):
+def _project(root, folder):
     """Le projet d'exemple, copié puis ouvert, vérifié et enregistré."""
     from .core import check_alto_files, load_project, save_project
     copy = folder / DEMO
-    shutil.copytree(installation / DEMO, copy)
+    shutil.copytree(root / DEMO, copy)
     path = copy / 'exemple.vsynch'
     project = load_project(path)
     witnesses = [w['id'] for w in project.get('witnesses', [])]
@@ -175,11 +165,9 @@ def _window(path):
 def run(report_path=None, *, root=None, only=CHECKS) -> int:
     """Vérifie l'installation et écrit le rapport JSON dans ``report_path``
     (sinon sur la sortie standard) ; 0 si tout va bien, 1 sinon. ``root`` :
-    dossier à vérifier, pour les données comme pour le projet d'exemple (par
-    défaut, ceux de cette installation)."""
+    dossier des données à vérifier (par défaut, celles de ce programme)."""
     from .core import VERSION
     data = Path(root) if root else _data_folder()
-    installation = Path(root) if root else installation_folder()
     checks, state = [], {}
     with tempfile.TemporaryDirectory(prefix='varians-synchro-self-test-') as temporary:
         folder = Path(temporary)
@@ -205,8 +193,8 @@ def run(report_path=None, *, root=None, only=CHECKS) -> int:
 
         check('translations', lambda: _translations(data))
         check('help', lambda: _help(data))
-        check('resources', lambda: _resources(data, installation))
-        check('project', lambda: _project(installation, folder))
+        check('resources', lambda: _resources(data))
+        check('project', lambda: _project(data, folder))
         check('alignment', with_project(lambda path: _alignment(path, folder)))
         check('window', with_project(_window))
     ok = bool(checks) and all(item['ok'] for item in checks)

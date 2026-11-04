@@ -1,0 +1,102 @@
+VARIANS-SYNCHRO {version} — VERSIONE PRONTA ALL'USO
+
+Questo archivio contiene Varians-Synchro e tutto ciò che gli serve (Python,
+Qt): non c'è nient'altro da installare.
+
+
+INSTALLARE E AVVIARE
+--------------------
+Windows (10 o 11, 64 bit)
+  1. Estraete tutto l'archivio (clic destro → "Estrai tutto…"), per esempio
+     in Documenti. Non avviate Varians-Synchro dall'interno del file zip.
+  2. Fate doppio clic su Varians-Synchro.exe, nella cartella
+     Varians-Synchro-{version}.
+  3. Primo avvio: poiché Varians-Synchro non è firmato, Windows può mostrare
+     "Windows ha protetto il PC". Fate clic su "Ulteriori informazioni",
+     poi su "Esegui comunque". Anche un antivirus può analizzare il
+     programma prima di lasciarlo avviare.
+  Per un collegamento sul desktop: clic destro su Varians-Synchro.exe →
+  "Invia a" → "Desktop (crea collegamento)" (in Windows 11, prima "Mostra
+  altre opzioni").
+
+macOS (archivio "macos-arm64" per i Mac con Apple Silicon: M1, M2…,
+"macos-x64" per i Mac Intel)
+  1. Fate doppio clic sull'archivio, poi trascinate Varians-Synchro.app
+     nella cartella Applicazioni.
+  2. Primo avvio: poiché Varians-Synchro non è firmato da Apple, macOS si
+     rifiuta di aprirlo ("Apple non può verificare…"). Chiudete il
+     messaggio, poi aprite Impostazioni di Sistema → Privacy e sicurezza: in
+     basso, accanto al messaggio su Varians-Synchro, fate clic su "Apri
+     comunque" e confermate. Con macOS 14 o precedente basta un clic destro
+     (o Ctrl+clic) su Varians-Synchro.app → Apri → Apri. macOS lo chiede una
+     sola volta.
+  Se macOS dice che Varians-Synchro è "danneggiato", digitate nel Terminale:
+     xattr -dr com.apple.quarantine /Applications/Varians-Synchro.app
+
+Linux (64 bit x86; Ubuntu 22.04, Debian 12, Fedora 36 o più recente)
+  1. Estraete l'archivio:  unzip Varians-Synchro-{version}-linux-x64.zip
+  2. Avviate:              ./Varians-Synchro-{version}/Varians-Synchro
+  Varians-Synchro usa le librerie grafiche presenti su ogni desktop Linux
+  (OpenGL, libxcb, fontconfig). Se ne manca una, per esempio su Debian o
+  Ubuntu:
+     sudo apt install libegl1 libgl1 libxcb1 libxkbcommon0 libfontconfig1
+
+
+PRIMA PROVA
+-----------
+La cartella demo_local_ALTO, accanto a Varians-Synchro, contiene un piccolo
+progetto di esempio (exemple.vsynch: due testimoni di una pagina ciascuno,
+con i loro file ALTO). Copiate questa cartella altrove, per esempio in
+Documenti, poi aprite exemple.vsynch e seguite la sezione "2. Prima prova:
+il progetto di esempio" della guida.
+
+Varians-Synchro prepara progetti per Varians, che si scarica a parte:
+  https://github.com/MarjorieBurghart/Varians/releases
+
+
+AGGIORNARE
+----------
+Scaricate il nuovo archivio dalla pagina delle versioni,
+  https://github.com/MarjorieBurghart/Varians-Synchro/releases
+poi sostituite la vecchia cartella (o Varians-Synchro.app) con la nuova. I
+vostri progetti e le vostre impostazioni non sono in questa cartella:
+vengono conservati.
+
+Per disinstallare Varians-Synchro, cancellate semplicemente questa cartella
+(o Varians-Synchro.app).
+
+
+VERIFICARE
+----------
+L'archivio: ogni archivio ha la sua impronta SHA-256 (file .sha256 nella
+pagina delle versioni). Per calcolarla:
+  Windows (PowerShell):  Get-FileHash Varians-Synchro-{version}-windows-x64.zip
+  macOS:                 shasum -a 256 Varians-Synchro-{version}-macos-arm64.zip
+  Linux:                 sha256sum Varians-Synchro-{version}-linux-x64.zip
+
+L'installazione: in caso di problemi, Varians-Synchro può verificare da sé
+le sue traduzioni, la sua guida, le sue risorse, il progetto di esempio, una
+sincronizzazione con le sue esportazioni verso Varians e la sua finestra, e
+scriverne il resoconto (qualche secondo):
+  Windows (prompt dei comandi, nella cartella di Varians-Synchro):
+     start /wait Varians-Synchro.exe --self-test resoconto.json
+  macOS:
+     /Applications/Varians-Synchro.app/Contents/MacOS/Varians-Synchro --self-test ~/resoconto.json
+  Linux:
+     ./Varians-Synchro --self-test resoconto.json
+Allegate questo resoconto alla vostra segnalazione:
+  https://github.com/MarjorieBurghart/Varians-Synchro/issues
+
+
+AIUTO
+-----
+La guida è in Varians-Synchro: pulsante "Apri il manuale utente" (F1),
+nella lingua scelta in alto nella finestra ("Lingua").
+
+
+COMPONENTI
+----------
+Varians-Synchro include: Python (licenza PSF); Qt e PySide6 (LGPL v3:
+librerie distinte, sostituibili; sorgenti su https://code.qt.io); certifi
+(MPL 2.0); su Linux, librerie del sistema di compilazione (per esempio
+GLib, LGPL v2.1). I testi di queste licenze sono nella cartella licences.

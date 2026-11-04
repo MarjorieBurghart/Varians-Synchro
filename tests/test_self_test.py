@@ -64,13 +64,15 @@ def test_the_launcher_runs_the_self_test(tmp_path):
     assert json.loads(report_path.read_text(encoding='utf-8'))['ok'] is True
 
 
-def test_the_installation_folder_of_a_built_version():
-    """Version construite : le dossier qui contient l'exécutable (Windows,
-    Linux) ou le paquet ``.app`` (macOS) ; là sont le projet d'exemple et
-    le LISEZMOI."""
-    from varians_synchro.self_test import installation_folder
-    assert installation_folder(frozen=True, executable='/opt/VS/Varians-Synchro', system='linux') == \
-        Path('/opt/VS')
-    assert installation_folder(frozen=True, executable='/Apps/VS/Varians-Synchro.app/Contents/MacOS/Varians-Synchro',
-                               system='darwin') == Path('/Apps/VS')
-    assert installation_folder(frozen=False) == ROOT
+def test_a_built_version_moved_elsewhere_still_checks_itself(tmp_path, monkeypatch):
+    """Version construite : le projet d'exemple vérifié est celui que
+    l'exécutable emporte avec ses données, et non la copie posée à côté de
+    lui pour l'utilisateur. Un paquet ``.app`` glissé dans Applications, loin
+    du dossier de l'archive, se vérifie donc toujours."""
+    from varians_synchro.self_test import run
+    moved = tmp_path / 'Applications' / 'Varians-Synchro.app' / 'Contents' / 'MacOS' / 'Varians-Synchro'
+    monkeypatch.setattr(sys, 'frozen', True, raising=False)
+    monkeypatch.setattr(sys, 'executable', str(moved))
+    report_path = tmp_path / 'rapport.json'
+    assert run(report_path, only=('resources', 'project')) == 0, report_path.read_text(encoding='utf-8')
+    assert json.loads(report_path.read_text(encoding='utf-8'))['frozen'] is True
