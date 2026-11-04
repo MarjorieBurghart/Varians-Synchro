@@ -47,8 +47,4 @@ indiqué par `PYTHON`) depuis le dossier de l'application ; sous macOS/Linux
 
 ### Limites de validation
 
-Les tests sans interface Qt ont été exécutés dans un environnement Linux.
-Le rendu et les interactions de fenêtre doivent encore être testés avec PySide6
-sur Windows, macOS et Linux. Le logiciel n'est pas garanti sur **toutes** les
-plateformes pouvant exécuter Python si PySide6 et ses bibliothèques Qt natives
-ne sont pas disponibles.
+La suite de tests, interface Qt comprise (en mode `offscreen`), est rejouée par la CI GitHub sous Linux et sous Windows à chaque modification (`.github/workflows/tests.yml`). macOS n'y est pas : le logiciel y est visé, mais n'y est pas vérifié automatiquement. Il ne fonctionne pas sur une plateforme où PySide6 et ses bibliothèques Qt natives ne sont pas disponibles.

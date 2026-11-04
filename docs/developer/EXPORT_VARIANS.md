@@ -1,61 +1,39 @@
-# Export direct des alignements vers Varians 0.8.5.2
+# Export vers Varians
 
-## Contrat vérifié
+Varians-Synchro donne à Varians ce qu'il lui faut pour synchroniser une édition TEI avec les images des manuscrits : un fichier de synchronisation JSON par témoin, ou un projet Varians complet. Ce document en résume le fonctionnement pour qui maintient le code ; le détail des contrats est au chapitre [08 du dossier de passation](../../MAINTENANCE_PASSATION_V0856/08_EXPORT_VERS_VARIANS.md), le mode d'emploi et la description champ par champ du JSON dans l'aide (`help/<langue>.html`, sections « Étape 4 » et « Format des fichiers de synchronisation »).
 
-Varians lit un JSON par témoin de forme :
+Compatibilité vérifiée : **Varians 0.9.4.0** (`tests/test_varians_094_compat.py` et `tests/test_varians_blank_edition.py` ouvrent l'export avec le vrai code de Varians ; la CI le récupère à la version `VARIANS_REF`).
 
-```json
-{"meta":{"format":"tei-manuscript-alignment","format_version":1,"witness":"F","base_witness":"Mu","role":"secondary"},"pages":[{"id":"identifiant-page","alto_width":4000,"alto_height":5519,"image":{"type":"iiif","service":"https://…","iiif_version":2},"lines":[{"line":1,"order":1,"bbox":{"hpos":100,"vpos":100,"width":250,"height":40},"base_keys":["identifiant-folio-Mu::10"]}]}]}
-```
+## Les deux exports
 
-Le témoin de base contient ses lignes physiques, chaque témoin secondaire indique les `base_keys` vers les lignes de ce témoin de base. Cette structure a été contrôlée avec les fonctions `resource_state.synchronization_state` et `image_sources.page_image_source` du code source **Varians 0.8.5.2** remis par l'utilisateur. Les sorties contiennent aussi les polygones PAGE lorsqu'ils sont disponibles.
+Tous deux sont dans **4 · Finaliser** et écrivent dans un dossier vide, préparé à part puis publié d'un bloc (pas de résultat à moitié écrit).
 
-## Exporter depuis l'interface
+| Commande | Module | Usage |
+|---|---|---|
+| **Créer un projet Varians pré-renseigné…** | `varians_project_export.export_varians_project` | Nouveau projet Varians (parcours A de l'aide) : `project.xml`, `xml/edition.xml` (la TEI du pivot copiée telle quelle, sinon la TEI vide de Varians), `alignments/<sigle>.json`, dossiers habituels, copies HD IIIF éventuelles. |
+| **Exporter JSON pour Varians…** | `varians_export.export_varians_alignments` | Ajouter ou mettre à jour un témoin d'un projet Varians existant (parcours B) : `validated/<sigle>.json`, `working/<sigle>.json`, `rapport_export.json`. |
 
-Dans « 3 · Synchronisation », choisir **Exporter JSON pour Varians…** puis sélectionner :
-
-1. Le **témoin de référence physique** (provisoire, par exemple Mu).
-2. Un **dossier vide**, pour ne pas écraser un export précédent.
-
-Le logiciel y crée :
-
-- `validated/<sigle>.json` : uniquement les associations **validées** ;
-- `working/<sigle>.json` : les associations validées **et les propositions incertaines** ;
-- `rapport_export.json` : comptes, contrôles et avertissements.
-
-Dans chaque dossier, un JSON est produit pour **chacun** des témoins, y compris la référence physique. Les fichiers représentent uniquement les folios auxquels des ALTO/PAGE ont été associés, pas des centaines de canvases d'un Manifest sans OCR.
-
-Les lignes ignorées restent présentes physiquement, marquées `vsynch_ignored`, mais ne reçoivent pas de correspondance. Ce champ supplémentaire est informatif et n'est pas utilisé comme un statut spécial par Varians.
-
-Les groupes périmés sont exclus, sauf si une équivalence ALTO↔PAGE est **démontrée** par le même UUID PERO, un enregistrement historique dont l'empreinte correspond, et un texte et des coordonnées inchangés. Aucun rapprochement par simple ordre de ligne n'est autorisé lors de cette récupération.
-
-## Point bloquant pour la synchronisation *texte TEI ↔ images*
-
-**Le format JSON est accepté par Varians, mais le contenu ne représente pas encore automatiquement une correspondance avec les `<lb/>` d'une transcription TEI.**
-
-Varians-Synchro peut synchroniser deux manuscrits alors qu'aucune TEI n'existe. L'export utilise donc provisoirement des clés **physiques** comme `UUID-page::12`. Pour que les commandes de synchronisation entre la *transcription éditée* et les témoins soient fiables, il faut :
-
-1. désigner le futur témoin de base éditorial ;
-2. associer les lignes `<lb/>` réelles de sa TEI aux lignes physiques de ce témoin ;
-3. transférer / normaliser les `base_keys` à partir de cette correspondance et contrôler les ruptures ;
-4. importer ensuite les JSON dans le projet Varians.
-
-**Ne pas** fabriquer une TEI fictive à partir de la seule HTR, ni supposer que les 332 lignes de Mu correspondent à 332 balises `<lb/>` d'une édition encore absente. La liste `validated` ne garantit pas non plus automatiquement la justesse philologique des lignes si les données ont été modifiées après validation.
-
-Une fois cette étape établie, dans Varians : **Fichier → Paramètres du projet → Témoins → Modifier → Fichier de synchronisation**, sélectionner le JSON du témoin. Choisir la politique d'images (locales ou IIIF), et conserver les images et fichiers d'origine à leur emplacement ou les recopier dans le projet.
-
-## Export en ligne de commande multiplateforme
+En ligne de commande, sans PySide6 :
 
 ```bash
-python exporter_json_varians.py projetTest.vsynch --base Mu --output nouveau_dossier_vide
+python exporter_json_varians.py projet.vsynch --base Mu --output dossier_vide
+python verifier_base_keys_json.py dossier_vide/validated/F.json
 ```
 
-Sans PySide6. N'altère ni le `.vsynch`, ni les images, ni les fichiers PAGE/ALTO.
+## Ce que contient un fichier de synchronisation
 
-## Limites
+Format `tei-manuscript-alignment`, version 1, produit par `varians_export.make_varians_alignments`. Le test `tests/test_help_guides.py` vérifie que l'aide documente exactement les champs écrits.
 
-- Pas de conversion TEI automatique tant qu'une véritable TEI et sa structure `<lb/>` ne sont pas fournies.
-- Pas de transitivité déduite automatiquement des sessions Mu↔F, Mu↔A et F↔A.
-- Varians 0.8.5.2 ne connaît pas les statuts `.vsynch` : pour éviter de confondre validé et incertain, importer **un seul ensemble**, en connaissance de son niveau de fiabilité.
-- Les chemins d'images locales sont conservés tels qu'indiqués dans le projet source. Sous macOS/Linux ou sur un autre ordinateur, configurer les chemins/ressources d'images dans Varians.
-- Lorsqu'une nouvelle segmentation modifie l'ordre ou l'identité des lignes, arrêter l'export des groupes concernés et reprendre la vérification des correspondances.
+- Le fichier du **pivot** décrit ses lignes retenues, dans l'ordre de lecture (`reading_stream`). Varians fait correspondre la *n*-ième ligne au *n*-ième `<lb edRef="#PIVOT"/>` de l'édition et vérifie que les nombres sont égaux ; s'il n'y a pas encore de `<lb/>`, Varians les prépare d'après ce fichier (Paramètres du projet).
+- Chaque **autre témoin** relie ses lignes à celles du pivot par `base_keys`, de la forme `id_de_page::rang` (`pages[].id` et `pages[].lines[].line` d'une ligne du pivot). Ces clés sont physiques : elles restent valables tant que la page du pivot garde son identifiant et son fichier ALTO/PAGE. D'où la règle du parcours B : aligner le nouveau témoin dans le même `.vsynch`, sans toucher au pivot.
+- Les lignes **ignorées** ne sont pas écrites ; les rangs `line` ne sont pas renumérotés.
+- `meta.editorial_tei_alignment = "NOT_ESTABLISHED"` : le fichier ne contient aucun lien vers la TEI ; c'est Varians qui l'établit, par l'ordre des `<lb/>`.
+
+## Règles de l'export
+
+- `validated/` : seulement les groupes validés de type correspondance ; `working/` y ajoute les propositions non validées. Varians ne connaît pas ces états (`vsynch_state` est informatif) : importer `validated/`, sauf essai en connaissance de cause.
+- Seules les synchronisations **directes** avec le pivot sont exportées : aucune composition A↔Mu↔F.
+- Une absence confirmée ne produit pas de `base_keys`.
+- Un lien **périmé** est exclu, sauf continuité ALTO↔PAGE démontrée (même UUID PERO, texte et géométrie inchangés) ; jamais de rapprochement par simple ordre de ligne.
+- `verify_export_payloads` refuse l'export si une `base_keys` ne désigne pas une ligne réellement exportée du pivot ; `inspect_varians_export` dit, avant l'export, pourquoi un témoin n'aurait aucune correspondance (`no_direct_session`, `no_saved_links`, `working_only`, `stale_or_ignored`).
+- Les images et les fichiers ALTO/PAGE restent à leur place : le projet ou le JSON pointe vers eux, avec les chemins du projet source.
