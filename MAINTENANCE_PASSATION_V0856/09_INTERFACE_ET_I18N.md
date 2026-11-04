@@ -15,6 +15,10 @@ Le code de `guided_ui.py` est particulièrement dense : préserver les frontièr
 - Une sélection de lignes comporte le clic exclusif simple, Ctrl+clic additif et Maj+clic plage selon l'ordre réel ; l'état de surlignage ne doit pas changer les liens enregistrés.
 - Les interactions de téléchargement/réseau ne doivent pas bloquer le fil UI ; signaler annulation et téléchargement achevé distinctement.
 
+## Fenêtre « Liaison TEI » : brouillon
+
+`TEIPhysicalBindingDialog` travaille sur une copie du projet : « Réanalyser le fichier TEI » et la liaison ne touchent que ce brouillon ; « Appliquer » reporte les ressources TEI dans le projet, « Annuler » ferme sans rien changer. Test : `tests/test_tei_binding_cancel_qt.py`.
+
 ## Erreurs imprévues
 
 `error_report.install()` (appelé par `gui.main`) pose un crochet sur `sys.excepthook` : une exception levée dans une action de l'interface (slot Qt) reste écrite dans la console ou le journal, et un message « Action impossible » s'affiche en plus (`error.unexpected.*`, traduit ; le texte de l'erreur l'est s'il figure dans les catalogues). Auparavant, rien ne se passait à l'écran. Test : `tests/test_error_report_qt.py`.
