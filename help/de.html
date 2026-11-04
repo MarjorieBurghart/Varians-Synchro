@@ -46,6 +46,12 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Für jeden Textzeugen: seine Bilder (lokale Dateien oder ein IIIF-Manifest) und für jede abzugleichende Seite eine ALTO- oder PAGE-XML-Datei, die ihre Zeilen beschreibt.</li>
 <li>Optional die TEI-Edition des Pivot-Textzeugen, falls sie bereits existiert.</li>
 </ul>
+<h3 id="installation">Installieren und starten</h3>
+<ul>
+<li><strong>Gebrauchsfertige Version.</strong> Am einfachsten: nichts zu installieren, nicht einmal Python, für Windows, macOS (Apple Silicon oder Intel) oder Linux, auf der Seite der Versionen (<a href="https://github.com/MarjorieBurghart/Varians-Synchro/releases">https://github.com/MarjorieBurghart/Varians-Synchro/releases</a>). Entpacken Sie das Archiv und starten Sie Varians-Synchro; die Datei <code>LIESMICH.txt</code> erklärt, wie man beim ersten Start die Warnung des Systems übergeht (das Programm ist nicht signiert). Das Beispielprojekt, <code>demo_local_ALTO</code>, liegt neben dem Programm. Zum Aktualisieren ersetzen Sie den Ordner durch den der neuen Version: Ihre Projekte und Einstellungen liegen anderswo.</li>
+<li><strong>Mit Python.</strong> Python 3.10 oder neuer und PySide6: <code>pip install -r requirements.txt</code>, dann <code>python run.py</code> (unter Windows <code>start_windows.bat</code>, unter macOS und Linux <code>start_unix.sh</code>).</li>
+<li><strong>Die Installation prüfen.</strong> <code>Varians-Synchro --self-test bericht.json</code> (mit Python: <code>python run.py --self-test bericht.json</code>) prüft in wenigen Sekunden die Übersetzungen, die Hilfe, die Ressourcen, das Beispielprojekt, eine Synchronisierung mit ihren Exporten nach Varians und das Fenster und schreibt dann einen Bericht; die <code>LIESMICH.txt</code> nennt den genauen Befehl für jedes System. Fügen Sie diesen Bericht Ihrer Fehlermeldung bei: <a href="https://github.com/MarjorieBurghart/Varians-Synchro/issues">https://github.com/MarjorieBurghart/Varians-Synchro/issues</a>.</li>
+</ul>
 <h3>Das Vorgehen in vier Schritten</h3>
 <p>Das Hauptfenster führt links durch vier Schritte:</p>
 <ol>

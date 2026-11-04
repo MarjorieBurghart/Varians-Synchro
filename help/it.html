@@ -46,6 +46,12 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Per ogni testimone: le sue immagini (file locali, o un Manifest IIIF) e, per ogni pagina da allineare, un file ALTO o PAGE XML che ne descrive le righe.</li>
 <li>Facoltativamente, l’edizione TEI del testimone pivot, se esiste già.</li>
 </ul>
+<h3 id="installation">Installare e avviare</h3>
+<ul>
+<li><strong>Versione pronta all’uso.</strong> La via più semplice: niente da installare, nemmeno Python, per Windows, macOS (Apple Silicon o Intel) o Linux, nella pagina delle versioni (<a href="https://github.com/MarjorieBurghart/Varians-Synchro/releases">https://github.com/MarjorieBurghart/Varians-Synchro/releases</a>). Estraete l’archivio e avviate Varians-Synchro; il file <code>LEGGIMI.txt</code> spiega come superare l’avviso del sistema al primo avvio (il programma non è firmato). Il progetto di esempio, <code>demo_local_ALTO</code>, è accanto al programma. Per aggiornare, sostituite la cartella con quella della nuova versione: i vostri progetti e le vostre impostazioni sono altrove.</li>
+<li><strong>Con Python.</strong> Python 3.10 o più recente e PySide6: <code>pip install -r requirements.txt</code>, poi <code>python run.py</code> (in Windows <code>start_windows.bat</code>; in macOS e Linux <code>start_unix.sh</code>).</li>
+<li><strong>Verificare l’installazione.</strong> <code>Varians-Synchro --self-test resoconto.json</code> (con Python: <code>python run.py --self-test resoconto.json</code>) verifica in pochi secondi le traduzioni, la guida, le risorse, il progetto di esempio, una sincronizzazione con le sue esportazioni verso Varians e la finestra, poi scrive un resoconto; il <code>LEGGIMI.txt</code> indica il comando esatto per ogni sistema. Allegate questo resoconto alla vostra segnalazione: <a href="https://github.com/MarjorieBurghart/Varians-Synchro/issues">https://github.com/MarjorieBurghart/Varians-Synchro/issues</a>.</li>
+</ul>
 <h3>Il procedimento in quattro fasi</h3>
 <p>La finestra principale segue quattro fasi, elencate a sinistra:</p>
 <ol>

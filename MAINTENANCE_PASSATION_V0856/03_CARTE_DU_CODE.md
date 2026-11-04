@@ -19,7 +19,8 @@
 
 | Script | Exécution attendue | Effets |
 |---|---|---|
-| `run.py` | GUI normale ou lancement isolé Spyder | Lance l'application ; Qt requis |
+| `run.py` | GUI normale ou lancement isolé Spyder ; `--self-test RAPPORT.json` | Lance l'application (ou la vérification d'une installation, `varians_synchro/self_test.py`) ; Qt requis ; point d'entrée de la version prête à l'emploi |
+| `packaging/` | Version prête à l'emploi (PyInstaller) | `varians_synchro.spec` (recette), `build.py` (construction, vérification, archive), LISEZMOI ×7, licences ; voir `packaging/LISEZMOI.md` |
 | `start_windows.bat`, `start_unix.sh` | Raccourcis locaux | Sélection de l'interpréteur, lancement `run.py` |
 | `start_isolated.py` | Démarrage isolé pour dépannage | Lance une instance de l'application dans autre processus |
 | `audit_vsynch.py` | `python audit_vsynch.py projet.vsynch [--base Mu]` | Audit sans écrire le projet |

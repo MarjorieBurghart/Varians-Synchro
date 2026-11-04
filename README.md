@@ -8,7 +8,9 @@ Les lignes viennent d'un logiciel de reconnaissance (eScriptorium, Transkribus, 
 
 ## Installer et lancer
 
-Python 3.10 ou plus récent, et PySide6 (`requirements.txt`). Windows, macOS et Linux.
+**Version prête à l'emploi**, sans Python à installer : sur la [page des versions](https://github.com/MarjorieBurghart/Varians-Synchro/releases), une archive pour Windows, macOS (Apple Silicon ou Intel) ou Linux. Décompressez-la et lancez Varians-Synchro ; son `LISEZMOI.txt` (sept langues) explique le premier lancement d'un logiciel non signé. `Varians-Synchro --self-test rapport.json` vérifie l'installation. Construction : [`packaging/LISEZMOI.md`](packaging/LISEZMOI.md).
+
+**Avec Python** : Python 3.10 ou plus récent, et PySide6 (`requirements.txt`). Windows, macOS et Linux.
 
 ```sh
 python -m venv .venv

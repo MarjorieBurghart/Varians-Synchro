@@ -28,6 +28,8 @@ Installer PySide6, vérifier `python -c "import PySide6;print(PySide6.__version_
 
 **Intégration continue** : le workflow GitHub `.github/workflows/tests.yml` lance, à chaque envoi et pull request, la compilation, `tools/check_maintenance.py` et toute la suite (tests Qt compris, avec PySide6 et `QT_QPA_PLATFORM=offscreen`) sous Linux et Windows.
 
+**Version prête à l'emploi** : le workflow `.github/workflows/binaries.yml` construit avec PyInstaller une archive pour Windows, macOS (Apple Silicon et Intel) et Linux, à chaque release publiée (archives jointes à la release) et à chaque modification de `packaging/`. Chaque exécutable construit est vérifié sur son système par `--self-test` (`varians_synchro/self_test.py` : traductions, aide, ressources, projet d'exemple, synchronisation et exports, fenêtre avec le module d'affichage du système) avant d'être zippé ; `tests/test_packaging.py` vérifie la recette sans construire. Voir [`packaging/LISEZMOI.md`](../packaging/LISEZMOI.md).
+
 ### Checklist de recette manuelle (Windows prioritaire)
 
 - [ ] Démarrage normal depuis `python run.py`, et depuis Spyder en processus indépendant ; absence de double fenêtre intempestive.

@@ -1,4 +1,10 @@
-## Non publié (depuis V0.8.5.6)
+## V0.8.6.0 — version prête à l'emploi (04/11/2026)
+
+- Version prête à l'emploi, sans Python à installer, comme pour Varians : une archive par système (Windows x64, macOS Apple Silicon et Intel, Linux x64), construite par PyInstaller (`packaging/`) et jointe automatiquement à chaque release publiée par le workflow « Binaries », avec son empreinte SHA-256. À côté du programme : le LISEZMOI dans les sept langues (installation et premier lancement d'un logiciel non signé, premier essai, mise à jour, vérification, composants), les textes des licences et le projet d'exemple `demo_local_ALTO`. L'aide (« Présentation → Installer et lancer », sept langues) et le README l'expliquent.
+- `Varians-Synchro --self-test RAPPORT.json` (avec Python : `python run.py --self-test RAPPORT.json`) vérifie une installation en quelques secondes, sans réseau : traductions, aide, ressources, projet d'exemple ouvert et enregistré sur une copie, une synchronisation et ses deux exports vers Varians, fenêtre principale. Chaque archive est vérifiée ainsi sur son système, fenêtre comprise, avant d'être publiée.
+- Version 0.8.6.0 (`core.VERSION`) ; le contrôle de maintenance lit la version dans le code.
+
+Depuis V0.8.5.6, jusque-là non publié :
 
 - Dépôt GitHub : CI Linux et Windows, empreintes SHA remplacées par l’historique Git.
 - Export du projet pour Varians vérifié en l’ouvrant avec le vrai code de Varians 0.9.4.0 ; ordre de lecture corrigé et lignes hors périmètre respectés.

@@ -5,6 +5,18 @@ La conception ne repose ni sur Windows ni sur Spyder : Windows, macOS et Linux
 sont des environnements visés, sous réserve de la disponibilité de Python et
 de PySide6 pour l'architecture et la version du système concernées.
 
+## Version prête à l'emploi
+
+Une archive par système (Windows x64, macOS Apple Silicon et Intel, Linux
+x64), sans Python à installer, est jointe à chaque release publiée par le
+workflow « Binaries » (`.github/workflows/binaries.yml`). Elle est construite
+par PyInstaller et vérifiée sur chacun de ces systèmes, fenêtre comprise, par
+`Varians-Synchro --self-test` avant d'être publiée : voir
+[`packaging/LISEZMOI.md`](../../packaging/LISEZMOI.md). Sous Linux, elle
+demande glibc 2.35 ou plus récent (Ubuntu 22.04, Debian 12, Fedora 36…).
+
+Les installations ci-dessous, avec Python, restent celles du développement.
+
 ## Installation sur Windows
 
 Dans un terminal ouvert à la racine du dossier distribué :
@@ -47,4 +59,4 @@ indiqué par `PYTHON`) depuis le dossier de l'application ; sous macOS/Linux
 
 ### Limites de validation
 
-La suite de tests, interface Qt comprise (en mode `offscreen`), est rejouée par la CI GitHub sous Linux et sous Windows à chaque modification (`.github/workflows/tests.yml`). macOS n'y est pas : le logiciel y est visé, mais n'y est pas vérifié automatiquement. Il ne fonctionne pas sur une plateforme où PySide6 et ses bibliothèques Qt natives ne sont pas disponibles.
+La suite de tests, interface Qt comprise (en mode `offscreen`), est rejouée par la CI GitHub sous Linux et sous Windows à chaque modification (`.github/workflows/tests.yml`). macOS n'y est pas ; il est vérifié par la construction de la version prête à l'emploi (`--self-test` sur macOS Apple Silicon et Intel, à chaque release et à chaque modification de `packaging/`). Il ne fonctionne pas sur une plateforme où PySide6 et ses bibliothèques Qt natives ne sont pas disponibles.

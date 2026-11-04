@@ -46,6 +46,12 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Pour chaque témoin : ses images (fichiers locaux, ou un Manifest IIIF) et, pour chaque page à aligner, un fichier ALTO ou PAGE XML qui décrit ses lignes.</li>
 <li>Facultativement, l’édition TEI du témoin pivot, si elle existe déjà.</li>
 </ul>
+<h3 id="installation">Installer et lancer</h3>
+<ul>
+<li><strong>Version prête à l’emploi.</strong> Le plus simple : rien à installer, pas même Python, pour Windows, macOS (Apple Silicon ou Intel) ou Linux, sur la page des versions (<a href="https://github.com/MarjorieBurghart/Varians-Synchro/releases">https://github.com/MarjorieBurghart/Varians-Synchro/releases</a>). Décompressez l’archive et lancez Varians-Synchro ; son fichier <code>LISEZMOI.txt</code> explique comment passer l’avertissement du système au premier lancement (le logiciel n’est pas signé). Le projet d’exemple, <code>demo_local_ALTO</code>, est à côté du programme. Pour mettre à jour, remplacez le dossier par celui de la nouvelle version : vos projets et vos réglages sont ailleurs.</li>
+<li><strong>Avec Python.</strong> Python 3.10 ou plus récent et PySide6 : <code>pip install -r requirements.txt</code>, puis <code>python run.py</code> (sous Windows, <code>start_windows.bat</code> ; sous macOS et Linux, <code>start_unix.sh</code>).</li>
+<li><strong>Vérifier l’installation.</strong> <code>Varians-Synchro --self-test rapport.json</code> (avec Python : <code>python run.py --self-test rapport.json</code>) vérifie en quelques secondes les traductions, l’aide, les ressources, le projet d’exemple, une synchronisation avec ses exports vers Varians et la fenêtre, puis écrit un rapport ; le <code>LISEZMOI.txt</code> donne la commande exacte pour chaque système. Joignez ce rapport à votre signalement : <a href="https://github.com/MarjorieBurghart/Varians-Synchro/issues">https://github.com/MarjorieBurghart/Varians-Synchro/issues</a>.</li>
+</ul>
 <h3>La démarche en quatre étapes</h3>
 <p>La fenêtre principale suit quatre étapes, à gauche :</p>
 <ol>

@@ -141,3 +141,23 @@ def test_the_json_format_section_documents_exactly_the_exported_fields(tmp_path)
     assert documented - produced == set(), 'champ documenté que l’export n’écrit pas'
     for path in GUIDES:
         assert set(_outline(path).fields) == documented
+
+
+# LISEZMOI de la version prête à l'emploi (packaging/readme), par langue.
+README_OF = {'fr': 'LISEZMOI.txt', 'en': 'README.txt', 'de': 'LIESMICH.txt', 'cs': 'README-cs.txt',
+             'it': 'LEGGIMI.txt', 'ru': 'README-ru.txt', 'ja': 'README-ja.txt'}
+
+
+@pytest.mark.parametrize('path', GUIDES, ids=lambda p: p.stem)
+def test_the_guide_explains_how_to_install_and_check(path):
+    """Section « Installer et lancer » : la version prête à l'emploi (page
+    des versions, LISEZMOI de l'archive dans la langue du guide), avec
+    Python, et la vérification ``--self-test``."""
+    text = path.read_text(encoding='utf-8')
+    start = text.index('id="installation"')
+    section = text[start:text.index('<h', text.index('</h', start) + 4)]
+    for words in ('https://github.com/MarjorieBurghart/Varians-Synchro/releases', README_OF[path.stem],
+                  'demo_local_ALTO', 'requirements.txt', 'run.py', '--self-test',
+                  'https://github.com/MarjorieBurghart/Varians-Synchro/issues'):
+        assert words in section, (path.stem, words)
+    assert (ROOT / 'packaging' / 'readme' / README_OF[path.stem]).is_file()
