@@ -4,7 +4,7 @@ Génération reproductible : `python tools/generate_module_inventory.py` depuis 
 Inspection statique AST : **aucun module applicatif n’est importé ni exécuté**.
 Les numéros de ligne sont ceux de **cette livraison uniquement**.
 
-**43 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
+**44 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
 
 ## `varians_synchro/__init__.py` (1 lignes)
 **Dépendances internes observées** : `core`
@@ -54,9 +54,9 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `error_report`, `guided_ui`, `i18n`, `qt_lifecycle`
 **Fonctions au premier niveau** : `main` (l.17)
 
-## `varians_synchro/guided_ui.py` (2235 lignes)
+## `varians_synchro/guided_ui.py` (1808 lignes)
 **Objet (docstring source)** : Witness-centered PySide6 GUI; the V0.7 physical alignment engine is preserved.
-**Dépendances internes observées** : `core`, `correspondence_navigation`, `exceptions`, `i18n`, `imaging`, `interpolation`, `line_scope`, `overlay_filters`, `physical_alignment`, `project_state`, `rapid_review`, `reading_stream`, `residual_alignment`, `resource_workflow`, `tei_binding`, `tei_visual`, `textual_progress`, `ui_batch_binding`, `ui_pages`, `ui_reading_order`, `ui_scope`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`, `viewer`
+**Dépendances internes observées** : `core`, `correspondence_navigation`, `exceptions`, `i18n`, `imaging`, `interpolation`, `line_scope`, `overlay_filters`, `physical_alignment`, `project_state`, `rapid_review`, `reading_stream`, `residual_alignment`, `resource_workflow`, `tei_binding`, `textual_progress`, `ui_batch_binding`, `ui_pages`, `ui_reading_order`, `ui_scope`, `ui_tei_binding`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`, `viewer`
 **Fonctions au premier niveau** : `make_guided_window` (l.30)
 
 ## `varians_synchro/hd_registry.py` (159 lignes)
@@ -188,6 +188,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : Fenêtre « Périmètre » : lignes d’un témoin exclues de l’étude.
 **Dépendances internes observées** : `i18n`, `line_scope`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `SingleWitnessScopeDialog` (l.13)
+
+## `varians_synchro/ui_tei_binding.py` (448 lignes)
+**Objet (docstring source)** : Fenêtre « Liaison TEI ↔ lignes physiques » : contrôle visuel d’une ligne TEI sur l’image, sur un brouillon du projet.
+**Dépendances internes observées** : `i18n`, `tei_binding`, `tei_visual`, `ui_widgets`, `viewer`
+**Classes déclarées au premier niveau** : `TEILineFetchThread` (l.22), `TEIReviewCard` (l.38), `TEIPhysicalBindingDialog` (l.163)
 
 ## `varians_synchro/ui_widgets.py` (114 lignes)
 **Objet (docstring source)** : Widgets Qt qui traduisent leurs textes, et ouverture modale d'une fenêtre. Les fenêtres de l'interface utilisent ces classes à la place de celles de PySide6 : un texte passé à ``QLabel``, ``setWindowTitle`` ou ``QMessageBox.warning`` est une clé de traduction (ou un texte français connu des catalogues) et s'affiche dans la langue choisie.
