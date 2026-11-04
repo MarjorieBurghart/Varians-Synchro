@@ -3,6 +3,7 @@
 Images and ALTO are immutable external inputs. An export is a temporary working copy.
 """
 from __future__ import annotations
+import copy
 import io
 import json
 import re
@@ -258,6 +259,11 @@ def import_htr_results(witness, mapping_json_path, alto_directory, inspect_func=
     paths=list(folder.glob('*.xml'))
     sourcefn=inspect_func or add_alto_source
     imported=[];missing=[];ambiguous=[]
+    # All or nothing: the lot is read on a copy of the witness, published
+    # only once every file has been read (a truncated file left the witness
+    # half modified, an XML of several pages an orphan source).
+    final=witness
+    witness=copy.deepcopy(witness)
     bypage={p['id']:p for p in witness.get('pages',[])}
     for item in mapping.get('pages',[]):
         canvas=item['canvas_id']; page=bypage.get(canvas)
@@ -273,9 +279,12 @@ def import_htr_results(witness, mapping_json_path, alto_directory, inspect_func=
             ambiguous.append({'canvas':canvas,'reason':'Plusieurs fichiers XML candidats'});continue
         src=sourcefn(witness,matches[0])
         if len(src['pages'])!=1:
+            witness['alto_sources']=[s for s in witness['alto_sources'] if s is not src]
             ambiguous.append({'canvas':canvas,'reason':'XML comportant plusieurs pages'});continue
         bind_alto(witness,canvas,src['id'],0)
         imported.append(canvas)
+    final.clear()
+    final.update(witness)
     return {'imported':imported,'missing':missing,'skipped':ambiguous}
 
 

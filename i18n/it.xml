@@ -921,4 +921,6 @@ I dettagli tecnici sono nella console o nel registro di avvio.</string>
   <string key="error.witness.siglum_reserved">La sigla «{witness}» non può servire da nome di file in Windows (nome riservato). Scegliete un’altra sigla.</string>
   <string key="error.witness.siglum_taken">La sigla «{witness}» appartiene già a un testimone del progetto: aprite la sua scheda per completarlo, o scegliete un’altra sigla.</string>
   <string key="ui.audit.issue.xml_source_read_otherwise">File PAGE con struttura annidata, letto diversamente da questa versione: il progetto conserva le sue righe, ma una nuova associazione renderebbe obsoleti i gruppi che le toccano</string>
+  <string key="error.binding.xml_page_bound">Questa pagina XML è già associata all’immagine «{page}»: una stessa pagina XML non può essere attribuita a più immagini.</string>
+  <string key="ui.audit.issue.xml_page_bound_twice">Una stessa pagina XML è associata a più immagini: le sue righe sarebbero contate più volte</string>
 </translations>

@@ -249,17 +249,21 @@ def _segments(project, session):
         segment_starts = [(low_a, low_b, interval['start_link_id'])]
         for sa, ea, sb, eb, uid in mid:
             begin_a, begin_b, beginning = segment_starts[-1]
-            parts.append((begin_a, sa, begin_b, sb, beginning, uid, excluded_a, excluded_b))
+            parts.append((begin_a, sa, begin_b, sb, beginning, uid, excluded_a, excluded_b,
+                          interval['start_link_id'], interval['end_link_id']))
             segment_starts.append((ea+1, eb+1, uid))
         begin_a, begin_b, beginning = segment_starts[-1]
         parts.append((begin_a, high_a, begin_b, high_b, beginning,
-                      interval['end_link_id'], excluded_a, excluded_b))
+                      interval['end_link_id'], excluded_a, excluded_b,
+                      interval['start_link_id'], interval['end_link_id']))
     segments = []
-    for lo_a, hi_a, lo_b, hi_b, start, end, excluded_a, excluded_b in parts:
+    for lo_a, hi_a, lo_b, hi_b, start, end, excluded_a, excluded_b, anchor_start, anchor_end in parts:
         sa = [line for i, line in enumerate(a[lo_a:hi_a], lo_a) if i not in excluded_a]
         sb = [line for i, line in enumerate(b[lo_b:hi_b], lo_b) if i not in excluded_b]
+        # The segment's bounds may be a protected group inside the interval
+        # (a corrected automatic group); its validated anchors are kept too.
         segments.append({'reference': sa, 'target': sb, 'start_link_id': start,
-                         'end_link_id': end})
+                         'end_link_id': end, 'anchor_start': anchor_start, 'anchor_end': anchor_end})
     return a, b, segments, warnings
 
 
@@ -330,7 +334,9 @@ def suggest_textual_progress(project, session):
                              'target_method': proposal['method_target'],
                              'boundary_delta': proposal['boundary_delta'],
                              'interval_start': segment['start_link_id'],
-                             'interval_end': segment['end_link_id']},
+                             'interval_end': segment['end_link_id'],
+                             'anchor_start': segment['anchor_start'],
+                             'anchor_end': segment['anchor_end']},
             })
     return {'proposals': proposals, 'warnings': warnings,
             'eligible_intervals': len(segments), 'calculated_intervals': treated,

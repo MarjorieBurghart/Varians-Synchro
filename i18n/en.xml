@@ -928,4 +928,6 @@ Technical details are in the console or the startup log.</string>
   <string key="error.witness.siglum_reserved">The siglum “{witness}” cannot be used as a file name on Windows (reserved name). Choose another siglum.</string>
   <string key="error.witness.siglum_taken">The siglum “{witness}” already belongs to a witness of the project: open its card to complete it, or choose another siglum.</string>
   <string key="ui.audit.issue.xml_source_read_otherwise">PAGE file with a nested structure, read differently since this version: the project keeps its lines, but associating it again would make the groups touching them stale</string>
+  <string key="error.binding.xml_page_bound">This XML page is already associated with the image “{page}”: one XML page cannot be assigned to several images.</string>
+  <string key="ui.audit.issue.xml_page_bound_twice">One XML page is associated with several images: its lines would count several times</string>
 </translations>

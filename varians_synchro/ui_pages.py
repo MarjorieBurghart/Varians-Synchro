@@ -403,6 +403,13 @@ class PagesDialog(QDialog):
         chosen,ok = QInputDialog.getItem(self,tr('ui.xml.source'),tr('ui.xml.select_page'),labels,0,False)
         if ok:
             src,i = candidates[labels.index(chosen)]
+            other = next((p for p in self.witness['pages'] if p['id'] != sel[0]['id']
+                          and (p.get('alto_binding') or {}).get('source_id') == src['id']
+                          and (p.get('alto_binding') or {}).get('page_index') == i), None)
+            if other is not None:
+                QMessageBox.warning(self, tr('ui.xml.source'), tr('error.binding.xml_page_bound',
+                                    page=str(other.get('label') or other['id'])))
+                return
             binding = sel[0].get('alto_binding') or {}
             if binding and (binding.get('source_id'), binding.get('page_index')) != (src['id'], i):
                 # Say beforehand what a new segmentation affects: groups citing

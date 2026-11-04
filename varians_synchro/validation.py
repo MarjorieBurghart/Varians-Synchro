@@ -68,6 +68,12 @@ def audit_project(project, base_witness_id=None, *, check_paths=False):
             messages.append(_item('error', 'invalid_reading_stream', witness=wid, detail=str(exc)))
             known[wid] = set()
             continue
+        bindings = Counter(((page.get('alto_binding') or {}).get('source_id'),
+                            (page.get('alto_binding') or {}).get('page_index'))
+                           for page in w.get('pages', []) if page.get('alto_binding'))
+        twice = [key for key, count in bindings.items() if count > 1]
+        if twice:
+            messages.append(_item('warning', 'xml_page_bound_twice', witness=wid, detail=len(twice)))
         physical_ids = {row['id'] for row in physical}
         active_ids = {row['id'] for row in active}
         ignored = set(w.get('ignored_line_ids', []))

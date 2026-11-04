@@ -106,7 +106,14 @@ def validate_checked(project, session, ids):
 
 
 def suggestions_for_interval(result, start_id, end_id):
-    """Select only suggestions *entirely* bounded by a known pair of anchors."""
-    return [p for p in result['proposals']
-            if p.get('evidence', {}).get('interval_start') == start_id
-            and p.get('evidence', {}).get('interval_end') == end_id]
+    """Select only suggestions *entirely* bounded by a known pair of anchors.
+
+    A proposal names the validated anchors enclosing it (``anchor_start``,
+    ``anchor_end``) besides its segment's own bounds, which may be a
+    protected group inside the interval (a corrected automatic group):
+    filtering on those bounds found nothing after one correction."""
+    def anchors(proposal):
+        evidence = proposal.get('evidence', {})
+        return (evidence.get('anchor_start', evidence.get('interval_start')),
+                evidence.get('anchor_end', evidence.get('interval_end')))
+    return [p for p in result['proposals'] if anchors(p) == (start_id, end_id)]

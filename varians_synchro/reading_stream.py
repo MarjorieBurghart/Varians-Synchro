@@ -84,6 +84,13 @@ def rebind_page(witness, page_id, source_id, page_index=0):
     if page is None:
         raise ReadingOrderError('Page inconnue.')
     previous = page.get('alto_binding') or {}
+    # One XML page belongs to one image (as in the batch binding): bound to
+    # two, its lines counted twice in the exported pivot.
+    other = next((p for p in witness.get('pages', []) if p['id'] != page_id
+                  and (p.get('alto_binding') or {}).get('source_id') == source_id
+                  and (p.get('alto_binding') or {}).get('page_index') == page_index), None)
+    if other is not None:
+        raise localized(ValueError, 'error.binding.xml_page_bound', page=str(other.get('label') or other['id']))
     bind_alto(witness, page_id, source_id, page_index)
     if (previous.get('source_id'), previous.get('page_index')) == (source_id, page_index):
         return False

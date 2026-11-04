@@ -921,4 +921,6 @@ Technische Details stehen in der Konsole oder im Startprotokoll.</string>
   <string key="error.witness.siglum_reserved">Die Sigle „{witness}“ kann unter Windows nicht als Dateiname dienen (reservierter Name). Wählen Sie eine andere Sigle.</string>
   <string key="error.witness.siglum_taken">Die Sigle „{witness}“ gehört bereits zu einem Textzeugen des Projekts: Öffnen Sie dessen Karte, um ihn zu ergänzen, oder wählen Sie eine andere Sigle.</string>
   <string key="ui.audit.issue.xml_source_read_otherwise">PAGE-Datei mit verschachtelter Struktur, seit dieser Version anders gelesen: Das Projekt behält seine Zeilen, eine erneute Zuordnung würde die betroffenen Gruppen jedoch veralten lassen</string>
+  <string key="error.binding.xml_page_bound">Diese XML-Seite ist bereits dem Bild „{page}“ zugeordnet: Eine XML-Seite kann nicht mehreren Bildern zugewiesen werden.</string>
+  <string key="ui.audit.issue.xml_page_bound_twice">Eine XML-Seite ist mehreren Bildern zugeordnet: Ihre Zeilen würden mehrfach gezählt</string>
 </translations>
