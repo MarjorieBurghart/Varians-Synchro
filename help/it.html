@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><title>Varians-Synchro — Guida</title><style>
+body{font-family:sans-serif;line-height:1.5;max-width:980px;margin:24px auto;padding:0 22px;color:#202124}
+h1{margin-bottom:.25em}h2{margin-top:1.8em;border-bottom:1px solid #ddd;padding-bottom:.2em}h3{margin-top:1.25em}
+code{background:#f1f3f4;padding:1px 4px;border-radius:3px}pre{background:#f7f7f7;border:1px solid #ddd;padding:10px}
+kbd{border:1px solid #bbb;border-radius:3px;padding:1px 4px;background:#f7f7f7}
+table{border-collapse:collapse;width:100%}td,th{border:1px solid #ccc;padding:6px 9px;text-align:left;vertical-align:top}
+.note{background:#f4f8ff;border-left:4px solid #8db8e8;padding:9px 12px}.warn{background:#fff8e8;border-left:4px solid #e0b35a;padding:9px 12px}
+ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
+</style></head><body>
+<h1>Varians-Synchro — Manuale utente</h1>
+<p>Varians-Synchro allinea, riga per riga, i manoscritti di una stessa opera, a partire dalle loro immagini e dalla segmentazione delle loro righe (ALTO o PAGE XML). Prepara così i file di sincronizzazione che permettono a <strong>Varians</strong> di mostrare ogni testimone accanto all’edizione, con la riga giusta del manoscritto di fronte al testo.</p>
+
+<div class="toc"><h2>Indice</h2><ol>
+<li><a href="#presentation">Presentazione</a></li>
+<li><a href="#essai">Prima prova: il progetto di esempio</a></li>
+<li><a href="#nouveau-projet">Percorso A: creare un nuovo progetto Varians</a></li>
+<li><a href="#ajout-temoin">Percorso B: aggiungere un testimone a un progetto Varians esistente</a></li>
+<li><a href="#notions">Nozioni chiave</a></li>
+<li><a href="#etape1">Fase 1: aggiungere i testimoni</a></li>
+<li><a href="#etape2">Fase 2: associare le risorse</a></li>
+<li><a href="#etape3">Fase 3: allineare i testimoni</a></li>
+<li><a href="#synchronisation">La finestra di sincronizzazione</a></li>
+<li><a href="#etape4">Fase 4: finalizzare ed esportare</a></li>
+<li><a href="#format-json">Formato dei file di sincronizzazione (JSON)</a></li>
+<li><a href="#fichiers">File, salvataggi e risoluzione dei problemi</a></li>
+<li><a href="#raccourcis">Scorciatoie</a></li>
+</ol></div>
+
+<h2 id="presentation">1. Presentazione</h2>
+<h3>Che cosa fa Varians-Synchro</h3>
+<ul>
+<li><strong>Collega le righe di due manoscritti.</strong> Vedete i due testimoni affiancati, con il contorno di ogni riga, e indicate quali righe dell’uno corrispondono a quali righe dell’altro. Una corrispondenza può riunire più righe da ciascun lato.</li>
+<li><strong>Il programma propone, voi decidete.</strong> A partire da alcune ancore che collocate voi, propone le corrispondenze intermedie in base alla quantità di testo; voi le verificate sulle immagini e le convalidate.</li>
+<li><strong>Lavora rispetto a un testimone pivot.</strong> Ogni altro testimone è allineato al pivot. In Varians, le righe del pivot sono individuate nell’edizione dai suoi <code>&lt;lb/&gt;</code>; gli altri testimoni seguono grazie al loro allineamento al pivot.</li>
+<li><strong>Esporta per Varians</strong> un file di sincronizzazione (JSON) per testimone, oppure un progetto Varians completo, pronto da aprire.</li>
+</ul>
+<h3>Che cosa non fa</h3>
+<ul>
+<li>Non trascrive e non segmenta le immagini: le righe vengono da un software di riconoscimento (eScriptorium, Transkribus, Kraken…), sotto forma di file ALTO o PAGE XML.</li>
+<li>Non modifica il testo TEI: è il compito di Varians.</li>
+<li>Non altera mai i vostri file sorgente (immagini, ALTO, PAGE, TEI). Tutto il suo lavoro si trova nel file di progetto <code>.vsynch</code>.</li>
+</ul>
+<h3>Che cosa serve per cominciare</h3>
+<ul>
+<li>Per ogni testimone: le sue immagini (file locali, o un Manifest IIIF) e, per ogni pagina da allineare, un file ALTO o PAGE XML che ne descrive le righe.</li>
+<li>Facoltativamente, l’edizione TEI del testimone pivot, se esiste già.</li>
+</ul>
+<h3>Il procedimento in quattro fasi</h3>
+<p>La finestra principale segue quattro fasi, elencate a sinistra:</p>
+<ol>
+<li><b class="ui" data-tr="navigation.project">1 · Aggiungere i testimoni</b>: dichiarare i manoscritti e i loro file;</li>
+<li><b class="ui" data-tr="navigation.pages">2 · Associare le risorse</b>: collegare ogni immagine al suo file di righe, regolare l’ordine delle pagine e le righe da ignorare;</li>
+<li><b class="ui" data-tr="navigation.alignment">3 · Allineare i testimoni</b>: allineare ogni testimone al pivot;</li>
+<li><b class="ui" data-tr="navigation.progress">4 · Finalizzare</b>: verificare, poi esportare verso Varians.</li>
+</ol>
+<p>Ricordatevi di salvare il progetto con <b class="ui" data-tr="common.save">Salva</b> dopo ogni sessione di lavoro. La guida si apre in qualsiasi momento con <b class="ui" data-tr="help.open">Apri il manuale utente</b> o <kbd>F1</kbd>.</p>
+
+<h2 id="essai">2. Prima prova: il progetto di esempio</h2>
+<p>La cartella <code>demo_local_ALTO/</code>, fornita con il programma, contiene due piccoli testimoni fittizi, A e B, di una pagina di tre righe ciascuno, con i loro file ALTO. Il loro testo è suddiviso in modo diverso, come in due manoscritti reali. Bastano dieci minuti per percorrere tutto il procedimento.</p>
+<ol>
+<li>Copiate la cartella <code>demo_local_ALTO</code> altrove: il salvataggio modifica il file di progetto.</li>
+<li>Fate clic su <b class="ui" data-tr="project.open">Apri .vsynch</b> e scegliete <code>exemple.vsynch</code> nella copia.</li>
+<li>In <b class="ui" data-tr="navigation.project">1 · Aggiungere i testimoni</b>, fate clic sul testimone A, spuntate <b class="ui" data-tr="resources.witness.pivot">Usa questo testimone come pivot per l'allineamento dei testimoni</b>, poi fate clic su <b class="ui" data-tr="resources.witness.confirm">Salva testimone</b>.</li>
+<li>In <b class="ui" data-tr="navigation.alignment">3 · Allineare i testimoni</b>, lasciate A in <b class="ui" data-tr="alignment.reference.label">Pivot tecnico</b> e B in <b class="ui" data-tr="alignment.target.label">Testimone da allineare</b>, poi fate clic su <b class="ui" data-tr="ui.xml.open_alignment">Allinea i testimoni</b>.</li>
+<li>Nella finestra di sincronizzazione, fate clic sulla prima riga di A, poi sulla prima riga di B, e premete <kbd>Ctrl+Invio</kbd> (<b class="ui" data-tr="alignment.action.link_lines">Collega le righe</b>). Fate lo stesso per le terze righe. Queste due corrispondenze, in verde, sono le vostre ancore.</li>
+<li>Fate clic su <b class="ui" data-tr="progress.action">Allinea tra ancore (testo)</b>: il programma propone di collegare le seconde righe. Fate clic su <b class="ui" data-tr="progress.save">Salva selezione</b>. La proposta compare in blu tratteggiato: è da verificare.</li>
+<li>In basso, con il filtro <b class="ui" data-tr="review.filter.pending">Da verificare</b>, scegliete la proposta nell’elenco, verificatela sulle immagini, poi fate clic su <b class="ui" data-tr="review.validate.next">Convalida e continua</b>.</li>
+<li>Chiudete la finestra di sincronizzazione e fate clic su <b class="ui" data-tr="common.save">Salva</b>.</li>
+<li>In <b class="ui" data-tr="navigation.progress">4 · Finalizzare</b>, fate clic su <b class="ui" data-tr="ui.final.export_project.action">Crea progetto Varians precompilato…</b>, scegliete una cartella vuota, poi aprite in Varians il <code>project.xml</code> creato.</li>
+</ol>
+
+<h2 id="nouveau-projet">3. Percorso A: creare un nuovo progetto Varians</h2>
+<p>State cominciando un’edizione: non esiste ancora alcun progetto Varians. Varians-Synchro prepara l’intero progetto: testimoni, immagini, sincronizzazioni e, se l’avete, l’edizione TEI del pivot.</p>
+<h3>In Varians-Synchro</h3>
+<ol>
+<li><strong>Creare il progetto.</strong> <b class="ui" data-tr="project.new">Nuovo progetto</b> chiede un nome, poi la posizione del file <code>.vsynch</code>, che viene salvato subito.</li>
+<li><strong>Dichiarare i testimoni.</strong> In <b class="ui" data-tr="navigation.project">1 · Aggiungere i testimoni</b>, aggiungete ogni manoscritto con <b class="ui" data-tr="resources.witness.new">Aggiungi testimone…</b>: la sua sigla, le sue immagini, i suoi file ALTO/PAGE e, solo per il pivot, la sua edizione TEI, se ne ha una. Scegliete il pivot (vedere <a href="#notions">Nozioni chiave</a>): per impostazione predefinita è il primo testimone aggiunto. Dettagli: <a href="#etape1">Fase 1</a>.</li>
+<li><strong>Associare immagini e righe.</strong> In <b class="ui" data-tr="navigation.pages">2 · Associare le risorse</b>, verificate che ogni pagina sia associata al file ALTO/PAGE giusto e che le pagine siano nell’ordine di lettura. Indicate le righe da ignorare: quelle che sono fuori dal testo di cui curate l’edizione (inizio e fine di un passo, titoli correnti, un’altra opera sulla stessa pagina). Dettagli: <a href="#etape2">Fase 2</a>.</li>
+<li><strong>Allineare ogni testimone al pivot.</strong> In <b class="ui" data-tr="navigation.alignment">3 · Allineare i testimoni</b>, scegliete il pivot in <b class="ui" data-tr="alignment.reference.label">Pivot tecnico</b>, un altro testimone in <b class="ui" data-tr="alignment.target.label">Testimone da allineare</b>, e aprite <b class="ui" data-tr="ui.xml.open_alignment">Allinea i testimoni</b>. Collocate delle ancore, lasciate che il programma proponga il resto, verificate e convalidate. Ripetete per ogni testimone. Dettagli: <a href="#synchronisation">La finestra di sincronizzazione</a>.</li>
+<li><strong>Salvare</strong>, poi, in <b class="ui" data-tr="navigation.progress">4 · Finalizzare</b>, avviare <b class="ui" data-tr="audit.action">Verificare la coerenza del progetto…</b> e leggere gli avvisi.</li>
+<li><strong>Creare il progetto Varians.</strong> <b class="ui" data-tr="ui.final.export_project.action">Crea progetto Varians precompilato…</b> scrive il progetto in una cartella vuota. Il progetto contiene solo le corrispondenze <strong>convalidate</strong>: convalidate quindi tutto ciò che deve figurarvi prima di questa fase. Dettagli: <a href="#export-projet">Progetto Varians precompilato</a>.</li>
+</ol>
+<h3>In Varians</h3>
+<ol>
+<li><b class="varians" data-varians="menu.file">File</b> → <b class="varians" data-varians="menu.open_project">Apri progetto…</b>, poi il <code>project.xml</code> creato.</li>
+<li><strong>Senza edizione TEI</strong>, il progetto riceve una TEI vuota, come una nuova trascrizione in Varians. Per prepararvi le pagine e le righe del pivot: <b class="varians" data-varians="menu.file">File</b> → <b class="varians" data-varians="menu.project_settings">Impostazioni progetto…</b>, riquadro <b class="varians" data-varians="pivot.title">Preparazione della trascrizione del testimone pivot</b>, spuntate <b class="varians" data-varians="pivot.option.pb">Preparare i marcatori &lt;pb/&gt; del testimone pivot in un TEI vuoto</b> e, se lo desiderate, <b class="varians" data-varians="pivot.option.lb">Generare anche i marcatori &lt;lb/&gt; da ALTO, PAGE o sincronizzazione</b>.</li>
+<li><strong>Con un’edizione TEI</strong>, questa deve contenere esattamente un <code>&lt;lb edRef="#PIVOT"/&gt;</code> per ogni riga attiva del pivot, nell’ordine di lettura: Varians fa corrispondere la n-esima riga del pivot all’n-esimo <code>&lt;lb/&gt;</code>. La fase facoltativa <a href="#tei">Collegare l’edizione TEI</a> di Varians-Synchro vi permette di verificarlo prima dell’esportazione.</li>
+<li>Verificate il risultato con <b class="varians" data-varians="menu.display">Visualizza</b> → <b class="varians" data-varians="diagnostics.menu">Diagnostica dei testimoni…</b>.</li>
+</ol>
+
+<h2 id="ajout-temoin">4. Percorso B: aggiungere un testimone a un progetto Varians esistente</h2>
+<p>Il vostro progetto Varians esiste già ed è stato creato a partire da un progetto Varians-Synchro (oppure la sincronizzazione del suo pivot proviene da lì). Volete aggiungervi un nuovo manoscritto, sincronizzato con l’edizione.</p>
+<div class="note"><strong>Il principio.</strong> Il file di sincronizzazione del nuovo testimone designa le righe del pivot tramite l’identificativo della loro pagina e la loro posizione in quella pagina, così come li conosce il <em>vostro</em> progetto <code>.vsynch</code>. Occorre quindi lavorare nello stesso progetto <code>.vsynch</code> che è servito a creare il progetto Varians, e non toccare il pivot.</div>
+<h3>In Varians-Synchro</h3>
+<ol>
+<li><b class="ui" data-tr="project.open">Apri .vsynch</b>: aprite il progetto che è servito a creare il progetto Varians.</li>
+<li>In <b class="ui" data-tr="navigation.project">1 · Aggiungere i testimoni</b>, aggiungete il nuovo manoscritto con <b class="ui" data-tr="resources.witness.new">Aggiungi testimone…</b> (sigla, immagini, ALTO/PAGE). Dategli la sigla che avrà in Varians.</li>
+<li>In <b class="ui" data-tr="navigation.pages">2 · Associare le risorse</b>, associate le sue pagine ai loro file ALTO/PAGE e indicate le sue righe da ignorare.</li>
+<li>In <b class="ui" data-tr="navigation.alignment">3 · Allineare i testimoni</b>, lasciate il pivot in <b class="ui" data-tr="alignment.reference.label">Pivot tecnico</b>, scegliete il nuovo testimone in <b class="ui" data-tr="alignment.target.label">Testimone da allineare</b>, allineate e convalidate.</li>
+<li><b class="ui" data-tr="common.save">Salva</b>.</li>
+<li>In <b class="ui" data-tr="navigation.progress">4 · Finalizzare</b>, <b class="ui" data-tr="export.varians.action">Esporta JSON per Varians…</b>: scegliete il pivot come testimone di riferimento e una cartella vuota. Il file del nuovo testimone è <code>validated/&lt;sigle&gt;.json</code> (corrispondenze convalidate); <code>working/&lt;sigle&gt;.json</code> contiene anche le proposte non convalidate. Vedere <a href="#export-json">Esportare JSON per Varians</a>.</li>
+</ol>
+<div class="warn"><strong>Non modificate il pivot</strong> (le sue pagine, i loro file ALTO/PAGE, le sue righe ignorate, il suo ordine di lettura): le sue righe cambierebbero di posizione o di numero, e non corrisponderebbero più ai <code>&lt;lb/&gt;</code> dell’edizione. Se dovete farlo, sostituite anche la sincronizzazione del pivot in Varians con <code>validated/&lt;pivot&gt;.json</code>, e verificate che il numero delle sue righe sia sempre uguale a quello dei suoi <code>&lt;lb/&gt;</code>.</div>
+<h3>In Varians</h3>
+<ol>
+<li><b class="varians" data-varians="menu.file">File</b> → <b class="varians" data-varians="menu.project_settings">Impostazioni progetto…</b>; nell’elenco dei testimoni, <b class="varians" data-varians="project.witness.add">Aggiungi…</b>.</li>
+<li>Indicate la sigla, le immagini (<b class="varians" data-varians="project.witness.images">Sorgente immagini</b>) e, in <b class="varians" data-varians="project.witness.alignment.optional">File di sincronizzazione (facoltativo)</b>, il file <code>validated/&lt;sigle&gt;.json</code>. Spuntate <b class="varians" data-varians="project.witness.alignment.copy">Copia la sincronizzazione nel progetto</b>: così il progetto resta completo se lo spostate.</li>
+<li>Verificate con <b class="varians" data-varians="menu.display">Visualizza</b> → <b class="varians" data-varians="diagnostics.menu">Diagnostica dei testimoni…</b>: il nuovo testimone deve avere collegamenti validi al pivot.</li>
+</ol>
+<h3>Aggiornare un testimone già presente</h3>
+<p>Dopo aver completato l’allineamento di un testimone in Varians-Synchro, esportate di nuovo, poi, in Varians, assegnate al testimone il nuovo file (<b class="varians" data-varians="project.witness.edit">Modifica…</b> nelle impostazioni del progetto), oppure sostituite il suo file nella cartella <code>alignments/</code> del progetto. <b class="varians" data-varians="menu.display">Visualizza</b> → <b class="varians" data-varians="diagnostics.refresh">Aggiorna sincronizzazione…</b> (<kbd>Ctrl+Maiusc+R</kbd>) rilegge i file senza riaprire il progetto.</p>
+<p><strong>Progetto Varians che non proviene da questo <code>.vsynch</code>.</strong> Gli identificativi delle pagine sono diversi: Varians segnala allora che i collegamenti del file non corrispondono ad alcuna riga del pivot. Occorre anche sostituire la sincronizzazione del pivot con <code>validated/&lt;pivot&gt;.json</code>, che deve avere lo stesso numero di righe dei suoi <code>&lt;lb/&gt;</code>.</p>
+
+<h2 id="notions">5. Nozioni chiave</h2>
+<table>
+<tr><th>Nozione</th><th>Che cosa designa</th></tr>
+<tr><td>Testimone, sigla</td><td>Un manoscritto (o un’edizione antica). La sigla è il suo identificativo: non può più essere cambiata dopo il salvataggio del testimone, e non deve contenere né punti, né <code>/</code>, né <code>\</code>, perché l’esportazione sia possibile. Usate la stessa sigla del progetto Varians.</td></tr>
+<tr><td>Testimone pivot</td><td>Il testimone di riferimento del progetto: gli altri sono allineati a esso, e Varians lo segue tramite i suoi <code>&lt;lb/&gt;</code>. Questa scelta è tecnica: non presuppone nulla né sullo stemma né sul manoscritto di base dell’edizione. Per impostazione predefinita, il pivot è il primo testimone aggiunto; per cambiarlo, spuntate la casella del pivot nella scheda di un altro testimone. Il menu <b class="ui" data-tr="alignment.reference.label">Pivot tecnico</b> della fase 3 sceglie solo il testimone di sinistra da allineare, senza cambiare il pivot del progetto.</td></tr>
+<tr><td>Riga fisica</td><td>Una riga descritta dal file ALTO/PAGE di una pagina. È identificata dalla sua pagina e dalla sua posizione in quel file. Il contenuto del file viene copiato nel progetto al momento dell’importazione.</td></tr>
+<tr><td>Riga ignorata (ambito)</td><td>Una riga fuori dal testo studiato. Vale per il testimone in tutto il progetto: è esclusa dai calcoli, dal collegamento TEI e dalle esportazioni. Ignorare una riga già collegata ne rimuove i collegamenti, in tutte le coppie, previa conferma.</td></tr>
+<tr><td>Gruppo (corrispondenza)</td><td>Righe del testimone di sinistra collegate a righe del testimone di destra: 1↔1, 1↔n o n↔m. Una riga appartiene al massimo a un gruppo per coppia.</td></tr>
+<tr><td>Stato di un gruppo</td><td><code>validated</code> (convalidato), <code>uncertain</code> (incerto) o <code>proposed</code> (proposto). L’elenco dei gruppi li mostra così come sono. Il filtro <b class="ui" data-tr="review.filter.pending">Da verificare</b> riunisce i gruppi non convalidati.</td></tr>
+<tr><td>Ancora</td><td>Una corrispondenza convalidata che serve da appoggio alle proposte. Le ancore devono susseguirsi nello stesso ordine nei due testimoni; ne servono almeno due.</td></tr>
+<tr><td>Assenza confermata</td><td>Righe di un testimone che non hanno equivalente nell’altro (omissione, lacuna). Vale per una coppia, compare in rosso e non produce alcun collegamento all’esportazione.</td></tr>
+<tr><td>Riga non collegata</td><td>Una riga attiva che non appartiene ancora ad alcun gruppo nella coppia (in viola).</td></tr>
+<tr><td>Gruppo obsoleto</td><td>Un gruppo in cui una riga è cambiata: in genere, la pagina ha ricevuto un altro file ALTO/PAGE. Non viene mai eliminato, ma è escluso dalle ancore, dai calcoli e dalle esportazioni finché non lo riconvalidate o non lo scollegate.</td></tr>
+<tr><td>Protezione</td><td>I gruppi manuali e i gruppi convalidati non vengono mai sostituiti da un calcolo. Solo le proposte automatiche non convalidate possono esserlo.</td></tr>
+</table>
+
+<h2 id="etape1">6. Fase 1: aggiungere i testimoni</h2>
+<p><b class="ui" data-tr="resources.witness.new">Aggiungi testimone…</b> apre la scheda di un nuovo testimone; un clic su un testimone dell’elenco (o su una delle sue risorse) ne apre la scheda per completarla. L’elenco mostra, per ogni testimone, le sue risorse e il loro stato (pagine associate, righe importate, collegamento TEI).</p>
+<h3 id="fiche-temoin">La scheda del testimone</h3>
+<ul>
+<li><b class="ui" data-tr="resources.witness.sigil">Sigla</b> e <b class="ui" data-tr="resources.witness.label">Descrizione</b>. La sigla non è più modificabile una volta salvato il testimone.</li>
+<li><b class="ui" data-tr="resources.witness.pivot">Usa questo testimone come pivot per l'allineamento dei testimoni</b>.</li>
+<li>Quattro gruppi di risorse, ciascuno con <b class="ui" data-tr="resources.witness.add">Aggiungi…</b>:
+<ul>
+<li><b class="ui" data-tr="resources.witness.images">Immagini locali</b>: le immagini sono ordinate per nome («2» prima di «10»);</li>
+<li><b class="ui" data-tr="resources.witness.manifests">Manifest IIIF</b>: l’URL del Manifest; se non risponde, l’URL viene conservato, con lo stato non disponibile;</li>
+<li><b class="ui" data-tr="resources.witness.xml">File ALTO/PAGE-XML</b>: il formato è riconosciuto in base al contenuto;</li>
+<li><b class="ui" data-tr="resources.witness.tei">Edizione TEI XML</b>: facoltativa, utile per il pivot.</li>
+</ul></li>
+<li><b class="ui" data-tr="resources.witness.remove_pending">Rimuovi</b> toglie solo una risorsa aggiunta durante questa apertura della scheda: una risorsa già salvata resta nel progetto, per non compromettere le sue associazioni.</li>
+<li><b class="ui" data-tr="resources.binding.title">Associa automaticamente immagini e ALTO/PAGE</b> propone subito le associazioni delle pagine (vedere <a href="#association-auto">più avanti</a>).</li>
+<li><b class="ui" data-tr="resources.witness.confirm">Salva testimone</b> applica tutto in un’unica operazione; <b class="ui" data-tr="resources.cancel">Annulla</b> non cambia nulla nel progetto.</li>
+</ul>
+
+<h2 id="etape2">7. Fase 2: associare le risorse</h2>
+<p>Quattro operazioni, ciascuna per un testimone da scegliere:</p>
+<h3 id="pages">Pagine, ordine e file di righe</h3>
+<p><b class="ui" data-tr="pages.order.open">Gestire immagini, ordine e associazioni ALTO/PAGE…</b> mostra le pagine del testimone, con la loro miniatura e il loro file di righe.</p>
+<ul>
+<li><strong>Ordine di lettura</strong>: trascinate le pagine, oppure usate <b class="ui" data-tr="pages.order.up">Sposta su</b>, <b class="ui" data-tr="pages.order.down">Sposta giù</b>, <b class="ui" data-tr="pages.order.reverse">Inverti ordine</b>.</li>
+<li><b class="ui" data-tr="ui.xml.link_source">Collega ALTO/PAGE</b> assegna alla pagina scelta un file di righe. Se ne aveva già uno, il programma indica quanti gruppi saranno interessati: diventeranno obsoleti (vedere <a href="#perimes">Gruppi obsoleti</a>).</li>
+<li><b class="ui" data-tr="ui.afficher.page">Mostra pagina</b> (o un doppio clic) mostra la pagina e le sue righe.</li>
+<li><strong>Copie HD delle immagini IIIF</strong>: <b class="ui" data-tr="ui.pages.hd.action">Scarica le immagini IIIF selezionate in HD…</b> salva le immagini scelte in una cartella vuota; <b class="ui" data-tr="ui.pages.hd.attach">Collega un lotto HD già scaricato…</b> ritrova un lotto precedente. Il progetto Varians usa queste copie se tutte le pagine utili ne hanno una.</li>
+<li><strong>HTR esterna (facoltativa)</strong>: <b class="ui" data-tr="ui.exporter.pour.htr">Esporta per HTR</b> salva le immagini IIIF scelte in un file ZIP per un software di riconoscimento; <b class="ui" data-tr="ui.reimporter.htr">Reimporta HTR</b> associa poi i file ALTO/PAGE ottenuti, in base al loro nome.</li>
+</ul>
+<p>Queste modifiche vengono applicate subito: chiudete con <b class="ui" data-tr="common.close">Chiudi</b>, poi salvate il progetto.</p>
+<h3 id="association-auto">Associare automaticamente</h3>
+<p><b class="ui" data-tr="resources.binding.title">Associa automaticamente immagini e ALTO/PAGE</b> propone un file di righe per ogni pagina che non ne ha ancora uno: prima in base ai nomi e ai riferimenti delle immagini (<b class="ui" data-tr="resources.binding.name">Nome univoco</b>), poi, per immagini locali in numero uguale, in base all’ordine naturale dei nomi. Controllate soprattutto queste ultime: uno sfasamento si ripercuote su tutta la serie. Uno stesso file proposto per due pagine è segnalato in rosso. <b class="ui" data-tr="resources.binding.apply">Applica le associazioni</b> non sovrascrive alcuna associazione esistente.</p>
+<h3 id="perimetre">Righe da ignorare (ambito)</h3>
+<p><b class="ui" data-tr="tei.scope.action">Definisci le righe da ignorare nelle immagini del testimone…</b>: selezionate sulle immagini le righe fuori dal testo studiato, anche su più pagine, poi fate clic su <b class="ui" data-tr="tei.scope.ignore">Ignora le righe selezionate</b> (o <b class="ui" data-tr="tei.scope.restore">Reintegra le righe selezionate</b>). <b class="ui" data-tr="tei.scope.save">Salva l'ambito</b> applica le modifiche; <b class="ui" data-tr="resources.cancel">Annulla</b> non cambia nulla. La stessa impostazione esiste nella finestra di sincronizzazione (<b class="ui" data-tr="scope.menu">Ambito ▾</b>).</p>
+<h3 id="tei">Collegare l’edizione TEI (facoltativo)</h3>
+<p><b class="ui" data-tr="tei.binding.action">Collega l'edizione TEI alle righe ALTO/PAGE…</b> mette in corrispondenza i <code>&lt;lb edRef="#SIGLE"/&gt;</code> di un’edizione TEI con le righe attive del testimone, nell’ordine di lettura. I due numeri devono essere uguali: la finestra li confronta e segnala ciò che blocca (righe da ignorare dimenticate, lezioni ambigue di un apparato). Verificate alcune righe, in particolare con <b class="ui" data-tr="tei.visual.begin">Inizio</b> e <b class="ui" data-tr="tei.visual.end">Fine</b>, sul testo e sull’immagine ritagliata, poi fate clic su <b class="ui" data-tr="tei.binding.apply">Conferma i collegamenti</b>.</p>
+<p>Il collegamento non è necessario per l’esportazione: serve a verificare che il numero di righe del pivot corrisponda davvero ai suoi <code>&lt;lb/&gt;</code>, e fa mostrare il testo TEI al posto del testo HTR nella finestra di sincronizzazione. Il suo stato passa a <b class="ui" data-tr="tei.binding.status.stale">da riverificare (sorgenti modificate)</b> se cambiano l’edizione, l’ambito, l’ordine o la segmentazione.</p>
+
+<h2 id="etape3">8. Fase 3: allineare i testimoni</h2>
+<p>Scegliete il testimone di sinistra in <b class="ui" data-tr="alignment.reference.label">Pivot tecnico</b> (in genere il pivot del progetto) e l’altro testimone in <b class="ui" data-tr="alignment.target.label">Testimone da allineare</b>, poi fate clic su <b class="ui" data-tr="ui.xml.open_alignment">Allinea i testimoni</b>. Esiste una sola sincronizzazione per coppia: aprirla nell’altro senso riapre la stessa, con lo stesso testimone a sinistra.</p>
+<p>Sotto il pulsante, l’elenco delle coppie già allineate ne mostra l’avanzamento (numero di gruppi, righe collegate da ciascun lato). Un doppio clic su una coppia, o <kbd>Invio</kbd>, ne riapre la sincronizzazione; un clic singolo la seleziona nei due menu.</p>
+<p>Per l’esportazione verso Varians, ogni testimone deve essere allineato <strong>direttamente</strong> al pivot: un allineamento B↔C non serve all’esportazione se il pivot è A.</p>
+
+<h2 id="synchronisation">9. La finestra di sincronizzazione</h2>
+<p>I due testimoni sono affiancati, con il testimone di riferimento a sinistra. I contorni delle righe sono colorati secondo il loro stato. Tutto il lavoro avviene in memoria: dopo aver chiuso questa finestra, salvate il progetto nella finestra principale. Qui, <kbd>F1</kbd> apre questa sezione della guida.</p>
+<h3>Il metodo consigliato</h3>
+<ol>
+<li><strong>Collocare delle ancore.</strong> Collegate alcune righe sicure, all’inizio, alla fine e nei punti in cui i manoscritti divergono (cambio di colonna, lacuna, aggiunta): selezionate la riga o le righe a sinistra e a destra, poi scegliete <b class="ui" data-tr="alignment.action.link_lines">Collega le righe</b> (<kbd>Ctrl+Invio</kbd>). Un gruppo creato così è manuale e convalidato (verde continuo).</li>
+<li><strong>Far proporre il resto.</strong> <b class="ui" data-tr="progress.action">Allinea tra ancore (testo)</b> calcola, tra due ancore, le corrispondenze più probabili in base alla quantità di testo di ogni riga. Una finestra mostra le proposte: tenete quelle adatte, poi fate clic su <b class="ui" data-tr="progress.save">Salva selezione</b>. Le proposte sono salvate come da verificare (blu tratteggiato).</li>
+<li><strong>Verificare e convalidare.</strong> In basso, scegliete il filtro <b class="ui" data-tr="review.filter.pending">Da verificare</b> e percorrete i gruppi con <b class="ui" data-tr="review.next">Successivo ▶</b> (<kbd>F8</kbd>) e <b class="ui" data-tr="review.previous">◀ Precedente</b> (<kbd>Maiusc+F8</kbd>). Il gruppo scelto compare in rosa sulle due immagini. <b class="ui" data-tr="review.validate.next">Convalida e continua</b> (<kbd>Alt+V</kbd>) lo convalida e passa al successivo.</li>
+<li><strong>Correggere.</strong> Per aggiungere una riga a un gruppo, selezionatela insieme a una riga del gruppo e scegliete <b class="ui" data-tr="alignment.action.link_lines">Collega le righe</b>. Per toglierne una, selezionatela e scegliete <b class="ui" data-tr="alignment.action.unlink_lines">Scollega</b>. Un gruppo corretto diventa manuale (verde) e protetto.</li>
+<li><strong>Trattare le assenze</strong> (vedere <a href="#absences">più avanti</a>), poi chiudere e salvare.</li>
+</ol>
+<h3>Selezionare le righe</h3>
+<ul>
+<li>Un clic su una riga la seleziona (arancione) e sostituisce la selezione del testimone, su tutte le sue pagine.</li>
+<li><kbd>Ctrl</kbd>+clic aggiunge o toglie una riga; <kbd>Maiusc</kbd>+clic seleziona una serie di righe nell’ordine di lettura del testimone, da una pagina all’altra.</li>
+<li>Un clic su una riga già collegata mostra in rosa le righe corrispondenti nell’altro testimone (cambiando pagina se necessario). Il rosa non è mai una selezione.</li>
+<li>Rotellina: zoom; trascinare: spostare l’immagine; doppio clic: zoom sulla riga. <b class="ui" data-tr="viewer.fit_page">Adatta</b> mostra l’intera pagina.</li>
+<li><b class="ui" data-tr="viewer.htr.toggle">Testo HTR</b> mostra il testo delle righe sotto l’immagine (il testo TEI se un collegamento TEI è valido). <b class="ui" data-tr="viewer.alto.toggle">Contorni delle righe</b> nasconde o mostra i contorni; <b class="ui" data-tr="viewer.clear_selection">Cancella selezione</b> svuota la selezione.</li>
+</ul>
+<h3>Colori</h3>
+<table>
+<tr><th>Colore</th><th>Significato</th></tr>
+<tr><td>arancione</td><td>riga selezionata</td></tr>
+<tr><td>rosa</td><td>corrispondenza visualizzata</td></tr>
+<tr><td>viola</td><td>riga non collegata</td></tr>
+<tr><td>verde continuo / tratteggiato</td><td>gruppo manuale convalidato / da verificare</td></tr>
+<tr><td>blu continuo / tratteggiato</td><td>gruppo automatico convalidato / da verificare</td></tr>
+<tr><td>rosso tratteggiato</td><td>assenza confermata</td></tr>
+<tr><td>grigio tratteggiato</td><td>riga ignorata</td></tr>
+</table>
+<p><b class="ui" data-tr="alignment.filter.title">Contorni visibili</b> limita la visualizzazione alle <b class="ui" data-tr="alignment.filter.unlinked">Righe non collegate</b> o ai <b class="ui" data-tr="alignment.filter.automatic_review">Collegamenti automatici da verificare</b>, per individuare ciò che resta da fare.</p>
+<h3 id="revision">L’elenco dei gruppi</h3>
+<p>In basso, <b class="ui" data-tr="review.queue.label">Verifica</b> filtra i gruppi: <b class="ui" data-tr="review.filter.all">Tutti i gruppi</b>, <b class="ui" data-tr="review.filter.pending">Da verificare</b>, <b class="ui" data-tr="review.filter.validated">Convalidati</b>, <b class="ui" data-tr="review.filter.absences">Assenze confermate</b>, <b class="ui" data-tr="review.filter.stale">Obsoleti</b>. Ogni gruppo vi è descritto dal suo stato e dalle sue righe, indicate come <code>page:rang</code> (etichetta della pagina, posizione della riga). Se ne possono selezionare più d’uno (<kbd>Ctrl</kbd>, <kbd>Maiusc</kbd>) per <b class="ui" data-tr="review.validate.selected">Convalida selezione…</b>.</p>
+<p><b class="ui" data-tr="review.recalculate.next">Ricalcolo locale…</b> rifà le proposte del solo intervallo che segue l’ancora scelta, per esempio dopo che avete aggiunto un’ancora.</p>
+<h3 id="absences">Assenze confermate</h3>
+<p>Quando alcune righe di un testimone non hanno equivalente nell’altro, selezionatele da un solo lato, poi scegliete <b class="ui" data-tr="alignment.action.more">Altre operazioni</b> → <b class="ui" data-tr="exception.action.confirm">Conferma l'assenza delle righe selezionate (Ctrl+Maiusc+A)</b>. Le righe non sono più «non collegate» e compaiono in rosso. <b class="ui" data-tr="exception.action.revoke">Rimuovi le assenze selezionate dall'elenco</b> annulla un’assenza scelta con il filtro <b class="ui" data-tr="review.filter.absences">Assenze confermate</b>.</p>
+<h3 id="perimes">Gruppi obsoleti</h3>
+<p>Assegnare a una pagina un altro file ALTO/PAGE (una segmentazione corretta) può cambiarne le righe. Prima della sostituzione, il programma indica quanti gruppi citano queste righe; dopo, quelli in cui una riga è cambiata sono segnati «[obsoleto]». Il filtro <b class="ui" data-tr="review.filter.stale">Obsoleti</b> li elenca. Dopo la verifica sulle immagini, <b class="ui" data-tr="alignment.stale.revalidate">Riconvalida…</b> li ripristina; altrimenti, scollegateli. L’ordine di lettura corretto della pagina viene azzerato.</p>
+<h3>Altre operazioni</h3>
+<ul>
+<li><b class="ui" data-tr="Supprimer le(s) groupe(s) sélectionné(s) dans la liste">Elimina i gruppi selezionati dall'elenco</b> e <b class="ui" data-tr="alignment.action.mark_uncertain">Segna come incerto</b> agiscono sui gruppi scelti nell’elenco.</li>
+<li><b class="ui" data-tr="alignment.action.suggest_htr">Proponi via HTR (facoltativo)</b> cerca corrispondenze in base alla somiglianza del testo HTR delle righe. Nulla è preselezionato: scegliete le proposte da tenere.</li>
+<li><b class="ui" data-tr="stream.window.action">Ordine di lettura e intervalli…</b> corregge l’ordine delle pagine, delle regioni (colonne) e delle righe di un testimone, quando la segmentazione non lo fornisce correttamente, e mostra gli intervalli tra le ancore.</li>
+<li><b class="ui" data-tr="progress.legacy.geometry">Vecchia interpolazione geometrica (compatibilità)</b> e <b class="ui" data-tr="progress.legacy.residual">Vecchio completamento delle righe residue (compatibilità)</b> sono metodi precedenti, conservati per i progetti che li usavano.</li>
+</ul>
+<p>La scheda <b class="ui" data-tr="alignment.tab.text">Vista testuale (facoltativa)</b> mostra le righe dei due testimoni come testo. I comandi agiscono sulla selezione della scheda visualizzata.</p>
+
+<h2 id="etape4">10. Fase 4: finalizzare ed esportare</h2>
+<p><b class="ui" data-tr="ui.final.refresh">Aggiorna riepilogo</b> riassume i testimoni e le sincronizzazioni, e segnala le righe modificate o i file introvabili.</p>
+<h3 id="controle">Verificare la coerenza</h3>
+<p><b class="ui" data-tr="audit.action">Verificare la coerenza del progetto…</b> controlla il progetto senza modificare nulla: righe attive e pagine associate di ogni testimone, gruppi convalidati e assenze di ogni coppia, riferimenti mancanti o obsoleti, file introvabili. Eseguite questo controllo prima di ogni esportazione.</p>
+<h3 id="export-projet">Progetto Varians precompilato</h3>
+<p><b class="ui" data-tr="ui.final.export_project.action">Crea progetto Varians precompilato…</b> scrive, in una cartella vuota, un progetto che Varians apre così com’è:</p>
+<ul>
+<li><code>project.xml</code>: i testimoni, le loro immagini (Manifest IIIF, o percorsi delle immagini locali) e il pivot;</li>
+<li><code>xml/edition.xml</code>: l’edizione TEI del pivot, o una TEI vuota se il pivot non ne ha;</li>
+<li><code>alignments/&lt;sigle&gt;.json</code>: la sincronizzazione di ogni testimone, <strong>solo corrispondenze convalidate</strong>;</li>
+<li><code>rendering/</code>, <code>i18n/</code>, <code>web_output/</code>: le cartelle consuete di un progetto Varians;</li>
+<li><code>RAPPORT_EXPORT_VARIANS.txt</code>: il resoconto dell’esportazione;</li>
+<li>eventualmente <code>iiif/</code>: le copie HD delle immagini IIIF, se tutte le pagine utili ne hanno una.</li>
+</ul>
+<p>Le immagini restano al loro posto: il progetto rimanda a esse (le righe sono nei file di sincronizzazione). L’esportazione è rifiutata se la cartella non è vuota, se una sigla contiene un punto, <code>/</code> o <code>\</code>, se il pivot ha più edizioni TEI, se un testimone mescola immagini IIIF e locali, o se un file è introvabile.</p>
+<h3 id="export-json">Esportare JSON per Varians</h3>
+<p><b class="ui" data-tr="export.varians.action">Esporta JSON per Varians…</b> serve ad aggiungere o aggiornare testimoni in un progetto Varians esistente (<a href="#ajout-temoin">Percorso B</a>). Scegliete il testimone di riferimento (il pivot del progetto Varians), confermate, poi scegliete una cartella vuota. Il programma vi scrive:</p>
+<ul>
+<li><code>validated/&lt;sigle&gt;.json</code>: un file per testimone, solo corrispondenze convalidate;</li>
+<li><code>working/&lt;sigle&gt;.json</code>: le stesse, più le proposte non convalidate;</li>
+<li><code>rapport_export.json</code>: i conteggi e i controlli dell’esportazione.</li>
+</ul>
+<p>Varians non conosce gli stati di Varians-Synchro: importate <code>validated/</code>, salvo per una prova fatta con cognizione di causa. Sono esportate solo le sincronizzazioni dirette con il testimone di riferimento, senza deduzioni tramite un terzo testimone. Se un testimone non ha alcuna corrispondenza esportabile, il programma lo segnala prima dell’esportazione, indicandone la causa.</p>
+
+<h2 id="format-json">11. Formato dei file di sincronizzazione (JSON)</h2>
+<p>Un file per testimone, in UTF-8, nel formato <code>tei-manuscript-alignment</code>, versione 1, letto da Varians. Il file del pivot descrive le sue righe; quello di ogni altro testimone descrive le proprie e le collega alle righe del pivot.</p>
+<h3 id="format-racine">Radice</h3>
+<table>
+<tr><th>Campo</th><th>Contenuto</th></tr>
+<tr><td><code class="field">meta.format</code></td><td><code>"tei-manuscript-alignment"</code>.</td></tr>
+<tr><td><code class="field">meta.format_version</code></td><td><code>1</code>.</td></tr>
+<tr><td><code class="field">meta.witness</code></td><td>La sigla del testimone descritto.</td></tr>
+<tr><td><code class="field">meta.base_witness</code></td><td>La sigla del pivot (testimone di riferimento).</td></tr>
+<tr><td><code class="field">meta.role</code></td><td><code>"base"</code> per il pivot, <code>"secondary"</code> per gli altri.</td></tr>
+<tr><td><code class="field">meta.source</code></td><td><code>"Varians-Synchro"</code>.</td></tr>
+<tr><td><code class="field">meta.reference_basis</code></td><td><code>"physical-lines-in-study-scope"</code>: le chiavi designano righe fisiche, escluse le righe ignorate.</td></tr>
+<tr><td><code class="field">meta.editorial_tei_alignment</code></td><td><code>"NOT_ESTABLISHED"</code>: il file non contiene collegamenti alla TEI; è Varians che fa corrispondere le righe del pivot ai suoi <code>&lt;lb/&gt;</code>.</td></tr>
+<tr><td><code class="field">pages</code></td><td>Le pagine del testimone che hanno un file ALTO/PAGE, nell’ordine di lettura.</td></tr>
+</table>
+<h3 id="format-page">Pagina</h3>
+<table>
+<tr><th>Campo</th><th>Contenuto</th></tr>
+<tr><td><code class="field">pages[].id</code></td><td>L’identificativo della pagina nel progetto <code>.vsynch</code>. Non cambia finché la pagina resta nel progetto.</td></tr>
+<tr><td><code class="field">pages[].label</code></td><td>L’etichetta della pagina (foglio, nome dell’immagine).</td></tr>
+<tr><td><code class="field">pages[].alto_width</code>, <code class="field">pages[].alto_height</code></td><td>Le dimensioni della pagina nel file ALTO/PAGE (in pixel), a cui si riferiscono le coordinate delle righe.</td></tr>
+<tr><td><code class="field">pages[].image</code></td><td>L’immagine della pagina; <code class="field">pages[].image.type</code> vale <code>"file"</code>, <code>"iiif"</code> o <code>"none"</code>.</td></tr>
+<tr><td><code class="field">pages[].image.path</code></td><td>Immagine locale: il suo percorso, così come figura nel progetto.</td></tr>
+<tr><td><code class="field">pages[].image.label</code></td><td>L’etichetta dell’immagine.</td></tr>
+<tr><td><code class="field">pages[].image.service</code>, <code class="field">pages[].image.image</code>, <code class="field">pages[].image.canvas</code>, <code class="field">pages[].image.width</code>, <code class="field">pages[].image.height</code>, <code class="field">pages[].image.iiif_version</code></td><td>Immagine IIIF: il servizio d’immagini, l’URL dell’immagine, l’identificativo del Canvas, le sue dimensioni e la versione della IIIF Image API.</td></tr>
+<tr><td><code class="field">pages[].lines</code></td><td>Le righe attive della pagina, nell’ordine di lettura.</td></tr>
+</table>
+<h3 id="format-ligne">Riga</h3>
+<table>
+<tr><th>Campo</th><th>Contenuto</th></tr>
+<tr><td><code class="field">pages[].lines[].line</code></td><td>La posizione della riga nel file ALTO/PAGE della sua pagina (a partire da 1). Le righe ignorate non vengono scritte, ma le posizioni non vengono rinumerate: la numerazione può quindi presentare dei salti.</td></tr>
+<tr><td><code class="field">pages[].lines[].order</code></td><td>Il posto della riga nell’ordine di lettura del testimone, contando tutte le pagine.</td></tr>
+<tr><td><code class="field">pages[].lines[].bbox</code></td><td>Il rettangolo della riga: <code class="field">pages[].lines[].bbox.hpos</code>, <code class="field">pages[].lines[].bbox.vpos</code> (angolo superiore sinistro), <code class="field">pages[].lines[].bbox.width</code>, <code class="field">pages[].lines[].bbox.height</code>, in pixel del file ALTO/PAGE.</td></tr>
+<tr><td><code class="field">pages[].lines[].polygon</code></td><td>Facoltativo: il contorno della riga (file PAGE), elenco di punti <code>[x, y]</code>.</td></tr>
+<tr><td><code class="field">pages[].lines[].alto_id</code></td><td>L’identificativo della riga nel file ALTO/PAGE.</td></tr>
+<tr><td><code class="field">pages[].lines[].alto</code></td><td>Il testo HTR della riga (vuoto se non c’è).</td></tr>
+<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>Solo per gli altri testimoni: le righe del pivot a cui la riga corrisponde, nella forma <code>"id_de_page::rang"</code> (<code class="field">pages[].id</code> e <code class="field">pages[].lines[].line</code> di una riga del pivot). Una riga di un gruppo n↔m porta le chiavi di tutte le righe del pivot del gruppo. Una riga senza corrispondenza (non collegata, assenza confermata, gruppo non convalidato in <code>validated/</code>) non ha questo campo.</td></tr>
+<tr><td><code class="field">pages[].lines[].vsynch_state</code></td><td>Lo stato del gruppo in Varians-Synchro: <code>validated</code>, <code>uncertain</code> o <code>proposed</code> (questi ultimi due solo in <code>working/</code>). Informativo: Varians non lo usa.</td></tr>
+<tr><td><code class="field">pages[].lines[].vsynch_origin</code></td><td>L’origine del gruppo (<code>manual</code>, <code>manual-correction</code>, <code>automatic-textual-progress-v071</code>, <code>automatic-htr-htr</code>…). Informativo.</td></tr>
+<tr><td><code class="field">pages[].lines[].score</code></td><td>Facoltativo: il grado di confidenza di una proposta automatica, tra 0 e 1. Informativo.</td></tr>
+</table>
+<h3>Che cosa ne fa Varians</h3>
+<ul>
+<li>Le righe del file del pivot, nell’ordine del file, corrispondono una a una ai <code>&lt;lb edRef="#PIVOT"/&gt;</code> dell’edizione: la prima riga al primo <code>&lt;lb/&gt;</code>, e così via. Varians verifica che i numeri siano uguali.</li>
+<li>Una chiave del pivot è <code>id_de_page::rang</code>: resta valida finché la pagina conserva il suo identificativo e il suo file ALTO/PAGE. Per questo il nuovo testimone di un progetto esistente deve essere allineato nello stesso progetto <code>.vsynch</code> (<a href="#ajout-temoin">Percorso B</a>).</li>
+<li>Quando il testo arriva a una riga del pivot, Varians mostra, in ogni altro testimone, la riga o le righe i cui <code>base_keys</code> la designano.</li>
+</ul>
+<h3>Esempio</h3>
+<p>Una riga del testimone B, collegata alle righe 1 e 2 di una pagina del pivot A:</p>
+<pre>{"meta": {"format": "tei-manuscript-alignment", "format_version": 1,
+          "witness": "B", "base_witness": "A", "role": "secondary",
+          "source": "Varians-Synchro",
+          "reference_basis": "physical-lines-in-study-scope",
+          "editorial_tei_alignment": "NOT_ESTABLISHED"},
+ "pages": [{"id": "8f2c…", "label": "f. 12r", "alto_width": 2480, "alto_height": 3508,
+            "image": {"type": "file", "path": "C:/images/B/f12r.jpg", "label": "f12r"},
+            "lines": [{"line": 1, "order": 1,
+                       "bbox": {"hpos": 210.0, "vpos": 340.0, "width": 1630.0, "height": 72.0},
+                       "alto_id": "line_1", "alto": "Beatus Germanus in hac vita",
+                       "base_keys": ["5d1a…::1", "5d1a…::2"],
+                       "vsynch_state": "validated", "vsynch_origin": "manual"}]}]}</pre>
+
+<h2 id="fichiers">12. File, salvataggi e risoluzione dei problemi</h2>
+<h3>Il file di progetto</h3>
+<ul>
+<li>Tutto il lavoro si trova nel file <code>.vsynch</code>: testimoni, contenuto dei file ALTO/PAGE importati, associazioni, righe ignorate, ordine di lettura, sincronizzazioni. I file sorgente non vengono mai modificati.</li>
+<li>Il salvataggio è sicuro: il file viene sostituito in un’unica operazione, e la versione precedente è conservata in <code>&lt;projet&gt;.vsynch.bak</code>. Per tornare indietro, copiate questo <code>.bak</code> con un nuovo nome con estensione <code>.vsynch</code> e apritelo.</li>
+<li>Non esiste un comando «Salva con nome»: per conservare una versione, copiate il file <code>.vsynch</code>.</li>
+<li>Un progetto con percorsi relativi (come l’esempio fornito) si apre da qualsiasi cartella; al salvataggio, i percorsi vengono scritti per intero.</li>
+<li>Modificare un file ALTO/PAGE sul disco dopo l’importazione non cambia il progetto; il riepilogo lo segnala. Per una segmentazione corretta, importate il nuovo file e associatelo alla pagina (i gruppi interessati diventano obsoleti).</li>
+<li>Quando chiudete il programma, aprite o create un progetto, vi viene proposto di salvare le modifiche in corso.</li>
+</ul>
+<h3>Problemi frequenti</h3>
+<ul>
+<li><strong>«Associez des pages ALTO aux deux témoins avant de synchroniser»</strong>: uno dei due testimoni non ha ancora alcuna pagina associata a un file di righe (<a href="#etape2">Fase 2</a>).</li>
+<li><strong>Immagine IIIF non disponibile</strong>: il server non risponde; le associazioni non vanno perse. Riprovate più tardi, oppure scaricate delle copie HD.</li>
+<li><strong>Contorni sfalsati sull’immagine</strong>: l’immagine e il file ALTO/PAGE non hanno le stesse proporzioni (la barra di stato lo segnala); verificate che il file corrisponda davvero a questa immagine.</li>
+<li><strong>Esportazione rifiutata</strong>: la cartella scelta non è vuota, oppure una sigla contiene un punto, <code>/</code> o <code>\</code>.</li>
+<li><strong>In Varians, le righe del pivot non corrispondono al testo</strong>: il numero di <code>&lt;lb edRef="#PIVOT"/&gt;</code> è diverso dal numero di righe attive del pivot (righe da ignorare dimenticate, o <code>&lt;lb/&gt;</code> mancanti). <b class="varians" data-varians="diagnostics.menu">Diagnostica dei testimoni…</b> in Varians e il <a href="#tei">collegamento TEI</a> di Varians-Synchro aiutano a trovare la differenza.</li>
+<li><strong>In Varians, i collegamenti del file non corrispondono ad alcuna riga del pivot</strong>: la sincronizzazione del pivot non proviene dallo stesso progetto <code>.vsynch</code> (vedere <a href="#ajout-temoin">Percorso B</a>).</li>
+<li><strong>Con Spyder</strong>: avviate <code>run.py</code>; il programma si apre in un processo a parte, per non disturbare la console di Spyder. Il registro di avvio si trova in <code>~/.varians_synchro/logs</code>.</li>
+</ul>
+
+<h2 id="raccourcis">13. Scorciatoie</h2>
+<table>
+<tr><th>Tasto</th><th>Azione</th></tr>
+<tr><td><kbd>F1</kbd></td><td>Aprire la guida (nella finestra di sincronizzazione: alla sezione che la riguarda).</td></tr>
+<tr><td><kbd>Ctrl+Invio</kbd></td><td><b class="ui" data-tr="alignment.action.link_lines">Collega le righe</b> selezionate.</td></tr>
+<tr><td><kbd>Ctrl+Maiusc+A</kbd></td><td>Confermare l’assenza delle righe selezionate.</td></tr>
+<tr><td><kbd>F8</kbd> / <kbd>Maiusc+F8</kbd></td><td>Gruppo successivo / precedente dell’elenco.</td></tr>
+<tr><td><kbd>Alt+V</kbd></td><td><b class="ui" data-tr="review.validate.next">Convalida e continua</b>.</td></tr>
+<tr><td>clic / <kbd>Ctrl</kbd>+clic / <kbd>Maiusc</kbd>+clic</td><td>Selezionare una riga / aggiungere o togliere una riga / selezionare una serie di righe.</td></tr>
+<tr><td>doppio clic, rotellina</td><td>Zoom sulla riga; zoom.</td></tr>
+<tr><td><kbd>Ctrl+F</kbd>, <kbd>F3</kbd> / <kbd>Maiusc+F3</kbd></td><td>Nella guida: cercare, occorrenza successiva / precedente.</td></tr>
+</table>
+</body></html>
