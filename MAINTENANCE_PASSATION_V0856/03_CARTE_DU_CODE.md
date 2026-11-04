@@ -38,7 +38,8 @@
 | Module | Fenêtre |
 |---|---|
 | `ui_main_window` | fenêtre principale `GuidedWindow` (projet, pages, synchronisation, avancement, exports) |
-| `ui_pair` | `PairDialog` : synchronisation visuelle d'une paire de témoins (environ 1 000 lignes) |
+| `ui_pair` | `PairDialog` : synchronisation visuelle d'une paire de témoins (environ 950 lignes ; constructeur en méthodes `_build_*`) |
+| `ui_proposals` | `ProposalReviewDialog` : fenêtre commune des propositions (HTR–HTR, progression textuelle, interpolation géométrique, lignes résiduelles) ; `line_names`, `replaced_machine_groups` |
 | `ui_pages` | `PagesDialog` : images et associations ALTO/PAGE, copies HD, export HTR |
 | `ui_batch_binding` | `BatchBindingDialog` : association automatique par lot |
 | `ui_resources` | `WitnessResourceDialog` : ajout et modification d'un témoin |
