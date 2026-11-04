@@ -82,6 +82,38 @@ except Exception as exc:
 '''
 
 
+_PREPARE = r"""
+import json, sys, traceback
+root, project_path, include_lb = sys.argv[1], sys.argv[2], sys.argv[3] == '1'
+sys.path.insert(0, root)
+try:
+    from pathlib import Path
+    from project_config import load_project
+    from project_management import WitnessDraft, minimal_tei_text
+    from tei_facsimile import project_facsimile_pages, sync_facsimile_text
+    from tei_pivot_scaffold import build_pivot_plan, render_pivot_scaffold, scaffold_is_empty
+
+    project = load_project(project_path)
+    source = Path(project.edition).read_text(encoding='utf-8-sig')
+    blank = minimal_tei_text(project.title, [WitnessDraft(w.id, w.label) for w in project.witnesses],
+                             project.base_witness, language='fr', schema_mode='auto')
+    # « Paramètres du projet » → OK : Varians complète d'abord le <facsimile>
+    # (une <surface> par image), puis prépare le pivot (project_actions).
+    surfaces = project_facsimile_pages(project.witnesses, project.root_dir, project.edition)
+    synced = sync_facsimile_text(source, surfaces)[0] if surfaces else source
+    plan = build_pivot_plan(project.witnesses, project.base_witness, project.root_dir,
+                            project.edition)
+    print(json.dumps({
+        'empty': scaffold_is_empty(source), 'same_as_varians_blank': source == blank,
+        'pages': [[page.label, page.line_count] for page in plan.pages],
+        'prepared': render_pivot_scaffold(synced, plan, include_lb=include_lb)}))
+except Exception as exc:
+    print(json.dumps({"error": f"{type(exc).__name__}: {exc}",
+                      "trace": traceback.format_exc()}))
+    sys.exit(1)
+"""
+
+
 def varians_source():
     """Dossier du code source de Varians, ou None."""
     candidates = [os.environ.get('VARIANS_SOURCE'), ROOT.parent / 'Varians', ROOT.parent / 'varians']
@@ -112,6 +144,26 @@ def open_in_varians(project_xml):
     root = require_varians()
     env = dict(os.environ, QT_QPA_PLATFORM='offscreen', PYTHONUTF8='1')
     completed = subprocess.run([sys.executable, '-c', _OPEN, str(root), str(project_xml)],
+                               cwd=str(root), env=env, capture_output=True, text=True,
+                               encoding='utf-8', timeout=300)
+    lines = [line for line in completed.stdout.splitlines() if line.startswith('{')]
+    if not lines:
+        raise AssertionError('Varians n’a rien rendu :\n' + completed.stdout + completed.stderr)
+    return json.loads(lines[-1])
+
+
+def prepare_pivot_in_varians(project_xml, *, include_lb=True):
+    """Ce que fait Varians quand on coche, dans « Paramètres du projet »,
+    « Préparer les <pb/> du témoin pivot dans la TEI vide » (et « Générer
+    aussi les <lb/>… ») puis OK : <facsimile> complété, puis pivot préparé.
+    Rend ``empty`` (l'édition est-elle vide pour Varians ?),
+    ``same_as_varians_blank`` (est-elle identique à celle d'une « transcription
+    vierge » de Varians ?), ``pages`` ([libellé, nombre de <lb/>]) et
+    ``prepared`` (le texte de l'édition préparée, sans l'écrire)."""
+    root = require_varians()
+    env = dict(os.environ, QT_QPA_PLATFORM='offscreen', PYTHONUTF8='1')
+    completed = subprocess.run([sys.executable, '-c', _PREPARE, str(root), str(project_xml),
+                                '1' if include_lb else '0'],
                                cwd=str(root), env=env, capture_output=True, text=True,
                                encoding='utf-8', timeout=300)
     lines = [line for line in completed.stdout.splitlines() if line.startswith('{')]

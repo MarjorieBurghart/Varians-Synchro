@@ -608,7 +608,8 @@ Das Umordnen ändert keine Quellen.</string>
   <string key="ui.alignment.open.tip">Visuellen Zeilenvergleich zwischen Pivot und weiterem Zeugen öffnen.</string>
   <string key="ui.final.export_project.action">Vorausgefülltes Varians-Projekt erstellen…</string>
   <string key="ui.final.export_project.tip">Projektordner mit project.xml, Kopie der Referenz-TEI, Textzeugen und Synchronisierungs-JSON-Dateien vorbereiten. Prüfen Sie die Kompatibilität mit Ihrer installierten Varians-Version.</string>
-  <string key="ui.final.export_project.no_tei">Um ein direkt öffnungsfähiges Varians-Projekt zu erstellen, verknüpfen Sie zuerst eine TEI-Edition mit dem Pivot.</string>
+  <string key="ui.final.export_project.no_tei">Dem Pivot ist keine TEI-Edition zugeordnet: Das Varians-Projekt erhält eine leere TEI-Edition, wie mit „Neue Transkription beginnen“ in Varians.</string>
+  <string key="ui.final.export_project.prepare_pivot">Um darin die &lt;pb/&gt; und &lt;lb/&gt; des Pivots vorzubereiten: in Varians Menü Datei → „Projekteinstellungen…“, „&lt;pb/&gt;-Markierungen für den Pivot-Textzeugen in einer leeren TEI vorbereiten“ ankreuzen.</string>
   <string key="ui.final.export_project.confirm">Der Export verwendet das bekannte Varians-Format project.xml und verweist auf Ihre Bilder und ALTO-/PAGE-Quellen. Externe Pfade müssen auf einem anderen Rechner möglicherweise angepasst werden. Fortfahren?</string>
   <string key="ui.final.export_project.success">Varians-Projekt erstellt:\n{path}\nÖffnen Sie project.xml in Varians.</string>
   <string key="ui.pages.hd.action">Ausgewählte IIIF-Bilder in HD herunterladen…</string>

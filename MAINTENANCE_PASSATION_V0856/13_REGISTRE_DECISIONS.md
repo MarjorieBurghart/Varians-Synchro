@@ -6,7 +6,7 @@ Un ADR présente **décision / raison / effet / état / sources**. Ce registre r
 
 - **Décision** : enregistrer les appariements de lignes de manuscrits dans `pair_sessions`, conserver les anciennes `alignment_sessions`, lier la TEI facultativement dans `text_resources[].tei_binding`.
 - **Motivation** : un alignement entre deux témoins doit pouvoir être préparé avant l'édition TEI ; la relation philologique ne se déduit pas du texte HTR.
-- **Effet** : deux pistes de provenance indépendantes ; export physique possible sans TEI, export projet Varians complet avec TEI pivot unique.
+- **Effet** : deux pistes de provenance indépendantes ; export physique possible sans TEI, export projet Varians complet avec au plus une TEI pivot (sans TEI : TEI vide de Varians, voir ADR-016).
 - **État** : implémenté. **Sources** : `physical_alignment.py`, `tei_binding.py`, `varians_export.py`, `FORMAT_PROJET.md`.
 
 ## ADR-002 — Choix de pivot et direction de paire distincts
@@ -93,3 +93,9 @@ Un ADR présente **décision / raison / effet / état / sources**. Ce registre r
 - **Décision** : passer `core.VERSION` à `0.8.5.6`, ajouter un dossier de passation autonome, une cartographie générée et des tests d'intégrité documentaire ; ne pas toucher aux algorithmes, catalogues ni format `.vsynch`.
 - **Motivation** : transmettre le logiciel sans l'historique de conversation et sans augmenter le risque de régression.
 - **État** : consigne de livraison de ce lot ; **voir tests** `TESTS_V0856.md`.
+
+## ADR-016 — Projet Varians sans TEI : la TEI vide de Varians, le pivot préparé par Varians
+
+- **Contexte** : l'export « Créer un projet Varians pré-renseigné… » exigeait une édition TEI associée au pivot, alors que Varians crée un projet sans TEI (« Commencer une nouvelle transcription ») et prépare ensuite les `<pb/>` et `<lb/>` du pivot dans la TEI vide.
+- **Décision** : sans TEI associée au pivot, le projet reçoit la TEI vide de Varians, identique octet pour octet (`varians_project_export.blank_tei_edition`). La préparation des `<pb/>`/`<lb/>` reste à Varians (Fichier → « Paramètres du projet… ») : son code lit déjà les JSON d'alignement de Synchro et complète le `<facsimile>` ; le recopier dans Synchro obligerait à suivre ses évolutions.
+- **État** : implémenté. **Tests** : `tests/test_varians_blank_edition.py` (vrai code de Varians), `tests/test_varians_export_gui_qt.py`, `tests/test_finalization_0851.py`.

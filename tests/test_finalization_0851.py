@@ -74,9 +74,32 @@ def test_project_export_validates_and_preserves_tei_sources(tmp_path):
         export_varians_project(project, 'Mu', dest)
 
 
-def test_project_export_without_tei_is_rejected(tmp_path):
-    p = new_project()
-    create_witness(p, 'Mu')
+def test_project_export_without_tei_gets_a_blank_edition(tmp_path):
+    """Comme une « transcription vierge » créée dans Varians : une TEI vide,
+    où Varians peut ensuite préparer les <pb/> et <lb/> du pivot."""
+    p = fixture(tmp_path)
+    p['text_resources'] = []
+    result = export_varians_project(p, 'Mu', tmp_path/'blank')
+    assert result['tei'] is None and result['edition'] == 'blank'
+    text = (tmp_path/'blank'/'xml'/'edition.xml').read_text(encoding='utf-8')
+    assert text.count('<?xml-model ') == 2
+    root = ET.fromstring(text)
+    ns = {'t': 'http://www.tei-c.org/ns/1.0'}
+    assert root.find('t:teiHeader/t:fileDesc/t:titleStmt/t:title', ns).text == 'Édition scientifique'
+    assert [w.get('{http://www.w3.org/XML/1998/namespace}id')
+            for w in root.findall('.//t:listWit/t:witness', ns)] == ['Mu']
+    body = root.find('t:text/t:body', ns)
+    assert [child.tag for child in body] == ['{http://www.tei-c.org/ns/1.0}p'] and not body[0].text
+    report = (tmp_path/'blank'/'RAPPORT_EXPORT_VARIANS.txt').read_text(encoding='utf-8')
+    assert 'TEI vide' in report and 'Paramètres du projet' in report
+
+
+def test_project_export_with_two_editions_of_the_pivot_is_rejected(tmp_path):
+    p = fixture(tmp_path)
+    second = tmp_path / 'autre.xml'
+    second.write_text('<TEI xmlns="http://www.tei-c.org/ns/1.0"><text><body><p/></body></text></TEI>',
+                      encoding='utf-8')
+    store_tei_reference(p, 'Mu', second)
     with pytest.raises(ValueError, match='édition TEI'):
         export_varians_project(p, 'Mu', tmp_path/'nope')
 
