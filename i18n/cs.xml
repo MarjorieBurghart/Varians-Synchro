@@ -670,6 +670,11 @@ Varování: dávku se nepodařilo zaznamenat do projektu ({error}). Po kontrole 
   <string key="help.title">Uživatelská příručka</string>
   <string key="help.open">Otevřít uživatelskou příručku</string>
   <string key="help.missing">Uživatelská příručka nebyla nalezena.</string>
+  <string key="help.search.placeholder">Hledat v nápovědě (Ctrl+F)</string>
+  <string key="help.search.summary">oddíly: {sections}, výskyty: {count}</string>
+  <string key="help.search.none">Nic nenalezeno</string>
+  <string key="help.search.prev.tip">Předchozí výskyt (Shift+F3)</string>
+  <string key="help.search.next.tip">Další výskyt (F3)</string>
   <string key="ui.xml.replace_impact">Tato stránka již má zdroj ALTO nebo PAGE. S jiným souborem se její řádky mohou změnit. Skupiny, které odkazují na její řádky: {links} (z toho potvrzené: {validated}). Skupiny, jejichž řádky se změní, budou označeny jako „zastaralé“: nebudou použity ani exportovány, dokud je znovu nepotvrdíte nebo nezrušíte jejich propojení. Nahradit?</string>
   <string key="ui.xml.replace_order">Opravené pořadí čtení této stránky bude vynulováno.</string>
   <string key="review.filter.stale">Zastaralé</string>

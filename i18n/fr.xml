@@ -677,6 +677,11 @@ Attention : le lot n’a pas pu être rattaché au projet ({error}). Utilisez «
   <string key="help.title">Documentation utilisateur</string>
   <string key="help.open">Ouvrir le guide utilisateur</string>
   <string key="help.missing">Le guide utilisateur est introuvable.</string>
+  <string key="help.search.placeholder">Rechercher dans l’aide (Ctrl+F)</string>
+  <string key="help.search.summary">{sections} section(s), {count} occurrence(s)</string>
+  <string key="help.search.none">Aucun résultat</string>
+  <string key="help.search.prev.tip">Occurrence précédente (Maj+F3)</string>
+  <string key="help.search.next.tip">Occurrence suivante (F3)</string>
   <string key="ui.xml.replace_impact">Cette page a déjà une source ALTO ou PAGE. Avec un autre fichier, ses lignes peuvent changer. Groupes qui citent ses lignes : {links} (dont validés : {validated}). Ceux dont les lignes auront changé seront marqués « périmés » : ni utilisés ni exportés tant qu’ils n’auront pas été revalidés ou dissociés. La remplacer ?</string>
   <string key="ui.xml.replace_order">L’ordre de lecture corrigé de cette page sera remis à zéro.</string>
   <string key="review.filter.stale">Périmés</string>

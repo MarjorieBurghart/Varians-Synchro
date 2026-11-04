@@ -677,6 +677,11 @@ Warning: the batch could not be registered in the project ({error}). Use “Atta
   <string key="help.title">User documentation</string>
   <string key="help.open">Open user guide</string>
   <string key="help.missing">The user guide could not be found.</string>
+  <string key="help.search.placeholder">Search the help (Ctrl+F)</string>
+  <string key="help.search.summary">{sections} section(s), {count} match(es)</string>
+  <string key="help.search.none">No results</string>
+  <string key="help.search.prev.tip">Previous match (Shift+F3)</string>
+  <string key="help.search.next.tip">Next match (F3)</string>
   <string key="ui.xml.replace_impact">This page already has an ALTO or PAGE source. With another file, its lines may change. Groups citing its lines: {links} (validated: {validated}). Those whose lines change will be marked “stale”: neither used nor exported until they are revalidated or unlinked. Replace it?</string>
   <string key="ui.xml.replace_order">The corrected reading order of this page will be reset.</string>
   <string key="review.filter.stale">Stale</string>
