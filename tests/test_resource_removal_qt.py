@@ -12,6 +12,7 @@ from pathlib import Path
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 import pytest
 pytest.importorskip('PySide6')
+from PySide6.QtCore import QCoreApplication, QEvent
 from PySide6.QtWidgets import QApplication, QDialog, QPushButton
 
 from varians_synchro.i18n import tr
@@ -26,6 +27,23 @@ YES, NO = QMessageBox.StandardButton.Yes, QMessageBox.StandardButton.No
 @pytest.fixture(scope='module')
 def app():
     return QApplication.instance() or QApplication([])
+
+
+@pytest.fixture(autouse=True)
+def freed_dialogs(monkeypatch):
+    """Chaque fiche ouverte par un test est détruite à la fin du test, tant que
+    Python tourne encore (et non à la sortie de l'interpréteur)."""
+    opened = []
+    original = WitnessResourceDialog.__init__
+
+    def init(self, *args, **kwargs):
+        original(self, *args, **kwargs)
+        opened.append(self)
+    monkeypatch.setattr(WitnessResourceDialog, '__init__', init)
+    yield
+    for dialog in opened:
+        dialog.deleteLater()
+    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
 
 
 @pytest.fixture(autouse=True)

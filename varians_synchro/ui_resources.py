@@ -159,7 +159,9 @@ class WitnessResourceDialog(QDialog):
                     text = '✓  ' + str(path)
                 item = QListWidgetItem(text)
                 item.setData(Qt.ItemDataRole.UserRole, None)
-                item.setData(Qt.ItemDataRole.UserRole + 1, removal)
+                # Une chaîne, pas un tuple : un objet Python gardé par Qt serait
+                # libéré par Qt après l'arrêt de Python (plantage à la sortie).
+                item.setData(Qt.ItemDataRole.UserRole + 1, '\t'.join(removal))
                 item.setData(Qt.ItemDataRole.UserRole + 2, str(path))
                 if removal in self.removals:
                     item.setToolTip(tr('resources.witness.removal_tip'))
@@ -245,7 +247,7 @@ class WitnessResourceDialog(QDialog):
     def _toggle_removal(self, item):
         """Retire une ressource enregistrée à « Enregistrer le témoin », après
         avoir dit ce que cela entraîne ; de nouveau « Supprimer » la garde."""
-        removal = tuple(item.data(Qt.ItemDataRole.UserRole + 1))
+        removal = tuple(item.data(Qt.ItemDataRole.UserRole + 1).split('\t'))
         if removal in self.removals:
             self.removals.remove(removal)
         else:

@@ -220,7 +220,7 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `i18n`, `imaging`, `page_order`, `reading_stream`, `ui_widgets`
 **Classes déclarées au premier niveau** : `ReadingOrderDialog` (l.14)
 
-## `varians_synchro/ui_resources.py` (332 lignes)
+## `varians_synchro/ui_resources.py` (334 lignes)
 **Objet (docstring source)** : Fenêtre « Ajouter un témoin… » / « Modifier le témoin et ses ressources » : sigle, images, XML, TEI et Manifests IIIF, appliqués d’un bloc.
 **Dépendances internes observées** : `i18n`, `resource_removal`, `resource_workflow`, `ui_batch_binding`, `ui_widgets`
 **Classes déclarées au premier niveau** : `WitnessResourceDialog` (l.17)
