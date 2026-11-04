@@ -43,10 +43,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : Read-only reciprocal navigation over a physical ALTO pair session. This module never changes line selection or alignment data. Links with confirmed absences have no target lines, and can be reported to the researcher without manufacturing a fictitious counterpart. Direct links only: no transitive inference and no assumption that HTR is reliable.
 **Fonctions au premier niveau** : `build_pair_navigation_index` (l.11), `combined_counterparts` (l.38)
 
-## `varians_synchro/error_report.py` (58 lignes)
+## `varians_synchro/error_report.py` (61 lignes)
 **Objet (docstring source)** : Erreur imprévue dans une action de l'interface : un message à l'écran. Sans ce crochet, une exception levée dans un clic (slot Qt) n'allait qu'à la console ou au journal de démarrage : pour l'utilisateur, rien ne se passait. Le crochet garde ce comportement (le détail technique reste dans la console) et montre en plus un message, traduit quand le texte de l'erreur est connu des catalogues.
-**Dépendances internes observées** : `i18n`
-**Fonctions au premier niveau** : `describe` (l.18), `show` (l.25), `install` (l.46)
+**Dépendances internes observées** : `i18n`, `ui_widgets`
+**Fonctions au premier niveau** : `describe` (l.18), `show` (l.25), `install` (l.49)
 
 ## `varians_synchro/errors.py` (53 lignes)
 **Objet (docstring source)** : Messages des moteurs, traduisibles. Les moteurs (sans Qt) écrivent leurs erreurs et avertissements en français : c'est le texte des journaux, des tests et de ``str(exc)``. L'interface les montre dans sa langue : - un message fixe est la valeur française d'une clé du catalogue ; ``tr(texte)`` le traduit par l'alias français ; - un message avec des valeurs (un sigle, un fichier…) est un ``Localized`` : une chaîne française qui garde sa clé et ses valeurs, pour que ``localized_text`` le traduise avec les mêmes valeurs. ``localized(ValueError, 'clé', sigle=…)`` construit l'exception ; ``localized_text(exc_ou_texte)`` donne le texte à afficher.

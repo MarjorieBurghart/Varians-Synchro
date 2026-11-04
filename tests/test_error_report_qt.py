@@ -21,8 +21,8 @@ def app():
 def test_an_error_in_a_click_is_shown(app, monkeypatch):
     shown = []
     monkeypatch.setattr(sys, 'excepthook', lambda *args: None)     # console : sans bruit
-    monkeypatch.setattr(QMessageBox, 'warning',
-                        staticmethod(lambda parent, title, text, *a: shown.append((title, text))))
+    # La boîte est construite en texte brut (red team B1), puis montrée.
+    monkeypatch.setattr(QMessageBox, 'exec', lambda box: shown.append((box.windowTitle(), box.text())) or 0)
     error_report.install()
     button = QPushButton()
 

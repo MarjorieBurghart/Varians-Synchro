@@ -37,8 +37,11 @@ def show(exc) -> None:
         return
     _showing = True
     try:
-        QMessageBox.warning(app.activeWindow(), tr('error.unexpected.title'),
-                            tr('error.unexpected.text', error=describe(exc)))
+        # Texte brut : l'erreur cite souvent une donnée reçue (sigle, chemin,
+        # réponse d'un serveur), que Qt aurait lue comme du HTML.
+        from .ui_widgets import _answer, message_box
+        _answer(message_box(app.activeWindow(), QMessageBox.Icon.Warning, tr('error.unexpected.title'),
+                            tr('error.unexpected.text', error=describe(exc))))
     finally:
         _showing = False
 

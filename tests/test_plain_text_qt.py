@@ -81,3 +81,14 @@ def test_the_viewer_shows_a_siglum_and_server_errors_as_text(app):
         assert panel.status.textFormat() == Qt.TextFormat.PlainText
     finally:
         _free(panel)
+
+
+def test_the_unexpected_error_box_shows_the_error_as_plain_text(app, monkeypatch):
+    """L'erreur imprévue cite souvent une donnée reçue (sigle, chemin)."""
+    from PySide6.QtWidgets import QMessageBox as QtBox
+    from varians_synchro import error_report
+    seen = []
+    monkeypatch.setattr(QtBox, 'warning', staticmethod(lambda *a, **k: seen.append('AutoText')))
+    monkeypatch.setattr(QtBox, 'exec', lambda self: seen.append((self.textFormat(), self.text())) or 0)
+    error_report.show(KeyError(HOSTILE))
+    assert len(seen) == 1 and seen[0][0] == Qt.TextFormat.PlainText and HOSTILE in seen[0][1]
