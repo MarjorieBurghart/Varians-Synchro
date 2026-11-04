@@ -925,4 +925,6 @@ Technische Details stehen in der Konsole oder im Startprotokoll.</string>
   <string key="ui.audit.issue.xml_page_bound_twice">Eine XML-Seite ist mehreren Bildern zugeordnet: Ihre Zeilen würden mehrfach gezählt</string>
   <string key="error.imaging.redirect_refused">Der Server leitet auf eine Adresse um, die nicht http oder https ist: Umleitung abgelehnt.</string>
   <string key="error.imaging.too_slow">Der Server antwortet zu langsam: Abbruch nach {seconds} s.</string>
+  <string key="resources.witness.manifest_loading">{count} IIIF-Manifest(e) werden geladen…</string>
+  <string key="error.resources.manifest_cancelled">Laden des Manifests abgebrochen.</string>
 </translations>

@@ -925,4 +925,6 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="ui.audit.issue.xml_page_bound_twice">1 つの XML ページが複数の画像に関連付けられています。その行が重複して数えられます</string>
   <string key="error.imaging.redirect_refused">サーバーが http でも https でもないアドレスへリダイレクトしています。リダイレクトを拒否しました。</string>
   <string key="error.imaging.too_slow">サーバーの応答が遅すぎます。{seconds} 秒で中止しました。</string>
+  <string key="resources.witness.manifest_loading">IIIF Manifest を {count} 件読み込み中…</string>
+  <string key="error.resources.manifest_cancelled">Manifest の読み込みを取り消しました。</string>
 </translations>

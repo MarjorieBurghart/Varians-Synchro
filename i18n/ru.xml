@@ -925,4 +925,6 @@
   <string key="ui.audit.issue.xml_page_bound_twice">Одна страница XML сопоставлена с несколькими изображениями: её строки учитывались бы несколько раз</string>
   <string key="error.imaging.redirect_refused">Сервер перенаправляет на адрес, который не является http или https: перенаправление отклонено.</string>
   <string key="error.imaging.too_slow">Сервер отвечает слишком медленно: прервано через {seconds} с.</string>
+  <string key="resources.witness.manifest_loading">Загрузка IIIF Manifest: {count}…</string>
+  <string key="error.resources.manifest_cancelled">Загрузка Manifest отменена.</string>
 </translations>

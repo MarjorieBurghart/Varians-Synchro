@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (QCheckBox, QHBoxLayout, QMessageBox as QtMessageB
 
 from .errors import localized_text
 from .i18n import tr
-from .ui_widgets import call_soon, plain_tip, QComboBox, QDialog, QLabel, QMessageBox, QPushButton
+from .ui_widgets import call_soon, page_image_reader_ok, plain_tip, QComboBox, QDialog, QLabel, QMessageBox, QPushButton
 
 
 class ProtectedBindingComboBox(QComboBox):
@@ -118,6 +118,8 @@ class BatchBindingDialog(QDialog):
             if page is None or page.get('image_kind') != 'local':
                 continue
             reader = QImageReader(str(page.get('image_path', '')))
+            if not page_image_reader_ok(reader):
+                continue
             reader.setAutoTransform(True)
             size = reader.size()
             if size.isValid():

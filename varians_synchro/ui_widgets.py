@@ -99,6 +99,29 @@ def plain_tip(text):
     return QtGuiNamespace.convertFromPlainText(str(text))
 
 
+# Raster formats a page image may have. Qt also decodes SVG or PDF, which
+# may load other files (local, or network shares under Windows): a received
+# « image » in such a format is not shown.
+PAGE_IMAGE_FORMATS = frozenset({b'jpeg', b'jpg', b'png', b'tif', b'tiff', b'webp', b'jp2'})
+
+
+def page_image_reader_ok(reader):
+    """True when ``reader`` (a QImageReader) reads a raster page format."""
+    return bytes(reader.format()).lower() in PAGE_IMAGE_FORMATS
+
+
+def decode_page_image(data):
+    """QImage of a page image received as bytes; a null QImage when it is
+    not in a raster page format."""
+    from PySide6.QtCore import QBuffer, QByteArray, QIODevice
+    from PySide6.QtGui import QImage, QImageReader
+    buffer = QBuffer()
+    buffer.setData(QByteArray(bytes(data)))
+    buffer.open(QIODevice.OpenModeFlag.ReadOnly)
+    reader = QImageReader(buffer)
+    return reader.read() if page_image_reader_ok(reader) else QImage()
+
+
 class QLabel(QtLabel):
     """Label translating its text, shown as plain text (``rich=True`` for
     markup written by the program itself)."""

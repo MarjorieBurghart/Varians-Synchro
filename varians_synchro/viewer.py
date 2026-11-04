@@ -17,7 +17,7 @@ from .overlay_selection import choose_line_at, choose_line_geometry
 from .alto_geometry import page_line_polygons
 from .reading_stream import reading_stream
 from .selection_policy import update_line_selection
-from .ui_widgets import call_soon
+from .ui_widgets import call_soon, decode_page_image
 from PySide6.QtCore import Qt, QRectF, QPointF, QThread, Signal, QItemSelectionModel
 from PySide6.QtGui import QPixmap, QPen, QColor, QBrush, QImage, QPainter, QPolygonF, QPainterPath
 from shiboken6 import isValid
@@ -504,7 +504,7 @@ class LineImagePanel(QWidget):
 
     def _on_image(self, data, serial):
         if self._gone() or serial != self._request_serial: return
-        image = QImage.fromData(data)
+        image = decode_page_image(data)
         if image.isNull():
             self._on_error(tr('ui.format.dimage.non.reconnu.par.qt'), serial)
             return

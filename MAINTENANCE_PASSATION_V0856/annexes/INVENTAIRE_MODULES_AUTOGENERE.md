@@ -190,7 +190,7 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `physical_alignment`, `reading_stream`
 **Fonctions au premier niveau** : `_chars` (l.23), `_length` (l.28), `_weights` (l.48), `_cumulative` (l.107), `_partition` (l.116), `_method` (l.164), `_segments` (l.172), `suggest_textual_progress` (l.270)
 
-## `varians_synchro/ui_batch_binding.py` (209 lignes)
+## `varians_synchro/ui_batch_binding.py` (211 lignes)
 **Objet (docstring source)** : Fenêtre « Associer automatiquement les images et les ALTO/PAGE » : propositions par lot, que l’utilisateur peut modifier.
 **Dépendances internes observées** : `bulk_binding`, `errors`, `i18n`, `ui_widgets`
 **Classes déclarées au premier niveau** : `ProtectedBindingComboBox` (l.14), `BatchBindingDialog` (l.26)
@@ -206,10 +206,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `core`, `errors`, `i18n`, `physical_alignment`, `project_state`, `resource_workflow`, `tei_binding`, `ui_batch_binding`, `ui_help`, `ui_pages`, `ui_pair`, `ui_resources`, `ui_scope`, `ui_tei_binding`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`
 **Classes déclarées au premier niveau** : `_PairList` (l.29), `GuidedWindow` (l.46)
 
-## `varians_synchro/ui_pages.py` (596 lignes)
+## `varians_synchro/ui_pages.py` (607 lignes)
 **Objet (docstring source)** : Fenêtre « Images et associations ALTO/PAGE » d’un témoin : ordre des pages, association des XML, copies HD et export pour une HTR.
 **Dépendances internes observées** : `errors`, `hd_registry`, `i18n`, `imaging`, `page_management`, `page_order`, `physical_alignment`, `reading_stream`, `ui_batch_binding`, `ui_widgets`, `viewer`
-**Classes déclarées au premier niveau** : `DraggablePagesList` (l.23), `HDDownloadThread` (l.36), `HTRExportThread` (l.73), `PagesDialog` (l.98)
+**Classes déclarées au premier niveau** : `DraggablePagesList` (l.27), `HDDownloadThread` (l.40), `HTRExportThread` (l.77), `PagesDialog` (l.102)
 
 ## `varians_synchro/ui_pair.py` (962 lignes)
 **Objet (docstring source)** : Fenêtre « Synchronisation visuelle entre témoins » : groupes de lignes de deux témoins, propositions, révision rapide et revalidation.
@@ -227,10 +227,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `errors`, `i18n`, `imaging`, `page_order`, `reading_stream`, `ui_widgets`
 **Classes déclarées au premier niveau** : `ReadingOrderDialog` (l.15)
 
-## `varians_synchro/ui_resources.py` (336 lignes)
+## `varians_synchro/ui_resources.py` (408 lignes)
 **Objet (docstring source)** : Fenêtre « Ajouter un témoin… » / « Modifier le témoin et ses ressources » : sigle, images, XML, TEI et Manifests IIIF, appliqués d’un bloc.
 **Dépendances internes observées** : `errors`, `i18n`, `resource_removal`, `resource_workflow`, `ui_batch_binding`, `ui_widgets`
-**Classes déclarées au premier niveau** : `WitnessResourceDialog` (l.18)
+**Classes déclarées au premier niveau** : `_ManifestFetcher` (l.18), `WitnessResourceDialog` (l.35)
 
 ## `varians_synchro/ui_scope.py` (85 lignes)
 **Objet (docstring source)** : Fenêtre « Périmètre » : lignes d’un témoin exclues de l’étude.
@@ -242,11 +242,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `errors`, `i18n`, `tei_binding`, `tei_visual`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `TEILineFetchThread` (l.23), `TEIReviewCard` (l.39), `TEIPhysicalBindingDialog` (l.164)
 
-## `varians_synchro/ui_widgets.py` (217 lignes)
+## `varians_synchro/ui_widgets.py` (240 lignes)
 **Objet (docstring source)** : Widgets Qt qui traduisent leurs textes, ouverture modale d'une fenêtre et appels différés liés à une fenêtre. Les fenêtres de l'interface utilisent ces classes à la place de celles de PySide6 : un texte passé à ``QLabel``, ``setWindowTitle`` ou ``QMessageBox.warning`` est une clé de traduction (ou un texte français connu des catalogues) et s'affiche dans la langue choisie.
 **Dépendances internes observées** : `i18n`
-**Classes déclarées au premier niveau** : `QLabel` (l.102), `QPushButton` (l.118), `QListWidget` (l.127), `QComboBox` (l.132), `QTabWidget` (l.139), `QTreeWidget` (l.144), `QDialog` (l.149), `QMainWindow` (l.154), `QMessageBox` (l.179), `QInputDialog` (l.199), `QFileDialog` (l.208)
-**Fonctions au premier niveau** : `_run_modal` (l.22), `call_soon` (l.34), `start_detached` (l.53), `_stop_detached_threads` (l.79), `_text_format` (l.85), `plain_tip` (l.96), `message_box` (l.159), `_answer` (l.170)
+**Classes déclarées au premier niveau** : `QLabel` (l.125), `QPushButton` (l.141), `QListWidget` (l.150), `QComboBox` (l.155), `QTabWidget` (l.162), `QTreeWidget` (l.167), `QDialog` (l.172), `QMainWindow` (l.177), `QMessageBox` (l.202), `QInputDialog` (l.222), `QFileDialog` (l.231)
+**Fonctions au premier niveau** : `_run_modal` (l.22), `call_soon` (l.34), `start_detached` (l.53), `_stop_detached_threads` (l.79), `_text_format` (l.85), `plain_tip` (l.96), `page_image_reader_ok` (l.108), `decode_page_image` (l.113), `message_box` (l.182), `_answer` (l.193)
 
 ## `varians_synchro/validation.py` (193 lignes)
 **Objet (docstring source)** : Read-only V0.7.4 preflight for documentary streams and physical pairs. The audit NEVER repairs historical links, guesses an omission, or modifies data. Warnings may reflect unavailable external resources on a different workstation. Hard errors mark contradictions that must not be silently treated as reliable.

@@ -4,15 +4,32 @@ from __future__ import annotations
 import copy
 from pathlib import Path
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QThread
 from PySide6.QtWidgets import (QCheckBox, QFrame, QGroupBox, QHBoxLayout, QLineEdit,
                                QListWidgetItem, QScrollArea, QVBoxLayout, QWidget)
 
-from .errors import localized_text
+from .errors import localized, localized_text
 from .i18n import tr
 from .ui_batch_binding import BatchBindingDialog
-from .ui_widgets import (_run_modal, QDialog, QFileDialog, QInputDialog, QLabel, QListWidget,
+from .ui_widgets import (_run_modal, start_detached, QDialog, QFileDialog, QInputDialog, QLabel, QListWidget,
                          QMessageBox, QPushButton)
+
+
+class _ManifestFetcher(QThread):
+    """Fetch IIIF Manifests outside the interface thread."""
+    def __init__(self, urls, cancel):
+        super().__init__()
+        self.urls, self.cancel, self.results = list(urls), cancel, {}
+
+    def run(self):
+        from . import resource_workflow
+        for url in self.urls:
+            if self.cancel.is_set():
+                return
+            try:
+                self.results[url] = ('ok', resource_workflow.inspect_manifest(url))
+            except Exception as exc:
+                self.results[url] = ('error', exc)
 
 
 class WitnessResourceDialog(QDialog):
@@ -22,6 +39,7 @@ class WitnessResourceDialog(QDialog):
         self.original_project = project
         self.original_witness = witness
         self.staged_project = None
+        self._manifests = {}      # url -> ('ok', manifest) | ('error', exception)
         self.pending = {'images': [], 'xml_files': [], 'tei_files': [], 'manifests': []}
         self.removals = []        # (kind, id) des ressources enregistrées à retirer
         self.setWindowTitle(tr('resources.witness.edit' if witness else 'resources.witness.new'))
@@ -184,6 +202,8 @@ class WitnessResourceDialog(QDialog):
             if url not in self.pending['manifests']:
                 self.pending['manifests'].append(url)
         self.staged_project = None
+        for url in urls:
+            self._manifests.pop(url, None)          # asked again
         try:
             staged = self.stage_current()
         except Exception as exc:
@@ -291,13 +311,65 @@ class WitnessResourceDialog(QDialog):
         remove_witness(self.original_project, witness_id)
         self.accept()
 
+    def _manifests_to_fetch(self):
+        """Manifests ``apply_witness_draft`` would query: new ones, and known
+        ones that did not answer; not those fetched already."""
+        from .resource_workflow import _manifest_key
+        known = {_manifest_key(s['reference']): s for s in (self.original_witness or {}).get('image_sources', [])
+                 if s.get('kind') == 'iiif'}
+        return [url for url in dict.fromkeys(str(u).strip() for u in self.pending['manifests'] if str(u).strip())
+                if url not in self._manifests
+                and (known.get(_manifest_key(url)) is None
+                     or known[_manifest_key(url)].get('status') == 'unavailable')]
+
+    def _fetch_manifests(self):
+        """Fetch the Manifests in a thread of their own, the window going on
+        (it froze while a slow server answered), with a cancellable wait."""
+        urls = self._manifests_to_fetch()
+        if not urls:
+            return
+        import threading
+        from PySide6.QtCore import QEventLoop
+        from PySide6.QtWidgets import QProgressDialog
+        cancel = threading.Event()
+        worker = _ManifestFetcher(urls, cancel)
+        progress = QProgressDialog(tr('resources.witness.manifest_loading', count=len(urls)),
+                                   tr('common.cancel'), 0, 0, self)
+        progress.setWindowTitle(tr('resources.witness.manifests'))
+        progress.setWindowModality(Qt.WindowModality.WindowModal)
+        progress.setMinimumDuration(0)
+        loop = QEventLoop()
+        worker.finished.connect(loop.quit)
+        progress.canceled.connect(cancel.set)
+        progress.canceled.connect(loop.quit)
+        start_detached(worker, self, cancel)
+        progress.show()
+        if not worker.isFinished():
+            loop.exec()
+        progress.hide()
+        progress.deleteLater()
+        for url in urls:
+            self._manifests[url] = worker.results.get(url) or (
+                'error', localized(ValueError, 'error.resources.manifest_cancelled'))
+
+    def _cached_manifest(self, url):
+        kind, value = self._manifests.get(url) or ('ok', None)
+        if value is None:
+            from . import resource_workflow
+            return resource_workflow.inspect_manifest(url)
+        if kind == 'error':
+            raise value
+        return value
+
     def build_stage(self):
         from .resource_workflow import apply_witness_draft
+        self._fetch_manifests()
         # Build from a fresh snapshot; existing resources remain identical.
         draft = copy.deepcopy(self.original_project)
         apply_witness_draft(draft, identifier=self.sigil.text(),
                             label=self.label_edit.text(), is_pivot=self.pivot.isChecked(),
-                            new_witness=self.original_witness is None, **self.pending)
+                            new_witness=self.original_witness is None,
+                            manifest_loader=self._cached_manifest, **self.pending)
         if self.removals:
             from .resource_removal import remove_resource
             for kind, source_id in self.removals:

@@ -932,4 +932,6 @@ Les détails techniques sont dans la console ou le journal de démarrage.</strin
   <string key="ui.audit.issue.xml_page_bound_twice">Une même page XML est associée à plusieurs images : ses lignes compteraient plusieurs fois</string>
   <string key="error.imaging.redirect_refused">Le serveur redirige vers une adresse qui n’est pas http ou https : redirection refusée.</string>
   <string key="error.imaging.too_slow">Le serveur répond trop lentement : abandon après {seconds} s.</string>
+  <string key="resources.witness.manifest_loading">Chargement de {count} Manifest(s) IIIF…</string>
+  <string key="error.resources.manifest_cancelled">Chargement du Manifest annulé.</string>
 </translations>

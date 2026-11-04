@@ -92,3 +92,31 @@ def test_without_unavailable_manifest_the_button_is_disabled(app):
         assert not _retry_button(dialog).isEnabled()
     finally:
         dialog.close()
+
+
+def test_a_manifest_is_fetched_off_the_interface_thread(app, project, monkeypatch):
+    """Red team B4 : le Manifest était chargé dans le fil de l'interface ;
+    un serveur lent figeait la fenêtre (45 s observées, sans limite). Il est
+    chargé dans un fil à part, la fenêtre continue de répondre."""
+    import threading
+    import time
+    from PySide6.QtCore import QTimer
+    threads, ticks = [], []
+
+    def slow(url):
+        threads.append(threading.current_thread() is threading.main_thread())
+        time.sleep(1.0)
+        return online(url)
+    monkeypatch.setattr(resource_workflow, 'inspect_manifest', slow)
+    monkeypatch.setattr(QMessageBox, 'information', staticmethod(lambda *a, **k: None))
+    dialog, witness = _dialog(project)
+    timer = QTimer()
+    timer.timeout.connect(lambda: ticks.append(1))
+    timer.start(50)
+    try:
+        dialog.retry_manifests()
+    finally:
+        timer.stop()
+        dialog.close()
+    assert threads == [False]
+    assert len(ticks) >= 5                     # l'interface a continué de tourner

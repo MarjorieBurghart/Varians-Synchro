@@ -15,9 +15,13 @@ from .imaging import create_pages, import_htr_results, mapped_alto_page
 from .physical_alignment import page_links_impact
 from .reading_stream import rebind_page
 from .ui_batch_binding import BatchBindingDialog
-from .ui_widgets import (_run_modal, call_soon, plain_tip, start_detached, QDialog, QFileDialog, QInputDialog,
+from .ui_widgets import (_run_modal, call_soon, decode_page_image, page_image_reader_ok, plain_tip,
+                         start_detached, QDialog, QFileDialog, QInputDialog,
                          QLabel, QListWidget, QMessageBox, QPushButton)
 from shiboken6 import isValid
+
+
+THUMBNAIL_MAX_BYTES = 2_000_000
 
 
 class DraggablePagesList(QListWidget):
@@ -284,6 +288,8 @@ class PagesDialog(QDialog):
                 path = page.get('image_path')
                 if path:
                     reader = QImageReader(str(path))
+                    if not page_image_reader_ok(reader):
+                        continue
                     reader.setAutoTransform(True)
                     image_size = reader.size()
                     if image_size.isValid():
@@ -304,19 +310,24 @@ class PagesDialog(QDialog):
                     continue
                 from .imaging import image_request_url
                 url = image_request_url(page, max_width=180)
-                if url:
+                # http(s) only (a « file:// » service read the disk), and a
+                # bounded answer (a vignette is a few kilobytes).
+                if url and QUrl(url).scheme() in ('http', 'https'):
                     request = QNetworkRequest(QUrl(url))
                     if hasattr(request, 'setTransferTimeout'):
                         request.setTransferTimeout(12000)
                     reply = self._network.get(request)
                     self._remote_replies[page_id] = reply
+                    reply.downloadProgress.connect(
+                        lambda received, total, r=reply: r.abort()
+                        if max(received, total) > THUMBNAIL_MAX_BYTES else None)
                     reply.finished.connect(lambda pid=page_id, r=reply:
                                            self._remote_thumbnail_finished(pid, r))
 
     def _remote_thumbnail_finished(self, page_id, reply):
         try:
             if reply.error() == QNetworkReply.NetworkError.NoError:
-                image = QImage.fromData(bytes(reply.readAll()))
+                image = decode_page_image(bytes(reply.readAll()))
                 if not image.isNull():
                     self._assign_thumbnail(page_id, image)
         finally:

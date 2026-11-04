@@ -925,4 +925,6 @@ Technické podrobnosti najdete v konzoli nebo ve spouštěcím protokolu.</strin
   <string key="ui.audit.issue.xml_page_bound_twice">Jedna stránka XML je přiřazena více obrázkům: její řádky by se počítaly vícekrát</string>
   <string key="error.imaging.redirect_refused">Server přesměrovává na adresu, která není http ani https: přesměrování odmítnuto.</string>
   <string key="error.imaging.too_slow">Server odpovídá příliš pomalu: ukončeno po {seconds} s.</string>
+  <string key="resources.witness.manifest_loading">Načítání {count} IIIF Manifest(ů)…</string>
+  <string key="error.resources.manifest_cancelled">Načítání Manifestu zrušeno.</string>
 </translations>
