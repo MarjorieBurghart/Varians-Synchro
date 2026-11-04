@@ -17,6 +17,7 @@ from pathlib import Path, PurePosixPath, PureWindowsPath
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
+from .errors import Localized, localized
 
 VERSION = '0.8.5.6'
 SCHEMA = 'varians-synchro-project'
@@ -340,7 +341,7 @@ def check_alto_files(project):
         for src in witness.get('alto_sources', []):
             path = Path(src['path'])
             if not path.is_file():
-                warnings.append(f"{witness['id']} : XML (ALTO/PAGE) introuvable : {path}")
+                warnings.append(Localized('error.core.xml_missing', witness=witness['id'], path=str(path)))
                 continue
             expected = src.get('source_sha256')
             if expected is None:
@@ -350,6 +351,5 @@ def check_alto_files(project):
                     st.st_mtime_ns == src.get('source_mtime_ns')):
                 continue
             if hashlib.sha256(path.read_bytes()).hexdigest() != expected:
-                warnings.append(f"{witness['id']} : XML (ALTO/PAGE) modifié depuis l'import : {path.name} "
-                                '(réimportation et contrôle des liens recommandés)')
+                warnings.append(Localized('error.core.xml_modified', witness=witness['id'], name=path.name))
     return warnings

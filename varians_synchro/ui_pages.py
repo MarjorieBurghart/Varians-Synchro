@@ -9,6 +9,7 @@ from PySide6.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequ
 from PySide6.QtWidgets import (QAbstractItemView, QGroupBox, QHBoxLayout, QListWidgetItem,
                                QProgressDialog, QVBoxLayout)
 
+from .errors import localized_text
 from .i18n import tr
 from .imaging import create_pages, import_htr_results, mapped_alto_page
 from .physical_alignment import page_links_impact
@@ -60,12 +61,12 @@ class HDDownloadThread(QThread):
             try:
                 self.validated_hd_batch = inspect_hd_folder(self.witness, self.output_directory)
             except Exception as exc:
-                self.registry_error = str(exc)
+                self.registry_error = localized_text(exc)
             self.done.emit('success', count, '')
         except InterruptedError as exc:
-            self.done.emit('cancelled', 0, str(exc))
+            self.done.emit('cancelled', 0, localized_text(exc))
         except Exception as exc:
-            self.done.emit('failed', 0, str(exc))
+            self.done.emit('failed', 0, localized_text(exc))
 
 
 class HTRExportThread(QThread):
@@ -88,9 +89,9 @@ class HTRExportThread(QThread):
                 progress=lambda done, total: self.progressed.emit(done, total))
             self.done.emit('success', count, '')
         except InterruptedError as exc:
-            self.done.emit('cancelled', 0, str(exc))
+            self.done.emit('cancelled', 0, localized_text(exc))
         except Exception as exc:
-            self.done.emit('failed', 0, str(exc))
+            self.done.emit('failed', 0, localized_text(exc))
 
 
 class PagesDialog(QDialog):
@@ -351,7 +352,7 @@ class PagesDialog(QDialog):
             commit_page_order(self.witness, ids)
         except ValueError as exc:
             self.update_list()
-            QMessageBox.warning(self, tr('pages.order.error'), str(exc))
+            QMessageBox.warning(self, tr('pages.order.error'), localized_text(exc))
             return
         self._display_pages = [next(p for p in self.witness['pages'] if p['id'] == pid)
                                for pid in ids]
@@ -387,7 +388,7 @@ class PagesDialog(QDialog):
             self._viewer = window
             window.show()
         except Exception as exc:
-            QMessageBox.warning(self,tr('Aperçu'),str(exc))
+            QMessageBox.warning(self,tr('Aperçu'),localized_text(exc))
 
     def assign(self):
         sel = self.selected()
@@ -485,7 +486,7 @@ class PagesDialog(QDialog):
                 if page['id'] in selected:
                     iiif_hd_url(page)
         except ValueError as exc:
-            QMessageBox.warning(self, tr('ui.pages.hd.title'), str(exc))
+            QMessageBox.warning(self, tr('ui.pages.hd.title'), localized_text(exc))
             return
         folder = QFileDialog.getExistingDirectory(self, tr('ui.pages.hd.folder'))
         if not folder:
@@ -562,7 +563,7 @@ class PagesDialog(QDialog):
             from .hd_registry import register_hd_folder
             batch = register_hd_folder(self.witness, Path(mapping).parent)
         except Exception as exc:
-            QMessageBox.warning(self, tr('ui.pages.hd.attach'), str(exc))
+            QMessageBox.warning(self, tr('ui.pages.hd.attach'), localized_text(exc))
             return
         self.update_list()
         QMessageBox.information(self, tr('ui.pages.hd.attach'),
@@ -578,4 +579,4 @@ class PagesDialog(QDialog):
             self.update_list()
             QMessageBox.information(self,tr('Réimportation'),
                 tr('release.htr_reimported', imported=len(outcome['imported']), missing=len(outcome['missing']), skipped=len(outcome['skipped'])))
-        except Exception as exc:QMessageBox.critical(self,tr('Réimportation'),str(exc))
+        except Exception as exc:QMessageBox.critical(self,tr('Réimportation'),localized_text(exc))

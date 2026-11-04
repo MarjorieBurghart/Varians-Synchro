@@ -13,21 +13,22 @@ from __future__ import annotations
 from .imaging import bind_alto
 from .page_order import ordered_pages
 from .physical_alignment import physical_lines, stale_link_ids
+from .errors import Localized, localized
 
 
 class ReadingOrderError(ValueError):
     """Ambiguous or obsolete documentary reading-order override."""
 
 
-def _unique_order(items, expected, what):
+def _unique_order(items, expected, key):
     if not isinstance(items, list) or len(items) != len(expected) or set(items) != set(expected):
-        raise ReadingOrderError(f'Ordre de lecture {what} incomplet, dupliqué ou périmé.')
+        raise localized(ReadingOrderError, key)
 
 
 def set_page_order(witness, page_ids):
     """Atomically assign whole-witness page order, without changing page IDs."""
     pages = witness.get('pages', [])
-    _unique_order(page_ids, [page['id'] for page in pages], 'des pages')
+    _unique_order(page_ids, [page['id'] for page in pages], 'error.reading_order.pages')
     mapping = {page_id: index for index, page_id in enumerate(page_ids)}
     for page in pages:
         page['reading_order'] = mapping[page['id']]
@@ -44,7 +45,7 @@ def set_region_order(witness, page_id, region_ids):
         raise ReadingOrderError('Page inconnue.')
     page_lines = [line for line in physical_lines(witness) if line['page_id'] == page_id]
     expected = list(dict.fromkeys(_region(line) for line in page_lines))
-    _unique_order(region_ids, expected, 'des régions')
+    _unique_order(region_ids, expected, 'error.reading_order.regions')
     page['reading_region_order'] = list(region_ids)
     # Explicit fine-grained line order otherwise masks this region operation.
     page.pop('reading_line_order', None)
@@ -56,7 +57,7 @@ def set_line_order(witness, page_id, line_ids):
     if page is None:
         raise ReadingOrderError('Page inconnue.')
     expected = [line['id'] for line in physical_lines(witness) if line['page_id'] == page_id]
-    _unique_order(line_ids, expected, 'des lignes')
+    _unique_order(line_ids, expected, 'error.reading_order.lines')
     page['reading_line_order'] = list(line_ids)
 
 
@@ -110,14 +111,14 @@ def reading_stream(witness, *, include_ignored=False):
             continue
         override = page.get('reading_line_order')
         if override is not None:
-            _unique_order(override, [line['id'] for line in lines], 'des lignes')
+            _unique_order(override, [line['id'] for line in lines], 'error.reading_order.lines')
             order = {uid: idx for idx, uid in enumerate(override)}
             lines.sort(key=lambda line: order[line['id']])
         else:
             regions = list(dict.fromkeys(_region(line) for line in lines))
             region_order = page.get('reading_region_order')
             if region_order is not None:
-                _unique_order(region_order, regions, 'des régions')
+                _unique_order(region_order, regions, 'error.reading_order.regions')
                 orders = {rid: idx for idx, rid in enumerate(region_order)}
                 # Sort is stable: within-region physical order is untouched.
                 lines.sort(key=lambda line: orders[_region(line)])

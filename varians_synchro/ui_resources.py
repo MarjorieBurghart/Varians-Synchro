@@ -8,6 +8,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (QCheckBox, QFrame, QGroupBox, QHBoxLayout, QLineEdit,
                                QListWidgetItem, QScrollArea, QVBoxLayout, QWidget)
 
+from .errors import localized_text
 from .i18n import tr
 from .ui_batch_binding import BatchBindingDialog
 from .ui_widgets import (_run_modal, QDialog, QFileDialog, QInputDialog, QLabel, QListWidget,
@@ -186,7 +187,7 @@ class WitnessResourceDialog(QDialog):
         try:
             staged = self.stage_current()
         except Exception as exc:
-            QMessageBox.warning(self, tr('resources.witness.edit'), str(exc))
+            QMessageBox.warning(self, tr('resources.witness.edit'), localized_text(exc))
             return
         witness = next(w for w in staged['witnesses'] if w['id'] == self.original_witness['id'])
         sources = {s['reference']: s for s in witness['image_sources'] if s['kind'] == 'iiif'}
@@ -321,7 +322,7 @@ class WitnessResourceDialog(QDialog):
             dialog = BatchBindingDialog(witness, self)
             _run_modal(dialog)
         except Exception as exc:
-            QMessageBox.warning(self, tr('resources.witness.edit'), str(exc))
+            QMessageBox.warning(self, tr('resources.witness.edit'), localized_text(exc))
 
     def commit(self):
         try:
@@ -331,4 +332,4 @@ class WitnessResourceDialog(QDialog):
             self.original_project.update(staged)
             self.accept()
         except Exception as exc:
-            QMessageBox.warning(self, tr('resources.witness.edit'), str(exc))
+            QMessageBox.warning(self, tr('resources.witness.edit'), localized_text(exc))

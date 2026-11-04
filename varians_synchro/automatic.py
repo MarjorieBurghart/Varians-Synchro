@@ -13,6 +13,7 @@ import re
 import unicodedata
 import uuid
 from .alignment import base_key, get_base_lines, target_lines, _indices
+from .errors import Localized, localized
 
 
 def normalize(text, uv=True, ij=True):
@@ -87,7 +88,7 @@ def propose_alignment(project, session, min_match=7, min_support=0.38,
         available_t=[i for i in range(ts,te) if tkeys[i] not in occupied_t]
         if not available_b or not available_t: continue
         if len(available_b)>max_window_lines or len(available_t)>max_window_lines:
-            warnings.append(f'Grand intervalle ({len(available_b)} / {len(available_t)} lignes) : découpage approximatif ; vérifier les résultats.')
+            warnings.append(Localized('error.automatic.large_interval', reference=len(available_b), target=len(available_t)))
         n_chunks=max(1,(max(len(available_b),len(available_t))+max_window_lines-1)//max_window_lines)
         for part in range(n_chunks):
             bi=available_b[part*len(available_b)//n_chunks:(part+1)*len(available_b)//n_chunks]

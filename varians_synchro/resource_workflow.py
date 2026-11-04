@@ -16,6 +16,7 @@ from .core import (create_witness, add_image_source, add_line_source,
                    inspect_manifest, validate_project)
 from .imaging import create_pages
 from .page_order import _natural
+from .errors import Localized, localized
 
 
 def _local_key(path: str) -> str:
@@ -31,7 +32,7 @@ def _xml_kind(path: str) -> str:
     with open(path, 'rb') as stream:
         for _, element in ET.iterparse(stream, events=('start',)):
             return element.tag.rsplit('}', 1)[-1]
-    raise ValueError(f'XML vide : {path}')
+    raise localized(ValueError, 'error.resources.empty_xml', path=path)
 
 
 def store_tei_reference(project: dict, witness_id: str, path: str) -> dict:
@@ -42,7 +43,7 @@ def store_tei_reference(project: dict, witness_id: str, path: str) -> dict:
     """
     path = str(Path(path).expanduser().resolve())
     if _xml_kind(path).lower() not in ('tei', 'teicorpus'):
-        raise ValueError(f'Il ne s’agit pas d’une édition TEI : {Path(path).name}')
+        raise localized(ValueError, 'error.resources.not_tei', name=Path(path).name)
     for item in project['text_resources']:
         if item.get('kind') == 'tei' and item.get('witness_id') == witness_id and _local_key(item['path']) == _local_key(path):
             return item

@@ -27,6 +27,7 @@ from .imaging import mapped_alto_page
 from .page_order import ordered_pages
 from .physical_alignment import physical_lines, line_uid
 from .reading_stream import reading_stream
+from .errors import Localized, localized
 
 
 def _get_witness(project, wid):
@@ -170,7 +171,7 @@ def _pair_for_base(project, base_id, target_id):
     candidates = [s for s in project.get('pair_sessions', [])
                   if {s.get('reference_witness_id'), s.get('target_witness_id')} == {base_id, target_id}]
     if len(candidates) > 1:
-        raise ValueError(f'Plusieurs sessions ambiguës pour {base_id} ↔ {target_id}')
+        raise localized(ValueError, 'error.export.ambiguous_sessions', reference=base_id, target=target_id)
     return candidates[0] if candidates else None
 
 
@@ -183,7 +184,7 @@ def make_varians_alignments(project, base_witness_id, *, include_uncertain=False
     """
     base = _get_witness(project, base_witness_id)
     if base is None:
-        raise ValueError(f'Témoin de référence inconnu : {base_witness_id}')
+        raise localized(ValueError, 'error.export.unknown_reference', witness=base_witness_id)
     caches = {}
     lookups = {}
     lines_by_uid = {}
@@ -210,7 +211,8 @@ def make_varians_alignments(project, base_witness_id, *, include_uncertain=False
         pair = _pair_for_base(project, base_witness_id, wid)
         info = Counter()
         if pair is None:
-            diagnostics['warnings'].append(f'{wid} : aucune session directe avec {base_witness_id}.')
+            diagnostics['warnings'].append(Localized('error.export.no_direct_session', witness=wid,
+                                                     reference=base_witness_id))
         else:
             direct = pair['reference_witness_id'] == base_witness_id
             for link in pair.get('links', []):
@@ -339,21 +341,21 @@ def verify_export_payloads(payloads, base_witness_id):
     rows = {}
     for wid, data in payloads.items():
         if data['meta']['base_witness'] != base_witness_id:
-            raise ValueError(f'{wid} : pivot incohérent dans le JSON')
+            raise localized(ValueError, 'error.export.inconsistent_pivot', witness=wid)
         seen = set()
         linked = 0
         for page in data['pages']:
             for line in page['lines']:
                 item_key = (page['id'], line['line'])
                 if item_key in seen:
-                    raise ValueError(f'{wid} : numéro de ligne répété sur une page')
+                    raise localized(ValueError, 'error.export.repeated_line', witness=wid)
                 seen.add(item_key)
                 if wid != base_witness_id and line.get('base_keys'):
                     refs = line['base_keys']
                     if not isinstance(refs, list) or len(refs) != len(set(refs)) or not refs:
-                        raise ValueError(f'{wid} : base_keys invalides ou dupliquées')
+                        raise localized(ValueError, 'error.export.invalid_base_keys', witness=wid)
                     if set(refs) - known:
-                        raise ValueError(f'{wid} : base_keys désignant des lignes absentes du pivot')
+                        raise localized(ValueError, 'error.export.unknown_base_keys', witness=wid)
                     linked += 1
         rows[wid] = {'total_lines': len(seen), 'linked_lines': linked}
     return {'base_witness': base_witness_id, 'base_lines': len(known),

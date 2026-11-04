@@ -7,6 +7,7 @@ setting is altered.  Existing projects need no migration.
 from __future__ import annotations
 import copy
 from .physical_alignment import physical_lines, _witness, detach_pair_lines
+from .errors import Localized, localized
 
 
 def ignored_ids(witness):
@@ -39,11 +40,11 @@ def update_ignored_lines(project, changes, *, ignored=True, unlink_existing=Fals
     for wid, ids in changes.items():
         witness = _witness(project, wid)
         if witness is None:
-            raise ValueError('Témoin inconnu : ' + wid)
+            raise localized(ValueError, 'error.scope.unknown_witness', witness=wid)
         valid = {line['id'] for line in physical_lines(witness)}
         selected = set(ids)
         if selected - valid:
-            raise ValueError('Ligne inconnue ou ALTO non associé pour ' + wid)
+            raise localized(ValueError, 'error.scope.unknown_line', witness=wid)
         old = ignored_ids(witness)
         prepared[wid] = (old | selected) if ignored else (old - selected)
     if not prepared:

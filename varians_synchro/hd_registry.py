@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 
 from .imaging import iiif_hd_url
+from .errors import Localized, localized
 
 REGISTRY_FORMAT = 'varians-synchro-iiif-hd'
 
@@ -49,24 +50,24 @@ def inspect_hd_folder(witness: dict, directory, *, tolerate_bad_images=False) ->
             canvas = item.get('canvas_id')
             name = item.get('file')
             if canvas not in current or canvas in seen_ids:
-                raise ValueError(f'Canvas HD inconnu ou en double : {canvas}')
+                raise localized(ValueError, 'error.hd.canvas_unknown', canvas=canvas)
             if not isinstance(name, str) or name in ('', '.', '..') or Path(name).name != name or '/' in name or '\\' in name:
                 raise ValueError('Nom de fichier HD dangereux ou invalide')
             if name in seen_files or not name.lower().endswith('.jpg'):
                 raise ValueError('Fichier HD réutilisé ou extension non JPEG')
             source = iiif_hd_url(current[canvas])
             if item.get('iiif_image_url') != source:
-                raise ValueError(f'Source IIIF modifiée pour le Canvas : {canvas}')
+                raise localized(ValueError, 'error.hd.source_changed', canvas=canvas)
             file = folder / name
             if file.is_symlink() or not file.is_file() or not file.resolve().is_relative_to(folder):
-                raise FileNotFoundError(f'Copie HD introuvable ou invalide : {name}')
+                raise localized(FileNotFoundError, 'error.hd.copy_missing', name=name)
             size = file.stat().st_size
             with file.open('rb') as stream:
                 signature = stream.read(3)
             if size < 3 or signature != b'\xff\xd8\xff':
-                raise ValueError(f'Copie HD non JPEG : {name}')
+                raise localized(ValueError, 'error.hd.not_jpeg', name=name)
             if item.get('size_bytes') != size:
-                raise ValueError(f'Taille de la copie HD modifiée : {name}')
+                raise localized(ValueError, 'error.hd.size_changed', name=name)
             entries.append({'canvas_id': canvas, 'file': name, 'iiif_image_url': source,
                             'size_bytes': size, 'sha256': _sha256(file)})
             seen_ids.add(canvas)
