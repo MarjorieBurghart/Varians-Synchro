@@ -309,7 +309,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Tout le travail est dans le fichier <code>.vsynch</code> : témoins, contenu des fichiers ALTO/PAGE importés, associations, lignes ignorées, ordre de lecture, synchronisations. Les fichiers sources ne sont jamais modifiés.</li>
 <li>L’enregistrement est sûr : le fichier est remplacé d’un seul coup, et la version précédente est gardée dans <code>&lt;projet&gt;.vsynch.bak</code>. Pour revenir en arrière, copiez ce <code>.bak</code> sous un nouveau nom en <code>.vsynch</code> et ouvrez-le.</li>
 <li>Il n’y a pas de commande « Enregistrer sous » : pour garder une version, copiez le fichier <code>.vsynch</code>.</li>
-<li>Un projet dont les chemins sont relatifs (comme l’exemple livré) s’ouvre depuis n’importe quel dossier ; à l’enregistrement, les chemins sont écrits en entier.</li>
+<li>Rangez les images, les fichiers ALTO/PAGE et les TEI dans le dossier du fichier <code>.vsynch</code> ou dans ses sous-dossiers : ils y sont enregistrés par un chemin relatif, et le projet peut être déplacé ou copié avec ce dossier (comme l’exemple livré). Un fichier situé ailleurs est enregistré par son chemin complet.</li>
 <li>Modifier un fichier ALTO/PAGE sur le disque après l’import ne change pas le projet ; le bilan le signale. Pour une segmentation corrigée, importez le nouveau fichier et associez-le à la page (les groupes touchés deviennent périmés).</li>
 <li>Fermer le logiciel, ouvrir ou créer un projet propose d’enregistrer les modifications en cours.</li>
 </ul>
