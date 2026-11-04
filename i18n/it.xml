@@ -920,4 +920,5 @@ I dettagli tecnici sono nella console o nel registro di avvio.</string>
   <string key="error.witness.siglum_conflict">La sigla «{witness}» darebbe negli export gli stessi nomi di file del testimone «{other}». Scegliete un’altra sigla.</string>
   <string key="error.witness.siglum_reserved">La sigla «{witness}» non può servire da nome di file in Windows (nome riservato). Scegliete un’altra sigla.</string>
   <string key="error.witness.siglum_taken">La sigla «{witness}» appartiene già a un testimone del progetto: aprite la sua scheda per completarlo, o scegliete un’altra sigla.</string>
+  <string key="ui.audit.issue.xml_source_read_otherwise">File PAGE con struttura annidata, letto diversamente da questa versione: il progetto conserva le sue righe, ma una nuova associazione renderebbe obsoleti i gruppi che le toccano</string>
 </translations>

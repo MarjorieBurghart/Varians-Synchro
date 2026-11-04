@@ -920,4 +920,5 @@ Technické podrobnosti najdete v konzoli nebo ve spouštěcím protokolu.</strin
   <string key="error.witness.siglum_conflict">Sigla „{witness}“ by v exportech dala stejné názvy souborů jako svědek „{other}“. Zvolte jinou siglu.</string>
   <string key="error.witness.siglum_reserved">Siglu „{witness}“ nelze ve Windows použít jako název souboru (vyhrazený název). Zvolte jinou siglu.</string>
   <string key="error.witness.siglum_taken">Sigla „{witness}“ už patří svědkovi projektu: otevřete jeho kartu a doplňte ji, nebo zvolte jinou siglu.</string>
+  <string key="ui.audit.issue.xml_source_read_otherwise">Soubor PAGE s vnořenou strukturou, od této verze čtený jinak: projekt si ponechává své řádky, ale nové přiřazení by zastaralo skupiny, které se jich týkají</string>
 </translations>

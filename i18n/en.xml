@@ -927,4 +927,5 @@ Technical details are in the console or the startup log.</string>
   <string key="error.witness.siglum_conflict">The siglum “{witness}” would give the same file names as the witness “{other}” in exports. Choose another siglum.</string>
   <string key="error.witness.siglum_reserved">The siglum “{witness}” cannot be used as a file name on Windows (reserved name). Choose another siglum.</string>
   <string key="error.witness.siglum_taken">The siglum “{witness}” already belongs to a witness of the project: open its card to complete it, or choose another siglum.</string>
+  <string key="ui.audit.issue.xml_source_read_otherwise">PAGE file with a nested structure, read differently since this version: the project keeps its lines, but associating it again would make the groups touching them stale</string>
 </translations>

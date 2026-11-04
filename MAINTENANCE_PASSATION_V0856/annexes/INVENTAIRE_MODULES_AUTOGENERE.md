@@ -116,10 +116,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : Documentary reading order for pages, independent of dialog import order. IIIF Canvas order is authoritative. For local images, common folio labels (e.g. f014v, 1r, 1v, 2r) or natural filename numbers are used. Mixed-source witnesses retain their source-group order; a future page-order editor may allow manual cross-group reordering. This module never renumbers page IDs.
 **Fonctions au premier niveau** : `_natural` (l.16), `folio_key` (l.21), `_local_key` (l.34), `ordered_pages` (l.43)
 
-## `varians_synchro/page_xml.py` (153 lignes)
+## `varians_synchro/page_xml.py` (195 lignes)
 **Objet (docstring source)** : PAGE-XML (PRImA / PAGE) parser for Varians-Synchro. Produces the same physical-line inventory as ALTO, with true PAGE TextLine Coords polygons and line-level TextEquiv/Unicode. No image/HTR processing or transformation of the source file is performed. Namespace versions are accepted by local element name, after checking the PAGE document structure.
 **Dépendances internes observées** : `alto_geometry`
-**Fonctions au premier niveau** : `_name` (l.18), `_direct` (l.22), `_line_text` (l.26), `_region_order` (l.44), `_baseline_points` (l.59), `_line_info` (l.78), `inspect_page_xml` (l.102)
+**Fonctions au premier niveau** : `_name` (l.18), `_direct` (l.22), `_line_text` (l.26), `_region_order` (l.48), `_own_lines` (l.85), `_baseline_points` (l.103), `_line_info` (l.122), `inspect_page_xml` (l.146)
 
 ## `varians_synchro/physical_alignment.py` (630 lignes)
 **Objet (docstring source)** : Alignment between physical ALTO lines without TEI or TXT. These sessions have no editorial base: `reference_witness_id` is a reversible technical display/comparison choice, not an assertion about the edition. Original ALTO and images are never edited. Legacy TEI sessions remain separate.
@@ -247,10 +247,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Classes déclarées au premier niveau** : `QLabel` (l.84), `QPushButton` (l.93), `QListWidget` (l.102), `QComboBox` (l.107), `QTabWidget` (l.114), `QTreeWidget` (l.119), `QDialog` (l.124), `QMainWindow` (l.129), `QMessageBox` (l.134), `QInputDialog` (l.149), `QFileDialog` (l.158)
 **Fonctions au premier niveau** : `_run_modal` (l.21), `call_soon` (l.33), `start_detached` (l.52), `_stop_detached_threads` (l.78)
 
-## `varians_synchro/validation.py` (163 lignes)
+## `varians_synchro/validation.py` (187 lignes)
 **Objet (docstring source)** : Read-only V0.7.4 preflight for documentary streams and physical pairs. The audit NEVER repairs historical links, guesses an omission, or modifies data. Warnings may reflect unavailable external resources on a different workstation. Hard errors mark contradictions that must not be silently treated as reliable.
-**Dépendances internes observées** : `core`, `physical_alignment`, `reading_stream`, `tei_binding`, `varians_export`
-**Fonctions au premier niveau** : `_item` (l.17), `audit_project` (l.26)
+**Dépendances internes observées** : `core`, `page_xml`, `physical_alignment`, `reading_stream`, `tei_binding`, `varians_export`
+**Fonctions au premier niveau** : `_item` (l.17), `_read_otherwise` (l.26), `audit_project` (l.47)
 
 ## `varians_synchro/varians_export.py` (464 lignes)
 **Objet (docstring source)** : Export physical-line sessions to the Varians alignment JSON schema. Opening the exported project in Varians 0.9.4.0 is checked by tests/test_varians_094_compat.py (the real Varians code reads it). Lines are written in the witness's reading order (reading_stream). One explicit technical reference witness is used for these export files. This DOES NOT magically create an editorial TEI line mapping. The TEI XML <lb/> line IDs must still be reconciled with the physical reference's page::ordinal keys before manuscript-to-edition synchronization is guaranteed. No network, Qt, or local source-image files are required for the export.

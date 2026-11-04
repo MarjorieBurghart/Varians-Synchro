@@ -920,4 +920,5 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="error.witness.siglum_conflict">シグラム「{witness}」は、書き出し時に伝本「{other}」と同じファイル名になります。別のシグラムを選んでください。</string>
   <string key="error.witness.siglum_reserved">シグラム「{witness}」は Windows ではファイル名に使えません（予約名）。別のシグラムを選んでください。</string>
   <string key="error.witness.siglum_taken">シグラム「{witness}」はすでにプロジェクトの伝本のものです。補うにはそのカードを開くか、別のシグラムを選んでください。</string>
+  <string key="ui.audit.issue.xml_source_read_otherwise">入れ子構造の PAGE ファイルは、このバージョンから別の読み方になります。プロジェクトの行はそのままですが、もう一度関連付けると、それらの行を含むグループは古くなります</string>
 </translations>

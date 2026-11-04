@@ -41,19 +41,63 @@ def _line_text(line):
     return min(alternatives)[2] if alternatives else ''
 
 
+_GROUPS = ('OrderedGroup', 'UnorderedGroup', 'OrderedGroupIndexed', 'UnorderedGroupIndexed')
+_REFS = ('RegionRef', 'RegionRefIndexed')
+
+
 def _region_order(page):
-    """Respect PAGE region reading order when explicitly supplied."""
+    """Respect PAGE region reading order when explicitly supplied.
+
+    Groups may be nested (``OrderedGroupIndexed`` inside an ``OrderedGroup``,
+    as OCR-D or Aletheia write them): each group is read in turn, its members
+    sorted by their own ``index`` (local to the group) when it is ordered,
+    in document order otherwise. Flattening the groups and sorting on those
+    local indexes mixed them up."""
     refs = []
-    ro = _direct(page, 'ReadingOrder')
-    if ro:
-        for el in ro[0].iter():
-            if _name(el) in ('RegionRefIndexed', 'RegionRef') and el.get('regionRef'):
+
+    def walk(group):
+        members = [child for child in group if _name(child) in _GROUPS + _REFS]
+        if _name(group).startswith('Ordered'):
+            def key(item):
+                position, child = item
                 try:
-                    idx = int(el.get('index', str(len(refs))))
-                except ValueError:
-                    idx = len(refs)
-                refs.append((idx, len(refs), el.get('regionRef')))
-    return {ident: idx for idx, (_, _, ident) in enumerate(sorted(refs))}
+                    return (int(child.get('index')), position)
+                except (TypeError, ValueError):
+                    return (len(members) + position, position)
+            members = [child for _, child in sorted(enumerate(members), key=key)]
+        for child in members:
+            if child.get('regionRef'):
+                refs.append(child.get('regionRef'))
+            if _name(child) in _GROUPS:
+                walk(child)
+
+    for reading_order in _direct(page, 'ReadingOrder'):
+        for group in reading_order:
+            if _name(group) in _GROUPS:
+                walk(group)
+        break
+    order = {}
+    for ident in refs:
+        order.setdefault(ident, len(order))
+    return order
+
+
+def _own_lines(region):
+    """TextLines of ``region`` itself, not those of the regions it contains
+    (a nested TextRegion counted its lines twice)."""
+    found = []
+
+    def walk(node):
+        for child in node:
+            name = _name(child)
+            if name == 'TextRegion':
+                continue
+            if name == 'TextLine':
+                found.append(child)
+            else:
+                walk(child)
+    walk(region)
+    return found
 
 
 def _baseline_points(value):
@@ -123,9 +167,7 @@ def inspect_page_xml(path):
         lines = []
         missing = 0
         for region_index, region in enumerate(regions):
-            for node in region.iter():
-                if _name(node) != 'TextLine':
-                    continue
+            for node in _own_lines(region):
                 info = _line_info(node, width, height)
                 if info is None:
                     missing += 1
