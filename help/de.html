@@ -9,17 +9,17 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid #ccc;padding:6p
 ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </style></head><body>
 <h1>Varians-Synchro — Benutzerhandbuch</h1>
-<p>Varians-Synchro gleicht die Handschriften ein und desselben Werks Zeile für Zeile ab, ausgehend von ihren Bildern und der Segmentierung ihrer Zeilen (ALTO oder PAGE XML). So erstellt es die Synchronisierungsdateien, mit denen <strong>Varians</strong> jeden Zeugen neben der Edition anzeigt: die richtige Zeile der Handschrift gegenüber dem Text.</p>
+<p>Varians-Synchro gleicht die Handschriften ein und desselben Werks Zeile für Zeile ab, ausgehend von ihren Bildern und der Segmentierung ihrer Zeilen (ALTO oder PAGE XML). So erstellt es die Synchronisierungsdateien, mit denen <strong>Varians</strong> jeden Textzeugen neben der Edition anzeigt: die richtige Zeile der Handschrift gegenüber dem Text.</p>
 
 <div class="toc"><h2>Inhalt</h2><ol>
 <li><a href="#presentation">Überblick</a></li>
 <li><a href="#essai">Erster Versuch: das Beispielprojekt</a></li>
 <li><a href="#nouveau-projet">Weg A: ein neues Varians-Projekt anlegen</a></li>
-<li><a href="#ajout-temoin">Weg B: einem bestehenden Varians-Projekt einen Zeugen hinzufügen</a></li>
+<li><a href="#ajout-temoin">Weg B: einem bestehenden Varians-Projekt einen Textzeugen hinzufügen</a></li>
 <li><a href="#notions">Grundbegriffe</a></li>
-<li><a href="#etape1">Schritt 1: Zeugen hinzufügen</a></li>
+<li><a href="#etape1">Schritt 1: Textzeugen hinzufügen</a></li>
 <li><a href="#etape2">Schritt 2: Ressourcen zuordnen</a></li>
-<li><a href="#etape3">Schritt 3: Zeugen abgleichen</a></li>
+<li><a href="#etape3">Schritt 3: Textzeugen abgleichen</a></li>
 <li><a href="#synchronisation">Das Synchronisierungsfenster</a></li>
 <li><a href="#etape4">Schritt 4: Abschließen und exportieren</a></li>
 <li><a href="#format-json">Format der Synchronisierungsdateien (JSON)</a></li>
@@ -30,10 +30,10 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h2 id="presentation">1. Überblick</h2>
 <h3>Was Varians-Synchro tut</h3>
 <ul>
-<li><strong>Es verknüpft die Zeilen zweier Handschriften.</strong> Sie sehen die beiden Zeugen nebeneinander, mit dem Umriss jeder Zeile, und legen fest, welche Zeilen des einen welchen Zeilen des anderen entsprechen. Eine Entsprechung kann auf jeder Seite mehrere Zeilen umfassen.</li>
+<li><strong>Es verknüpft die Zeilen zweier Handschriften.</strong> Sie sehen die beiden Textzeugen nebeneinander, mit dem Umriss jeder Zeile, und legen fest, welche Zeilen des einen welchen Zeilen des anderen entsprechen. Eine Entsprechung kann auf jeder Seite mehrere Zeilen umfassen.</li>
 <li><strong>Es schlägt vor, Sie entscheiden.</strong> Ausgehend von einigen Ankern, die Sie setzen, schlägt es die dazwischenliegenden Entsprechungen nach der Textmenge vor; Sie prüfen sie an den Bildern und bestätigen sie.</li>
-<li><strong>Es arbeitet mit einem Pivot-Zeugen.</strong> Jeder andere Zeuge wird mit dem Pivot abgeglichen. In Varians sind die Zeilen des Pivots in der Edition durch seine <code>&lt;lb/&gt;</code> markiert; die anderen Zeugen folgen über ihren Abgleich mit dem Pivot.</li>
-<li><strong>Es exportiert für Varians</strong> eine Synchronisierungsdatei (JSON) pro Zeuge oder ein vollständiges Varians-Projekt, das sich sofort öffnen lässt.</li>
+<li><strong>Es arbeitet mit einem Pivot-Textzeugen.</strong> Jeder andere Textzeuge wird mit dem Pivot abgeglichen. In Varians sind die Zeilen des Pivots in der Edition durch seine <code>&lt;lb/&gt;</code> markiert; die anderen Textzeugen folgen über ihren Abgleich mit dem Pivot.</li>
+<li><strong>Es exportiert für Varians</strong> eine Synchronisierungsdatei (JSON) pro Textzeuge oder ein vollständiges Varians-Projekt, das sich sofort öffnen lässt.</li>
 </ul>
 <h3>Was es nicht tut</h3>
 <ul>
@@ -43,26 +43,26 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </ul>
 <h3>Was Sie für den Anfang brauchen</h3>
 <ul>
-<li>Für jeden Zeugen: seine Bilder (lokale Dateien oder ein IIIF-Manifest) und für jede abzugleichende Seite eine ALTO- oder PAGE-XML-Datei, die ihre Zeilen beschreibt.</li>
-<li>Optional die TEI-Edition des Pivot-Zeugen, falls sie bereits existiert.</li>
+<li>Für jeden Textzeugen: seine Bilder (lokale Dateien oder ein IIIF-Manifest) und für jede abzugleichende Seite eine ALTO- oder PAGE-XML-Datei, die ihre Zeilen beschreibt.</li>
+<li>Optional die TEI-Edition des Pivot-Textzeugen, falls sie bereits existiert.</li>
 </ul>
 <h3>Das Vorgehen in vier Schritten</h3>
 <p>Das Hauptfenster führt links durch vier Schritte:</p>
 <ol>
-<li><b class="ui" data-tr="navigation.project">1 · Zeugen hinzufügen</b>: die Handschriften und ihre Dateien angeben;</li>
+<li><b class="ui" data-tr="navigation.project">1 · Textzeugen hinzufügen</b>: die Handschriften und ihre Dateien angeben;</li>
 <li><b class="ui" data-tr="navigation.pages">2 · Ressourcen zuordnen</b>: jedem Bild seine Zeilendatei zuordnen, die Reihenfolge der Seiten und die zu ignorierenden Zeilen festlegen;</li>
-<li><b class="ui" data-tr="navigation.alignment">3 · Zeugen abgleichen</b>: jeden Zeugen mit dem Pivot abgleichen;</li>
+<li><b class="ui" data-tr="navigation.alignment">3 · Textzeugen abgleichen</b>: jeden Textzeugen mit dem Pivot abgleichen;</li>
 <li><b class="ui" data-tr="navigation.progress">4 · Abschließen</b>: prüfen und dann nach Varians exportieren.</li>
 </ol>
 <p><b class="ui" data-tr="common.save">Speichern</b> Sie das Projekt nach jeder Arbeitssitzung. Die Hilfe öffnet sich jederzeit über <b class="ui" data-tr="help.open">Benutzerhandbuch öffnen</b> oder <kbd>F1</kbd>.</p>
 
 <h2 id="essai">2. Erster Versuch: das Beispielprojekt</h2>
-<p>Der mit der Software gelieferte Ordner <code>demo_local_ALTO/</code> enthält zwei kleine fiktive Zeugen, A und B, mit je einer Seite von drei Zeilen und ihren ALTO-Dateien. Ihr Text ist unterschiedlich auf die Zeilen verteilt, wie in zwei echten Handschriften. Zehn Minuten genügen, um das ganze Vorgehen durchzuspielen.</p>
+<p>Der mit der Software gelieferte Ordner <code>demo_local_ALTO/</code> enthält zwei kleine fiktive Textzeugen, A und B, mit je einer Seite von drei Zeilen und ihren ALTO-Dateien. Ihr Text ist unterschiedlich auf die Zeilen verteilt, wie in zwei echten Handschriften. Zehn Minuten genügen, um das ganze Vorgehen durchzuspielen.</p>
 <ol>
 <li>Kopieren Sie den Ordner <code>demo_local_ALTO</code> an einen anderen Ort: Das Speichern verändert die Projektdatei.</li>
 <li>Klicken Sie auf <b class="ui" data-tr="project.open">.vsynch öffnen</b> und wählen Sie <code>exemple.vsynch</code> in der Kopie.</li>
-<li>Klicken Sie unter <b class="ui" data-tr="navigation.project">1 · Zeugen hinzufügen</b> auf den Zeugen A, kreuzen Sie <b class="ui" data-tr="resources.witness.pivot">Diesen Zeugen als Pivot für den Zeugenabgleich verwenden</b> an und klicken Sie dann auf <b class="ui" data-tr="resources.witness.confirm">Zeugen speichern</b>.</li>
-<li>Behalten Sie unter <b class="ui" data-tr="navigation.alignment">3 · Zeugen abgleichen</b> A bei <b class="ui" data-tr="alignment.reference.label">Technischer Pivot</b> und B bei <b class="ui" data-tr="alignment.target.label">Vergleichszeuge</b> und klicken Sie dann auf <b class="ui" data-tr="ui.xml.open_alignment">Zeugen abgleichen</b>.</li>
+<li>Klicken Sie unter <b class="ui" data-tr="navigation.project">1 · Textzeugen hinzufügen</b> auf den Textzeugen A, kreuzen Sie <b class="ui" data-tr="resources.witness.pivot">Diesen Textzeugen als Pivot für den Textzeugenabgleich verwenden</b> an und klicken Sie dann auf <b class="ui" data-tr="resources.witness.confirm">Textzeugen speichern</b>.</li>
+<li>Behalten Sie unter <b class="ui" data-tr="navigation.alignment">3 · Textzeugen abgleichen</b> A bei <b class="ui" data-tr="alignment.reference.label">Technischer Pivot</b> und B bei <b class="ui" data-tr="alignment.target.label">Vergleichstextzeuge</b> und klicken Sie dann auf <b class="ui" data-tr="ui.xml.open_alignment">Textzeugen abgleichen</b>.</li>
 <li>Klicken Sie im Synchronisierungsfenster auf die erste Zeile von A, dann auf die erste Zeile von B, und drücken Sie <kbd>Strg+Eingabe</kbd> (<b class="ui" data-tr="alignment.action.link_lines">Zeilen verknüpfen</b>). Verfahren Sie ebenso mit den dritten Zeilen. Diese beiden grünen Entsprechungen sind Ihre Anker.</li>
 <li>Klicken Sie auf <b class="ui" data-tr="progress.action">Zwischen Ankern abgleichen (Text)</b>: Die Software schlägt vor, die zweiten Zeilen zu verknüpfen. Klicken Sie auf <b class="ui" data-tr="progress.save">Auswahl speichern</b>. Der Vorschlag erscheint blau gestrichelt: Er ist zu prüfen.</li>
 <li>Wählen Sie unten mit dem Filter <b class="ui" data-tr="review.filter.pending">Zu prüfen</b> den Vorschlag in der Liste, prüfen Sie ihn an den Bildern und klicken Sie dann auf <b class="ui" data-tr="review.validate.next">Bestätigen und weiter</b>.</li>
@@ -71,13 +71,13 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </ol>
 
 <h2 id="nouveau-projet">3. Weg A: ein neues Varians-Projekt anlegen</h2>
-<p>Sie beginnen eine Edition: Es gibt noch kein Varians-Projekt. Varians-Synchro bereitet das ganze Projekt vor: Zeugen, Bilder, Synchronisierungen und, falls vorhanden, die TEI-Edition des Pivots.</p>
+<p>Sie beginnen eine Edition: Es gibt noch kein Varians-Projekt. Varians-Synchro bereitet das ganze Projekt vor: Textzeugen, Bilder, Synchronisierungen und, falls vorhanden, die TEI-Edition des Pivots.</p>
 <h3>In Varians-Synchro</h3>
 <ol>
 <li><strong>Das Projekt anlegen.</strong> <b class="ui" data-tr="project.new">Neues Projekt</b> fragt nach einem Namen, dann nach dem Speicherort der Datei <code>.vsynch</code>, die sofort gespeichert wird.</li>
-<li><strong>Die Zeugen angeben.</strong> Fügen Sie unter <b class="ui" data-tr="navigation.project">1 · Zeugen hinzufügen</b> jede Handschrift mit <b class="ui" data-tr="resources.witness.new">Zeugen hinzufügen…</b> hinzu: mit Sigle, Bildern, ALTO/PAGE-Dateien und, nur beim Pivot, der TEI-Edition, falls es eine gibt. Wählen Sie den Pivot (siehe <a href="#notions">Grundbegriffe</a>): Standardmäßig ist es der zuerst hinzugefügte Zeuge. Details: <a href="#etape1">Schritt 1</a>.</li>
+<li><strong>Die Textzeugen angeben.</strong> Fügen Sie unter <b class="ui" data-tr="navigation.project">1 · Textzeugen hinzufügen</b> jede Handschrift mit <b class="ui" data-tr="resources.witness.new">Textzeugen hinzufügen…</b> hinzu: mit Sigle, Bildern, ALTO/PAGE-Dateien und, nur beim Pivot, der TEI-Edition, falls es eine gibt. Wählen Sie den Pivot (siehe <a href="#notions">Grundbegriffe</a>): Standardmäßig ist es der zuerst hinzugefügte Textzeuge. Details: <a href="#etape1">Schritt 1</a>.</li>
 <li><strong>Bilder und Zeilen zuordnen.</strong> Prüfen Sie unter <b class="ui" data-tr="navigation.pages">2 · Ressourcen zuordnen</b>, ob jede Seite der richtigen ALTO/PAGE-Datei zugeordnet ist und ob die Seiten in Lesereihenfolge stehen. Geben Sie die zu ignorierenden Zeilen an: diejenigen außerhalb des Textes, den Sie edieren (Anfang und Ende einer Passage, Kolumnentitel, ein anderes Werk auf derselben Seite). Details: <a href="#etape2">Schritt 2</a>.</li>
-<li><strong>Jeden Zeugen mit dem Pivot abgleichen.</strong> Wählen Sie unter <b class="ui" data-tr="navigation.alignment">3 · Zeugen abgleichen</b> den Pivot bei <b class="ui" data-tr="alignment.reference.label">Technischer Pivot</b> und einen anderen Zeugen bei <b class="ui" data-tr="alignment.target.label">Vergleichszeuge</b> und öffnen Sie <b class="ui" data-tr="ui.xml.open_alignment">Zeugen abgleichen</b>. Setzen Sie Anker, lassen Sie die Software den Rest vorschlagen, prüfen und bestätigen Sie. Wiederholen Sie dies für jeden Zeugen. Details: <a href="#synchronisation">Das Synchronisierungsfenster</a>.</li>
+<li><strong>Jeden Textzeugen mit dem Pivot abgleichen.</strong> Wählen Sie unter <b class="ui" data-tr="navigation.alignment">3 · Textzeugen abgleichen</b> den Pivot bei <b class="ui" data-tr="alignment.reference.label">Technischer Pivot</b> und einen anderen Textzeugen bei <b class="ui" data-tr="alignment.target.label">Vergleichstextzeuge</b> und öffnen Sie <b class="ui" data-tr="ui.xml.open_alignment">Textzeugen abgleichen</b>. Setzen Sie Anker, lassen Sie die Software den Rest vorschlagen, prüfen und bestätigen Sie. Wiederholen Sie dies für jeden Textzeugen. Details: <a href="#synchronisation">Das Synchronisierungsfenster</a>.</li>
 <li><strong>Speichern</strong>, dann unter <b class="ui" data-tr="navigation.progress">4 · Abschließen</b> <b class="ui" data-tr="audit.action">Projektkonsistenz prüfen …</b> starten und die Warnungen lesen.</li>
 <li><strong>Das Varians-Projekt erstellen.</strong> <b class="ui" data-tr="ui.final.export_project.action">Vorausgefülltes Varians-Projekt erstellen…</b> schreibt das Projekt in einen leeren Ordner. Es enthält nur die <strong>bestätigten</strong> Entsprechungen: Bestätigen Sie also vor diesem Schritt alles, was zählen soll. Details: <a href="#export-projet">Vorausgefülltes Varians-Projekt</a>.</li>
 </ol>
@@ -89,51 +89,51 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Prüfen Sie das Ergebnis mit <b class="varians" data-varians="menu.display">Ansicht</b> → <b class="varians" data-varians="diagnostics.menu">Handschriften prüfen…</b>.</li>
 </ol>
 
-<h2 id="ajout-temoin">4. Weg B: einem bestehenden Varians-Projekt einen Zeugen hinzufügen</h2>
+<h2 id="ajout-temoin">4. Weg B: einem bestehenden Varians-Projekt einen Textzeugen hinzufügen</h2>
 <p>Ihr Varians-Projekt existiert bereits und wurde aus einem Varians-Synchro-Projekt erstellt (oder die Synchronisierung seines Pivots stammt daraus). Sie möchten ihm eine neue Handschrift hinzufügen, die mit der Edition synchronisiert ist.</p>
-<div class="note"><strong>Das Prinzip.</strong> Die Synchronisierungsdatei des neuen Zeugen bezeichnet die Zeilen des Pivots durch die Kennung ihrer Seite und ihre Position auf dieser Seite, so wie <em>Ihr</em> <code>.vsynch</code>-Projekt sie kennt. Sie müssen daher im selben <code>.vsynch</code>-Projekt arbeiten, mit dem das Varians-Projekt erstellt wurde, und dürfen den Pivot nicht verändern.</div>
+<div class="note"><strong>Das Prinzip.</strong> Die Synchronisierungsdatei des neuen Textzeugen bezeichnet die Zeilen des Pivots durch die Kennung ihrer Seite und ihre Position auf dieser Seite, so wie <em>Ihr</em> <code>.vsynch</code>-Projekt sie kennt. Sie müssen daher im selben <code>.vsynch</code>-Projekt arbeiten, mit dem das Varians-Projekt erstellt wurde, und dürfen den Pivot nicht verändern.</div>
 <h3>In Varians-Synchro</h3>
 <ol>
 <li><b class="ui" data-tr="project.open">.vsynch öffnen</b>: Öffnen Sie das Projekt, mit dem das Varians-Projekt erstellt wurde.</li>
-<li>Fügen Sie unter <b class="ui" data-tr="navigation.project">1 · Zeugen hinzufügen</b> die neue Handschrift mit <b class="ui" data-tr="resources.witness.new">Zeugen hinzufügen…</b> hinzu (Sigle, Bilder, ALTO/PAGE). Geben Sie ihr die Sigle, die sie in Varians haben wird.</li>
+<li>Fügen Sie unter <b class="ui" data-tr="navigation.project">1 · Textzeugen hinzufügen</b> die neue Handschrift mit <b class="ui" data-tr="resources.witness.new">Textzeugen hinzufügen…</b> hinzu (Sigle, Bilder, ALTO/PAGE). Geben Sie ihr die Sigle, die sie in Varians haben wird.</li>
 <li>Ordnen Sie unter <b class="ui" data-tr="navigation.pages">2 · Ressourcen zuordnen</b> ihre Seiten den ALTO/PAGE-Dateien zu und geben Sie ihre zu ignorierenden Zeilen an.</li>
-<li>Behalten Sie unter <b class="ui" data-tr="navigation.alignment">3 · Zeugen abgleichen</b> den Pivot bei <b class="ui" data-tr="alignment.reference.label">Technischer Pivot</b>, wählen Sie den neuen Zeugen bei <b class="ui" data-tr="alignment.target.label">Vergleichszeuge</b>, gleichen Sie ab und bestätigen Sie.</li>
+<li>Behalten Sie unter <b class="ui" data-tr="navigation.alignment">3 · Textzeugen abgleichen</b> den Pivot bei <b class="ui" data-tr="alignment.reference.label">Technischer Pivot</b>, wählen Sie den neuen Textzeugen bei <b class="ui" data-tr="alignment.target.label">Vergleichstextzeuge</b>, gleichen Sie ab und bestätigen Sie.</li>
 <li><b class="ui" data-tr="common.save">Speichern</b>.</li>
-<li>Unter <b class="ui" data-tr="navigation.progress">4 · Abschließen</b>: <b class="ui" data-tr="export.varians.action">Varians-JSON exportieren…</b>; wählen Sie den Pivot als Referenzzeugen und einen leeren Ordner. Die Datei des neuen Zeugen ist <code>validated/&lt;Sigle&gt;.json</code> (bestätigte Entsprechungen); <code>working/&lt;Sigle&gt;.json</code> enthält zusätzlich die nicht bestätigten Vorschläge. Siehe <a href="#export-json">Varians-JSON exportieren</a>.</li>
+<li>Unter <b class="ui" data-tr="navigation.progress">4 · Abschließen</b>: <b class="ui" data-tr="export.varians.action">Varians-JSON exportieren…</b>; wählen Sie den Pivot als Referenztextzeugen und einen leeren Ordner. Die Datei des neuen Textzeugen ist <code>validated/&lt;Sigle&gt;.json</code> (bestätigte Entsprechungen); <code>working/&lt;Sigle&gt;.json</code> enthält zusätzlich die nicht bestätigten Vorschläge. Siehe <a href="#export-json">Varians-JSON exportieren</a>.</li>
 </ol>
 <div class="warn"><strong>Verändern Sie den Pivot nicht</strong> (seine Seiten, deren ALTO/PAGE-Dateien, seine ignorierten Zeilen, seine Lesereihenfolge): Seine Zeilen würden ihre Position oder ihre Anzahl ändern und nicht mehr den <code>&lt;lb/&gt;</code> der Edition entsprechen. Wenn Sie es doch tun müssen, ersetzen Sie in Varians auch die Synchronisierung des Pivots durch <code>validated/&lt;pivot&gt;.json</code> und prüfen Sie, ob die Zahl seiner Zeilen noch der Zahl seiner <code>&lt;lb/&gt;</code> entspricht.</div>
 <h3>In Varians</h3>
 <ol>
-<li><b class="varians" data-varians="menu.file">Datei</b> → <b class="varians" data-varians="menu.project_settings">Projekteinstellungen…</b>; in der Liste der Zeugen <b class="varians" data-varians="project.witness.add">Hinzufügen…</b>.</li>
+<li><b class="varians" data-varians="menu.file">Datei</b> → <b class="varians" data-varians="menu.project_settings">Projekteinstellungen…</b>; in der Liste der Textzeugen <b class="varians" data-varians="project.witness.add">Hinzufügen…</b>.</li>
 <li>Geben Sie die Sigle, die Bilder (<b class="varians" data-varians="project.witness.images">Bildquelle</b>) und unter <b class="varians" data-varians="project.witness.alignment.optional">Synchronisierungsdatei (optional)</b> die Datei <code>validated/&lt;Sigle&gt;.json</code> an. Kreuzen Sie <b class="varians" data-varians="project.witness.alignment.copy">Synchronisierung in das Projekt kopieren</b> an: So bleibt das Projekt vollständig, wenn Sie es verschieben.</li>
-<li>Prüfen Sie mit <b class="varians" data-varians="menu.display">Ansicht</b> → <b class="varians" data-varians="diagnostics.menu">Handschriften prüfen…</b>: Der neue Zeuge muss gültige Verknüpfungen zum Pivot haben.</li>
+<li>Prüfen Sie mit <b class="varians" data-varians="menu.display">Ansicht</b> → <b class="varians" data-varians="diagnostics.menu">Handschriften prüfen…</b>: Der neue Textzeuge muss gültige Verknüpfungen zum Pivot haben.</li>
 </ol>
-<h3>Einen vorhandenen Zeugen aktualisieren</h3>
-<p>Wenn Sie den Abgleich eines Zeugen in Varians-Synchro ergänzt haben, exportieren Sie erneut. Geben Sie dann in Varians dem Zeugen die neue Datei (<b class="varians" data-varians="project.witness.edit">Bearbeiten…</b> in den Projekteinstellungen) oder ersetzen Sie seine Datei im Ordner <code>alignments/</code> des Projekts. <b class="varians" data-varians="menu.display">Ansicht</b> → <b class="varians" data-varians="diagnostics.refresh">Synchronisierung aktualisieren…</b> (<kbd>Strg+Umschalt+R</kbd>) liest die Dateien erneut ein, ohne das Projekt neu zu öffnen.</p>
+<h3>Einen vorhandenen Textzeugen aktualisieren</h3>
+<p>Wenn Sie den Abgleich eines Textzeugen in Varians-Synchro ergänzt haben, exportieren Sie erneut. Geben Sie dann in Varians dem Textzeugen die neue Datei (<b class="varians" data-varians="project.witness.edit">Bearbeiten…</b> in den Projekteinstellungen) oder ersetzen Sie seine Datei im Ordner <code>alignments/</code> des Projekts. <b class="varians" data-varians="menu.display">Ansicht</b> → <b class="varians" data-varians="diagnostics.refresh">Synchronisierung aktualisieren…</b> (<kbd>Strg+Umschalt+R</kbd>) liest die Dateien erneut ein, ohne das Projekt neu zu öffnen.</p>
 <p><strong>Varians-Projekt, das nicht aus dieser <code>.vsynch</code> stammt.</strong> Die Seitenkennungen sind verschieden: Varians meldet dann, dass die Verknüpfungen der Datei keiner Zeile des Pivots entsprechen. Ersetzen Sie in diesem Fall auch die Synchronisierung des Pivots durch <code>validated/&lt;pivot&gt;.json</code>, mit derselben Zeilenzahl wie seine <code>&lt;lb/&gt;</code>.</p>
 
 <h2 id="notions">5. Grundbegriffe</h2>
 <table>
 <tr><th>Begriff</th><th>Bedeutung</th></tr>
-<tr><td>Zeuge, Sigle</td><td>Eine Handschrift (oder ein alter Druck). Die Sigle ist seine Kennung: Sie kann nach dem Speichern des Zeugen nicht mehr geändert werden und darf weder einen Punkt noch <code>/</code> oder <code>\</code> enthalten, damit der Export möglich ist. Behalten Sie die Sigle des Varians-Projekts bei.</td></tr>
-<tr><td>Pivot-Zeuge</td><td>Der Referenzzeuge des Projekts: Die anderen Zeugen werden mit ihm abgeglichen, und Varians folgt ihm über seine <code>&lt;lb/&gt;</code>. Diese Wahl ist technisch: Sie nimmt weder das Stemma noch die Leithandschrift der Edition vorweg. Der zuerst hinzugefügte Zeuge ist standardmäßig Pivot; um den Pivot zu wechseln, kreuzen Sie das Pivot-Kästchen in der Zeugenkarte eines anderen Zeugen an. Das Menü <b class="ui" data-tr="alignment.reference.label">Technischer Pivot</b> in Schritt 3 wählt nur den linken Zeugen für den Abgleich aus, ohne den Pivot des Projekts zu ändern.</td></tr>
+<tr><td>Textzeuge, Sigle</td><td>Eine Handschrift (oder ein alter Druck). Die Sigle ist seine Kennung: Sie kann nach dem Speichern des Textzeugen nicht mehr geändert werden und darf weder einen Punkt noch <code>/</code> oder <code>\</code> enthalten, damit der Export möglich ist. Behalten Sie die Sigle des Varians-Projekts bei.</td></tr>
+<tr><td>Pivot-Textzeuge</td><td>Der Referenztextzeuge des Projekts: Die anderen Textzeugen werden mit ihm abgeglichen, und Varians folgt ihm über seine <code>&lt;lb/&gt;</code>. Diese Wahl ist technisch: Sie nimmt weder das Stemma noch die Leithandschrift der Edition vorweg. Der zuerst hinzugefügte Textzeuge ist standardmäßig Pivot; um den Pivot zu wechseln, kreuzen Sie das Pivot-Kästchen in der Textzeugenkarte eines anderen Textzeugen an. Das Menü <b class="ui" data-tr="alignment.reference.label">Technischer Pivot</b> in Schritt 3 wählt nur den linken Textzeugen für den Abgleich aus, ohne den Pivot des Projekts zu ändern.</td></tr>
 <tr><td>Physische Zeile</td><td>Eine Zeile, die in der ALTO/PAGE-Datei einer Seite beschrieben ist. Sie wird durch ihre Seite und ihre Position in dieser Datei identifiziert. Der Inhalt der Datei wird beim Import ins Projekt kopiert.</td></tr>
-<tr><td>Ignorierte Zeile (Textumfang)</td><td>Eine Zeile außerhalb des untersuchten Textes. Sie gilt für den Zeugen im ganzen Projekt: Sie ist von Berechnungen, TEI-Verknüpfung und Exporten ausgeschlossen. Wird eine bereits verknüpfte Zeile ignoriert, werden ihre Verknüpfungen in allen Paaren entfernt, nach Rückfrage.</td></tr>
-<tr><td>Gruppe (Entsprechung)</td><td>Zeilen des linken Zeugen, verknüpft mit Zeilen des rechten Zeugen: 1↔1, 1↔n oder n↔m. Eine Zeile gehört pro Paar zu höchstens einer Gruppe.</td></tr>
+<tr><td>Ignorierte Zeile (Textumfang)</td><td>Eine Zeile außerhalb des untersuchten Textes. Sie gilt für den Textzeugen im ganzen Projekt: Sie ist von Berechnungen, TEI-Verknüpfung und Exporten ausgeschlossen. Wird eine bereits verknüpfte Zeile ignoriert, werden ihre Verknüpfungen in allen Paaren entfernt, nach Rückfrage.</td></tr>
+<tr><td>Gruppe (Entsprechung)</td><td>Zeilen des linken Textzeugen, verknüpft mit Zeilen des rechten Textzeugen: 1↔1, 1↔n oder n↔m. Eine Zeile gehört pro Paar zu höchstens einer Gruppe.</td></tr>
 <tr><td>Status einer Gruppe</td><td><code>validated</code> (bestätigt), <code>uncertain</code> (unsicher) oder <code>proposed</code> (vorgeschlagen). Die Gruppenliste zeigt diese Werte unverändert an. Der Filter <b class="ui" data-tr="review.filter.pending">Zu prüfen</b> fasst die nicht bestätigten Gruppen zusammen.</td></tr>
-<tr><td>Anker</td><td>Eine bestätigte Entsprechung, auf die sich die Vorschläge stützen. Die Anker müssen in beiden Zeugen in derselben Reihenfolge aufeinander folgen; es sind mindestens zwei nötig.</td></tr>
-<tr><td>Bestätigte Auslassung</td><td>Zeilen eines Zeugen, die im anderen keine Entsprechung haben (Auslassung, Lücke). Sie gilt für ein Paar, erscheint rot und erzeugt beim Export keine Verknüpfung.</td></tr>
+<tr><td>Anker</td><td>Eine bestätigte Entsprechung, auf die sich die Vorschläge stützen. Die Anker müssen in beiden Textzeugen in derselben Reihenfolge aufeinander folgen; es sind mindestens zwei nötig.</td></tr>
+<tr><td>Bestätigte Auslassung</td><td>Zeilen eines Textzeugen, die im anderen keine Entsprechung haben (Auslassung, Lücke). Sie gilt für ein Paar, erscheint rot und erzeugt beim Export keine Verknüpfung.</td></tr>
 <tr><td>Nicht verknüpfte Zeile</td><td>Eine aktive Zeile, die im Paar noch zu keiner Gruppe gehört (violett).</td></tr>
 <tr><td>Veraltete Gruppe</td><td>Eine Gruppe, in der sich eine Zeile geändert hat: meist, weil die Seite eine andere ALTO/PAGE-Datei erhalten hat. Sie wird nie gelöscht, aber von Ankern, Berechnungen und Exporten ausgeschlossen, bis Sie sie erneut bestätigen oder ihre Verknüpfung lösen.</td></tr>
 <tr><td>Schutz</td><td>Manuelle und bestätigte Gruppen werden nie durch eine Berechnung ersetzt. Nur nicht bestätigte automatische Vorschläge können ersetzt werden.</td></tr>
 </table>
 
-<h2 id="etape1">6. Schritt 1: Zeugen hinzufügen</h2>
-<p><b class="ui" data-tr="resources.witness.new">Zeugen hinzufügen…</b> öffnet die Karte eines neuen Zeugen; ein Klick auf einen Zeugen der Liste (oder auf eine seiner Ressourcen) öffnet seine Karte, um sie zu ergänzen. Die Liste zeigt für jeden Zeugen seine Ressourcen und deren Status (zugeordnete Seiten, importierte Zeilen, TEI-Verknüpfung).</p>
-<h3 id="fiche-temoin">Die Zeugenkarte</h3>
+<h2 id="etape1">6. Schritt 1: Textzeugen hinzufügen</h2>
+<p><b class="ui" data-tr="resources.witness.new">Textzeugen hinzufügen…</b> öffnet die Karte eines neuen Textzeugen; ein Klick auf einen Textzeugen der Liste (oder auf eine seiner Ressourcen) öffnet seine Karte, um sie zu ergänzen. Die Liste zeigt für jeden Textzeugen seine Ressourcen und deren Status (zugeordnete Seiten, importierte Zeilen, TEI-Verknüpfung).</p>
+<h3 id="fiche-temoin">Die Textzeugenkarte</h3>
 <ul>
-<li><b class="ui" data-tr="resources.witness.sigil">Sigle</b> und <b class="ui" data-tr="resources.witness.label">Beschreibung</b>. Die Sigle kann nicht mehr geändert werden, sobald der Zeuge gespeichert ist.</li>
-<li><b class="ui" data-tr="resources.witness.pivot">Diesen Zeugen als Pivot für den Zeugenabgleich verwenden</b>.</li>
+<li><b class="ui" data-tr="resources.witness.sigil">Sigle</b> und <b class="ui" data-tr="resources.witness.label">Beschreibung</b>. Die Sigle kann nicht mehr geändert werden, sobald der Textzeuge gespeichert ist.</li>
+<li><b class="ui" data-tr="resources.witness.pivot">Diesen Textzeugen als Pivot für den Textzeugenabgleich verwenden</b>.</li>
 <li>Vier Gruppen von Ressourcen, jede mit <b class="ui" data-tr="resources.witness.add">Hinzufügen…</b>:
 <ul>
 <li><b class="ui" data-tr="resources.witness.images">Lokale Bilder</b>: Die Bilder werden nach Namen sortiert („2“ vor „10“);</li>
@@ -143,13 +143,13 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </ul></li>
 <li><b class="ui" data-tr="resources.witness.remove_pending">Entfernen</b> entfernt nur eine Ressource, die seit dem Öffnen der Karte hinzugefügt wurde: Eine bereits gespeicherte Ressource bleibt im Projekt, damit ihre Zuordnungen erhalten bleiben.</li>
 <li><b class="ui" data-tr="resources.binding.title">Bilder automatisch ALTO/PAGE zuordnen</b> schlägt sofort die Zuordnungen der Seiten vor (siehe <a href="#association-auto">unten</a>).</li>
-<li><b class="ui" data-tr="resources.witness.confirm">Zeugen speichern</b> übernimmt alles auf einmal; <b class="ui" data-tr="resources.cancel">Abbrechen</b> ändert nichts am Projekt.</li>
+<li><b class="ui" data-tr="resources.witness.confirm">Textzeugen speichern</b> übernimmt alles auf einmal; <b class="ui" data-tr="resources.cancel">Abbrechen</b> ändert nichts am Projekt.</li>
 </ul>
 
 <h2 id="etape2">7. Schritt 2: Ressourcen zuordnen</h2>
-<p>Vier Vorgänge, jeweils für einen Zeugen, den Sie auswählen:</p>
+<p>Vier Vorgänge, jeweils für einen Textzeugen, den Sie auswählen:</p>
 <h3 id="pages">Seiten, Reihenfolge und Zeilendateien</h3>
-<p><b class="ui" data-tr="pages.order.open">Bilder, Reihenfolge und ALTO-/PAGE-Zuordnungen verwalten …</b> zeigt die Seiten des Zeugen mit Miniaturbild und Zeilendatei.</p>
+<p><b class="ui" data-tr="pages.order.open">Bilder, Reihenfolge und ALTO-/PAGE-Zuordnungen verwalten …</b> zeigt die Seiten des Textzeugen mit Miniaturbild und Zeilendatei.</p>
 <ul>
 <li><strong>Lesereihenfolge</strong>: Ziehen Sie die Seiten oder verwenden Sie <b class="ui" data-tr="pages.order.up">Nach oben</b>, <b class="ui" data-tr="pages.order.down">Nach unten</b>, <b class="ui" data-tr="pages.order.reverse">Reihenfolge umkehren</b>.</li>
 <li><b class="ui" data-tr="ui.xml.link_source">ALTO/PAGE zuordnen</b> gibt der gewählten Seite eine Zeilendatei. Hatte sie schon eine, nennt die Software die Zahl der betroffenen Gruppen: Sie werden veraltet (siehe <a href="#perimes">Veraltete Gruppen</a>).</li>
@@ -161,18 +161,18 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3 id="association-auto">Automatisch zuordnen</h3>
 <p><b class="ui" data-tr="resources.binding.title">Bilder automatisch ALTO/PAGE zuordnen</b> schlägt für jede Seite ohne Zeilendatei eine Datei vor: zuerst nach den Namen und Bildreferenzen (<b class="ui" data-tr="resources.binding.name">Eindeutiger Name</b>), dann, bei lokalen Bildern in gleicher Anzahl, nach der natürlichen Reihenfolge der Namen. Prüfen Sie vor allem diese letzteren Zuordnungen: Eine Verschiebung wirkt sich auf die ganze Serie aus. Wird dieselbe Datei für zwei Seiten vorgeschlagen, ist sie rot markiert. <b class="ui" data-tr="resources.binding.apply">Zuordnungen anwenden</b> überschreibt keine bestehende Zuordnung.</p>
 <h3 id="perimetre">Zu ignorierende Zeilen (Textumfang)</h3>
-<p><b class="ui" data-tr="tei.scope.action">Auf den Zeugenbildern zu ignorierende Zeilen festlegen…</b>: Wählen Sie auf den Bildern die Zeilen außerhalb des untersuchten Textes aus, auch über mehrere Seiten hinweg, dann <b class="ui" data-tr="tei.scope.ignore">Ausgewählte Zeilen ignorieren</b> (oder <b class="ui" data-tr="tei.scope.restore">Ausgewählte Zeilen wieder aufnehmen</b>). <b class="ui" data-tr="tei.scope.save">Umfang übernehmen</b> wendet die Änderung an; <b class="ui" data-tr="resources.cancel">Abbrechen</b> ändert nichts. Dieselbe Einstellung gibt es im Synchronisierungsfenster (<b class="ui" data-tr="scope.menu">Textumfang ▾</b>).</p>
+<p><b class="ui" data-tr="tei.scope.action">Auf den Textzeugenbildern zu ignorierende Zeilen festlegen…</b>: Wählen Sie auf den Bildern die Zeilen außerhalb des untersuchten Textes aus, auch über mehrere Seiten hinweg, dann <b class="ui" data-tr="tei.scope.ignore">Ausgewählte Zeilen ignorieren</b> (oder <b class="ui" data-tr="tei.scope.restore">Ausgewählte Zeilen wieder aufnehmen</b>). <b class="ui" data-tr="tei.scope.save">Umfang übernehmen</b> wendet die Änderung an; <b class="ui" data-tr="resources.cancel">Abbrechen</b> ändert nichts. Dieselbe Einstellung gibt es im Synchronisierungsfenster (<b class="ui" data-tr="scope.menu">Textumfang ▾</b>).</p>
 <h3 id="tei">TEI-Edition verknüpfen (optional)</h3>
-<p><b class="ui" data-tr="tei.binding.action">TEI-Edition mit ALTO/PAGE-Zeilen verknüpfen…</b> ordnet die <code>&lt;lb edRef="#SIGLE"/&gt;</code> einer TEI-Edition den aktiven Zeilen des Zeugen zu, in Lesereihenfolge. Die Anzahlen müssen gleich sein: Das Fenster vergleicht sie und meldet, was die Zuordnung verhindert (vergessene zu ignorierende Zeilen, mehrdeutige Lesarten eines Apparats). Prüfen Sie einige Zeilen am Text und am zugeschnittenen Bild, insbesondere mit <b class="ui" data-tr="tei.visual.begin">Anfang</b> und <b class="ui" data-tr="tei.visual.end">Ende</b>, und klicken Sie dann auf <b class="ui" data-tr="tei.binding.apply">Verknüpfungen bestätigen</b>.</p>
+<p><b class="ui" data-tr="tei.binding.action">TEI-Edition mit ALTO/PAGE-Zeilen verknüpfen…</b> ordnet die <code>&lt;lb edRef="#SIGLE"/&gt;</code> einer TEI-Edition den aktiven Zeilen des Textzeugen zu, in Lesereihenfolge. Die Anzahlen müssen gleich sein: Das Fenster vergleicht sie und meldet, was die Zuordnung verhindert (vergessene zu ignorierende Zeilen, mehrdeutige Lesarten eines Apparats). Prüfen Sie einige Zeilen am Text und am zugeschnittenen Bild, insbesondere mit <b class="ui" data-tr="tei.visual.begin">Anfang</b> und <b class="ui" data-tr="tei.visual.end">Ende</b>, und klicken Sie dann auf <b class="ui" data-tr="tei.binding.apply">Verknüpfungen bestätigen</b>.</p>
 <p>Die Verknüpfung ist für den Export nicht erforderlich: Mit ihr prüfen Sie, ob die Zeilenzahl des Pivots seinen <code>&lt;lb/&gt;</code> entspricht, und das Synchronisierungsfenster zeigt dann den TEI-Text statt des HTR-Textes an. Ihr Status wechselt zu <b class="ui" data-tr="tei.binding.status.stale">erneut prüfen (Quellen geändert)</b>, wenn sich Edition, Textumfang, Reihenfolge oder Segmentierung ändern.</p>
 
-<h2 id="etape3">8. Schritt 3: Zeugen abgleichen</h2>
-<p>Wählen Sie den linken Zeugen bei <b class="ui" data-tr="alignment.reference.label">Technischer Pivot</b> (meist der Pivot des Projekts) und den anderen Zeugen bei <b class="ui" data-tr="alignment.target.label">Vergleichszeuge</b> und klicken Sie dann auf <b class="ui" data-tr="ui.xml.open_alignment">Zeugen abgleichen</b>. Pro Paar gibt es nur eine Synchronisierung: Öffnet man sie in umgekehrter Richtung, erscheint dieselbe, mit demselben Zeugen links.</p>
+<h2 id="etape3">8. Schritt 3: Textzeugen abgleichen</h2>
+<p>Wählen Sie den linken Textzeugen bei <b class="ui" data-tr="alignment.reference.label">Technischer Pivot</b> (meist der Pivot des Projekts) und den anderen Textzeugen bei <b class="ui" data-tr="alignment.target.label">Vergleichstextzeuge</b> und klicken Sie dann auf <b class="ui" data-tr="ui.xml.open_alignment">Textzeugen abgleichen</b>. Pro Paar gibt es nur eine Synchronisierung: Öffnet man sie in umgekehrter Richtung, erscheint dieselbe, mit demselben Textzeugen links.</p>
 <p>Unter der Schaltfläche zeigt die Liste der bereits abgeglichenen Paare deren Fortschritt (Zahl der Gruppen, verknüpfte Zeilen auf jeder Seite). Ein Doppelklick auf ein Paar oder die <kbd>Eingabetaste</kbd> öffnet seine Synchronisierung erneut; ein einfacher Klick wählt es in beiden Menüs aus.</p>
-<p>Für den Export nach Varians muss jeder Zeuge <strong>direkt</strong> mit dem Pivot abgeglichen sein: Ein Abgleich B↔C wird beim Export nicht verwendet, wenn A der Pivot ist.</p>
+<p>Für den Export nach Varians muss jeder Textzeuge <strong>direkt</strong> mit dem Pivot abgeglichen sein: Ein Abgleich B↔C wird beim Export nicht verwendet, wenn A der Pivot ist.</p>
 
 <h2 id="synchronisation">9. Das Synchronisierungsfenster</h2>
-<p>Die beiden Zeugen stehen nebeneinander, der Referenzzeuge links. Die Zeilenumrisse sind nach ihrem Status gefärbt. Die ganze Arbeit geschieht im Arbeitsspeicher: Speichern Sie das Projekt im Hauptfenster, nachdem Sie dieses Fenster geschlossen haben. <kbd>F1</kbd> öffnet hier diesen Abschnitt der Hilfe.</p>
+<p>Die beiden Textzeugen stehen nebeneinander, der Referenztextzeuge links. Die Zeilenumrisse sind nach ihrem Status gefärbt. Die ganze Arbeit geschieht im Arbeitsspeicher: Speichern Sie das Projekt im Hauptfenster, nachdem Sie dieses Fenster geschlossen haben. <kbd>F1</kbd> öffnet hier diesen Abschnitt der Hilfe.</p>
 <h3>Die empfohlene Methode</h3>
 <ol>
 <li><strong>Anker setzen.</strong> Verknüpfen Sie einige sichere Zeilen: am Anfang, am Ende und an den Stellen, an denen die Handschriften voneinander abweichen (Spaltenwechsel, Lücke, Zusatz). Wählen Sie dazu links und rechts die Zeile(n) aus, dann <b class="ui" data-tr="alignment.action.link_lines">Zeilen verknüpfen</b> (<kbd>Strg+Eingabe</kbd>). Eine so erzeugte Gruppe ist manuell und bestätigt (grün durchgezogen).</li>
@@ -183,9 +183,9 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </ol>
 <h3>Zeilen auswählen</h3>
 <ul>
-<li>Ein Klick auf eine Zeile wählt sie aus (orange) und ersetzt die Auswahl im Zeugen, auf allen seinen Seiten.</li>
-<li><kbd>Strg</kbd>+Klick fügt eine Zeile hinzu oder entfernt sie; <kbd>Umschalt</kbd>+Klick wählt eine Folge von Zeilen in der Lesereihenfolge des Zeugen aus, auch über Seiten hinweg.</li>
-<li>Ein Klick auf eine bereits verknüpfte Zeile zeigt ihre entsprechenden Zeilen im anderen Zeugen rosa an (wenn nötig mit Seitenwechsel). Rosa ist nie eine Auswahl.</li>
+<li>Ein Klick auf eine Zeile wählt sie aus (orange) und ersetzt die Auswahl im Textzeugen, auf allen seinen Seiten.</li>
+<li><kbd>Strg</kbd>+Klick fügt eine Zeile hinzu oder entfernt sie; <kbd>Umschalt</kbd>+Klick wählt eine Folge von Zeilen in der Lesereihenfolge des Textzeugen aus, auch über Seiten hinweg.</li>
+<li>Ein Klick auf eine bereits verknüpfte Zeile zeigt ihre entsprechenden Zeilen im anderen Textzeugen rosa an (wenn nötig mit Seitenwechsel). Rosa ist nie eine Auswahl.</li>
 <li>Mausrad: Zoom; Ziehen: Bild verschieben; Doppelklick: Zoom auf die Zeile. <b class="ui" data-tr="viewer.fit_page">Anpassen</b> zeigt die ganze Seite.</li>
 <li><b class="ui" data-tr="viewer.htr.toggle">HTR-Text</b> zeigt den Text der Zeilen unter dem Bild an (den TEI-Text, wenn eine TEI-Verknüpfung gültig ist). <b class="ui" data-tr="viewer.alto.toggle">Zeilenumrisse</b> blendet die Umrisse aus oder ein; <b class="ui" data-tr="viewer.clear_selection">Auswahl aufheben</b> leert die Auswahl.</li>
 </ul>
@@ -205,56 +205,56 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <p>Unten filtert <b class="ui" data-tr="review.queue.label">Prüfung</b> die Gruppen: <b class="ui" data-tr="review.filter.all">Alle Gruppen</b>, <b class="ui" data-tr="review.filter.pending">Zu prüfen</b>, <b class="ui" data-tr="review.filter.validated">Bestätigt</b>, <b class="ui" data-tr="review.filter.absences">Bestätigte Auslassungen</b>, <b class="ui" data-tr="review.filter.stale">Veraltet</b>. Jede Gruppe wird dort durch ihren Status und ihre Zeilen beschrieben; die Zeilen heißen <code>Seite:Zeile</code> (Seitenbezeichnung, Position der Zeile). Sie können mehrere Gruppen auswählen (<kbd>Strg</kbd>, <kbd>Umschalt</kbd>), um sie mit <b class="ui" data-tr="review.validate.selected">Auswahl bestätigen…</b> zu bestätigen.</p>
 <p><b class="ui" data-tr="review.recalculate.next">Lokal neu berechnen…</b> berechnet die Vorschläge nur für das Intervall nach dem gewählten Anker neu, zum Beispiel nachdem Sie einen Anker hinzugefügt haben.</p>
 <h3 id="absences">Bestätigte Auslassungen</h3>
-<p>Haben Zeilen eines Zeugen keine Entsprechung im anderen, wählen Sie sie auf nur einer Seite aus, dann <b class="ui" data-tr="alignment.action.more">Weitere Aktionen</b> → <b class="ui" data-tr="exception.action.confirm">Fehlen der ausgewählten Zeilen bestätigen (Strg+Umschalt+A)</b>. Sie gelten dann nicht mehr als „nicht verknüpft“ und erscheinen rot. <b class="ui" data-tr="exception.action.revoke">Ausgewählte Auslassungen aus der Liste entfernen</b> hebt eine Auslassung auf, die mit dem Filter <b class="ui" data-tr="review.filter.absences">Bestätigte Auslassungen</b> ausgewählt wurde.</p>
+<p>Haben Zeilen eines Textzeugen keine Entsprechung im anderen, wählen Sie sie auf nur einer Seite aus, dann <b class="ui" data-tr="alignment.action.more">Weitere Aktionen</b> → <b class="ui" data-tr="exception.action.confirm">Fehlen der ausgewählten Zeilen bestätigen (Strg+Umschalt+A)</b>. Sie gelten dann nicht mehr als „nicht verknüpft“ und erscheinen rot. <b class="ui" data-tr="exception.action.revoke">Ausgewählte Auslassungen aus der Liste entfernen</b> hebt eine Auslassung auf, die mit dem Filter <b class="ui" data-tr="review.filter.absences">Bestätigte Auslassungen</b> ausgewählt wurde.</p>
 <h3 id="perimes">Veraltete Gruppen</h3>
 <p>Erhält eine Seite eine andere ALTO/PAGE-Datei (eine korrigierte Segmentierung), können sich ihre Zeilen ändern. Vor dem Ersetzen nennt die Software die Zahl der Gruppen, die diese Zeilen enthalten; danach werden die Gruppen, in denen sich eine Zeile geändert hat, als „[veraltet]“ markiert. Der Filter <b class="ui" data-tr="review.filter.stale">Veraltet</b> listet sie auf. Nach der Prüfung an den Bildern stellt <b class="ui" data-tr="alignment.stale.revalidate">Erneut bestätigen…</b> sie wieder her; andernfalls lösen Sie ihre Verknüpfung. Die korrigierte Lesereihenfolge der Seite wird zurückgesetzt.</p>
 <h3>Weitere Aktionen</h3>
 <ul>
 <li><b class="ui" data-tr="Supprimer le(s) groupe(s) sélectionné(s) dans la liste">Ausgewählte Gruppen aus der Liste löschen</b> und <b class="ui" data-tr="alignment.action.mark_uncertain">Als unsicher markieren</b> wirken auf die in der Liste gewählten Gruppen.</li>
 <li><b class="ui" data-tr="alignment.action.suggest_htr">HTR-Vorschlag (optional)</b> sucht Entsprechungen anhand der Ähnlichkeit des HTR-Textes der Zeilen. Nichts ist vorausgewählt: Wählen Sie die Vorschläge aus, die Sie behalten möchten.</li>
-<li><b class="ui" data-tr="stream.window.action">Lesereihenfolge und Intervalle…</b> korrigiert die Reihenfolge der Seiten, Bereiche (Spalten) und Zeilen eines Zeugen, wenn die Segmentierung sie nicht richtig wiedergibt, und zeigt die Intervalle zwischen den Ankern.</li>
+<li><b class="ui" data-tr="stream.window.action">Lesereihenfolge und Intervalle…</b> korrigiert die Reihenfolge der Seiten, Bereiche (Spalten) und Zeilen eines Textzeugen, wenn die Segmentierung sie nicht richtig wiedergibt, und zeigt die Intervalle zwischen den Ankern.</li>
 <li><b class="ui" data-tr="progress.legacy.geometry">Alte geometrische Interpolation (Kompatibilität)</b> und <b class="ui" data-tr="progress.legacy.residual">Alte Ergänzung von Restzeilen (Kompatibilität)</b> sind ältere Verfahren, die für Projekte erhalten bleiben, die sie verwendet haben.</li>
 </ul>
-<p>Die Registerkarte <b class="ui" data-tr="alignment.tab.text">Textansicht (optional)</b> zeigt die Zeilen beider Zeugen als Text. Die Befehle wirken auf die Auswahl der angezeigten Registerkarte.</p>
+<p>Die Registerkarte <b class="ui" data-tr="alignment.tab.text">Textansicht (optional)</b> zeigt die Zeilen beider Textzeugen als Text. Die Befehle wirken auf die Auswahl der angezeigten Registerkarte.</p>
 
 <h2 id="etape4">10. Schritt 4: Abschließen und exportieren</h2>
-<p><b class="ui" data-tr="ui.final.refresh">Zusammenfassung aktualisieren</b> fasst Zeugen und Synchronisierungen zusammen und meldet geänderte Zeilen oder nicht auffindbare Dateien.</p>
+<p><b class="ui" data-tr="ui.final.refresh">Zusammenfassung aktualisieren</b> fasst Textzeugen und Synchronisierungen zusammen und meldet geänderte Zeilen oder nicht auffindbare Dateien.</p>
 <h3 id="controle">Konsistenz prüfen</h3>
-<p><b class="ui" data-tr="audit.action">Projektkonsistenz prüfen …</b> prüft das Projekt, ohne etwas zu verändern: aktive Zeilen und zugeordnete Seiten jedes Zeugen, bestätigte Gruppen und Auslassungen jedes Paares, fehlende oder veraltete Referenzen, nicht auffindbare Dateien. Führen Sie die Prüfung vor jedem Export aus.</p>
+<p><b class="ui" data-tr="audit.action">Projektkonsistenz prüfen …</b> prüft das Projekt, ohne etwas zu verändern: aktive Zeilen und zugeordnete Seiten jedes Textzeugen, bestätigte Gruppen und Auslassungen jedes Paares, fehlende oder veraltete Referenzen, nicht auffindbare Dateien. Führen Sie die Prüfung vor jedem Export aus.</p>
 <h3 id="export-projet">Vorausgefülltes Varians-Projekt</h3>
 <p><b class="ui" data-tr="ui.final.export_project.action">Vorausgefülltes Varians-Projekt erstellen…</b> schreibt in einen leeren Ordner ein Projekt, das Varians unverändert öffnet:</p>
 <ul>
-<li><code>project.xml</code>: die Zeugen, ihre Bilder (IIIF-Manifest oder Pfade der lokalen Bilder) und der Pivot;</li>
+<li><code>project.xml</code>: die Textzeugen, ihre Bilder (IIIF-Manifest oder Pfade der lokalen Bilder) und der Pivot;</li>
 <li><code>xml/edition.xml</code>: die TEI-Edition des Pivots oder eine leere TEI, wenn er keine hat;</li>
-<li><code>alignments/&lt;Sigle&gt;.json</code>: die Synchronisierung jedes Zeugen, <strong>nur bestätigte Entsprechungen</strong>;</li>
+<li><code>alignments/&lt;Sigle&gt;.json</code>: die Synchronisierung jedes Textzeugen, <strong>nur bestätigte Entsprechungen</strong>;</li>
 <li><code>rendering/</code>, <code>i18n/</code>, <code>web_output/</code>: die üblichen Ordner eines Varians-Projekts;</li>
 <li><code>RAPPORT_EXPORT_VARIANS.txt</code>: der Exportbericht;</li>
 <li>gegebenenfalls <code>iiif/</code>: die HD-Kopien der IIIF-Bilder, wenn alle benötigten Seiten eine haben.</li>
 </ul>
-<p>Die Bilder bleiben an ihrem Ort: Das Projekt verweist auf sie (die Zeilen stehen in den Synchronisierungsdateien). Der Export wird verweigert, wenn der Ordner nicht leer ist, wenn eine Sigle einen Punkt, <code>/</code> oder <code>\</code> enthält, wenn der Pivot mehrere TEI-Editionen hat, wenn ein Zeuge IIIF-Bilder und lokale Bilder mischt oder wenn eine Datei nicht auffindbar ist.</p>
+<p>Die Bilder bleiben an ihrem Ort: Das Projekt verweist auf sie (die Zeilen stehen in den Synchronisierungsdateien). Der Export wird verweigert, wenn der Ordner nicht leer ist, wenn eine Sigle einen Punkt, <code>/</code> oder <code>\</code> enthält, wenn der Pivot mehrere TEI-Editionen hat, wenn ein Textzeuge IIIF-Bilder und lokale Bilder mischt oder wenn eine Datei nicht auffindbar ist.</p>
 <h3 id="export-json">Varians-JSON exportieren</h3>
-<p><b class="ui" data-tr="export.varians.action">Varians-JSON exportieren…</b> dient dazu, Zeugen in einem bestehenden Varians-Projekt hinzuzufügen oder zu aktualisieren (<a href="#ajout-temoin">Weg B</a>). Wählen Sie den Referenzzeugen (den Pivot des Varians-Projekts), bestätigen Sie und wählen Sie dann einen leeren Ordner. Die Software schreibt dorthin:</p>
+<p><b class="ui" data-tr="export.varians.action">Varians-JSON exportieren…</b> dient dazu, Textzeugen in einem bestehenden Varians-Projekt hinzuzufügen oder zu aktualisieren (<a href="#ajout-temoin">Weg B</a>). Wählen Sie den Referenztextzeugen (den Pivot des Varians-Projekts), bestätigen Sie und wählen Sie dann einen leeren Ordner. Die Software schreibt dorthin:</p>
 <ul>
-<li><code>validated/&lt;Sigle&gt;.json</code>: eine Datei pro Zeuge, nur bestätigte Entsprechungen;</li>
+<li><code>validated/&lt;Sigle&gt;.json</code>: eine Datei pro Textzeuge, nur bestätigte Entsprechungen;</li>
 <li><code>working/&lt;Sigle&gt;.json</code>: dieselben, dazu die nicht bestätigten Vorschläge;</li>
 <li><code>rapport_export.json</code>: die Zahlen und Prüfungen des Exports.</li>
 </ul>
-<p>Varians kennt die Status von Varians-Synchro nicht: Importieren Sie <code>validated/</code>, außer für einen bewussten Test. Exportiert werden nur direkte Synchronisierungen mit dem Referenzzeugen, ohne Ableitung über einen dritten Zeugen. Hat ein Zeuge keine exportierbare Entsprechung, meldet die Software dies vor dem Export und nennt die Ursache.</p>
+<p>Varians kennt die Status von Varians-Synchro nicht: Importieren Sie <code>validated/</code>, außer für einen bewussten Test. Exportiert werden nur direkte Synchronisierungen mit dem Referenztextzeugen, ohne Ableitung über einen dritten Textzeugen. Hat ein Textzeuge keine exportierbare Entsprechung, meldet die Software dies vor dem Export und nennt die Ursache.</p>
 
 <h2 id="format-json">11. Format der Synchronisierungsdateien (JSON)</h2>
-<p>Eine Datei pro Zeuge, in UTF-8, im Format <code>tei-manuscript-alignment</code>, Version 1, das Varians liest. Die Datei des Pivots beschreibt seine Zeilen; die Datei jedes anderen Zeugen beschreibt dessen Zeilen und verknüpft sie mit den Zeilen des Pivots.</p>
+<p>Eine Datei pro Textzeuge, in UTF-8, im Format <code>tei-manuscript-alignment</code>, Version 1, das Varians liest. Die Datei des Pivots beschreibt seine Zeilen; die Datei jedes anderen Textzeugen beschreibt dessen Zeilen und verknüpft sie mit den Zeilen des Pivots.</p>
 <h3 id="format-racine">Wurzel</h3>
 <table>
 <tr><th>Feld</th><th>Inhalt</th></tr>
 <tr><td><code class="field">meta.format</code></td><td><code>"tei-manuscript-alignment"</code>.</td></tr>
 <tr><td><code class="field">meta.format_version</code></td><td><code>1</code>.</td></tr>
-<tr><td><code class="field">meta.witness</code></td><td>Die Sigle des beschriebenen Zeugen.</td></tr>
-<tr><td><code class="field">meta.base_witness</code></td><td>Die Sigle des Pivots (Referenzzeuge).</td></tr>
+<tr><td><code class="field">meta.witness</code></td><td>Die Sigle des beschriebenen Textzeugen.</td></tr>
+<tr><td><code class="field">meta.base_witness</code></td><td>Die Sigle des Pivots (Referenztextzeuge).</td></tr>
 <tr><td><code class="field">meta.role</code></td><td><code>"base"</code> für den Pivot, <code>"secondary"</code> für die anderen.</td></tr>
 <tr><td><code class="field">meta.source</code></td><td><code>"Varians-Synchro"</code>.</td></tr>
 <tr><td><code class="field">meta.reference_basis</code></td><td><code>"physical-lines-in-study-scope"</code>: Die Schlüssel bezeichnen physische Zeilen, ohne die ignorierten Zeilen.</td></tr>
 <tr><td><code class="field">meta.editorial_tei_alignment</code></td><td><code>"NOT_ESTABLISHED"</code>: Die Datei enthält keine Verknüpfung zur TEI; die Zeilen des Pivots ordnet erst Varians seinen <code>&lt;lb/&gt;</code> zu.</td></tr>
-<tr><td><code class="field">pages</code></td><td>Die Seiten des Zeugen, die eine ALTO/PAGE-Datei haben, in Lesereihenfolge.</td></tr>
+<tr><td><code class="field">pages</code></td><td>Die Seiten des Textzeugen, die eine ALTO/PAGE-Datei haben, in Lesereihenfolge.</td></tr>
 </table>
 <h3 id="format-page">Seite</h3>
 <table>
@@ -272,12 +272,12 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <table>
 <tr><th>Feld</th><th>Inhalt</th></tr>
 <tr><td><code class="field">pages[].lines[].line</code></td><td>Die Position der Zeile in der ALTO/PAGE-Datei ihrer Seite (ab 1). Ignorierte Zeilen werden nicht geschrieben, die Positionen aber nicht neu nummeriert: Es kann also Lücken geben.</td></tr>
-<tr><td><code class="field">pages[].lines[].order</code></td><td>Die Stelle der Zeile in der Lesereihenfolge des Zeugen, über alle Seiten hinweg.</td></tr>
+<tr><td><code class="field">pages[].lines[].order</code></td><td>Die Stelle der Zeile in der Lesereihenfolge des Textzeugen, über alle Seiten hinweg.</td></tr>
 <tr><td><code class="field">pages[].lines[].bbox</code></td><td>Das Rechteck der Zeile: <code class="field">pages[].lines[].bbox.hpos</code>, <code class="field">pages[].lines[].bbox.vpos</code> (linke obere Ecke), <code class="field">pages[].lines[].bbox.width</code>, <code class="field">pages[].lines[].bbox.height</code>, in Pixeln der ALTO/PAGE-Datei.</td></tr>
 <tr><td><code class="field">pages[].lines[].polygon</code></td><td>Optional: der Umriss der Zeile (PAGE-Dateien), eine Liste von Punkten <code>[x, y]</code>.</td></tr>
 <tr><td><code class="field">pages[].lines[].alto_id</code></td><td>Die Kennung der Zeile in der ALTO/PAGE-Datei.</td></tr>
 <tr><td><code class="field">pages[].lines[].alto</code></td><td>Der HTR-Text der Zeile (leer, wenn es keinen gibt).</td></tr>
-<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>Nur bei den anderen Zeugen: die Zeilen des Pivots, denen die Zeile entspricht, in der Form <code>"Seiten-ID::Zeile"</code> (<code class="field">pages[].id</code> und <code class="field">pages[].lines[].line</code> einer Zeile des Pivots). Eine Zeile einer n↔m-Gruppe trägt die Schlüssel aller Pivot-Zeilen der Gruppe. Eine Zeile ohne Entsprechung (nicht verknüpft, bestätigte Auslassung, nicht bestätigte Gruppe in <code>validated/</code>) hat dieses Feld nicht.</td></tr>
+<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>Nur bei den anderen Textzeugen: die Zeilen des Pivots, denen die Zeile entspricht, in der Form <code>"Seiten-ID::Zeile"</code> (<code class="field">pages[].id</code> und <code class="field">pages[].lines[].line</code> einer Zeile des Pivots). Eine Zeile einer n↔m-Gruppe trägt die Schlüssel aller Pivot-Zeilen der Gruppe. Eine Zeile ohne Entsprechung (nicht verknüpft, bestätigte Auslassung, nicht bestätigte Gruppe in <code>validated/</code>) hat dieses Feld nicht.</td></tr>
 <tr><td><code class="field">pages[].lines[].vsynch_state</code></td><td>Der Status der Gruppe in Varians-Synchro: <code>validated</code>, <code>uncertain</code> oder <code>proposed</code> (die beiden letzten nur in <code>working/</code>). Nur zur Information: Varians verwendet ihn nicht.</td></tr>
 <tr><td><code class="field">pages[].lines[].vsynch_origin</code></td><td>Die Herkunft der Gruppe (<code>manual</code>, <code>manual-correction</code>, <code>automatic-textual-progress-v071</code>, <code>automatic-htr-htr</code>…). Nur zur Information.</td></tr>
 <tr><td><code class="field">pages[].lines[].score</code></td><td>Optional: die Konfidenz eines automatischen Vorschlags, zwischen 0 und 1. Nur zur Information.</td></tr>
@@ -285,11 +285,11 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3>Was Varians damit macht</h3>
 <ul>
 <li>Die Zeilen der Pivot-Datei entsprechen, in der Reihenfolge der Datei, eins zu eins den <code>&lt;lb edRef="#PIVOT"/&gt;</code> der Edition: die erste Zeile dem ersten <code>&lt;lb/&gt;</code> und so weiter. Varians prüft, ob die Anzahlen gleich sind.</li>
-<li>Ein Schlüssel des Pivots lautet <code>Seiten-ID::Zeile</code>: Er bleibt gültig, solange die Seite ihre Kennung und ihre ALTO/PAGE-Datei behält. Deshalb muss der neue Zeuge eines bestehenden Projekts im selben Projekt <code>.vsynch</code> abgeglichen werden (<a href="#ajout-temoin">Weg B</a>).</li>
-<li>Wenn der Text eine Zeile des Pivots erreicht, zeigt Varians in jedem anderen Zeugen die Zeile oder die Zeilen, deren <code>base_keys</code> auf sie verweisen.</li>
+<li>Ein Schlüssel des Pivots lautet <code>Seiten-ID::Zeile</code>: Er bleibt gültig, solange die Seite ihre Kennung und ihre ALTO/PAGE-Datei behält. Deshalb muss der neue Textzeuge eines bestehenden Projekts im selben Projekt <code>.vsynch</code> abgeglichen werden (<a href="#ajout-temoin">Weg B</a>).</li>
+<li>Wenn der Text eine Zeile des Pivots erreicht, zeigt Varians in jedem anderen Textzeugen die Zeile oder die Zeilen, deren <code>base_keys</code> auf sie verweisen.</li>
 </ul>
 <h3>Beispiel</h3>
-<p>Eine Zeile des Zeugen B, verknüpft mit den Zeilen 1 und 2 einer Seite des Pivots A:</p>
+<p>Eine Zeile des Textzeugen B, verknüpft mit den Zeilen 1 und 2 einer Seite des Pivots A:</p>
 <pre>{"meta": {"format": "tei-manuscript-alignment", "format_version": 1,
           "witness": "B", "base_witness": "A", "role": "secondary",
           "source": "Varians-Synchro",
@@ -306,7 +306,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h2 id="fichiers">12. Dateien, Sicherungen und Fehlerbehebung</h2>
 <h3>Die Projektdatei</h3>
 <ul>
-<li>Die gesamte Arbeit steht in der Datei <code>.vsynch</code>: Zeugen, Inhalt der importierten ALTO/PAGE-Dateien, Zuordnungen, ignorierte Zeilen, Lesereihenfolge, Synchronisierungen. Die Quelldateien werden nie verändert.</li>
+<li>Die gesamte Arbeit steht in der Datei <code>.vsynch</code>: Textzeugen, Inhalt der importierten ALTO/PAGE-Dateien, Zuordnungen, ignorierte Zeilen, Lesereihenfolge, Synchronisierungen. Die Quelldateien werden nie verändert.</li>
 <li>Das Speichern ist sicher: Die Datei wird in einem Schritt ersetzt, und die vorherige Version bleibt in <code>&lt;Projekt&gt;.vsynch.bak</code> erhalten. Um zu ihr zurückzukehren, kopieren Sie diese <code>.bak</code>-Datei unter einem neuen Namen mit der Endung <code>.vsynch</code> und öffnen Sie die Kopie.</li>
 <li>Es gibt keinen Befehl „Speichern unter“: Um eine Version aufzubewahren, kopieren Sie die Datei <code>.vsynch</code>.</li>
 <li>Ein Projekt mit relativen Pfaden (wie das mitgelieferte Beispiel) lässt sich aus jedem Ordner öffnen; beim Speichern werden die Pfade vollständig geschrieben.</li>
@@ -315,7 +315,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </ul>
 <h3>Häufige Probleme</h3>
 <ul>
-<li><strong>„<b class="ui" data-tr="alignment.error.no_alto">Ordnen Sie beiden Textzeugen ALTO-Seiten zu, bevor Sie sie abgleichen</b>“</strong>: Einem der beiden Zeugen ist noch keine Seite mit einer Zeilendatei zugeordnet (<a href="#etape2">Schritt 2</a>).</li>
+<li><strong>„<b class="ui" data-tr="alignment.error.no_alto">Ordnen Sie beiden Textzeugen ALTO-Seiten zu, bevor Sie sie abgleichen</b>“</strong>: Einem der beiden Textzeugen ist noch keine Seite mit einer Zeilendatei zugeordnet (<a href="#etape2">Schritt 2</a>).</li>
 <li><strong>IIIF-Bild nicht verfügbar</strong>: Der Server antwortet nicht; die Zuordnungen gehen nicht verloren. Versuchen Sie es später erneut oder laden Sie HD-Kopien herunter.</li>
 <li><strong>Verschobene Umrisse auf dem Bild</strong>: Bild und ALTO/PAGE-Datei haben nicht dieselben Proportionen (die Statusleiste meldet es); prüfen Sie, ob die Datei wirklich zu diesem Bild gehört.</li>
 <li><strong>Export verweigert</strong>: Der gewählte Ordner ist nicht leer, oder eine Sigle enthält einen Punkt, <code>/</code> oder <code>\</code>.</li>
