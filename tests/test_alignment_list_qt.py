@@ -177,3 +177,26 @@ def test_the_lines_are_translated(english, window):
     assert window.align_status.item(0).text() == 'A ↔ B: 2 group(s), 2/6 and 2/6 lines'
     assert window.align_status.toolTip() == tr('ui.alignment.list.tip')
     assert 'Double-click' in window.align_status.toolTip()
+
+
+def test_a_refused_pair_is_explained_in_the_chosen_language(english, app, project, monkeypatch):
+    """« Aligner les témoins » sur un témoin sans page ALTO : le refus est
+    traduit (il ne l'était pas : texte français écrit dans le code)."""
+    from varians_synchro.core import create_witness
+    shown = []
+    monkeypatch.setattr(ui_main_window.QtMessageBox, 'warning',
+                        staticmethod(lambda parent, title, text, *a: shown.append(text)))
+    create_witness(project, 'D')                        # sans images ni ALTO
+    window = ui_main_window.GuidedWindow()
+    window.project = project
+    window._changes = ProjectChangeTracker(project)
+    window.refresh()
+    window._open_pair('A', 'D')
+    assert shown == ['Link ALTO pages to both witnesses before aligning them']
+    project['witnesses'] = [w for w in project['witnesses'] if w['id'] != 'C']
+    window.refresh()                                    # C ↔ A : témoin absent
+    assert window.align_status.item(1).text() == 'A witness of this alignment is missing from the project'
+    window._suppress_close_confirmation = True
+    window.close()
+    window.deleteLater()
+    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)

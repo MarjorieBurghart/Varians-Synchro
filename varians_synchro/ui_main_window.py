@@ -620,7 +620,7 @@ class GuidedWindow(QMainWindow):
             try:
                 progress = pair_progress(self.project, session)
             except ValueError as exc:
-                pairs.addItem(QListWidgetItem(str(exc)))
+                pairs.addItem(QListWidgetItem(tr(str(exc))))
                 continue
             item = QListWidgetItem(tr(
                 'ui.alignment.pair_status', reference=session['reference_witness_id'],

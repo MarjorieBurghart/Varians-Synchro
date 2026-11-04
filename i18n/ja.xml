@@ -696,4 +696,20 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
 {error}
 
 技術的な詳細はコンソールまたは起動ログにあります。</string>
+  <string key="alignment.error.duplicate_line_ids">ALTO の行識別子が重複しています</string>
+  <string key="alignment.error.same_witness">異なる 2 つの伝本を選んでください</string>
+  <string key="alignment.error.unknown_witness">不明な伝本です</string>
+  <string key="alignment.error.no_alto">整列する前に、両方の伝本に ALTO ページを関連付けてください</string>
+  <string key="alignment.error.session_witness_missing">この整列の伝本がプロジェクトにありません</string>
+  <string key="alignment.error.link_not_found">対応が見つかりません</string>
+  <string key="alignment.error.unknown_page">不明なページです</string>
+  <string key="alignment.error.invalid_link">対応の状態または種類が無効です</string>
+  <string key="alignment.error.correspondence_sides">対応には両方の伝本の行が必要です</string>
+  <string key="alignment.error.absence_sides">欠落には、行のない側がちょうど 1 つ必要です</string>
+  <string key="alignment.error.unknown_line">関連付けた ALTO ページに存在しない行があります</string>
+  <string key="alignment.error.line_already_linked">すでに関連付けられた行があります。やり直す前に関連付けを解除してください</string>
+  <string key="alignment.error.confidence_range">信頼度が範囲外です</string>
+  <string key="alignment.error.recalculation_conflict">再計算を中止しました。新しい対応どうしが矛盾しています。</string>
+  <string key="alignment.error.invalid_state">無効な状態です</string>
+  <string key="alignment.error.link_not_found_unchanged">対応が見つかりません。何も変更していません</string>
 </translations>

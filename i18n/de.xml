@@ -696,4 +696,20 @@ Warnung: Die Serie konnte nicht im Projekt erfasst werden ({error}). Verwenden S
 {error}
 
 Technische Details stehen in der Konsole oder im Startprotokoll.</string>
+  <string key="alignment.error.duplicate_line_ids">Doppelte ALTO-Zeilenkennungen</string>
+  <string key="alignment.error.same_witness">Wählen Sie zwei verschiedene Textzeugen</string>
+  <string key="alignment.error.unknown_witness">Unbekannter Textzeuge</string>
+  <string key="alignment.error.no_alto">Ordnen Sie beiden Textzeugen ALTO-Seiten zu, bevor Sie sie abgleichen</string>
+  <string key="alignment.error.session_witness_missing">Ein Textzeuge dieses Abgleichs fehlt im Projekt</string>
+  <string key="alignment.error.link_not_found">Zuordnung nicht gefunden</string>
+  <string key="alignment.error.unknown_page">Unbekannte Seite</string>
+  <string key="alignment.error.invalid_link">Ungültiger Status oder ungültige Art der Entsprechung</string>
+  <string key="alignment.error.correspondence_sides">Eine Entsprechung erfordert Zeilen beider Textzeugen</string>
+  <string key="alignment.error.absence_sides">Eine Auslassung erfordert genau eine Seite ohne Zeilen</string>
+  <string key="alignment.error.unknown_line">Mindestens eine Zeile fehlt in den zugeordneten ALTO-Seiten</string>
+  <string key="alignment.error.line_already_linked">Eine Zeile ist bereits zugeordnet: Lösen Sie sie, bevor Sie es erneut versuchen</string>
+  <string key="alignment.error.confidence_range">Konfidenz außerhalb des zulässigen Bereichs</string>
+  <string key="alignment.error.recalculation_conflict">Neuberechnung abgebrochen: Die neuen Entsprechungen widersprechen sich.</string>
+  <string key="alignment.error.invalid_state">Ungültiger Status</string>
+  <string key="alignment.error.link_not_found_unchanged">Zuordnung nicht gefunden: Es wurde nichts geändert</string>
 </translations>

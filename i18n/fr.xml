@@ -703,4 +703,20 @@ Attention : le lot n’a pas pu être rattaché au projet ({error}). Utilisez «
 {error}
 
 Les détails techniques sont dans la console ou le journal de démarrage.</string>
+  <string key="alignment.error.duplicate_line_ids">Identifiants de lignes ALTO dupliqués</string>
+  <string key="alignment.error.same_witness">Choisissez deux témoins distincts</string>
+  <string key="alignment.error.unknown_witness">Témoin inconnu</string>
+  <string key="alignment.error.no_alto">Associez des pages ALTO aux deux témoins avant de synchroniser</string>
+  <string key="alignment.error.session_witness_missing">Un témoin de la session est absent du projet</string>
+  <string key="alignment.error.link_not_found">Association introuvable</string>
+  <string key="alignment.error.unknown_page">Page inconnue</string>
+  <string key="alignment.error.invalid_link">Statut ou nature de correspondance invalide</string>
+  <string key="alignment.error.correspondence_sides">Une correspondance exige des lignes des deux témoins</string>
+  <string key="alignment.error.absence_sides">Une absence exige exactement un côté sans ligne</string>
+  <string key="alignment.error.unknown_line">Au moins une ligne n’existe pas dans les pages ALTO associées</string>
+  <string key="alignment.error.line_already_linked">Une ligne est déjà associée : dissociez-la avant de recommencer</string>
+  <string key="alignment.error.confidence_range">Confiance hors limites</string>
+  <string key="alignment.error.recalculation_conflict">Recalcul interrompu : conflits entre les nouvelles correspondances.</string>
+  <string key="alignment.error.invalid_state">Statut invalide</string>
+  <string key="alignment.error.link_not_found_unchanged">Association introuvable : rien n’a été modifié</string>
 </translations>

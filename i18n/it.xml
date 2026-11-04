@@ -696,4 +696,20 @@ Attenzione: non è stato possibile registrare il lotto nel progetto ({error}). D
 {error}
 
 I dettagli tecnici sono nella console o nel registro di avvio.</string>
+  <string key="alignment.error.duplicate_line_ids">Identificatori di riga ALTO duplicati</string>
+  <string key="alignment.error.same_witness">Scegliere due testimoni diversi</string>
+  <string key="alignment.error.unknown_witness">Testimone sconosciuto</string>
+  <string key="alignment.error.no_alto">Associare pagine ALTO a entrambi i testimoni prima di allinearli</string>
+  <string key="alignment.error.session_witness_missing">Un testimone di questo allineamento manca nel progetto</string>
+  <string key="alignment.error.link_not_found">Associazione non trovata</string>
+  <string key="alignment.error.unknown_page">Pagina sconosciuta</string>
+  <string key="alignment.error.invalid_link">Stato o tipo di corrispondenza non valido</string>
+  <string key="alignment.error.correspondence_sides">Una corrispondenza richiede righe di entrambi i testimoni</string>
+  <string key="alignment.error.absence_sides">Un’assenza richiede esattamente un lato senza righe</string>
+  <string key="alignment.error.unknown_line">Almeno una riga non esiste nelle pagine ALTO associate</string>
+  <string key="alignment.error.line_already_linked">Una riga è già associata: dissociarla prima di riprovare</string>
+  <string key="alignment.error.confidence_range">Confidenza fuori dall’intervallo consentito</string>
+  <string key="alignment.error.recalculation_conflict">Ricalcolo interrotto: le nuove corrispondenze sono in conflitto tra loro.</string>
+  <string key="alignment.error.invalid_state">Stato non valido</string>
+  <string key="alignment.error.link_not_found_unchanged">Associazione non trovata: nulla è stato modificato</string>
 </translations>
