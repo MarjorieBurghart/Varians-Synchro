@@ -262,3 +262,36 @@ def test_the_windowed_program_starts_without_a_console(monkeypatch):
     monkeypatch.setattr(varians_synchro.gui, 'main', lambda: 0)
     monkeypatch.setattr(sys, 'stderr', None)
     assert launcher.main() == 0
+
+
+def test_the_binaries_workflow_builds_for_every_system_and_each_release():
+    """Workflow « Binaries » : Windows, macOS (Apple Silicon et Intel),
+    Linux ; à chaque release publiée et à la main ; mêmes dépendances que
+    la recette ; la fenêtre vérifiée avec le module d'affichage du système ;
+    seul l'envoi à la release peut écrire dans le dépôt."""
+    text = (ROOT / '.github' / 'workflows' / 'binaries.yml').read_text(encoding='utf-8')
+    for runner in ('windows-latest', 'macos-latest', 'macos-15-intel', 'ubuntu-22.04'):
+        assert f'os: {runner}' in text
+    for display in ('windows', 'cocoa', 'xcb'):
+        assert f'display: {display}' in text
+    assert '  release:\n    types: [published]\n' in text
+    assert '  workflow_dispatch:\n' in text
+    assert 'python -m pip install -r requirements.txt -r packaging/requirements.txt' in text
+    assert 'xvfb-run -a python packaging/build.py' in text
+    assert 'gh release upload "$TAG"' in text and '"Varians-Synchro-$version-"*' in text
+    assert 'permissions:\n  contents: read\n' in text and text.count('contents: write') == 1
+
+
+def test_the_workflows_use_actions_that_run_on_node_24():
+    """Node.js 20 est abandonné sur les serveurs de GitHub : les actions
+    sont à une version qui tourne sur Node.js 24 (checkout v5,
+    setup-python v6, upload-artifact v6, download-artifact v7 ou plus)."""
+    minimum = {'actions/checkout': 5, 'actions/setup-python': 6, 'actions/upload-artifact': 6,
+               'actions/download-artifact': 7}
+    found = []
+    for workflow in sorted((ROOT / '.github' / 'workflows').glob('*.yml')):
+        for action, major in re.findall(r'uses:\s*([\w.-]+/[\w.-]+)@v(\d+)', workflow.read_text(encoding='utf-8')):
+            assert action in minimum, (workflow.name, action)
+            assert int(major) >= minimum[action], (workflow.name, action, major)
+            found.append(action)
+    assert set(found) == set(minimum)
