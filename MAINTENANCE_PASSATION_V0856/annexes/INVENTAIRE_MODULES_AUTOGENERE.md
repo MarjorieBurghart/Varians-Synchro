@@ -88,10 +88,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `core`, `errors`, `page_order`
 **Fonctions au premier niveau** : `_http_bytes` (l.19), `_label` (l.29), `_first` (l.40), `parse_manifest` (l.46), `fetch_manifest` (l.85), `create_pages` (l.89), `bind_alto` (l.134), `mapped_alto_page` (l.142), `bind_line_source` (l.149), `mapped_line_page` (l.153), `suggest_alto_bindings` (l.157), `suggest_line_bindings` (l.176), `image_request_url` (l.180), `image_bytes` (l.189), `export_iiif_htr_zip` (l.199), `import_htr_results` (l.236), `iiif_hd_url` (l.274), `export_iiif_hd_images` (l.294)
 
-## `varians_synchro/interpolation.py` (344 lignes)
+## `varians_synchro/interpolation.py` (376 lignes)
 **Objet (docstring source)** : Geometry-first manuscript column matching between confirmed 1:1 anchors. This module never assumes a transcription is correct. A physical ALTO column can be aligned between its first and last confirmed lines even when the ALTO reading-order list is interleaved with other columns, text lines are ragged, or OCR order contains small vertical inversions. The output is *suggestions*, not validated textual equivalence; no source or confirmed link is modified.
 **Dépendances internes observées** : `automatic`, `i18n`, `physical_alignment`
-**Fonctions au premier niveau** : `_bbox` (l.20), `_center_y` (l.32), `_overlap_ratio` (l.36), `_column_interval` (l.42), `_htr_similarity` (l.115), `_partition` (l.124), `_unlinked_segments` (l.172), `_anchor_row` (l.220), `suggest_between_anchors` (l.225)
+**Fonctions au premier niveau** : `_bbox` (l.20), `_center_y` (l.32), `_overlap_ratio` (l.36), `_column_interval` (l.42), `_htr_similarity` (l.115), `_partition` (l.138), `_unlinked_segments` (l.204), `_anchor_row` (l.252), `suggest_between_anchors` (l.257)
 
 ## `varians_synchro/line_scope.py` (100 lignes)
 **Objet (docstring source)** : Project-wide witness ALTO scope: lines excluded from the edited work. Ignored != unaligned != confirmed textual absence. Only project witness records contain ignored_line_ids; no ALTO file, source image or pair-level setting is altered. Existing projects need no migration.
@@ -121,10 +121,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `alto_geometry`
 **Fonctions au premier niveau** : `_name` (l.18), `_direct` (l.22), `_line_text` (l.26), `_region_order` (l.44), `_baseline_points` (l.59), `_line_info` (l.78), `inspect_page_xml` (l.102)
 
-## `varians_synchro/physical_alignment.py` (590 lignes)
+## `varians_synchro/physical_alignment.py` (610 lignes)
 **Objet (docstring source)** : Alignment between physical ALTO lines without TEI or TXT. These sessions have no editorial base: `reference_witness_id` is a reversible technical display/comparison choice, not an assertion about the edition. Original ALTO and images are never edited. Legacy TEI sessions remain separate.
 **Dépendances internes observées** : `alignment`, `automatic`, `errors`, `imaging`, `page_order`
-**Fonctions au premier niveau** : `_now` (l.22), `_hash` (l.26), `line_uid` (l.31), `physical_lines` (l.37), `_witness` (l.70), `create_pair_session` (l.74), `pair_indices` (l.97), `link_is_stale` (l.106), `stale_link_ids` (l.122), `_revalidation_check` (l.131), `revalidate_pair_links` (l.145), `revalidate_pair_link` (l.171), `page_links_impact` (l.177), `add_pair_link` (l.200), `extend_pair_link` (l.237), `detach_pair_lines` (l.311), `is_revisable_automatic` (l.371), `replace_revisable_pair_proposals` (l.383), `remove_pair_link` (l.448), `set_pair_link_states` (l.455), `pair_progress` (l.472), `verify_pair_sessions` (l.503), `suggest_htr_pair_alignment` (l.517), `apply_pair_proposals` (l.576)
+**Fonctions au premier niveau** : `_now` (l.22), `_hash` (l.26), `line_uid` (l.31), `physical_lines` (l.37), `_witness` (l.70), `create_pair_session` (l.74), `pair_indices` (l.97), `link_is_stale` (l.106), `stale_link_ids` (l.122), `_revalidation_check` (l.131), `revalidate_pair_links` (l.145), `revalidate_pair_link` (l.171), `page_links_impact` (l.177), `_link_context` (l.200), `add_pair_link` (l.213), `extend_pair_link` (l.251), `detach_pair_lines` (l.325), `is_revisable_automatic` (l.385), `replace_revisable_pair_proposals` (l.397), `remove_pair_link` (l.466), `set_pair_link_states` (l.473), `pair_progress` (l.490), `verify_pair_sessions` (l.521), `suggest_htr_pair_alignment` (l.535), `apply_pair_proposals` (l.594)
 
 ## `varians_synchro/project_state.py` (35 lignes)
 **Objet (docstring source)** : Reliable, UI-independent detection of project changes since the last save. The project is a JSON-serializable dictionary and nested editors mutate it in place. Comparing its persisted JSON representation catches every such mutation, without a fragile collection of per-button `dirty = True` assignments.

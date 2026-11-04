@@ -197,8 +197,22 @@ def page_links_impact(project, witness_id, page_id):
             'reading_order': bool(page.get('reading_line_order') or page.get('reading_region_order'))}
 
 
+def _link_context(project, session):
+    """What ``add_pair_link`` checks a new group against: the lines of both
+    witnesses, their ignored lines and the lines already linked. Computed
+    once for a whole batch of proposals (it was recomputed for every group:
+    minutes for a manuscript of a few thousand lines)."""
+    known_a, known_b = pair_indices(project, session)
+    return {'known_a': known_a, 'known_b': known_b,
+            'scope_a': set(_witness(project, session['reference_witness_id']).get('ignored_line_ids', [])),
+            'scope_b': set(_witness(project, session['target_witness_id']).get('ignored_line_ids', [])),
+            'linked_a': {uid for link in session['links'] for uid in link['reference_ids']},
+            'linked_b': {uid for link in session['links'] for uid in link['target_ids']}}
+
+
 def add_pair_link(project, session, reference_ids, target_ids, *,
-                  state='validated', kind='correspondence', origin='manual', confidence=None, evidence=None):
+                  state='validated', kind='correspondence', origin='manual', confidence=None, evidence=None,
+                  _context=None):
     first = list(dict.fromkeys(reference_ids))
     second = list(dict.fromkeys(target_ids))
     if state not in STATES or kind not in KINDS:
@@ -207,16 +221,14 @@ def add_pair_link(project, session, reference_ids, target_ids, *,
         raise ValueError('Une correspondance exige des lignes des deux témoins')
     if kind == 'absence' and (bool(first) == bool(second)):
         raise ValueError('Une absence exige exactement un côté sans ligne')
-    known_a, known_b = pair_indices(project, session)
+    context = _context if _context is not None else _link_context(project, session)
+    known_a, known_b = context['known_a'], context['known_b']
     if (set(first) - set(known_a)) or (set(second) - set(known_b)):
         raise ValueError('Au moins une ligne n’existe pas dans les pages ALTO associées')
-    a_scope = set(_witness(project, session['reference_witness_id']).get('ignored_line_ids', []))
-    b_scope = set(_witness(project, session['target_witness_id']).get('ignored_line_ids', []))
-    if set(first) & a_scope or set(second) & b_scope:
+    if set(first) & context['scope_a'] or set(second) & context['scope_b']:
         raise ValueError('Réintégrez les lignes ignorées avant de les associer.')
-    for link in session['links']:
-        if set(first) & set(link['reference_ids']) or set(second) & set(link['target_ids']):
-            raise ValueError('Une ligne est déjà associée : dissociez-la avant de recommencer')
+    if set(first) & context['linked_a'] or set(second) & context['linked_b']:
+        raise ValueError('Une ligne est déjà associée : dissociez-la avant de recommencer')
     link = {
         'id': str(uuid.uuid4()), 'reference_ids': first, 'target_ids': second,
         'fingerprints': {key: (known_a.get(key) or known_b.get(key))['fingerprint']
@@ -230,6 +242,8 @@ def add_pair_link(project, session, reference_ids, target_ids, *,
     if evidence is not None:
         link['evidence'] = evidence
     session['links'].append(link)
+    context['linked_a'].update(first)
+    context['linked_b'].update(second)
     return link
 
 
@@ -396,37 +410,41 @@ def replace_revisable_pair_proposals(project, session, proposals):
     protected = [link for link in before if not is_revisable_automatic(link)]
     revisable = [link for link in before if is_revisable_automatic(link)]
 
-    def ids(link):
-        return set(link.get('reference_ids', [])), set(link.get('target_ids', []))
+    def lines(links):
+        # Lines of a set of groups, per witness: a group overlaps the set
+        # when it shares a line with it (sets, not pairwise comparisons).
+        return ({uid for link in links for uid in link.get('reference_ids', [])},
+                {uid for link in links for uid in link.get('target_ids', [])})
 
-    def overlap(left, right):
-        la, lb = ids(left)
-        ra, rb = ids(right)
-        return bool(la & ra or lb & rb)
+    def touches(link, sides):
+        return bool(set(link.get('reference_ids', [])) & sides[0]
+                    or set(link.get('target_ids', [])) & sides[1])
 
     # Ignore malformed/unrelated candidates. Reject conflicts against any
     # protected link before deciding which machine suggestions are removable.
+    protected_lines = lines(protected)
     accepted = []
+    used = (set(), set())
     for p in selected:
         if (p.get('kind', 'correspondence') != 'correspondence'
                 or not p.get('reference_ids') or not p.get('target_ids')
-                or any(overlap(p, link) for link in protected)
-                or any(overlap(p, prev) for prev in accepted)):
+                or touches(p, protected_lines) or touches(p, used)):
             continue
         accepted.append(p)
+        used[0].update(p['reference_ids'])
+        used[1].update(p['target_ids'])
 
     # Partial manual selection must never drop lines belonging to an old
     # machine group which the new selection has not actually replaced.
     while True:
-        covered_a = {uid for p in accepted for uid in p['reference_ids']}
-        covered_b = {uid for p in accepted for uid in p['target_ids']}
+        covered_a, covered_b = lines(accepted)
         removable = [link for link in revisable
                      if (set(link['reference_ids']) <= covered_a
                          and set(link['target_ids']) <= covered_b
-                         and any(overlap(link, p) for p in accepted))]
+                         and touches(link, (covered_a, covered_b)))]
         remove_ids = {link['id'] for link in removable}
-        remaining = [link for link in revisable if link['id'] not in remove_ids]
-        safe = [p for p in accepted if not any(overlap(p, link) for link in remaining)]
+        remaining = lines([link for link in revisable if link['id'] not in remove_ids])
+        safe = [p for p in accepted if not touches(p, remaining)]
         if len(safe) == len(accepted):
             break
         accepted = safe
@@ -576,6 +594,7 @@ def suggest_htr_pair_alignment(project, session, min_support=.38):
 def apply_pair_proposals(project, session, proposals, include_uncertain=True):
     """Commit only non-conflicting candidates; never overwrite existing edits."""
     inserted=0;skipped=0
+    context = _link_context(project, session)
     for proposal in proposals:
         if proposal.get('state') == 'uncertain' and not include_uncertain:
             skipped += 1;continue
@@ -583,7 +602,8 @@ def apply_pair_proposals(project, session, proposals, include_uncertain=True):
             add_pair_link(project, session, proposal['reference_ids'], proposal['target_ids'],
                           state=proposal['state'], kind='correspondence',
                           origin=proposal.get('origin', 'automatic-htr-htr'),
-                          confidence=proposal.get('confidence'), evidence=proposal.get('evidence'))
+                          confidence=proposal.get('confidence'), evidence=proposal.get('evidence'),
+                          _context=context)
             inserted += 1
         except ValueError:
             skipped += 1
