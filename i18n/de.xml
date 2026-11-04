@@ -683,4 +683,9 @@ Warnung: Die Serie konnte nicht im Projekt erfasst werden ({error}). Verwenden S
   <string key="alignment.stale.vanished">Eine Zeile dieser Gruppe existiert nicht mehr: Lösen Sie die Verknüpfung, statt erneut zu bestätigen.</string>
   <string key="ui.pages.htr.wait">Bilder für die HTR werden exportiert: {current}/{total}</string>
   <string key="ui.pages.htr.cancelled">Export abgebrochen. Es wurde kein unvollständiges Archiv geschrieben.</string>
+  <string key="error.unexpected.title">Aktion fehlgeschlagen</string>
+  <string key="error.unexpected.text">Die Aktion konnte nicht abgeschlossen werden:
+{error}
+
+Technische Details stehen in der Konsole oder im Startprotokoll.</string>
 </translations>

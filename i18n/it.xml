@@ -683,4 +683,9 @@ Attenzione: non è stato possibile registrare il lotto nel progetto ({error}). D
   <string key="alignment.stale.vanished">Una riga di questo gruppo non esiste più: scollegala invece di riconvalidare.</string>
   <string key="ui.pages.htr.wait">Esportazione delle immagini per l’HTR: {current}/{total}</string>
   <string key="ui.pages.htr.cancelled">Esportazione annullata. Nessun archivio parziale è stato scritto.</string>
+  <string key="error.unexpected.title">Azione non riuscita</string>
+  <string key="error.unexpected.text">Non è stato possibile completare l’azione:
+{error}
+
+I dettagli tecnici sono nella console o nel registro di avvio.</string>
 </translations>

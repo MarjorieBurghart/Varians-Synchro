@@ -683,4 +683,9 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="alignment.stale.vanished">このグループの行の一つがもう存在しません。再承認ではなく関連付けを解除してください。</string>
   <string key="ui.pages.htr.wait">HTR 用画像をエクスポート中：{current}/{total}</string>
   <string key="ui.pages.htr.cancelled">エクスポートを取り消しました。不完全なアーカイブは書き込まれていません。</string>
+  <string key="error.unexpected.title">操作を完了できませんでした</string>
+  <string key="error.unexpected.text">操作を完了できませんでした：
+{error}
+
+技術的な詳細はコンソールまたは起動ログにあります。</string>
 </translations>

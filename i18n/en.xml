@@ -690,4 +690,9 @@ Warning: the batch could not be registered in the project ({error}). Use “Atta
   <string key="alignment.stale.vanished">A line of this group no longer exists: unlink it instead of revalidating.</string>
   <string key="ui.pages.htr.wait">Exporting images for HTR: {current}/{total}</string>
   <string key="ui.pages.htr.cancelled">Export cancelled. No partial archive was written.</string>
+  <string key="error.unexpected.title">Action failed</string>
+  <string key="error.unexpected.text">The action could not be completed:
+{error}
+
+Technical details are in the console or the startup log.</string>
 </translations>

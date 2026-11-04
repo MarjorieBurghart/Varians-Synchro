@@ -683,4 +683,9 @@
   <string key="alignment.stale.vanished">Одной из строк этой группы больше нет: разъедините её, а не подтверждайте заново.</string>
   <string key="ui.pages.htr.wait">Экспорт изображений для HTR: {current}/{total}</string>
   <string key="ui.pages.htr.cancelled">Экспорт отменён. Неполный архив не записан.</string>
+  <string key="error.unexpected.title">Действие не выполнено</string>
+  <string key="error.unexpected.text">Не удалось выполнить действие:
+{error}
+
+Технические подробности — в консоли или в журнале запуска.</string>
 </translations>
