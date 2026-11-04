@@ -76,6 +76,19 @@ def start_detached(thread, owner, cancel):
     thread.start()
 
 
+def fit_to_screen(widget, width, height):
+    """``widget.resize(width, height)``, bounded to the usable area of its
+    screen: a window of 1 200 × 850 px did not fit a laptop screen, and its
+    bottom buttons were out of reach."""
+    from PySide6.QtWidgets import QApplication
+    screen = widget.screen() or QApplication.primaryScreen()
+    if screen is None:
+        widget.resize(width, height)
+        return
+    area = screen.availableGeometry()
+    widget.resize(min(width, int(area.width() * .95)), min(height, int(area.height() * .90)))
+
+
 def _stop_detached_threads():
     for thread, cancel in list(_DETACHED_THREADS.items()):
         cancel.set()

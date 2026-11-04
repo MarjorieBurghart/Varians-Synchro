@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (QGroupBox, QHBoxLayout, QLineEdit, QListWidgetIte
 
 from .errors import localized_text
 from .i18n import tr
-from .ui_widgets import (_run_modal, decode_page_image, QComboBox, QDialog, QLabel, QListWidget, QMessageBox,
+from .ui_widgets import (fit_to_screen, _run_modal, decode_page_image, QComboBox, QDialog, QLabel, QListWidget, QMessageBox,
                          QPushButton)
 
 
@@ -179,7 +179,7 @@ class TEIPhysicalBindingDialog(QDialog):
         self._pairs = []
         self._previewed_endpoints = set()
         self.setWindowTitle(tr('tei.binding.title'))
-        self.resize(1200, 850)
+        fit_to_screen(self, 1200, 850)
         layout = QVBoxLayout(self)
         hint = QLabel(tr('tei.binding.help'))
         hint.setWordWrap(True)

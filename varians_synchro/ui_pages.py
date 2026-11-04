@@ -15,7 +15,7 @@ from .imaging import create_pages, import_htr_results, mapped_alto_page
 from .physical_alignment import page_links_impact
 from .reading_stream import rebind_page
 from .ui_batch_binding import BatchBindingDialog
-from .ui_widgets import (_run_modal, call_soon, decode_page_image, page_image_reader_ok, plain_tip,
+from .ui_widgets import (fit_to_screen, _run_modal, call_soon, decode_page_image, page_image_reader_ok, plain_tip,
                          start_detached, QDialog, QFileDialog, QInputDialog,
                          QLabel, QListWidget, QMessageBox, QPushButton)
 from shiboken6 import isValid
@@ -120,7 +120,7 @@ class PagesDialog(QDialog):
         self._network = QNetworkAccessManager(self)
         self._rebuilding = False
         self.setWindowTitle(tr('ui.xml.pages_title') + witness['id'])
-        self.resize(1020, 700)
+        fit_to_screen(self, 1020, 700)
         main = QVBoxLayout(self)
         hint = QLabel(tr('ui.xml.pages_hint')); hint.setWordWrap(True)
         main.addWidget(hint)

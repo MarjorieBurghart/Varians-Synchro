@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (QCheckBox, QHBoxLayout, QMessageBox as QtMessageB
 
 from .errors import localized_text
 from .i18n import tr
-from .ui_widgets import call_soon, page_image_reader_ok, plain_tip, QComboBox, QDialog, QLabel, QMessageBox, QPushButton
+from .ui_widgets import fit_to_screen, call_soon, page_image_reader_ok, plain_tip, QComboBox, QDialog, QLabel, QMessageBox, QPushButton
 
 
 class ProtectedBindingComboBox(QComboBox):
@@ -34,7 +34,7 @@ class BatchBindingDialog(QDialog):
         self.witness = witness
         self.plan = propose_bindings(witness)
         self.setWindowTitle(tr('resources.binding.title'))
-        self.resize(950, 610)
+        fit_to_screen(self, 950, 610)
         layout = QVBoxLayout(self)
         help_text = QLabel(tr('resources.binding.help'))
         help_text.setWordWrap(True)

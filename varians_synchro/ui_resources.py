@@ -11,7 +11,7 @@ from PySide6.QtWidgets import (QCheckBox, QFrame, QGroupBox, QHBoxLayout, QLineE
 from .errors import localized, localized_text
 from .i18n import tr
 from .ui_batch_binding import BatchBindingDialog
-from .ui_widgets import (_run_modal, start_detached, QDialog, QFileDialog, QInputDialog, QLabel, QListWidget,
+from .ui_widgets import (fit_to_screen, _run_modal, start_detached, QDialog, QFileDialog, QInputDialog, QLabel, QListWidget,
                          QMessageBox, QPushButton)
 
 
@@ -43,7 +43,7 @@ class WitnessResourceDialog(QDialog):
         self.pending = {'images': [], 'xml_files': [], 'tei_files': [], 'manifests': []}
         self.removals = []        # (kind, id) des ressources enregistrées à retirer
         self.setWindowTitle(tr('resources.witness.edit' if witness else 'resources.witness.new'))
-        self.resize(790, 690)
+        fit_to_screen(self, 790, 690)
         layout = QVBoxLayout(self)
         hint = QLabel(tr('resources.witness.help'))
         hint.setWordWrap(True)

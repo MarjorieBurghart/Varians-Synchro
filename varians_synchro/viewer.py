@@ -229,7 +229,10 @@ class LineImagePanel(QWidget):
         self.next.clicked.connect(lambda: self.switch_offset(1))
         self.page_combo.currentIndexChanged.connect(self._on_page_changed)
 
+        # Two rows (zoom, then display options): on one row, a panel needed
+        # 775 px and the synchronisation window did not fit a laptop screen.
         controls = QHBoxLayout(); root.addLayout(controls)
+        options = QHBoxLayout(); root.addLayout(options)
         for label, tip, handler in (
             ('−', 'Dézoomer', lambda: self.view.scale(0.8, 0.8)),
             ('+', 'Agrandir', lambda: self.view.scale(1.25, 1.25)),
@@ -240,17 +243,18 @@ class LineImagePanel(QWidget):
             button.clicked.connect(handler); controls.addWidget(button)
         self.overlay_toggle = QCheckBox(tr('viewer.alto.toggle')); self.overlay_toggle.setChecked(True)
         self.overlay_toggle.toggled.connect(self.refresh_overlay)
-        controls.addWidget(self.overlay_toggle)
+        options.addWidget(self.overlay_toggle)
         self.compact_overlay = QCheckBox(tr('viewer.compact_overlay'))
         self.compact_overlay.setChecked(False)
         self.compact_overlay.setToolTip(tr('viewer.compact_overlay.tip'))
         self.compact_overlay.toggled.connect(self._compact_toggled)
-        controls.addWidget(self.compact_overlay)
+        options.addWidget(self.compact_overlay)
         self.show_htr = QCheckBox(tr('viewer.htr.toggle')); self.show_htr.setChecked(False)
         # Do not merely remove HTR words from the list: the complete HTR pane
         # must disappear so the manuscript can use the reclaimed height.
         self.show_htr.toggled.connect(self._toggle_htr_panel)
-        controls.addWidget(self.show_htr)
+        options.addWidget(self.show_htr)
+        options.addStretch(1)
         controls.addStretch(1)
 
         # The line list is still the internal selection model when hidden:

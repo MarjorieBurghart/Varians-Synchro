@@ -31,10 +31,10 @@ from .ui_widgets import (_run_modal, QComboBox, QDialog, QLabel, QListWidget, QM
 
 
 class PairDialog(QDialog):
+    """Visual-first manual alignment; HTR is optional secondary information."""
     # F1 : l'aide, à la section de cette fenêtre (enfant de la fenêtre,
     # donc utilisable bien que celle-ci soit modale).
     help_anchor = 'synchronisation'
-    """Visual-first manual alignment; HTR is optional secondary information."""
     def __init__(self, project, session, parent=None):
         super().__init__(parent)
         self.project = project
@@ -239,17 +239,21 @@ class PairDialog(QDialog):
         self.validate_review_button = QPushButton(tr('review.validate.next'))
         self.validate_review_button.clicked.connect(self.validate_and_next)
         review_bar.addWidget(self.validate_review_button)
+        review_bar.addStretch(1)
+        # Second row: the bar did not fit a laptop screen on one row.
+        review_actions = QHBoxLayout(); main.addLayout(review_actions)
         self.batch_review_button = QPushButton(tr('review.validate.selected'))
         self.batch_review_button.clicked.connect(self.validate_review_selection)
-        review_bar.addWidget(self.batch_review_button)
+        review_actions.addWidget(self.batch_review_button)
         self.local_review_button = QPushButton(tr('review.recalculate.next'))
         self.local_review_button.clicked.connect(self.recalculate_next_interval)
-        review_bar.addWidget(self.local_review_button)
+        review_actions.addWidget(self.local_review_button)
         # Groups whose lines changed after a new segmentation of a page.
         self.revalidate_button = QPushButton(tr('alignment.stale.revalidate'))
         self.revalidate_button.setToolTip(tr('alignment.stale.revalidate.tip'))
         self.revalidate_button.clicked.connect(self.revalidate_selection)
-        review_bar.addWidget(self.revalidate_button)
+        review_actions.addWidget(self.revalidate_button)
+        review_actions.addStretch(1)
         self.links = QListWidget(); self.links.setMaximumHeight(125)
         self.links.setMinimumHeight(50)
         self.links.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)

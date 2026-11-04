@@ -23,7 +23,7 @@ from PySide6.QtWidgets import (QDialogButtonBox, QHBoxLayout, QLabel, QLineEdit,
 from .help_search import Section, Utf16Positions, search
 from .errors import localized_text
 from .i18n import get_language, tr
-from .ui_widgets import QDialog, call_soon
+from .ui_widgets import fit_to_screen, QDialog, call_soon
 
 HELP_DIR = Path(__file__).resolve().parent.parent / 'help'
 
@@ -50,7 +50,7 @@ class HelpDialog(QDialog):
         super().__init__(parent)
         self.setWindowTitle(tr('help.title'))
         self.setModal(False)
-        self.resize(980, 720)
+        fit_to_screen(self, 980, 720)
         layout = QVBoxLayout(self)
 
         bar = QHBoxLayout()
