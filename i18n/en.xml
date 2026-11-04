@@ -613,7 +613,8 @@ Reordering does not change sources.</string>
   <string key="ui.alignment.open.tip">Open the visual line-alignment interface for the pivot and a secondary witness.</string>
   <string key="ui.final.export_project.action">Create a preconfigured Varians project…</string>
   <string key="ui.final.export_project.tip">Prepare a project folder with project.xml, a copy of the pivot TEI, witnesses and alignment JSON files. Verify compatibility with your installed Varians version.</string>
-  <string key="ui.final.export_project.no_tei">To create a Varians project that opens directly, first attach a TEI edition to the pivot witness.</string>
+  <string key="ui.final.export_project.no_tei">No TEI edition is attached to the pivot witness: the Varians project will receive an empty TEI edition, as with “Start a new transcription” in Varians.</string>
+  <string key="ui.final.export_project.prepare_pivot">To prepare the pivot witness’s &lt;pb/&gt; and &lt;lb/&gt; in it: in Varians, File menu → “Project settings…”, check “Prepare pivot-witness &lt;pb/&gt; markers in an empty TEI”.</string>
   <string key="ui.final.export_project.confirm">The export uses the known Varians project.xml format and references your images and ALTO/PAGE sources. External paths may require updating on another computer. Continue?</string>
   <string key="ui.final.export_project.success">Varians project created:
 {path}

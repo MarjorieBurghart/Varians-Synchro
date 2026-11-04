@@ -608,7 +608,8 @@
   <string key="ui.alignment.open.tip">Открыть визуальную сверку строк опорного и другого свидетеля.</string>
   <string key="ui.final.export_project.action">Создать предварительно заполненный проект Varians…</string>
   <string key="ui.final.export_project.tip">Подготовить папку проекта с project.xml, копией опорного TEI, свидетелями и файлами JSON выравнивания. Проверьте совместимость с установленной версией Varians.</string>
-  <string key="ui.final.export_project.no_tei">Для создания открываемого проекта Varians сначала привяжите TEI к опорному свидетелю.</string>
+  <string key="ui.final.export_project.no_tei">С опорным свидетелем не связано издание TEI: проект Varians получит пустое издание TEI, как при команде «Начать новую транскрипцию» в Varians.</string>
+  <string key="ui.final.export_project.prepare_pivot">Чтобы подготовить в нём метки &lt;pb/&gt; и &lt;lb/&gt; опорного свидетеля: в Varians, меню «Файл» → «Параметры проекта…», отметьте «Создать метки &lt;pb/&gt; опорного свидетеля в пустом TEI».</string>
   <string key="ui.final.export_project.confirm">Экспорт использует известный формат project.xml программы Varians и ссылки на ваши изображения и источники ALTO/PAGE. На другом компьютере может потребоваться изменить внешние пути. Продолжить?</string>
   <string key="ui.final.export_project.success">Проект Varians создан:\n{path}\nОткройте project.xml в Varians.</string>
   <string key="ui.pages.hd.action">Скачать выбранные изображения IIIF в HD…</string>

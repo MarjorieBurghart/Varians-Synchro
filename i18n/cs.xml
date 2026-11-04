@@ -608,7 +608,8 @@ Upraví se {affected} nejistých automatických skupin; vytvoří se {groups} sk
   <string key="ui.alignment.open.tip">Otevřít vizuální porovnání řádků mezi pivotem a dalším svědkem.</string>
   <string key="ui.final.export_project.action">Vytvořit předvyplněný projekt Varians…</string>
   <string key="ui.final.export_project.tip">Připravit složku projektu s project.xml, kopií referenční TEI, svědky a soubory JSON zarovnání. Ověřte kompatibilitu s nainstalovanou verzí Varians.</string>
-  <string key="ui.final.export_project.no_tei">Pro vytvoření projektu Varians nejprve přiřaďte edici TEI k pivotu.</string>
+  <string key="ui.final.export_project.no_tei">K pivotu není přiřazena žádná edice TEI: projekt Varians dostane prázdnou edici TEI, jako při volbě „Začít novou transkripci“ ve Varians.</string>
+  <string key="ui.final.export_project.prepare_pivot">Chcete-li v ní připravit značky &lt;pb/&gt; a &lt;lb/&gt; pivotu: ve Varians v nabídce Soubor → „Nastavení projektu…“ zaškrtněte „Připravit značky &lt;pb/&gt; pivotního svědka v prázdném TEI“.</string>
   <string key="ui.final.export_project.confirm">Export používá známý formát Varians project.xml a odkazuje na vaše obrázky a zdroje ALTO/PAGE. Na jiném počítači může být třeba upravit externí cesty. Pokračovat?</string>
   <string key="ui.final.export_project.success">Projekt Varians vytvořen:\n{path}\nOtevřete project.xml ve Varians.</string>
   <string key="ui.pages.hd.action">Stáhnout vybrané obrázky IIIF v HD…</string>

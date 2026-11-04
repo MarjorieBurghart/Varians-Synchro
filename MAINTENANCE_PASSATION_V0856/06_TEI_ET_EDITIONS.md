@@ -33,7 +33,7 @@ Conserver espaces de noms et attributs d'identifiants. Une ambiguïté de choix 
 - Édition sans `<lb/>` attribués à un témoin, variantes sans lecture unique, identifiants de `<lb/>` dupliqués, changement de TEI après import.
 - Ligne physique nouvellement exclue ou réordonnée : réexiger une prévisualisation.
 - Plusieurs ressources TEI concurrentes : `linked_tei_texts` ne les fusionne pas ; décider explicitement de l'édition de référence.
-- Pivot sans TEI : **permet** un export de correspondances physiques vers des JSON mais **interdit** un projet Varians complet via `varians_project_export` (TEI unique obligatoire).
+- Pivot sans TEI : **permet** un export de correspondances physiques vers des JSON et un projet Varians complet via `varians_project_export`, avec la TEI vide de Varians ; les `<pb/>` et `<lb/>` du pivot y sont préparés par Varians (« Paramètres du projet »). Plusieurs TEI pour le pivot : export refusé, il faut en choisir une.
 
 ## Pour l'héritage et la refonte future
 

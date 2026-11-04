@@ -2,6 +2,7 @@
 
 - Dépôt GitHub : CI Linux et Windows, empreintes SHA remplacées par l’historique Git.
 - Export du projet pour Varians vérifié en l’ouvrant avec le vrai code de Varians 0.9.4.0 ; ordre de lecture corrigé et lignes hors périmètre respectés.
+- Projet Varians pré-renseigné sans édition TEI du pivot : plus de refus ; le projet reçoit la TEI vide que Varians crée pour une nouvelle transcription, et les messages indiquent comment y préparer les `<pb/>` et `<lb/>` du pivot dans Varians (« Paramètres du projet »).
 - Correspondances périmées après une nouvelle segmentation : avertissement avant de changer le XML d’une page, marque dans la liste, exclusion des calculs, revalidation.
 - Interface : barre de progression du téléchargement HD, fenêtres libérées après fermeture, export HTR hors du fil de l’interface avec annulation, erreurs imprévues affichées, « Annuler » de la liaison TEI sans effet sur le projet, appels différés (vignettes, ordre des pages, visionneuse) abandonnés avec leur fenêtre, fenêtre « Propositions HTR–HTR » : bouton « Enregistrer la sélection » (au lieu de « Conserver la sélection », trompeur sans présélection), boutons « Tout / Rien », sélection vide refusée, espaces rétablies dans les traductions.
 - Code : `guided_ui.py` (3 300 lignes) découpé en modules `ui_*`, une fenêtre par module, sans changement du code des classes ; `make_guided_window()` sans paramètre ; les quatre fenêtres de propositions de la synchronisation passent par une fenêtre commune (`ui_proposals.py`), désormais testée, sans changement de comportement.

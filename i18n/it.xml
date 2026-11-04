@@ -608,7 +608,8 @@ Saranno adeguati {affected} gruppi automatici incerti; saranno creati {groups} g
   <string key="ui.alignment.open.tip">Aprire il controllo visivo delle righe fra pivot e testimone secondario.</string>
   <string key="ui.final.export_project.action">Crea progetto Varians precompilato…</string>
   <string key="ui.final.export_project.tip">Preparare una cartella di progetto con project.xml, copia della TEI pivot, testimoni e file JSON di allineamento. Verificare la compatibilità con la versione di Varians installata.</string>
-  <string key="ui.final.export_project.no_tei">Per creare un progetto Varians apribile, collega prima una TEI al pivot.</string>
+  <string key="ui.final.export_project.no_tei">Al pivot non è associata alcuna edizione TEI: il progetto Varians riceverà un’edizione TEI vuota, come con «Inizia una nuova trascrizione» in Varians.</string>
+  <string key="ui.final.export_project.prepare_pivot">Per prepararvi i &lt;pb/&gt; e i &lt;lb/&gt; del pivot: in Varians, menu File → «Impostazioni progetto…», selezionare «Preparare i marcatori &lt;pb/&gt; del testimone pivot in un TEI vuoto».</string>
   <string key="ui.final.export_project.confirm">L'esportazione utilizza il formato noto project.xml di Varians e fa riferimento alle immagini e alle sorgenti ALTO/PAGE. Su un altro computer potrebbe essere necessario aggiornare i percorsi esterni. Continuare?</string>
   <string key="ui.final.export_project.success">Progetto Varians creato:\n{path}\nApri project.xml in Varians.</string>
   <string key="ui.pages.hd.action">Scarica le immagini IIIF selezionate in HD…</string>

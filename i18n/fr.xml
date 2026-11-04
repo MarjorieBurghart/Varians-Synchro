@@ -613,7 +613,8 @@ Le réordonnancement ne modifie pas les sources.</string>
   <string key="ui.alignment.open.tip">Ouvrir le contrôle visuel des lignes entre le pivot et le témoin secondaire.</string>
   <string key="ui.final.export_project.action">Créer un projet Varians pré-renseigné…</string>
   <string key="ui.final.export_project.tip">Préparer un dossier avec project.xml, une copie de la TEI du pivot, les témoins et leurs JSON. Compatibilité à vérifier dans votre version de Varians.</string>
-  <string key="ui.final.export_project.no_tei">Pour créer un projet Varians directement ouvrable, associez d’abord une édition TEI au témoin pivot.</string>
+  <string key="ui.final.export_project.no_tei">Aucune édition TEI n’est associée au témoin pivot : le projet Varians recevra une édition TEI vide, comme avec « Commencer une nouvelle transcription » dans Varians.</string>
+  <string key="ui.final.export_project.prepare_pivot">Pour y préparer les &lt;pb/&gt; et les &lt;lb/&gt; du témoin pivot : dans Varians, menu Fichier → « Paramètres du projet… », cochez « Préparer les &lt;pb/&gt; du témoin pivot dans la TEI vide ».</string>
   <string key="ui.final.export_project.confirm">L’export utilisera le format project.xml connu de Varians et des références vers vos images et ALTO/PAGE. Les chemins externes peuvent nécessiter une adaptation sur un autre poste. Continuer ?</string>
   <string key="ui.final.export_project.success">Projet Varians créé :
 {path}

@@ -360,13 +360,13 @@ class GuidedWindow(QMainWindow):
         base = self.project.get('pivot_witness_id') or self.reference_box.currentData()
         has_tei = any(r.get('kind') == 'tei' and r.get('witness_id') == base
                       for r in self.project.get('text_resources', []))
-        if not has_tei:
-            QMessageBox.warning(self, tr('ui.final.export_project.action'),
-                                tr('ui.final.export_project.no_tei'))
-            return
+        # Without a TEI edition, the project gets the blank edition Varians
+        # creates for a new transcription; Varians prepares the pivot in it.
+        blank = '' if has_tei else (tr('ui.final.export_project.no_tei') + '\n\n' +
+                                    tr('ui.final.export_project.prepare_pivot') + '\n\n')
         decision = QMessageBox.question(
             self, tr('ui.final.export_project.action'),
-            tr('ui.final.export_project.confirm'),
+            blank + tr('ui.final.export_project.confirm'),
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No)
         if decision != QMessageBox.StandardButton.Yes:
@@ -380,7 +380,8 @@ class GuidedWindow(QMainWindow):
             QMessageBox.critical(self, tr('ui.final.export_project.action'), str(exc))
         else:
             QMessageBox.information(self, tr('ui.final.export_project.action'),
-                tr('ui.final.export_project.success', path=str(Path(folder) / 'project.xml')))
+                tr('ui.final.export_project.success', path=str(Path(folder) / 'project.xml'))
+                + ('' if has_tei else '\n\n' + tr('ui.final.export_project.prepare_pivot')))
 
     def audit_project_integrity(self):
         """Editorial preflight in plain language; data and links remain untouched."""

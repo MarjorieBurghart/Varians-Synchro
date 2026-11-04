@@ -82,8 +82,47 @@ def _cache_varians_manifest(source: dict, stage: Path, wid: str) -> bool:
         ensure_ascii=False, indent=2), encoding='utf-8')
     return True
 
+TEI_NS = 'http://www.tei-c.org/ns/1.0'
+XML_NS = 'http://www.w3.org/XML/1998/namespace'
+TEI_ALL_RNG = 'https://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng'
+
+
+def blank_tei_edition(title, witnesses):
+    """La TEI vide que crée Varians pour une « transcription vierge »
+    (``project_management.minimal_tei_text``, schéma « auto », langue fr) :
+    titre, liste des témoins (cibles de ``@wit``), un ``<p/>`` vide, et les
+    deux ``xml-model`` vers TEI All. Varians peut ensuite y préparer les
+    ``<pb/>`` et ``<lb/>`` du pivot (« Paramètres du projet »). Identique
+    octet pour octet à celle de Varians : tests/test_varians_blank_edition.py."""
+    def q(name):
+        return f'{{{TEI_NS}}}{name}'
+    root = ET.Element(q('TEI'))
+    file_desc = ET.SubElement(ET.SubElement(root, q('teiHeader')), q('fileDesc'))
+    ET.SubElement(ET.SubElement(file_desc, q('titleStmt')), q('title')).text = \
+        (title or 'Nouvelle édition').strip()
+    publication = ET.SubElement(file_desc, q('publicationStmt'))
+    source_desc = ET.SubElement(file_desc, q('sourceDesc'))
+    ET.SubElement(publication, q('p')).text = 'Édition en préparation.'
+    list_wit = ET.SubElement(source_desc, q('listWit'))
+    for witness in witnesses:
+        ET.SubElement(list_wit, q('witness'), {f'{{{XML_NS}}}id': witness['id']}).text = \
+            str(witness.get('label') or witness['id']).strip()
+    ET.SubElement(ET.SubElement(ET.SubElement(root, q('text')), q('body')), q('p'))
+    ET.indent(root, space='  ')
+    xml = ET.tostring(root, encoding='unicode', short_empty_elements=False,
+                      default_namespace=TEI_NS)
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n'
+            f'<?xml-model href="{TEI_ALL_RNG}" type="application/xml" '
+            'schematypens="http://relaxng.org/ns/structure/1.0"?>\n'
+            f'<?xml-model href="{TEI_ALL_RNG}" type="application/xml" '
+            'schematypens="http://purl.oclc.org/dsdl/schematron"?>\n' + xml + '\n')
+
+
 def export_varians_project(project, pivot_id, destination, *, include_uncertain=False):
     """Stage a project.xml, the pivot TEI copy, alignment JSONs and resources.
+
+    Without a TEI edition of the pivot, the project gets the blank edition
+    Varians creates for a new transcription (``blank_tei_edition``).
 
     External images/ALTO remain linked by their original paths. One IIIF
     Manifest per witness is supported by Varians's project configuration.
@@ -106,13 +145,14 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
         raise ValueError('Deux sigles deviennent identiques dans le cache IIIF local Varians')
     tei = [r for r in project.get('text_resources', [])
            if r.get('kind') == 'tei' and r.get('witness_id') == pivot_id]
-    if len(tei) != 1:
-        raise ValueError('Le pivot doit posséder exactement une édition TEI pour cet export ; '
+    if len(tei) > 1:
+        raise ValueError('Le pivot doit posséder au plus une édition TEI pour cet export ; '
                          'sélectionnez une édition de référence.')
-    tei_path = _source_path(tei[0]['path'])
-    tree = ET.parse(tei_path)
-    if tree.getroot().tag.rsplit('}', 1)[-1] not in {'TEI', 'teiCorpus'}:
-        raise ValueError('L’édition du pivot ne présente pas une racine TEI')
+    tei_path = _source_path(tei[0]['path']) if tei else None
+    if tei_path is not None:
+        tree = ET.parse(tei_path)
+        if tree.getroot().tag.rsplit('}', 1)[-1] not in {'TEI', 'teiCorpus'}:
+            raise ValueError('L’édition du pivot ne présente pas une racine TEI')
     packages, diagnostics = make_varians_alignments(project, pivot_id,
                                                      include_uncertain=include_uncertain)
     verify_export_payloads(packages, pivot_id)
@@ -136,8 +176,9 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
     # partial witness falls back to a silently incomplete offline configuration.
     hd_plans = {w['id']: local_copy_plan(w) for w in witnesses
                 if any(p.get('image_kind') == 'iiif' for p in w.get('pages', []))}
+    title = str(project.get('name') or 'Édition Varians')
     root = ET.Element('teiManuscriptProject', version='1')
-    ET.SubElement(root, 'title').text = str(project.get('name') or 'Édition Varians')
+    ET.SubElement(root, 'title').text = title
     ET.SubElement(root, 'edition', file='xml/edition.xml')
     ET.SubElement(root, 'schema', type='relaxng', source='xml-model')
     ET.SubElement(root, 'interface', language='fr', translationsDir='i18n', fallbackLanguage='en')
@@ -231,7 +272,11 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
             if remote:
                 _cache_varians_manifest(remote, stage, wid)
         (stage / 'xml').mkdir()
-        shutil.copy2(tei_path, stage / 'xml' / 'edition.xml')
+        if tei_path is not None:
+            shutil.copy2(tei_path, stage / 'xml' / 'edition.xml')
+        else:
+            (stage / 'xml' / 'edition.xml').write_text(
+                blank_tei_edition(title, witnesses), encoding='utf-8', newline='\n')
         (stage / 'alignments').mkdir()
         for wid, data in packages.items():
             (stage / 'alignments' / f'{wid}.json').write_text(
@@ -256,6 +301,12 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
             'ALTO/PAGE ne sont pas déclarés dans project.xml (Varians les superposerait au JSON).\n'
             'Les identifiants exportés sont des références physiques ; la présence de la TEI\n'
             'ne prouve pas à elle seule que ses <lb/> sont reconnus par Varians.\n'
+            + ('' if tei_path is not None else
+               'Édition : TEI vide, comme une « transcription vierge » de Varians (aucune\n'
+               'édition TEI n\u2019était associée au témoin pivot). Pour y préparer les <pb/>\n'
+               'et les <lb/> du pivot : dans Varians, Fichier → Paramètres du projet…, cocher\n'
+               '« Préparer les <pb/> du témoin pivot dans la TEI vide » (et « Générer aussi\n'
+               'les <lb/> depuis ALTO, PAGE ou la synchronisation »).\n')
             + ('Copies IIIF HD locales vérifiées et incluses (témoin : nombre) : ' + str(copied) + '\n'
                if copied else 'Aucune copie IIIF HD locale incluse : couverture incomplète ou absente.\n')
             + '\n'.join(f'{wid} : copies HD refusées, Canvas segmentés manquants : '
@@ -285,5 +336,7 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
             shutil.rmtree(stage, ignore_errors=True)
     return {'project_file': str(dest / 'project.xml'),
             'witnesses': len(witnesses), 'base': pivot_id,
-            'tei': str(tei_path), 'alignment_diagnostics': diagnostics,
+            'tei': str(tei_path) if tei_path is not None else None,
+            'edition': 'copied' if tei_path is not None else 'blank',
+            'alignment_diagnostics': diagnostics,
             'local_hd_copies': copied, 'hd_plans': {wid:{k:plan[k] for k in ('eligible','required','missing','problems')} for wid,plan in hd_plans.items()}}
