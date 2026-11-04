@@ -67,6 +67,9 @@ class GuidedWindow(QMainWindow):
         help_button.clicked.connect(self.open_user_manual)
         from PySide6.QtGui import QKeySequence, QShortcut
         QShortcut(QKeySequence('F1'), self, self.open_user_manual)
+        QShortcut(QKeySequence(QKeySequence.StandardKey.Save), self, self.save)
+        QShortcut(QKeySequence(QKeySequence.StandardKey.Open), self, self.open)
+        QShortcut(QKeySequence(QKeySequence.StandardKey.New), self, self.new)
         top.addWidget(help_button)
         top.addWidget(QLabel(tr('common.language')))
         self.language_box = QComboBox()
@@ -188,6 +191,7 @@ class GuidedWindow(QMainWindow):
         self.inventory.setHeaderLabels([tr('resources.project.witness'),
                                         tr('resources.project.status')])
         self.inventory.itemClicked.connect(self.edit_inventory_item)
+        self.inventory.itemActivated.connect(self.edit_inventory_item)       # Entrée, Espace
         main.addWidget(self.inventory, 1)
         self.stack.addWidget(page)
 

@@ -45,10 +45,13 @@ class SingleWitnessScopeDialog(QDialog):
         save_button.clicked.connect(self.commit)
         footer.addWidget(save_button)
         cancel = QPushButton(tr('resources.cancel'))
-        cancel.clicked.connect(self.reject)
+        cancel.clicked.connect(self.cancel)
         cancel.setToolTip(tr('ui.resources.cancel.tip'))
         footer.addWidget(cancel)
         self.update_styles()
+
+    def has_unsaved_draft(self):
+        return self.staged_project != self.original_project
 
     def update_styles(self):
         ignored = ignored_ids(self.witness)

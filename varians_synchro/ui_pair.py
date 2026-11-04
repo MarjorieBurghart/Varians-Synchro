@@ -31,6 +31,9 @@ from .ui_widgets import (_run_modal, QComboBox, QDialog, QLabel, QListWidget, QM
 
 
 class PairDialog(QDialog):
+    # F1 : l'aide, à la section de cette fenêtre (enfant de la fenêtre,
+    # donc utilisable bien que celle-ci soit modale).
+    help_anchor = 'synchronisation'
     """Visual-first manual alignment; HTR is optional secondary information."""
     def __init__(self, project, session, parent=None):
         super().__init__(parent)
@@ -125,14 +128,7 @@ class PairDialog(QDialog):
         self.assoc_shortcut2.activated.connect(lambda: self.attach('correspondence'))
         self.absence_shortcut = QShortcut(QKeySequence('Ctrl+Shift+A'), self)
         self.absence_shortcut.activated.connect(self.confirm_selected_absence)
-        # F1 : l'aide, à la section de cette fenêtre (enfant de la fenêtre,
-        # donc utilisable bien que celle-ci soit modale).
-        self.help_shortcut = QShortcut(QKeySequence('F1'), self)
-        self.help_shortcut.activated.connect(self.open_help)
 
-    def open_help(self):
-        from .ui_help import open_help
-        open_help(self, 'synchronisation')
 
     def _build_filters(self, main):
         """Consigne, cadres visibles, recherche dans le texte TEI, légende."""
@@ -259,6 +255,7 @@ class PairDialog(QDialog):
         self.links.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self._populating_links = False
         self.links.itemDoubleClicked.connect(lambda _: self.focus_link())
+        self.links.itemActivated.connect(lambda _: self.focus_link())        # Entrée
         self.links.currentItemChanged.connect(self._review_focus_changed)
         self.review_filter.currentIndexChanged.connect(lambda _: self.populate())
         main.addWidget(self.links)

@@ -39,6 +39,7 @@ def help_path(language=None):
 
 
 class HelpDialog(QDialog):
+    help_anchor = None          # the guide itself: no F1 to open it again
     """Le guide utilisateur, avec sa recherche."""
 
     # Au-delà, seule l'occurrence courante est surlignée (une lettre seule

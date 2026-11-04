@@ -941,4 +941,6 @@ Technical details are in the console or the startup log.</string>
 
 Varians-Synchro never writes such paths: they come from a received or hand-edited project. Read these files? If you answer No, they will be treated as missing; the project keeps their paths.</string>
   <string key="error.tei_binding.too_deep">The TEI is nested too deeply to be read.</string>
+  <string key="common.discard_title">Discard the changes</string>
+  <string key="common.discard_question">The changes made in this window are not saved. Discard them?</string>
 </translations>

@@ -125,9 +125,18 @@ class WitnessResourceDialog(QDialog):
         accept.setToolTip(tr('ui.resources.save.tip'))
         footer.addWidget(accept)
         cancel = QPushButton(tr('resources.cancel'))
-        cancel.clicked.connect(self.reject)
+        cancel.clicked.connect(self.cancel)
         cancel.setToolTip(tr('ui.resources.cancel.tip'))
         footer.addWidget(cancel)
+
+    def has_unsaved_draft(self):
+        """Resources added or marked for removal, or a description or pivot
+        changed: Escape, the close button or « Cancel » ask first."""
+        original = self.original_witness or {}
+        is_pivot = bool(original) and self.original_project.get('pivot_witness_id') == original.get('id')
+        return (any(self.pending.values()) or bool(self.removals)
+                or self.label_edit.text().strip() != (original.get('label') or '').strip() and bool(original)
+                or self.pivot.isChecked() != is_pivot)
 
     def _existing(self, category):
         if self.original_witness is None:

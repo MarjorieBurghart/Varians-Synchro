@@ -934,4 +934,6 @@ I dettagli tecnici sono nella console o nel registro di avvio.</string>
 
 Varians-Synchro non scrive mai percorsi simili: provengono da un progetto ricevuto o modificato a mano. Leggere questi file? Se rispondete No, saranno considerati introvabili; il progetto conserva i loro percorsi.</string>
   <string key="error.tei_binding.too_deep">La TEI è annidata troppo in profondità per essere letta.</string>
+  <string key="common.discard_title">Abbandonare le modifiche</string>
+  <string key="common.discard_question">Le modifiche fatte in questa finestra non sono salvate. Abbandonarle?</string>
 </translations>

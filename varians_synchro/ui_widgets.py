@@ -8,7 +8,7 @@ connu des catalogues) et s'affiche dans la langue choisie."""
 from __future__ import annotations
 
 from PySide6.QtCore import Qt, QTimer
-from PySide6.QtGui import Qt as QtGuiNamespace
+from PySide6.QtGui import Qt as QtGuiNamespace, QKeySequence, QShortcut
 from PySide6.QtWidgets import (QComboBox as QtComboBox, QDialog as QtDialog,
                                QFileDialog as QtFileDialog, QInputDialog as QtInputDialog,
                                QLabel as QtLabel, QListWidget as QtListWidget,
@@ -170,8 +170,62 @@ class QTreeWidget(QtTreeWidget):
 
 
 class QDialog(QtDialog):
+    """Dialog translating its title, with three behaviours common to all
+    windows of the program:
+
+    - Enter never presses a button the user did not choose: Qt pressed the
+      first « default » button (in the pages, a page moved up a rank; in the
+      synchronisation, a validated group was created). In a list, Enter
+      does what a double click does (``itemActivated``).
+    - F1 opens the user guide, at ``help_anchor`` (None: no F1).
+    - Escape, the close button or « Cancel » (``cancel``) ask before dropping
+      a draft with changes (``has_unsaved_draft``), No being the default.
+    """
+    help_anchor = ''
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.help_anchor is not None:
+            self._help_shortcut = QShortcut(QKeySequence('F1'), self)
+            self._help_shortcut.activated.connect(self.open_help)
+
     def setWindowTitle(self, title):
         return super().setWindowTitle(tr(title))
+
+    def open_help(self):
+        from . import ui_help
+        ui_help.open_help(self, self.help_anchor or None)
+
+    def has_unsaved_draft(self):
+        return False
+
+    def confirm_discard(self):
+        if not self.has_unsaved_draft():
+            return True
+        return QMessageBox.question(self, tr('common.discard_title'), tr('common.discard_question')) \
+            == QtMessageBox.StandardButton.Yes
+
+    def cancel(self):
+        """For « Cancel » buttons: reject, after asking if needed."""
+        if self.confirm_discard():
+            self.reject()
+
+    def keyPressEvent(self, event):
+        from PySide6.QtWidgets import QAbstractButton
+        key = event.key()
+        if key in (Qt.Key.Key_Return, Qt.Key.Key_Enter) and not isinstance(self.focusWidget(), QAbstractButton):
+            event.accept()
+            return
+        if key == Qt.Key.Key_Escape and not self.confirm_discard():
+            event.accept()
+            return
+        super().keyPressEvent(event)
+
+    def closeEvent(self, event):
+        if event.spontaneous() and self.isVisible() and not self.confirm_discard():
+            event.ignore()
+            return
+        super().closeEvent(event)
 
 
 class QMainWindow(QtMainWindow):
@@ -215,7 +269,8 @@ class QMessageBox(QtMessageBox):
     @staticmethod
     def question(parent, title, detail,
                  buttons=QtMessageBox.StandardButton.Yes | QtMessageBox.StandardButton.No,
-                 default=QtMessageBox.StandardButton.NoButton):
+                 default=QtMessageBox.StandardButton.No):
+        # « No » by default: Enter answered Yes to « Remove the witness? ».
         return _answer(message_box(parent, QtMessageBox.Icon.Question, title, detail, buttons, default))
 
 

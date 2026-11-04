@@ -934,4 +934,6 @@ Technické podrobnosti najdete v konzoli nebo ve spouštěcím protokolu.</strin
 
 Varians-Synchro takové cesty nikdy nezapisuje: pocházejí z přijatého nebo ručně upraveného projektu. Číst tyto soubory? Pokud odpovíte Ne, budou považovány za nenalezené; projekt si jejich cesty ponechá.</string>
   <string key="error.tei_binding.too_deep">TEI je vnořena příliš hluboko, aby ji bylo možné přečíst.</string>
+  <string key="common.discard_title">Zahodit změny</string>
+  <string key="common.discard_question">Změny provedené v tomto okně nejsou uloženy. Zahodit je?</string>
 </translations>

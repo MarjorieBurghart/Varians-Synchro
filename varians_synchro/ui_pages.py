@@ -198,6 +198,7 @@ class PagesDialog(QDialog):
         htr_layout.addLayout(htr_row)
         main.addWidget(htr_group)
         self.pages.itemDoubleClicked.connect(lambda _: self.preview())
+        self.pages.itemActivated.connect(lambda _: self.preview())          # Entrée
         self.update_list()
 
     def _item_ids(self):

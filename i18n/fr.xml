@@ -941,4 +941,6 @@ Les détails techniques sont dans la console ou le journal de démarrage.</strin
 
 Varians-Synchro n’écrit jamais de tels chemins : ils viennent d’un projet reçu ou modifié à la main. Lire ces fichiers ? Si vous répondez Non, ils seront traités comme introuvables ; le projet garde leurs chemins.</string>
   <string key="error.tei_binding.too_deep">La TEI est imbriquée trop profondément pour être lue.</string>
+  <string key="common.discard_title">Abandonner les modifications</string>
+  <string key="common.discard_question">Les modifications faites dans cette fenêtre ne sont pas enregistrées. Les abandonner ?</string>
 </translations>

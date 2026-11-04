@@ -934,4 +934,6 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
 
 Varians-Synchro がこのようなパスを書くことはありません。受け取ったか手で編集されたプロジェクトによるものです。これらのファイルを読み込みますか？「いいえ」と答えると見つからないファイルとして扱われ、パスはプロジェクトに残ります。</string>
   <string key="error.tei_binding.too_deep">TEI の入れ子が深すぎて読み込めません。</string>
+  <string key="common.discard_title">変更の破棄</string>
+  <string key="common.discard_question">このウィンドウでの変更は保存されていません。破棄しますか？</string>
 </translations>
