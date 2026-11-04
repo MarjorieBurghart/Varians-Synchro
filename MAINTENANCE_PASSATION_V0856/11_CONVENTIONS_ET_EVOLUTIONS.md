@@ -21,7 +21,7 @@
 
 ## Réorganisations à risque
 
-- **Fenêtres `ui_*`** : `guided_ui.py` a été découpé en un module par fenêtre, sans changer le code des classes. `ui_pair.py` (environ 1 000 lignes) reste à découper, mais seulement avec tests de cycle de vie, signaux Qt, état courant et dialogues de confirmation.
+- **Fenêtres `ui_*`** : `guided_ui.py` a été découpé en un module par fenêtre, sans changer le code des classes. `ui_pair.py` (environ 950 lignes) : fenêtres de propositions mises en commun (`ui_proposals.py`), constructeur en méthodes `_build_*`. Le reste (révision, absences, rattacher et détacher) partage la liste des groupes et les deux panneaux d'images : le séparer en classes « mixins » rendrait l'état plus difficile à suivre.
 - **UID de lignes** : un calcul plus « élégant » briserait les liens historiques ; écrire une conversion à table de correspondance, pas un remplacement immédiat.
 - **Sessions physiques ↔ TEI** : fusionner les modèles rendrait possible des déductions éditoriales abusives ; conserver des transactions séparées et une provenance vérifiable.
 - **`alto_binding`** : nom historique utilisé pour ALTO **et** PAGE ; ne pas le renommer sans migration complète.

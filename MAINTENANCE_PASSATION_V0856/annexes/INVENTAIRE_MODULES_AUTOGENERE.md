@@ -4,7 +4,7 @@ Génération reproductible : `python tools/generate_module_inventory.py` depuis 
 Inspection statique AST : **aucun module applicatif n’est importé ni exécuté**.
 Les numéros de ligne sont ceux de **cette livraison uniquement**.
 
-**47 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
+**48 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
 
 ## `varians_synchro/__init__.py` (1 lignes)
 **Dépendances internes observées** : `core`
@@ -184,10 +184,16 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `hd_registry`, `i18n`, `imaging`, `page_management`, `page_order`, `physical_alignment`, `reading_stream`, `ui_batch_binding`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `DraggablePagesList` (l.21), `HDDownloadThread` (l.34), `HTRExportThread` (l.71), `PagesDialog` (l.96)
 
-## `varians_synchro/ui_pair.py` (1014 lignes)
+## `varians_synchro/ui_pair.py` (942 lignes)
 **Objet (docstring source)** : Fenêtre « Synchronisation visuelle entre témoins » : groupes de lignes de deux témoins, propositions, révision rapide et revalidation.
-**Dépendances internes observées** : `correspondence_navigation`, `exceptions`, `i18n`, `interpolation`, `line_scope`, `overlay_filters`, `physical_alignment`, `rapid_review`, `reading_stream`, `residual_alignment`, `tei_binding`, `textual_progress`, `ui_reading_order`, `ui_widgets`, `viewer`
-**Classes déclarées au premier niveau** : `PairDialog` (l.30)
+**Dépendances internes observées** : `correspondence_navigation`, `exceptions`, `i18n`, `interpolation`, `line_scope`, `overlay_filters`, `physical_alignment`, `rapid_review`, `reading_stream`, `residual_alignment`, `tei_binding`, `textual_progress`, `ui_proposals`, `ui_reading_order`, `ui_widgets`, `viewer`
+**Classes déclarées au premier niveau** : `PairDialog` (l.32)
+
+## `varians_synchro/ui_proposals.py` (88 lignes)
+**Objet (docstring source)** : Fenêtre où l'on choisit, parmi des propositions calculées, celles à enregistrer ; outils communs aux fenêtres de propositions de la synchronisation (HTR–HTR, progression textuelle, interpolation géométrique, lignes résiduelles). La fenêtre ne fait que montrer et sélectionner : chaque appelant garde ses vérifications, ses confirmations et son enregistrement (``add_buttons``).
+**Dépendances internes observées** : `physical_alignment`, `ui_widgets`
+**Classes déclarées au premier niveau** : `ProposalReviewDialog` (l.43)
+**Fonctions au premier niveau** : `line_names` (l.16), `named` (l.21), `replaced_machine_groups` (l.26), `ask` (l.36)
 
 ## `varians_synchro/ui_reading_order.py` (184 lignes)
 **Objet (docstring source)** : Fenêtre « Ordre de lecture » : pages, régions et lignes d’un témoin.

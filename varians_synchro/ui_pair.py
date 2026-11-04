@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QKeySequence, QShortcut
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHBoxLayout, QLineEdit, QMenu,
                                QSplitter, QToolButton, QVBoxLayout, QWidget)
 
@@ -22,6 +23,7 @@ from .rapid_review import (following_anchor_interval, ordered_links, review_coun
 from .reading_stream import reading_stream
 from .residual_alignment import apply_residual_extensions, suggest_residual_extensions
 from .textual_progress import suggest_textual_progress
+from .ui_proposals import ask, line_names, named, ProposalReviewDialog, replaced_machine_groups
 from .ui_reading_order import ReadingOrderDialog
 from .ui_widgets import (_run_modal, QComboBox, QDialog, QLabel, QListWidget, QMessageBox,
                          QPushButton, QTabWidget)
@@ -31,7 +33,6 @@ class PairDialog(QDialog):
     """Visual-first manual alignment; HTR is optional secondary information."""
     def __init__(self, project, session, parent=None):
         super().__init__(parent)
-        from .viewer import LineImagePanel
         self.project = project
         self.session = session
         self.setWindowTitle('Synchronisation visuelle entre témoins — Varians-Synchro')
@@ -51,6 +52,21 @@ class PairDialog(QDialog):
         self.left_lines = physical_lines(base)
         self.right_lines = physical_lines(target)
         main = QVBoxLayout(self)
+        self._build_actions(main)
+        self._build_filters(main)
+        self._build_visual_tab(main)
+        self._build_text_tab()
+        self._build_review_list(main)
+        self.status = QLabel(); self.status.setWordWrap(True); main.addWidget(self.status)
+        hint = QLabel(tr('alignment.edit.hint'))
+        hint.setWordWrap(True)
+        hint.setMaximumHeight(48)
+        main.addWidget(hint)
+        self.tabs.setMinimumHeight(150)
+        self.populate()
+
+    def _build_actions(self, main):
+        """Barre d'actions en haut de la fenêtre et leurs raccourcis."""
         # Primary action always stays at the TOP: it must never disappear
         # beneath a large image or below a small laptop's visible screen.
         top = QHBoxLayout(); main.addLayout(top)
@@ -102,13 +118,15 @@ class PairDialog(QDialog):
         self.scope_actions.setMenu(scope_menu)
         top.addWidget(self.scope_actions)
         top.addStretch(1)
-        from PySide6.QtGui import QShortcut, QKeySequence
         self.assoc_shortcut=QShortcut(QKeySequence('Ctrl+Return'),self)
         self.assoc_shortcut.activated.connect(lambda: self.attach('correspondence'))
         self.assoc_shortcut2=QShortcut(QKeySequence('Ctrl+Enter'),self)
         self.assoc_shortcut2.activated.connect(lambda: self.attach('correspondence'))
         self.absence_shortcut = QShortcut(QKeySequence('Ctrl+Shift+A'), self)
         self.absence_shortcut.activated.connect(self.confirm_selected_absence)
+
+    def _build_filters(self, main):
+        """Consigne, cadres visibles, recherche dans le texte TEI, légende."""
         title = QLabel(tr('ui.cliquez.sur.une.ligne.deja.liee.pour'))
         title.setWordWrap(True); main.addWidget(title)
         filter_row = QHBoxLayout(); main.addLayout(filter_row)
@@ -127,9 +145,9 @@ class PairDialog(QDialog):
             filter_row.addWidget(QLabel(tr('tei.visual.search_label')))
             self.tei_search_side = QComboBox()
             if self._tei_left:
-                self.tei_search_side.addItem(base['id'], 'reference')
+                self.tei_search_side.addItem(self.left_witness['id'], 'reference')
             if self._tei_right:
-                self.tei_search_side.addItem(target['id'], 'target')
+                self.tei_search_side.addItem(self.right_witness['id'], 'target')
             filter_row.addWidget(self.tei_search_side)
             self.tei_search_edit = QLineEdit()
             self.tei_search_edit.setPlaceholderText(tr('tei.visual.search'))
@@ -145,12 +163,15 @@ class PairDialog(QDialog):
         self.legend.setWordWrap(True)
         main.addWidget(self.legend)
 
+    def _build_visual_tab(self, main):
+        """Onglets ; le premier : les images des deux témoins côte à côte."""
+        from .viewer import LineImagePanel
         self.tabs = QTabWidget()
         main.addWidget(self.tabs, 1)
         visual = QWidget(); visual_layout = QVBoxLayout(visual)
         split = QSplitter(Qt.Orientation.Horizontal)
-        self.left_panel = LineImagePanel(base, split)
-        self.right_panel = LineImagePanel(target, split)
+        self.left_panel = LineImagePanel(self.left_witness, split)
+        self.right_panel = LineImagePanel(self.right_witness, split)
         self.left_panel.set_tei_line_texts(self._tei_left)
         self.right_panel.set_tei_line_texts(self._tei_right)
         self.left_panel.line_clicked.connect(lambda uid: self._show_counterparts('reference', uid))
@@ -163,7 +184,10 @@ class PairDialog(QDialog):
         split.setSizes([760, 760])
         visual_layout.addWidget(split, 1)
         self.tabs.addTab(visual, 'ui.xml.visual_tab')
+        self.visual_splitter = split
 
+    def _build_text_tab(self):
+        """Second onglet : les lignes des deux témoins en texte."""
         text_page = QWidget(); text_layout = QVBoxLayout(text_page)
         text_layout.addWidget(QLabel(tr('tei.visual.pair_help')))
         text_split = QSplitter(Qt.Orientation.Horizontal)
@@ -182,6 +206,8 @@ class PairDialog(QDialog):
         text_layout.addWidget(text_split, 1)
         self.tabs.addTab(text_page, 'Vue textuelle (facultative)')
 
+    def _build_review_list(self, main):
+        """Barre de révision, liste des groupes et raccourcis de révision."""
         # Links/results area is compact and scrollable, never allowed to
         # push the primary controls below the monitor's visible area.
         # V0.7.2: fast, ordered human review. Display order never changes
@@ -235,14 +261,6 @@ class PairDialog(QDialog):
             shortcut = QShortcut(QKeySequence(seq), self)
             shortcut.activated.connect(handler)
             setattr(self, 'review_shortcut_' + seq.replace('+', '_'), shortcut)
-        self.status = QLabel(); self.status.setWordWrap(True); main.addWidget(self.status)
-        hint = QLabel(tr('alignment.edit.hint'))
-        hint.setWordWrap(True)
-        hint.setMaximumHeight(48)
-        main.addWidget(hint)
-        self.tabs.setMinimumHeight(150)
-        self.visual_splitter = split
-        self.populate()
 
     def open_reading_order(self):
         try:
@@ -636,27 +654,21 @@ class PairDialog(QDialog):
                     'vous pouvez travailler directement sur les images.\n'
                     + '\n'.join(outcome['warnings']))
                 return
-            review = QDialog(self); review.setWindowTitle('Propositions HTR–HTR (facultatives)')
-            review.resize(min(self.width(),900), min(self.height(),550))
-            layout = QVBoxLayout(review)
-            layout.addWidget(QLabel(f"{len(candidates)} " + tr('ui.groupes.proposes.aucune.validation.automatique.selectionnez.ceux')))
-            options = QListWidget(); options.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
-            names_a = {ln['id']: f"{ln['page_label']}:{ln['ordinal']}" for ln in self.left_lines}
-            names_b = {ln['id']: f"{ln['page_label']}:{ln['ordinal']}" for ln in self.right_lines}
-            for suggestion in candidates:
-                a = ', '.join(names_a.get(x, '?') for x in suggestion['reference_ids'])
-                b = ', '.join(names_b.get(x, '?') for x in suggestion['target_ids'])
-                options.addItem(f"{suggestion['confidence']:.0%} HTR [{suggestion['state']}] · {a} ↔ {b}")
-            layout.addWidget(options)
-            buttons = QHBoxLayout(); layout.addLayout(buttons)
+            names_a, names_b = line_names(self.left_lines), line_names(self.right_lines)
+            review = ProposalReviewDialog(
+                self, title='Propositions HTR–HTR (facultatives)', size=(900, 550),
+                intro=f"{len(candidates)} " + tr('ui.groupes.proposes.aucune.validation.automatique.selectionnez.ceux'),
+                items=[f"{s['confidence']:.0%} HTR [{s['state']}] · "
+                       f"{named(names_a, s['reference_ids'])} ↔ {named(names_b, s['target_ids'])}"
+                       for s in candidates],
+                preselect=False, wrap_intro=False, list_stretch=0)
+
             def accept_selection():
-                picked = [candidates[i.row()] for i in options.selectedIndexes()]
-                counts = apply_pair_proposals(self.project, self.session, picked)
+                counts = apply_pair_proposals(self.project, self.session, review.picked(candidates))
                 self.populate(); review.accept()
                 QMessageBox.information(self, 'Propositions enregistrées',
                     f"{counts['added']} " + tr('ui.groupes.sauvegardes') + f" {counts['skipped']} " + tr('ui.ignores.ils.necessitent.une.verification.sur.les'))
-            for title, callback in [('Conserver la sélection', accept_selection), ('Annuler', review.reject)]:
-                button = QPushButton(title); button.clicked.connect(callback); buttons.addWidget(button)
+            review.add_buttons([('Conserver la sélection', accept_selection), ('Annuler', review.reject)])
             _run_modal(review)
         except Exception as exc:
             QMessageBox.warning(self, 'Alignement HTR–HTR', str(exc))
@@ -691,53 +703,26 @@ class PairDialog(QDialog):
                 QMessageBox.information(self, tr('progress.title'),
                     details + ('\n' + warning_text if warning_text else ''))
                 return
-            review = QDialog(self)
-            review.setWindowTitle(tr('progress.title'))
-            review.resize(min(self.width(), 940), min(self.height(), 620))
-            layout = QVBoxLayout(review)
             if only_interval is not None:
                 details += '\n' + tr('review.local.preview', count=len(proposals))
-            label = QLabel(details + '\n' + tr('progress.preview.tip'))
-            label.setWordWrap(True)
-            layout.addWidget(label)
-            names_a = {line['id']:f"{line['page_label']}:{line['ordinal']}" for line in self.left_lines}
-            names_b = {line['id']:f"{line['page_label']}:{line['ordinal']}" for line in self.right_lines}
-            options = QListWidget()
-            options.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
-            for proposal in proposals:
-                ref_label = ', '.join(names_a.get(uid, '?') for uid in proposal['reference_ids'])
-                target_label = ', '.join(names_b.get(uid, '?') for uid in proposal['target_ids'])
-                evidence = proposal['evidence']
-                method = f"{evidence['reference_method']}/{evidence['target_method']}"
-                options.addItem(f"{ref_label} ↔ {target_label}  [{method}]")
-            layout.addWidget(options, 1)
-            options.selectAll()
-            if warning_text:
-                warnings = QLabel(tr('progress.warnings') + '\n' + warning_text)
-                warnings.setWordWrap(True)
-                layout.addWidget(warnings)
-            buttons = QHBoxLayout()
-            layout.addLayout(buttons)
+            names_a, names_b = line_names(self.left_lines), line_names(self.right_lines)
+            review = ProposalReviewDialog(
+                self, title=tr('progress.title'), size=(940, 620),
+                intro=details + '\n' + tr('progress.preview.tip'),
+                items=[f"{named(names_a, p['reference_ids'])} ↔ {named(names_b, p['target_ids'])}  "
+                       f"[{p['evidence']['reference_method']}/{p['evidence']['target_method']}]"
+                       for p in proposals],
+                notes=tr('progress.warnings') + '\n' + warning_text if warning_text else None)
 
             def save_selected():
-                selected = [proposals[i.row()] for i in options.selectedIndexes()]
+                selected = review.picked(proposals)
                 if not selected:
                     QMessageBox.information(review, tr('progress.title'), tr('progress.empty'))
                     return
-                from .physical_alignment import is_revisable_automatic
-                old = [link for link in self.session.get('links', [])
-                       if is_revisable_automatic(link)]
-                ids_a = {uid for group in selected for uid in group['reference_ids']}
-                ids_b = {uid for group in selected for uid in group['target_ids']}
-                affected = sum(bool(set(link['reference_ids']) & ids_a or
-                                    set(link['target_ids']) & ids_b) for link in old)
-                if affected:
-                    decision = QMessageBox.question(review, tr('progress.confirm.title'),
-                        tr('progress.confirm.text', count=affected),
-                        QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-                        QMessageBox.StandardButton.No)
-                    if decision != QMessageBox.StandardButton.Yes:
-                        return
+                affected = replaced_machine_groups(self.session, selected)
+                if affected and not ask(review, tr('progress.confirm.title'),
+                                        tr('progress.confirm.text', count=affected)):
+                    return
                 try:
                     result = replace_revisable_pair_proposals(self.project,self.session,selected)
                 except Exception as exc:
@@ -749,15 +734,8 @@ class PairDialog(QDialog):
                     tr('progress.saved', added=result['added'],
                        replaced=result['replaced'], skipped=result['skipped']))
 
-            for key, callback in (
-                ('common.select_all', options.selectAll),
-                ('common.select_none', options.clearSelection),
-                ('progress.save', save_selected),
-                ('common.cancel', review.reject),
-            ):
-                button = QPushButton(tr(key))
-                button.clicked.connect(callback)
-                buttons.addWidget(button)
+            review.add_buttons(review.selection_buttons(tr('common.select_all'), tr('common.select_none'))
+                               + [(tr('progress.save'), save_selected), (tr('common.cancel'), review.reject)])
             _run_modal(review)
         except Exception as exc:
             QMessageBox.warning(self, tr('progress.title'), str(exc))
@@ -780,55 +758,29 @@ class PairDialog(QDialog):
                 QMessageBox.information(self, 'Interpolation géométrique',
                     details + '\n' + tr('ui.aucune.correspondance.supplementaire.proposee') + '\n' + warnings)
                 return
-            review = QDialog(self)
-            review.setWindowTitle('Compléter les lignes entre ancrages — prévisualisation')
-            review.resize(min(self.width(),930), min(self.height(),570))
-            layout = QVBoxLayout(review)
-            desc = QLabel(f"{len(candidates)} " + tr('release.groups_estimated') + f" {details}\n" +
-                coverage_detail + '\n' +
-                tr('alignment.recalculate.preview') + '\n' +
-                tr('ui.lhtr.nest.quun.indice.facultatif.les.propositions'))
-            desc.setWordWrap(True);layout.addWidget(desc)
-            names_a={ln['id']:f"{ln['page_label']}:{ln['ordinal']}" for ln in self.left_lines}
-            names_b={ln['id']:f"{ln['page_label']}:{ln['ordinal']}" for ln in self.right_lines}
-            options=QListWidget()
-            options.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
-            for p in candidates:
-                a=', '.join(names_a.get(x,'?') for x in p['reference_ids'])
-                b=', '.join(names_b.get(x,'?') for x in p['target_ids'])
-                options.addItem(f"{tr('ui.a.verifier')} {a} ↔ {b}")
-            layout.addWidget(options,1)
-            options.selectAll()
-            if warnings:
-                notes=QLabel(tr('ui.limites.detectees')+' '+warnings)
-                notes.setWordWrap(True);layout.addWidget(notes)
-            buttons=QHBoxLayout();layout.addLayout(buttons)
+            names_a, names_b = line_names(self.left_lines), line_names(self.right_lines)
+            review = ProposalReviewDialog(
+                self, title='Compléter les lignes entre ancrages — prévisualisation', size=(930, 570),
+                intro=(f"{len(candidates)} " + tr('release.groups_estimated') + f" {details}\n" +
+                       coverage_detail + '\n' +
+                       tr('alignment.recalculate.preview') + '\n' +
+                       tr('ui.lhtr.nest.quun.indice.facultatif.les.propositions')),
+                items=[f"{tr('ui.a.verifier')} {named(names_a, p['reference_ids'])} ↔ "
+                       f"{named(names_b, p['target_ids'])}" for p in candidates],
+                notes=tr('ui.limites.detectees')+' '+warnings if warnings else None)
+
             def accept_selection():
-                picked=[candidates[i.row()] for i in options.selectedIndexes()]
+                picked = review.picked(candidates)
                 if not picked:
                     QMessageBox.information(review,'Sélection vide','Sélectionnez au moins une proposition.')
                     return
-                if any(p.get('reference_ids') or p.get('target_ids') for p in picked):
-                    # Recalculation is opt-in: the preview stays read-only
-                    # until the user confirms replacing tentative machine links.
-                    from .physical_alignment import is_revisable_automatic
-                    provisional = [l for l in self.session.get('links', [])
-                                   if is_revisable_automatic(l)]
-                    pending_a = {uid for p in picked for uid in p['reference_ids']}
-                    pending_b = {uid for p in picked for uid in p['target_ids']}
-                    possibly_replaced = sum(
-                        bool(set(l['reference_ids']) & pending_a or
-                             set(l['target_ids']) & pending_b)
-                        for l in provisional)
-                    if possibly_replaced:
-                        confirm = QMessageBox.question(
-                            review, tr('alignment.recalculate.confirm.title'),
-                            tr('alignment.recalculate.confirm.text',
-                               count=possibly_replaced),
-                            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-                            QMessageBox.StandardButton.No)
-                        if confirm != QMessageBox.StandardButton.Yes:
-                            return
+                # Recalculation is opt-in: the preview stays read-only until
+                # the user confirms replacing tentative machine links.
+                possibly_replaced = replaced_machine_groups(self.session, picked)
+                if possibly_replaced and not ask(
+                        review, tr('alignment.recalculate.confirm.title'),
+                        tr('alignment.recalculate.confirm.text', count=possibly_replaced)):
+                    return
                 try:
                     counts=replace_revisable_pair_proposals(self.project,self.session,picked)
                 except ValueError as exc:
@@ -839,12 +791,9 @@ class PairDialog(QDialog):
                     f"{counts['added']} " + tr('ui.groupe.s.ajoute.s') +
                     f" {counts['replaced']} " + tr('alignment.recalculate.replaced') +
                     f" {counts['skipped']} " + tr('ui.ignore.s.toutes.ces.propositions.restent.incertaines'))
-            for label,callback in [
-                ('Tout sélectionner',options.selectAll),
-                ('Ne rien sélectionner',options.clearSelection),
-                ('Enregistrer les propositions sélectionnées',accept_selection),
-                ('Annuler',review.reject)]:
-                btn=QPushButton(label);btn.clicked.connect(callback);buttons.addWidget(btn)
+            review.add_buttons(review.selection_buttons('Tout sélectionner', 'Ne rien sélectionner')
+                               + [('Enregistrer les propositions sélectionnées', accept_selection),
+                                  ('Annuler', review.reject)])
             _run_modal(review)
         except Exception as exc:
             QMessageBox.warning(self,'Interpolation géométrique',str(exc))
@@ -867,46 +816,30 @@ class PairDialog(QDialog):
                 QMessageBox.information(self, tr('alignment.residual.title'),
                     tr('alignment.residual.none') + '\n' + diagnostics)
                 return
-            review=QDialog(self)
-            review.setWindowTitle(tr('alignment.residual.title'))
-            review.resize(min(self.width(),850),min(self.height(),520))
-            layout=QVBoxLayout(review)
-            heading=QLabel(tr('alignment.residual.preview',count=len(candidates)) +
-                '\n' + tr('alignment.residual.explanation'))
-            heading.setWordWrap(True)
-            layout.addWidget(heading)
-            names_a={ln['id']:f"{ln['page_label']}:{ln['ordinal']}" for ln in self.left_lines}
-            names_b={ln['id']:f"{ln['page_label']}:{ln['ordinal']}" for ln in self.right_lines}
+            names_a, names_b = line_names(self.left_lines), line_names(self.right_lines)
             original={ln['id']:ln for ln in self.session['links']}
-            options=QListWidget()
-            options.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+            items = []
             for p in candidates:
                 old=original.get(p['link_id'],{})
-                a=', '.join(names_a.get(uid,'?') for uid in p['reference_add_ids']) or '—'
-                b=', '.join(names_b.get(uid,'?') for uid in p['target_add_ids']) or '—'
-                lhs=', '.join(names_a.get(uid,'?') for uid in old.get('reference_ids',[]))
-                rhs=', '.join(names_b.get(uid,'?') for uid in old.get('target_ids',[]))
-                options.addItem(tr('alignment.residual.item',
-                    left=a,right=b,old_left=lhs,old_right=rhs))
-            layout.addWidget(options,1)
-            options.selectAll()
-            diag_label=QLabel(diagnostics)
-            diag_label.setWordWrap(True)
-            layout.addWidget(diag_label)
-            row=QHBoxLayout()
-            layout.addLayout(row)
+                items.append(tr('alignment.residual.item',
+                    left=named(names_a, p['reference_add_ids']) or '—',
+                    right=named(names_b, p['target_add_ids']) or '—',
+                    old_left=named(names_a, old.get('reference_ids',[])),
+                    old_right=named(names_b, old.get('target_ids',[]))))
+            review = ProposalReviewDialog(
+                self, title=tr('alignment.residual.title'), size=(850, 520),
+                intro=(tr('alignment.residual.preview',count=len(candidates)) +
+                       '\n' + tr('alignment.residual.explanation')),
+                items=items, notes=diagnostics)
+
             def commit():
-                chosen=[candidates[index.row()] for index in options.selectedIndexes()]
+                chosen=review.picked(candidates)
                 if not chosen:
                     QMessageBox.information(review,tr('alignment.residual.title'),
                                             tr('alignment.residual.empty'))
                     return
-                confirm=QMessageBox.question(
-                    review,tr('alignment.residual.confirm.title'),
-                    tr('alignment.residual.confirm.text',count=len(chosen)),
-                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-                    QMessageBox.StandardButton.No)
-                if confirm != QMessageBox.StandardButton.Yes:
+                if not ask(review, tr('alignment.residual.confirm.title'),
+                           tr('alignment.residual.confirm.text', count=len(chosen))):
                     return
                 try:
                     result=apply_residual_extensions(self.project,self.session,chosen)
@@ -918,13 +851,8 @@ class PairDialog(QDialog):
                 QMessageBox.information(self,tr('alignment.residual.title'),
                     tr('alignment.residual.saved',
                        groups=result['extended'], lines=result['lines_added']))
-            for label,action in (
-                ('common.select_all',options.selectAll),
-                ('common.select_none',options.clearSelection),
-                ('alignment.residual.save',commit),
-                ('common.cancel',review.reject)):
-                button=QPushButton(tr(label));button.clicked.connect(action)
-                row.addWidget(button)
+            review.add_buttons(review.selection_buttons(tr('common.select_all'), tr('common.select_none'))
+                               + [(tr('alignment.residual.save'), commit), (tr('common.cancel'), review.reject)])
             _run_modal(review)
         except (ValueError,KeyError) as exc:
             QMessageBox.warning(self,tr('alignment.residual.title'),str(exc))
