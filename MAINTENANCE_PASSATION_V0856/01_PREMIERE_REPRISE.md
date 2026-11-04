@@ -37,7 +37,7 @@ python recette_v085.py CHEMIN_COPIE.vsynch --base Mu --check-paths --output rapp
 python verifier_base_keys_json.py CHEMIN_EXPORT/validated/F.json
 ```
 
-`creer_demo.py` : vérifier ses arguments/options avant exécution ; la démonstration livrée existe déjà dans `demo_local_ALTO/`. L'exemple de `Mu` est illustratif : utiliser le véritable sigle présent dans le projet audité. `--check-paths` signale des dépendances externes absentes, ce qui peut être normal après déplacement d'un projet.
+`creer_demo.py` : recrée la démonstration livrée dans `demo_local_ALTO/` (deux témoins A et B, ALTO et images synthétiques), avec des chemins relatifs ; elle s'ouvre telle quelle, sans relancer ce script. L'exemple de `Mu` est illustratif : utiliser le véritable sigle présent dans le projet audité. `--check-paths` signale des dépendances externes absentes, ce qui peut être normal après déplacement d'un projet.
 
 ## 5. Configuration documentaire minimale
 

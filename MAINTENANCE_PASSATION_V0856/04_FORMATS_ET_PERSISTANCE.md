@@ -61,6 +61,8 @@ Les champs ci-dessus n'étant que schématiques, les valeurs `uuid-a` ne sont **
 
 `load_project` valide format/version puis complète **en mémoire** les valeurs historiques manquantes (par exemple `pair_sessions`, `pivot_witness_id`, `workflow_preference`) : ouvrir n'est pas sauvegarder. `core.save_project` valide, sérialise UTF-8, écrit un fichier temporaire dans le dossier cible, synchronise le fichier, écrit si nécessaire une copie `.vsynch.bak` des **octets antérieurs**, puis publie avec `os.replace`. **Aucune copie `.bak` n'est produite au premier enregistrement.** Une erreur I/O peut laisser une copie `.bak` nouvellement préparée, mais ne doit pas altérer l'original tant que le remplacement final n'a pas réussi.
 
+**Chemins relatifs.** Un chemin de fichier relatif (`image_sources[].reference` d'une source locale, `alto_sources[].path`, `pages[].image_path`, `hd_downloads[].directory`, `text_resources[].path`) est lu par rapport au dossier du fichier `.vsynch`, avec « / » ou « \ » comme séparateur. Les chemins absolus (POSIX ou Windows, même venant d'un autre système) et les URL ne changent pas. En mémoire, puis à l'enregistrement, les chemins sont absolus. L'exemple livré (`demo_local_ALTO/`) n'a que des chemins relatifs : il s'ouvre tel quel, où que soit le dépôt (`tests/test_relative_paths.py`).
+
 Le contrôle des modifications non enregistrées utilise `project_state.ProjectChangeTracker` et un SHA-256 de la représentation JSON complète, pas seulement des événements UI. Ne remettre le repère « enregistré » à zéro qu'après succès disque (`mark_saved`).
 
 ## Compatibilité et migrations futures

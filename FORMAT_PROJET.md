@@ -13,7 +13,7 @@ Le fichier est un JSON UTF-8 de `format: "varians-synchro-project"`, `version: 1
 Les champs principaux : `name`, `created`, `witnesses`, `text_resources`, `alignment_sessions`, `pair_sessions`, `workflow_preference`.
 
 - `workflow_preference` : `alto_only`, `pivot` ou `tei` ; c'est une préférence d'interface et non une limitation imposée au projet.
-- `witnesses[]` : identité, sources images (`iiif`/`local`), ALTO et pages. La géométrie est sauvegardée dans les ALTO importés. Les pages associées retiennent les Canvas IIIF ou chemins locaux.
+- `witnesses[]` : identité, sources images (`iiif`/`local`), ALTO et pages. La géométrie est sauvegardée dans les ALTO importés. Les pages associées retiennent les Canvas IIIF ou chemins locaux. Un chemin relatif est lu par rapport au dossier du fichier `.vsynch` ; enregistré, le projet garde des chemins absolus.
 - `text_resources[]` : zéro ou plusieurs TEI et TXT/MD facultatifs.
 - `alignment_sessions[]` : sessions historiques TEI–ALTO conservées telles quelles.
 - `pair_sessions[]` : nouvelles sessions physiques non éditoriales.

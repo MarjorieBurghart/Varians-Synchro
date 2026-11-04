@@ -30,10 +30,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `page_order`, `reading_stream`
 **Fonctions au premier niveau** : `_stem` (l.17), `_strong` (l.21), `_page_candidates` (l.25), `_xml_candidates` (l.35), `binding_fingerprint` (l.42), `propose_bindings` (l.60), `binding_selection_conflicts` (l.136), `apply_binding_choices` (l.170)
 
-## `varians_synchro/core.py` (290 lignes)
+## `varians_synchro/core.py` (327 lignes)
 **Objet (docstring source)** : Varians-Synchro: persistent inventory of documentary resources. No TEI, ALTO or remote source is ever modified by the application. Version 0.1 deliberately does not assert that page/image matches are verified.
 **Dépendances internes observées** : `alto_geometry`, `imaging`, `page_xml`, `tei_binding`
-**Fonctions au premier niveau** : `new_project` (l.25), `_staged_file` (l.31), `save_project` (l.54), `load_project` (l.96), `validate_project` (l.110), `create_witness` (l.141), `add_image_source` (l.150), `add_alto_source` (l.158), `lname` (l.166), `inspect_line_source` (l.170), `add_line_source` (l.184), `inspect_alto` (l.189), `import_tei` (l.231), `inspect_manifest` (l.253), `diagnostic` (l.259), `check_alto_files` (l.268)
+**Fonctions au premier niveau** : `new_project` (l.25), `_staged_file` (l.31), `save_project` (l.54), `_is_relative_file_path` (l.96), `_resolve_relative_paths` (l.105), `load_project` (l.132), `validate_project` (l.147), `create_witness` (l.178), `add_image_source` (l.187), `add_alto_source` (l.195), `lname` (l.203), `inspect_line_source` (l.207), `add_line_source` (l.221), `inspect_alto` (l.226), `import_tei` (l.268), `inspect_manifest` (l.290), `diagnostic` (l.296), `check_alto_files` (l.305)
 
 ## `varians_synchro/correspondence_navigation.py` (62 lignes)
 **Objet (docstring source)** : Read-only reciprocal navigation over a physical ALTO pair session. This module never changes line selection or alignment data. Links with confirmed absences have no target lines, and can be reported to the researcher without manufacturing a fictitious counterpart. Direct links only: no transitive inference and no assumption that HTR is reliable.
