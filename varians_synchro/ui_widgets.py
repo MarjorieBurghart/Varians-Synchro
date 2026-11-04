@@ -1,4 +1,5 @@
-"""Widgets Qt qui traduisent leurs textes, et ouverture modale d'une fenêtre.
+"""Widgets Qt qui traduisent leurs textes, ouverture modale d'une fenêtre et
+appels différés liés à une fenêtre.
 
 Les fenêtres de l'interface utilisent ces classes à la place de celles de
 PySide6 : un texte passé à ``QLabel``, ``setWindowTitle`` ou
@@ -6,6 +7,7 @@ PySide6 : un texte passé à ``QLabel``, ``setWindowTitle`` ou
 connu des catalogues) et s'affiche dans la langue choisie."""
 from __future__ import annotations
 
+from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import (QComboBox as QtComboBox, QDialog as QtDialog,
                                QFileDialog as QtFileDialog, QInputDialog as QtInputDialog,
                                QLabel as QtLabel, QListWidget as QtListWidget,
@@ -26,6 +28,22 @@ def _run_modal(dialog):
         return dialog.exec()
     finally:
         dialog.deleteLater()
+
+
+def call_soon(owner, callback):
+    """Call ``callback`` once control returns to the event loop, unless
+    ``owner`` (a QObject) has been destroyed by then.
+
+    ``QTimer.singleShot(0, owner.method)`` still called the method on a
+    deleted widget (a window closed right after asking for its thumbnails):
+    "Internal C++ object already deleted". The timer here is a child of
+    ``owner`` and dies with it. ``QTimer.singleShot(0, owner, callback)``
+    would do the same but does not exist in PySide6 6.6."""
+    timer = QTimer(owner)
+    timer.setSingleShot(True)
+    timer.timeout.connect(callback)
+    timer.timeout.connect(timer.deleteLater)
+    timer.start(0)
 
 
 class QLabel(QtLabel):

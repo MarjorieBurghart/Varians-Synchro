@@ -14,6 +14,7 @@ Le code des fenêtres est dense, celui de `ui_pair.py` surtout : préserver les 
 - Le changement de langue reconstruit l'interface mais **ne remplace pas le projet actif**. Vérifier les modifications non enregistrées et les sélections.
 - Une sélection de lignes comporte le clic exclusif simple, Ctrl+clic additif et Maj+clic plage selon l'ordre réel ; l'état de surlignage ne doit pas changer les liens enregistrés.
 - Les interactions de téléchargement/réseau ne doivent pas bloquer le fil UI ; signaler annulation et téléchargement achevé distinctement.
+- Un appel différé (« quand la boucle d'événements reprend la main ») passe par `ui_widgets.call_soon(fenêtre, fonction)`, jamais par `QTimer.singleShot(0, …)` : ce dernier appelait la fonction même après la destruction de la fenêtre (vignettes demandées juste avant la fermeture), d'où « Internal C++ object already deleted ». La forme `QTimer.singleShot(0, fenêtre, fonction)` n'existe pas dans PySide6 6.6, version minimale. Test : `tests/test_deferred_calls_qt.py`.
 
 ## Fenêtre « Liaison TEI » : brouillon
 

@@ -1,13 +1,13 @@
 """Fenêtre « Associer automatiquement les images et les ALTO/PAGE » : propositions par lot, que l’utilisateur peut modifier."""
 from __future__ import annotations
 
-from PySide6.QtCore import QSize, Qt, QTimer
+from PySide6.QtCore import QSize, Qt
 from PySide6.QtGui import QBrush, QColor, QIcon, QImageReader, QPixmap
 from PySide6.QtWidgets import (QCheckBox, QHBoxLayout, QMessageBox as QtMessageBox, QTableWidget,
                                QTableWidgetItem, QVBoxLayout)
 
 from .i18n import tr
-from .ui_widgets import QComboBox, QDialog, QLabel, QMessageBox, QPushButton
+from .ui_widgets import call_soon, QComboBox, QDialog, QLabel, QMessageBox, QPushButton
 
 
 class ProtectedBindingComboBox(QComboBox):
@@ -89,7 +89,7 @@ class BatchBindingDialog(QDialog):
         layout.addWidget(self.table, 1)
         self._thumbnail_attempted = set()
         self.table.verticalScrollBar().valueChanged.connect(self._load_visible_thumbnails)
-        QTimer.singleShot(0, self._load_visible_thumbnails)
+        call_soon(self, self._load_visible_thumbnails)
         self._refresh_binding_state()
         footer = QHBoxLayout()
         layout.addLayout(footer)

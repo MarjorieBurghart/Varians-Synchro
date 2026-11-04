@@ -209,11 +209,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `i18n`, `tei_binding`, `tei_visual`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `TEILineFetchThread` (l.22), `TEIReviewCard` (l.38), `TEIPhysicalBindingDialog` (l.163)
 
-## `varians_synchro/ui_widgets.py` (114 lignes)
-**Objet (docstring source)** : Widgets Qt qui traduisent leurs textes, et ouverture modale d'une fenêtre. Les fenêtres de l'interface utilisent ces classes à la place de celles de PySide6 : un texte passé à ``QLabel``, ``setWindowTitle`` ou ``QMessageBox.warning`` est une clé de traduction (ou un texte français connu des catalogues) et s'affiche dans la langue choisie.
+## `varians_synchro/ui_widgets.py` (132 lignes)
+**Objet (docstring source)** : Widgets Qt qui traduisent leurs textes, ouverture modale d'une fenêtre et appels différés liés à une fenêtre. Les fenêtres de l'interface utilisent ces classes à la place de celles de PySide6 : un texte passé à ``QLabel``, ``setWindowTitle`` ou ``QMessageBox.warning`` est une clé de traduction (ou un texte français connu des catalogues) et s'affiche dans la langue choisie.
 **Dépendances internes observées** : `i18n`
-**Classes déclarées au premier niveau** : `QLabel` (l.31), `QPushButton` (l.40), `QListWidget` (l.49), `QComboBox` (l.54), `QTabWidget` (l.61), `QTreeWidget` (l.66), `QDialog` (l.71), `QMainWindow` (l.76), `QMessageBox` (l.81), `QInputDialog` (l.96), `QFileDialog` (l.105)
-**Fonctions au premier niveau** : `_run_modal` (l.19)
+**Classes déclarées au premier niveau** : `QLabel` (l.49), `QPushButton` (l.58), `QListWidget` (l.67), `QComboBox` (l.72), `QTabWidget` (l.79), `QTreeWidget` (l.84), `QDialog` (l.89), `QMainWindow` (l.94), `QMessageBox` (l.99), `QInputDialog` (l.114), `QFileDialog` (l.123)
+**Fonctions au premier niveau** : `_run_modal` (l.21), `call_soon` (l.33)
 
 ## `varians_synchro/validation.py` (163 lignes)
 **Objet (docstring source)** : Read-only V0.7.4 preflight for documentary streams and physical pairs. The audit NEVER repairs historical links, guesses an omission, or modifies data. Warnings may reflect unavailable external resources on a different workstation. Hard errors mark contradictions that must not be silently treated as reliable.
@@ -230,10 +230,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `core`, `hd_registry`, `varians_export`
 **Fonctions au premier niveau** : `_varians_safe_id` (l.23), `_source_path` (l.28), `_relative_or_absolute` (l.35), `_cache_varians_manifest` (l.41), `export_varians_project` (l.85)
 
-## `varians_synchro/viewer.py` (742 lignes)
+## `varians_synchro/viewer.py` (743 lignes)
 **Objet (docstring source)** : Reusable manuscript page viewer with clickable ALTO overlay. Images can be IIIF or local. Full physical lines are the interaction unit; HTR is supplementary and never needed for visual selection. A 4200px-wide IIIF request provides useful magnification without downloading all canvases.
-**Dépendances internes observées** : `alto_geometry`, `i18n`, `imaging`, `overlay_filters`, `overlay_selection`, `page_order`, `physical_alignment`, `reading_stream`, `selection_policy`
-**Classes déclarées au premier niveau** : `FetchThread` (l.28), `ZoomableGraphicsView` (l.55), `ClickableLine` (l.76), `WitnessLineList` (l.145), `LineImagePanel` (l.167), `PageViewer` (l.725)
+**Dépendances internes observées** : `alto_geometry`, `i18n`, `imaging`, `overlay_filters`, `overlay_selection`, `page_order`, `physical_alignment`, `reading_stream`, `selection_policy`, `ui_widgets`
+**Classes déclarées au premier niveau** : `FetchThread` (l.29), `ZoomableGraphicsView` (l.56), `ClickableLine` (l.77), `WitnessLineList` (l.146), `LineImagePanel` (l.168), `PageViewer` (l.726)
 
 ## Attention à la lecture
 
