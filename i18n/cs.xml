@@ -683,4 +683,9 @@ Varování: dávku se nepodařilo zaznamenat do projektu ({error}). Po kontrole 
   <string key="alignment.stale.vanished">Řádek této skupiny už neexistuje: místo opětovného potvrzení zrušte propojení.</string>
   <string key="ui.pages.htr.wait">Export obrázků pro HTR: {current}/{total}</string>
   <string key="ui.pages.htr.cancelled">Export zrušen. Žádný neúplný archiv nebyl zapsán.</string>
+  <string key="error.unexpected.title">Akce se nezdařila</string>
+  <string key="error.unexpected.text">Akci nebylo možné dokončit:
+{error}
+
+Technické podrobnosti najdete v konzoli nebo ve spouštěcím protokolu.</string>
 </translations>

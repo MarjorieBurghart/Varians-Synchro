@@ -1,6 +1,6 @@
 # Cartographie mainteneur : responsabilités, composants et points d'entrée
 
-**Inventaire exact des symboles :** `annexes/INVENTAIRE_MODULES_AUTOGENERE.md` (généré par analyse statique du code et reproductible). Dans cette livraison : **37 fichiers Python dans `varians_synchro`**, dont `__init__.py` ; **54 fichiers `tests/test_*.py`**.
+**Inventaire exact des symboles :** `annexes/INVENTAIRE_MODULES_AUTOGENERE.md` (généré par analyse statique du code et reproductible). Livraison v0.8.5.6 d'origine : **37 fichiers Python dans `varians_synchro`**, dont `__init__.py` ; **54 fichiers `tests/test_*.py`** (l'inventaire annexé suit l'état courant du code).
 
 ## Vue des modules fonctionnels
 

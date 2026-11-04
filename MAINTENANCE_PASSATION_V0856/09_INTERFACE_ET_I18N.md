@@ -15,6 +15,10 @@ Le code de `guided_ui.py` est particulièrement dense : préserver les frontièr
 - Une sélection de lignes comporte le clic exclusif simple, Ctrl+clic additif et Maj+clic plage selon l'ordre réel ; l'état de surlignage ne doit pas changer les liens enregistrés.
 - Les interactions de téléchargement/réseau ne doivent pas bloquer le fil UI ; signaler annulation et téléchargement achevé distinctement.
 
+## Erreurs imprévues
+
+`error_report.install()` (appelé par `gui.main`) pose un crochet sur `sys.excepthook` : une exception levée dans une action de l'interface (slot Qt) reste écrite dans la console ou le journal, et un message « Action impossible » s'affiche en plus (`error.unexpected.*`, traduit ; le texte de l'erreur l'est s'il figure dans les catalogues). Auparavant, rien ne se passait à l'écran. Test : `tests/test_error_report_qt.py`.
+
 ## Catalogues XML
 
 Sept catalogues : `i18n/fr.xml`, `en.xml`, `de.xml`, `cs.xml`, `it.xml`, `ru.xml`, `ja.xml`. Dans v0.8.5.5 et v0.8.5.6 : **653 clés remplies par langue**, paramètres de format conservés. `i18n.py` contrôle balise racine, unicité/présence des clés, égalité des ensembles de clés et ensembles de paramètres `{variable}` ; `tr(key,**values)` ne modifie jamais les entrées métier inconnues. `translate_template` délègue à `tr`. Les valeurs françaises historiques peuvent servir d'alias pour les appels anciens.

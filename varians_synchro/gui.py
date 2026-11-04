@@ -29,4 +29,7 @@ def main():
     lang = QSettings('Varians', 'Varians-Synchro').value('language', 'fr')
     set_language(lang if lang in available_languages() else 'fr')
     from .guided_ui import make_guided_window
+    # An unexpected error in a click is shown, not only written to the console.
+    from .error_report import install
+    install()
     return launch(QApplication, make_guided_window(), sys.argv)
