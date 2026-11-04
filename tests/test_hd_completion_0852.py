@@ -80,11 +80,8 @@ def test_gui_100_percent_progress_reports_success_not_cancelled(monkeypatch, tmp
     window_type = make_guided_window(lambda: None)
     pages_class = next(c.cell_contents for c in window_type.manage_pages.__closure__
                        if getattr(c.cell_contents, '__name__', None) == 'PagesDialog')
-    # Patch just the local Python wrappers, not global Qt GUI types.
-    closure = {getattr(c.cell_contents, '__name__', None): c.cell_contents
-               for c in pages_class.download_hd.__closure__}
-    file_dialog = closure['QFileDialog']
-    message_box = closure['QMessageBox']
+    # Patch just the translating wrappers, not global Qt GUI types.
+    from varians_synchro.ui_widgets import QFileDialog as file_dialog, QMessageBox as message_box
     dest = tmp_path / 'HD'
     dest.mkdir()
     monkeypatch.setattr(file_dialog, 'getExistingDirectory',
@@ -147,14 +144,13 @@ def test_gui_progress_bar_follows_the_download(monkeypatch, tmp_path):
     window_type = make_guided_window(lambda: None)
     pages_class = next(c.cell_contents for c in window_type.manage_pages.__closure__
                        if getattr(c.cell_contents, '__name__', None) == 'PagesDialog')
-    closure = {getattr(c.cell_contents, '__name__', None): c.cell_contents
-               for c in pages_class.download_hd.__closure__}
+    from varians_synchro.ui_widgets import QFileDialog, QMessageBox
     dest = tmp_path / 'HD'
     dest.mkdir()
-    monkeypatch.setattr(closure['QFileDialog'], 'getExistingDirectory',
+    monkeypatch.setattr(QFileDialog, 'getExistingDirectory',
                         staticmethod(lambda *a, **k: str(dest)))
     for name in ('information', 'warning'):
-        monkeypatch.setattr(closure['QMessageBox'], name, staticmethod(lambda *a, **k: None))
+        monkeypatch.setattr(QMessageBox, name, staticmethod(lambda *a, **k: None))
     monkeypatch.setattr(pages_class, '_load_visible_thumbnails', lambda self: None)
     gate = threading.Event()
 

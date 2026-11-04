@@ -14,6 +14,7 @@ from PySide6.QtWidgets import QApplication, QMessageBox
 from varians_synchro.guided_ui import make_guided_window
 from varians_synchro.resource_workflow import store_tei_reference
 from varians_synchro.tei_binding import preview_tei_binding, apply_tei_binding
+from varians_synchro.ui_widgets import QMessageBox as Messages
 from test_tei_binding_083 import fixture, tei
 
 
@@ -34,13 +35,11 @@ def _dialog(monkeypatch, project):
     window_type = make_guided_window()
     dialog_class = next(c.cell_contents for c in window_type.open_tei_binding.__closure__
                         if getattr(c.cell_contents, '__name__', '') == 'TEIPhysicalBindingDialog')
-    names = {getattr(c.cell_contents, '__name__', None): c.cell_contents
-             for c in dialog_class.reload_tei_source.__closure__}
     for name in ('question',):
-        monkeypatch.setattr(names['QMessageBox'], name,
+        monkeypatch.setattr(Messages, name,
                             staticmethod(lambda *a, **k: QMessageBox.StandardButton.Yes))
-    monkeypatch.setattr(names['QMessageBox'], 'information', staticmethod(lambda *a, **k: None))
-    monkeypatch.setattr(names['QMessageBox'], 'warning', staticmethod(lambda *a, **k: None))
+    monkeypatch.setattr(Messages, 'information', staticmethod(lambda *a, **k: None))
+    monkeypatch.setattr(Messages, 'warning', staticmethod(lambda *a, **k: None))
     return dialog_class(project)
 
 
