@@ -29,6 +29,18 @@ def app():
     return QApplication.instance() or QApplication([])
 
 
+def _dispose(dialog):
+    """Ferme et détruit la fenêtre tant que l'application Qt existe : laissée
+    au ramasse-miettes, elle serait détruite à la sortie de Python, après
+    l'application, et le processus planterait. Les événements en attente
+    (vignettes différées) passent d'abord, comme pendant ``exec()``."""
+    from PySide6.QtCore import QCoreApplication, QEvent
+    QCoreApplication.processEvents()
+    dialog.close()
+    dialog.deleteLater()
+    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
+
+
 def test_the_widgets_translate_their_texts(app):
     from varians_synchro.i18n import tr
     from varians_synchro.ui_widgets import QLabel, QPushButton, QDialog
@@ -47,7 +59,7 @@ def test_the_reading_order_dialog_opens_on_its_own(app, setting):
     dialog = ReadingOrderDialog(project, session)
     assert [dialog.witness_box.itemData(i) for i in range(dialog.witness_box.count())] == ['A', 'B']
     assert dialog.page_list.count() == 1
-    dialog.close()
+    _dispose(dialog)
 
 
 def test_the_scope_dialog_opens_on_its_own(app, setting):
@@ -55,7 +67,7 @@ def test_the_scope_dialog_opens_on_its_own(app, setting):
     project = setting[0]
     dialog = SingleWitnessScopeDialog(project, 'A')
     assert dialog.witness['id'] == 'A' and dialog.staged_project is not project
-    dialog.close()
+    _dispose(dialog)
 
 
 def test_the_batch_binding_dialog_opens_on_its_own(app, setting):
@@ -64,7 +76,7 @@ def test_the_batch_binding_dialog_opens_on_its_own(app, setting):
     del witness['pages'][0]['alto_binding']          # une page à associer
     dialog = BatchBindingDialog(witness)
     assert dialog.table.rowCount() == len(dialog.plan['rows']) == 1
-    dialog.close()
+    _dispose(dialog)
 
 
 def test_the_resources_dialog_opens_on_its_own(app, setting):
@@ -72,10 +84,10 @@ def test_the_resources_dialog_opens_on_its_own(app, setting):
     project, a = setting[0], setting[1]
     dialog = WitnessResourceDialog(project, a)
     assert dialog.sigil.text() == 'A' and dialog.original_witness is a
-    dialog.close()
+    _dispose(dialog)
     dialog = WitnessResourceDialog(project)
     assert dialog.sigil.text() == ''
-    dialog.close()
+    _dispose(dialog)
 
 
 def test_the_entry_point_returns_the_main_window_of_its_module():
