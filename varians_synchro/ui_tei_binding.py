@@ -10,6 +10,7 @@ from PySide6.QtWidgets import (QGroupBox, QHBoxLayout, QLineEdit, QListWidgetIte
                                QMessageBox as QtMessageBox, QPlainTextEdit, QScrollArea,
                                QSplitter, QVBoxLayout, QWidget)
 
+from .errors import localized_text
 from .i18n import tr
 from .ui_widgets import (_run_modal, QComboBox, QDialog, QLabel, QListWidget, QMessageBox,
                          QPushButton)
@@ -32,7 +33,7 @@ class TEILineFetchThread(QThread):
         try:
             self.loaded.emit(fetch_preview_bytes(self.descriptor))
         except Exception as exc:
-            self.failed.emit(str(exc))
+            self.failed.emit(localized_text(exc))
 
 
 class TEIReviewCard(QGroupBox):
@@ -107,7 +108,7 @@ class TEIReviewCard(QGroupBox):
         except (ValueError, OSError) as exc:
             self.status = 'unavailable'
             self.picture.setText(tr('tei.visual.unavailable'))
-            self.image_notice.setText(str(exc))
+            self.image_notice.setText(localized_text(exc))
             return
         self.status = 'loading'
         self.picture.setText(tr('tei.visual.loading'))
@@ -157,7 +158,7 @@ class TEIReviewCard(QGroupBox):
             self.status = 'ready'
             self.image_notice.setText(tr('tei.visual.highlight'))
         except (ValueError, TypeError, OSError) as exc:
-            self._show_error(str(exc), serial)
+            self._show_error(localized_text(exc), serial)
 
 
 class TEIPhysicalBindingDialog(QDialog):
@@ -310,7 +311,7 @@ class TEIPhysicalBindingDialog(QDialog):
             # after signals are unblocked in filter_lines().
             self.filter_lines(select_first=True)
         except Exception as exc:
-            self.summary.setPlainText(str(exc))
+            self.summary.setPlainText(localized_text(exc))
 
     def filter_lines(self, *args, select_first=False):
         query = self.search.text().casefold().strip()
@@ -407,7 +408,7 @@ class TEIPhysicalBindingDialog(QDialog):
                                replace_binding=has_binding)
             self.refresh_preview()
         except Exception as exc:
-            QMessageBox.warning(self, tr('tei.binding.title'), str(exc))
+            QMessageBox.warning(self, tr('tei.binding.title'), localized_text(exc))
 
     def commit(self):
         from .tei_binding import apply_tei_binding, tei_binding_status
@@ -444,5 +445,5 @@ class TEIPhysicalBindingDialog(QDialog):
                 tr('tei.binding.success', count=result['count']))
             self.accept()
         except Exception as exc:
-            QMessageBox.warning(self, tr('tei.binding.title'), str(exc))
+            QMessageBox.warning(self, tr('tei.binding.title'), localized_text(exc))
             self.refresh_preview()

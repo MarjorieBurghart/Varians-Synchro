@@ -7,6 +7,7 @@ IIIF request provides useful magnification without downloading all canvases.
 from __future__ import annotations
 from .imaging import image_bytes, mapped_alto_page
 from .page_order import ordered_pages
+from .errors import localized_text
 from .i18n import tr
 from .physical_alignment import line_uid
 from .overlay_filters import FILTER_ALL, FILTERS, overlay_visible
@@ -49,7 +50,7 @@ class FetchThread(QThread):
                     self.failed.emit(f'HTTP {exc.code} : {exc.reason}')
                     return
             except Exception as exc:
-                self.failed.emit(str(exc))
+                self.failed.emit(localized_text(exc))
                 return
 
 

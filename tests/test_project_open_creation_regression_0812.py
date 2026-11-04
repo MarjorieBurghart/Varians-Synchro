@@ -9,6 +9,7 @@ import ast
 from pathlib import Path
 from types import SimpleNamespace
 
+from varians_synchro.errors import localized_text
 from varians_synchro.core import (create_witness, load_project, new_project,
                                   save_project)
 from varians_synchro.project_state import ProjectChangeTracker
@@ -42,6 +43,7 @@ def _method(name: str, *, open_path='', save_path='', name_value='Nouveau', name
              'QInputDialog': SimpleNamespace(getText=lambda *a: (name_value, name_ok)),
              'QMessageBox': message_box,
              'tr': lambda key: key,
+             'localized_text': localized_text,
              'new_project': new_project,
              'load_project': load_project,
              'Path': Path}

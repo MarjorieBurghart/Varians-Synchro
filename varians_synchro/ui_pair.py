@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHBoxLayout, QLi
 
 from .correspondence_navigation import build_pair_navigation_index
 from .exceptions import confirm_absence, pair_exception_summary, preview_confirmed_absence
+from .errors import localized_text
 from .i18n import tr
 from .interpolation import suggest_between_anchors
 from .line_scope import ignored_ids, linked_scope_conflicts, update_ignored_lines
@@ -285,7 +286,7 @@ class PairDialog(QDialog):
                                    (line['text'][:140] or tr('scope.no_htr')))
             self.populate()
         except Exception as exc:
-            QMessageBox.warning(self, tr('stream.window.title'), str(exc))
+            QMessageBox.warning(self, tr('stream.window.title'), localized_text(exc))
 
     def selection(self):
         if self.tabs.currentIndex() == 0:
@@ -449,7 +450,7 @@ class PairDialog(QDialog):
         try:
             validate_checked(self.project, self.session, [uid])
         except ValueError as exc:
-            QMessageBox.warning(self, tr('review.title'), str(exc))
+            QMessageBox.warning(self, tr('review.title'), localized_text(exc))
             return
         self.populate()
         # Pending queue shrinks: next item takes the same row. In all-link
@@ -467,7 +468,7 @@ class PairDialog(QDialog):
         try:
             verify_before_review(self.project, self.session, ids)
         except ValueError as exc:
-            QMessageBox.warning(self, tr('review.title'), str(exc))
+            QMessageBox.warning(self, tr('review.title'), localized_text(exc))
             return
         decision = QMessageBox.question(
             self, tr('review.title'), tr('review.confirm', count=len(ids)),
@@ -479,7 +480,7 @@ class PairDialog(QDialog):
             validate_checked(self.project, self.session, ids)
             self.populate()
         except ValueError as exc:
-            QMessageBox.warning(self, tr('review.title'), str(exc))
+            QMessageBox.warning(self, tr('review.title'), localized_text(exc))
 
     def recalculate_next_interval(self):
         selected = self.links.currentItem()
@@ -524,7 +525,7 @@ class PairDialog(QDialog):
             self._navigation_notice = tr('scope.changed', count=outcome['changed'])
             self._render_navigation_status()
         except ValueError as exc:
-            QMessageBox.warning(self, tr('scope.title'), tr(str(exc)))
+            QMessageBox.warning(self, tr('scope.title'), localized_text(exc))
 
     def _show_counterparts(self, side, uid):
         """Show links of the *current witness selection*, never just a stale click.
@@ -605,7 +606,7 @@ class PairDialog(QDialog):
                 count=outcome['line_count'], missing=outcome['missing_in'])
             self._render_navigation_status()
         except ValueError as exc:
-            QMessageBox.warning(self, tr('exception.title'), str(exc))
+            QMessageBox.warning(self, tr('exception.title'), localized_text(exc))
 
     def revoke_selected_absences(self):
         """Explicitly return absence lines to the unresolved pool."""
@@ -650,7 +651,7 @@ class PairDialog(QDialog):
                     reference=result['added_reference'], target=result['added_target'])
                 self._render_navigation_status()
         except ValueError as exc:
-            QMessageBox.warning(self, tr('ui.association.impossible'), tr(str(exc)))
+            QMessageBox.warning(self, tr('ui.association.impossible'), localized_text(exc))
 
     def automatic(self):
         try:
@@ -660,7 +661,7 @@ class PairDialog(QDialog):
                 QMessageBox.information(self, 'Aucune proposition',
                     'Aucun rapprochement textuel obtenu. La HTR est facultative : '
                     'vous pouvez travailler directement sur les images.\n'
-                    + '\n'.join(outcome['warnings']))
+                    + '\n'.join(map(localized_text, outcome['warnings'])))
                 return
             names_a, names_b = line_names(self.left_lines), line_names(self.right_lines)
             review = ProposalReviewDialog(
@@ -687,7 +688,7 @@ class PairDialog(QDialog):
                                + [(tr('progress.save'), accept_selection), (tr('common.cancel'), review.reject)])
             _run_modal(review)
         except Exception as exc:
-            QMessageBox.warning(self, 'Alignement HTR–HTR', str(exc))
+            QMessageBox.warning(self, 'Alignement HTR–HTR', localized_text(exc))
 
     def interpolate(self, only_interval=None):
         """Preview the global estimate, optionally limiting to one anchor pair."""
@@ -742,7 +743,7 @@ class PairDialog(QDialog):
                 try:
                     result = replace_revisable_pair_proposals(self.project,self.session,selected)
                 except Exception as exc:
-                    QMessageBox.warning(review,tr('progress.title'),str(exc))
+                    QMessageBox.warning(review,tr('progress.title'),localized_text(exc))
                     return
                 self.populate()
                 review.accept()
@@ -754,7 +755,7 @@ class PairDialog(QDialog):
                                + [(tr('progress.save'), save_selected), (tr('common.cancel'), review.reject)])
             _run_modal(review)
         except Exception as exc:
-            QMessageBox.warning(self, tr('progress.title'), str(exc))
+            QMessageBox.warning(self, tr('progress.title'), localized_text(exc))
 
     def interpolate_geometry(self):
         """Legacy review of conservative column-local geometric suggestions."""
@@ -764,7 +765,7 @@ class PairDialog(QDialog):
             candidates = outcome['proposals']
             details = (f"{outcome['intervals']}" + tr('ui.colonne.s.exploitables') +
                        f"{outcome['skipped_intervals']}" + tr('ui.intervalle.s.ignore.s'))
-            warnings = '\n'.join(dict.fromkeys(outcome['warnings']))
+            warnings = '\n'.join(dict.fromkeys(map(localized_text, outcome['warnings'])))
             suggested_a = sum(len(p['reference_ids']) for p in candidates)
             suggested_b = sum(len(p['target_ids']) for p in candidates)
             coverage_detail = (tr('alignment.suggested_lines.prefix') +
@@ -800,7 +801,7 @@ class PairDialog(QDialog):
                 try:
                     counts=replace_revisable_pair_proposals(self.project,self.session,picked)
                 except ValueError as exc:
-                    QMessageBox.warning(review, tr('alignment.recalculate.error.title'), str(exc))
+                    QMessageBox.warning(review, tr('alignment.recalculate.error.title'), localized_text(exc))
                     return
                 self.populate();review.accept()
                 QMessageBox.information(self,'Interpolation enregistrée',
@@ -812,7 +813,7 @@ class PairDialog(QDialog):
                                   ('Annuler', review.reject)])
             _run_modal(review)
         except Exception as exc:
-            QMessageBox.warning(self,'Interpolation géométrique',str(exc))
+            QMessageBox.warning(self,'Interpolation géométrique',localized_text(exc))
 
     def residual(self):
         """Review isolated-line extensions before any change to the project.
@@ -860,7 +861,7 @@ class PairDialog(QDialog):
                 try:
                     result=apply_residual_extensions(self.project,self.session,chosen)
                 except ValueError as exc:
-                    QMessageBox.warning(review,tr('alignment.residual.title'),str(exc))
+                    QMessageBox.warning(review,tr('alignment.residual.title'),localized_text(exc))
                     return
                 review.accept()
                 self.populate()
@@ -871,7 +872,7 @@ class PairDialog(QDialog):
                                + [(tr('alignment.residual.save'), commit), (tr('common.cancel'), review.reject)])
             _run_modal(review)
         except (ValueError,KeyError) as exc:
-            QMessageBox.warning(self,tr('alignment.residual.title'),str(exc))
+            QMessageBox.warning(self,tr('alignment.residual.title'),localized_text(exc))
 
     def revalidate_selection(self):
         """Revalidate the selected stale groups, after a human check on the
@@ -891,7 +892,7 @@ class PairDialog(QDialog):
         try:
             count = revalidate_pair_links(self.project, self.session, selected)
         except ValueError as exc:
-            QMessageBox.warning(self, tr('review.title'), tr(str(exc)))
+            QMessageBox.warning(self, tr('review.title'), localized_text(exc))
             return
         self.populate()
         self._navigation_notice = tr('alignment.stale.revalidated', count=count)
@@ -916,7 +917,7 @@ class PairDialog(QDialog):
                 tr('alignment.edit.detached', groups=result['affected_groups'],
                    removed=result['removed_lines']))
         except ValueError as exc:
-            QMessageBox.warning(self, tr('alignment.edit.title'), tr(str(exc)))
+            QMessageBox.warning(self, tr('alignment.edit.title'), localized_text(exc))
 
     def detach_groups(self):
         """Explicitly delete complete groups selected in the bottom list."""
@@ -955,4 +956,4 @@ class PairDialog(QDialog):
             set_pair_link_states(self.session, selected, state)
             self.populate()
         except ValueError as exc:
-            QMessageBox.warning(self, tr('review.title'), str(exc))
+            QMessageBox.warning(self, tr('review.title'), localized_text(exc))

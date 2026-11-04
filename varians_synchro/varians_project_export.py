@@ -18,6 +18,7 @@ from pathlib import Path
 from .varians_export import make_varians_alignments, verify_export_payloads
 from .core import validate_project
 from .hd_registry import local_copy_plan, varians_offline_index
+from .errors import Localized, localized
 
 
 def _varians_safe_id(witness_id):
@@ -28,7 +29,7 @@ def _varians_safe_id(witness_id):
 def _source_path(value):
     path = Path(value).expanduser()
     if not path.is_file():
-        raise FileNotFoundError(f'Ressource absente : {path}')
+        raise localized(FileNotFoundError, 'error.project_export.missing_resource', path=str(path))
     return path.resolve()
 
 
@@ -139,7 +140,7 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
         raise ValueError('Le pivot choisi ne fait pas partie du projet')
     for wid in ids:
         if wid in ('', '.', '..') or any(c in wid for c in '/\\.'):
-            raise ValueError('Sigle de témoin incompatible avec le nom de fichier : ' + str(wid))
+            raise localized(ValueError, 'error.project_export.siglum_filename', witness=str(wid))
     safe_ids = [_varians_safe_id(wid) for wid in ids]
     if len(set(safe_ids)) != len(safe_ids):
         raise ValueError('Deux sigles deviennent identiques dans le cache IIIF local Varians')
@@ -160,12 +161,10 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
     for w in witnesses:
         source_types = {src['kind'] for src in w.get('image_sources', [])}
         if len(source_types) > 1:
-            raise ValueError(f"{w['id']} : images IIIF et images locales mélangées. "
-                             'Le format de projet Varians visé demande une source homogène.')
+            raise localized(ValueError, 'error.project_export.mixed_images', witness=w['id'])
         manifests = [s for s in w.get('image_sources', []) if s['kind'] == 'iiif']
         if len(manifests) > 1:
-            raise ValueError(f"{w['id']} : plusieurs Manifests IIIF ; "
-                             'le format Varians visé n’en accepte qu’un par témoin.')
+            raise localized(ValueError, 'error.project_export.several_manifests', witness=w['id'])
         for page in w.get('pages', []):
             if page.get('image_kind') == 'local':
                 _source_path(page.get('image_path'))
@@ -201,7 +200,7 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
             source = images[0]
             ref = source.get('reference')
             if not ref:
-                raise ValueError(f'{wid} : URL du Manifest absente')
+                raise localized(ValueError, 'error.project_export.manifest_url', witness=wid)
             attrs = {'type': 'iiif', 'manifest': str(ref), 'selectionMode': 'selected'}
             if hd_plans[wid]['eligible']:
                 attrs.update({'localCopy': 'true', 'downloadScope': 'ocr',
@@ -260,7 +259,7 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
                 recorded = next((p for p in plan['available'].values()
                                  if p['path'] == str(src)), None)
                 if recorded is None or not src.is_file() or _sha256(src) != recorded['sha256']:
-                    raise ValueError(f'{wid} : copie IIIF HD modifiée pendant l’export')
+                    raise localized(ValueError, 'error.project_export.hd_changed', witness=wid)
                 shutil.copy2(src, target / entry['file'])
                 entries[key] = {'file': entry['file'], 'source': entry['source']}
             (target / 'index.json').write_text(json.dumps({

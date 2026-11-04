@@ -6,6 +6,7 @@ from PySide6.QtGui import QBrush, QColor, QIcon, QImageReader, QPixmap
 from PySide6.QtWidgets import (QCheckBox, QHBoxLayout, QMessageBox as QtMessageBox, QTableWidget,
                                QTableWidgetItem, QVBoxLayout)
 
+from .errors import localized_text
 from .i18n import tr
 from .ui_widgets import call_soon, QComboBox, QDialog, QLabel, QMessageBox, QPushButton
 
@@ -205,4 +206,4 @@ class BatchBindingDialog(QDialog):
             apply_binding_choices(self.witness, self.plan, selections)
             self.accept()
         except Exception as exc:
-            QMessageBox.warning(self, tr('resources.binding.title'), str(exc))
+            QMessageBox.warning(self, tr('resources.binding.title'), localized_text(exc))
