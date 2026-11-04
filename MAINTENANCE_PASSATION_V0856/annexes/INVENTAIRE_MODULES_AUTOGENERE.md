@@ -4,7 +4,7 @@ Génération reproductible : `python tools/generate_module_inventory.py` depuis 
 Inspection statique AST : **aucun module applicatif n’est importé ni exécuté**.
 Les numéros de ligne sont ceux de **cette livraison uniquement**.
 
-**44 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
+**45 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
 
 ## `varians_synchro/__init__.py` (1 lignes)
 **Dépendances internes observées** : `core`
@@ -54,9 +54,9 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `error_report`, `guided_ui`, `i18n`, `qt_lifecycle`
 **Fonctions au premier niveau** : `main` (l.17)
 
-## `varians_synchro/guided_ui.py` (1808 lignes)
+## `varians_synchro/guided_ui.py` (1623 lignes)
 **Objet (docstring source)** : Witness-centered PySide6 GUI; the V0.7 physical alignment engine is preserved.
-**Dépendances internes observées** : `core`, `correspondence_navigation`, `exceptions`, `i18n`, `imaging`, `interpolation`, `line_scope`, `overlay_filters`, `physical_alignment`, `project_state`, `rapid_review`, `reading_stream`, `residual_alignment`, `resource_workflow`, `tei_binding`, `textual_progress`, `ui_batch_binding`, `ui_pages`, `ui_reading_order`, `ui_scope`, `ui_tei_binding`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`, `viewer`
+**Dépendances internes observées** : `core`, `correspondence_navigation`, `exceptions`, `i18n`, `imaging`, `interpolation`, `line_scope`, `overlay_filters`, `physical_alignment`, `project_state`, `rapid_review`, `reading_stream`, `residual_alignment`, `resource_workflow`, `tei_binding`, `textual_progress`, `ui_batch_binding`, `ui_pages`, `ui_reading_order`, `ui_resources`, `ui_scope`, `ui_tei_binding`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`, `viewer`
 **Fonctions au premier niveau** : `make_guided_window` (l.30)
 
 ## `varians_synchro/hd_registry.py` (159 lignes)
@@ -183,6 +183,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : Fenêtre « Ordre de lecture » : pages, régions et lignes d’un témoin.
 **Dépendances internes observées** : `i18n`, `imaging`, `page_order`, `reading_stream`, `ui_widgets`
 **Classes déclarées au premier niveau** : `ReadingOrderDialog` (l.14)
+
+## `varians_synchro/ui_resources.py` (201 lignes)
+**Objet (docstring source)** : Fenêtre « Ajouter un témoin… » / « Modifier le témoin et ses ressources » : sigle, images, XML, TEI et Manifests IIIF, appliqués d’un bloc.
+**Dépendances internes observées** : `i18n`, `resource_workflow`, `ui_batch_binding`, `ui_widgets`
+**Classes déclarées au premier niveau** : `WitnessResourceDialog` (l.16)
 
 ## `varians_synchro/ui_scope.py` (84 lignes)
 **Objet (docstring source)** : Fenêtre « Périmètre » : lignes d’un témoin exclues de l’étude.

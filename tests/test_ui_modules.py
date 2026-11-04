@@ -65,3 +65,14 @@ def test_the_batch_binding_dialog_opens_on_its_own(app, setting):
     dialog = BatchBindingDialog(witness)
     assert dialog.table.rowCount() == len(dialog.plan['rows']) == 1
     dialog.close()
+
+
+def test_the_resources_dialog_opens_on_its_own(app, setting):
+    from varians_synchro.ui_resources import WitnessResourceDialog
+    project, a = setting[0], setting[1]
+    dialog = WitnessResourceDialog(project, a)
+    assert dialog.sigil.text() == 'A' and dialog.original_witness is a
+    dialog.close()
+    dialog = WitnessResourceDialog(project)
+    assert dialog.sigil.text() == ''
+    dialog.close()
