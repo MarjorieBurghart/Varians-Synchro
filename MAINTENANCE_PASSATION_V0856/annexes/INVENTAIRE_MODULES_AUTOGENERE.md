@@ -242,11 +242,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `errors`, `i18n`, `tei_binding`, `tei_visual`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `TEILineFetchThread` (l.23), `TEIReviewCard` (l.39), `TEIPhysicalBindingDialog` (l.164)
 
-## `varians_synchro/ui_widgets.py` (333 lignes)
+## `varians_synchro/ui_widgets.py` (345 lignes)
 **Objet (docstring source)** : Widgets Qt qui traduisent leurs textes, ouverture modale d'une fenêtre et appels différés liés à une fenêtre. Les fenêtres de l'interface utilisent ces classes à la place de celles de PySide6 : un texte passé à ``QLabel``, ``setWindowTitle`` ou ``QMessageBox.warning`` est une clé de traduction (ou un texte français connu des catalogues) et s'affiche dans la langue choisie.
 **Dépendances internes observées** : `i18n`
-**Classes déclarées au premier niveau** : `QLabel` (l.163), `QPushButton` (l.179), `QListWidget` (l.188), `QComboBox` (l.193), `QTabWidget` (l.200), `QTreeWidget` (l.205), `QDialog` (l.210), `QMainWindow` (l.269), `QMessageBox` (l.294), `QInputDialog` (l.315), `QFileDialog` (l.324)
-**Fonctions au premier niveau** : `_run_modal` (l.22), `call_soon` (l.34), `start_detached` (l.53), `install_qt_translation` (l.82), `fit_to_screen` (l.104), `_stop_detached_threads` (l.117), `_text_format` (l.123), `plain_tip` (l.134), `page_image_reader_ok` (l.146), `decode_page_image` (l.151), `message_box` (l.274), `_answer` (l.285)
+**Classes déclarées au premier niveau** : `QLabel` (l.175), `QPushButton` (l.191), `QListWidget` (l.200), `QComboBox` (l.205), `QTabWidget` (l.212), `QTreeWidget` (l.217), `QDialog` (l.222), `QMainWindow` (l.281), `QMessageBox` (l.306), `QInputDialog` (l.327), `QFileDialog` (l.336)
+**Fonctions au premier niveau** : `_run_modal` (l.22), `call_soon` (l.34), `start_detached` (l.53), `install_qt_translation` (l.94), `fit_to_screen` (l.116), `_stop_detached_threads` (l.129), `_text_format` (l.135), `plain_tip` (l.146), `page_image_reader_ok` (l.158), `decode_page_image` (l.163), `message_box` (l.286), `_answer` (l.297)
 
 ## `varians_synchro/validation.py` (193 lignes)
 **Objet (docstring source)** : Read-only V0.7.4 preflight for documentary streams and physical pairs. The audit NEVER repairs historical links, guesses an omission, or modifies data. Warnings may reflect unavailable external resources on a different workstation. Hard errors mark contradictions that must not be silently treated as reliable.

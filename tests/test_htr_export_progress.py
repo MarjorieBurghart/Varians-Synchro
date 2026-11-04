@@ -9,6 +9,15 @@ from varians_synchro.core import new_project, create_witness
 JPEG = b'\xff\xd8' + b'0' * 32
 
 
+def _free(dialog):
+    """Fermer et libérer la fenêtre : laissée vivante, PySide la détruisait à
+    l'arrêt de Python (plantage à la sortie, voir test_detached_threads_qt)."""
+    from PySide6.QtCore import QCoreApplication, QEvent
+    dialog.close()
+    dialog.deleteLater()
+    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
+
+
 def _witness():
     project = new_project()
     witness = create_witness(project, 'F')
@@ -86,6 +95,6 @@ def test_the_window_stays_responsive_during_the_export(monkeypatch, tmp_path):
     gate.set()
     while dialog._htr_export_thread is not None and time.monotonic() < deadline:
         app.processEvents(); time.sleep(.01)
-    dialog.close()
+    _free(dialog)
     assert seen == 1
     assert notices == [tr('release.images_exported', count=3)]

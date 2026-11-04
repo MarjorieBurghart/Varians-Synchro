@@ -29,7 +29,8 @@ Quatre questions, avant de publier une nouvelle version :
    « Décisions ») ; un neuvième, sans question, lui a été annoncé.
 4. Chaque faiblesse a d'abord été reproduite par un test, vu en échec ; puis
    corrigée, un commit par étape, la suite complète verte à chaque fois
-   (682 tests à la fin, dont l'interface Qt).
+   (684 tests à la fin, dont l'interface Qt), puis la suite entière répétée
+   pour vérifier la sortie du processus (voir « Trouvé en vérifiant »).
 
 ## Décisions de l'utilisatrice
 
@@ -106,6 +107,12 @@ usage ordinaire.
 | D11 | basse | Après « Ordre de lecture et intervalles… », Maj+clic suivait l'ancien ordre dans la synchronisation. | Les panneaux relisent l'ordre. | `test_reading_order_followed.py` | 45f7622 |
 | D12 | basse | Échap ou la croix jetaient sans rien demander le brouillon d'une fiche ou du périmètre. | Voir « Décisions ». | `test_keyboard_qt.py` | 45ed84f |
 | D13 | basse | « Réessayer » après « − » levait une `KeyError` ; la confirmation des associations « par ordre » comptait les lignes changées à la main ; décocher la case pivot dans la fiche du pivot était sans effet ; ouvrir puis fermer une paire créait une session vide et marquait le projet modifié. | Corrigés un à un ; la case pivot du pivot est grisée, avec une infobulle (×7). | `test_witness_card_qt.py` | 6b946eb |
+
+### Trouvé en vérifiant
+
+| Id | Gravité | Constat | Correction | Tests | Commit |
+|---|---|---|---|---|---|
+| V1 | moyenne (CI) | La suite entière réussissait, puis le processus s'arrêtait une fois sur huit environ sur une erreur de segmentation, à l'arrêt de Python (`QObject::~QObject` dans `PySide::destroyQCoreApplication`, pile obtenue sous gdb) : PySide détruisait alors les fenêtres que les tests n'avaient pas libérées (43 à la fin de la suite), dont des fenêtres encore reliées par `start_detached` à une fonction Python. Non reproduit sur `main` en 12 passages. | `start_detached` défait ce lien dès que le fil a fini ; les tests concernés libèrent leurs fenêtres ; `tests/conftest.py` libère celles qui resteraient avant l'arrêt de Python (plus aucune laissée à PySide). | `test_detached_threads_qt.py` ; suite répétée | voir la PR |
 
 ## Vérifié sain
 

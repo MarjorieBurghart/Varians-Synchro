@@ -6,6 +6,15 @@ import ast
 from varians_synchro.core import VERSION
 
 
+def _free(dialog):
+    """Fermer et libérer la fenêtre : laissée vivante, PySide la détruisait à
+    l'arrêt de Python (plantage à la sortie, voir test_detached_threads_qt)."""
+    from PySide6.QtCore import QCoreApplication, QEvent
+    dialog.close()
+    dialog.deleteLater()
+    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
+
+
 def test_download_completion_is_driven_by_worker_status_not_progress_close():
     """Always run: guard the actual UI code even when Qt isn't installed."""
     from ui_source import ui_class
@@ -113,7 +122,7 @@ def test_gui_100_percent_progress_reports_success_not_cancelled(monkeypatch, tmp
         app.processEvents()
         time.sleep(.01)
     assert dialog._hd_download_thread is None
-    dialog.close()
+    _free(dialog)
 
 
 def test_gui_progress_bar_follows_the_download(monkeypatch, tmp_path):
@@ -167,5 +176,5 @@ def test_gui_progress_bar_follows_the_download(monkeypatch, tmp_path):
     while getattr(dialog, '_hd_download_thread', None) is not None and time.monotonic() < deadline:
         app.processEvents()
         time.sleep(.01)
-    dialog.close()
+    _free(dialog)
     assert seen == 1

@@ -62,11 +62,23 @@ def start_detached(thread, owner, cancel):
     such thread is cancelled and waited for briefly. Callbacks connected to
     the thread must check that their window still exists (``isValid``)."""
     from PySide6.QtCore import QCoreApplication
+    import shiboken6
     _DETACHED_THREADS[thread] = cancel
-    owner.destroyed.connect(lambda *_: cancel.set())
+
+    def owner_destroyed(*_):
+        cancel.set()
+    owner.destroyed.connect(owner_destroyed)
 
     def finished():
         _DETACHED_THREADS.pop(thread, None)
+        # Nothing left tied to the window: a window still alive when Python
+        # stops was destroyed by PySide during the shutdown, and this
+        # callback then ran in a half-dismantled interpreter (crash at exit).
+        if shiboken6.isValid(owner):
+            try:
+                owner.destroyed.disconnect(owner_destroyed)
+            except (RuntimeError, TypeError):
+                pass
         thread.deleteLater()
     thread.finished.connect(finished)
     app = QCoreApplication.instance()
