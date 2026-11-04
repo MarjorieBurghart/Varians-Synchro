@@ -62,6 +62,9 @@ class FakeWindow:
     def _confirm_save_or_discard(self):
         return self.allow
 
+    def _refused_paths(self, path):
+        return ()      # chemins hors du dossier : aucun dans ces projets
+
     def refresh(self):
         self.refreshed += 1
 

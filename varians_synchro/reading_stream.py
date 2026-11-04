@@ -47,8 +47,16 @@ def set_region_order(witness, page_id, region_ids):
     expected = list(dict.fromkeys(_region(line) for line in page_lines))
     _unique_order(region_ids, expected, 'error.reading_order.regions')
     page['reading_region_order'] = list(region_ids)
-    # Explicit fine-grained line order otherwise masks this region operation.
-    page.pop('reading_line_order', None)
+    # A corrected line order would mask this region operation. It is not
+    # dropped (the user's correction was lost without a word): its lines are
+    # re-sorted by the new region order, keeping their order in each region.
+    line_order = page.get('reading_line_order')
+    if line_order is not None:
+        regions = {line['id']: _region(line) for line in page_lines}
+        rank = {region: index for index, region in enumerate(region_ids)}
+        current = list(dict.fromkeys(regions[uid] for uid in line_order if uid in regions))
+        if current != list(region_ids):
+            page['reading_line_order'] = sorted(line_order, key=lambda uid: rank.get(regions.get(uid), len(rank)))
 
 
 def set_line_order(witness, page_id, line_ids):
@@ -76,6 +84,13 @@ def rebind_page(witness, page_id, source_id, page_index=0):
     if page is None:
         raise ReadingOrderError('Page inconnue.')
     previous = page.get('alto_binding') or {}
+    # One XML page belongs to one image (as in the batch binding): bound to
+    # two, its lines counted twice in the exported pivot.
+    other = next((p for p in witness.get('pages', []) if p['id'] != page_id
+                  and (p.get('alto_binding') or {}).get('source_id') == source_id
+                  and (p.get('alto_binding') or {}).get('page_index') == page_index), None)
+    if other is not None:
+        raise localized(ValueError, 'error.binding.xml_page_bound', page=str(other.get('label') or other['id']))
     bind_alto(witness, page_id, source_id, page_index)
     if (previous.get('source_id'), previous.get('page_index')) == (source_id, page_index):
         return False

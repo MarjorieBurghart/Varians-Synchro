@@ -914,4 +914,37 @@ Technische Details stehen in der Konsole oder im Startprotokoll.</string>
   <string key="error.pairs.stale_lines">{reference} ↔ {target}: {count} Zeile(n) geändert oder fehlend</string>
   <string key="error.pairs.session_error">Sitzung {session}: {error}</string>
   <string key="error.export.no_direct_session">{witness}: keine direkte Sitzung mit {reference}.</string>
+  <string key="ui.xml.replace_ignored">{count} ignorierte Zeile(n) finden sich in der neuen Datei nicht unverändert wieder: Sie verlieren ihre Markierung. Bitte unter „Textumfang“ prüfen.</string>
+  <string key="resources.witness.remove_ignored">{count} ignorierte Zeile(n) dieser Seiten verlieren ihre Markierung.</string>
+  <string key="error.project_export.tei_binding_stale">Die TEI-Verknüpfung des Pivots {witness} ist nicht mehr gültig: TEI, Textumfang oder Lesereihenfolge haben sich seitdem geändert. Erstellen Sie sie unter „2 · Ressourcen zuordnen“ neu, bevor Sie exportieren.</string>
+  <string key="error.witness.siglum_conflict">Die Sigle „{witness}“ ergäbe in den Exporten dieselben Dateinamen wie der Textzeuge „{other}“. Wählen Sie eine andere Sigle.</string>
+  <string key="error.witness.siglum_reserved">Die Sigle „{witness}“ kann unter Windows nicht als Dateiname dienen (reservierter Name). Wählen Sie eine andere Sigle.</string>
+  <string key="error.witness.siglum_taken">Die Sigle „{witness}“ gehört bereits zu einem Textzeugen des Projekts: Öffnen Sie dessen Karte, um ihn zu ergänzen, oder wählen Sie eine andere Sigle.</string>
+  <string key="ui.audit.issue.xml_source_read_otherwise">PAGE-Datei mit verschachtelter Struktur, seit dieser Version anders gelesen: Das Projekt behält seine Zeilen, eine erneute Zuordnung würde die betroffenen Gruppen jedoch veralten lassen</string>
+  <string key="error.binding.xml_page_bound">Diese XML-Seite ist bereits dem Bild „{page}“ zugeordnet: Eine XML-Seite kann nicht mehreren Bildern zugewiesen werden.</string>
+  <string key="ui.audit.issue.xml_page_bound_twice">Eine XML-Seite ist mehreren Bildern zugeordnet: Ihre Zeilen würden mehrfach gezählt</string>
+  <string key="error.imaging.redirect_refused">Der Server leitet auf eine Adresse um, die nicht http oder https ist: Umleitung abgelehnt.</string>
+  <string key="error.imaging.too_slow">Der Server antwortet zu langsam: Abbruch nach {seconds} s.</string>
+  <string key="resources.witness.manifest_loading">{count} IIIF-Manifest(e) werden geladen…</string>
+  <string key="error.resources.manifest_cancelled">Laden des Manifests abgebrochen.</string>
+  <string key="project.paths.title">Dateien außerhalb des Projektordners</string>
+  <string key="project.paths.question">Dieses Projekt verweist auf {count} Datei(en) außerhalb seines Ordners (über „..“) oder auf einer Netzwerkfreigabe:
+
+{paths}
+
+Varians-Synchro schreibt solche Pfade nie: Sie stammen aus einem erhaltenen oder von Hand bearbeiteten Projekt. Diese Dateien lesen? Wenn Sie mit Nein antworten, gelten sie als nicht auffindbar; das Projekt behält ihre Pfade.</string>
+  <string key="error.tei_binding.too_deep">Die TEI ist zu tief verschachtelt, um gelesen zu werden.</string>
+  <string key="common.discard_title">Änderungen verwerfen</string>
+  <string key="common.discard_question">Die in diesem Fenster vorgenommenen Änderungen sind nicht gespeichert. Verwerfen?</string>
+  <string key="error.tei.apparatus_unresolved">Apparat ohne eindeutige Lesart für {witness} (xml:id={id}).</string>
+  <string key="error.tei.choice_unresolved">&lt;choice&gt;-Element ohne verwendbaren Zweig.</string>
+  <string key="error.tei.duplicate_lb_id">Doppelter TEI-Bezeichner: {id}</string>
+  <string key="error.tei.unattributed_lb">{count} &lt;lb/&gt; ohne @edRef: vom Textzeugen {witness} ausgeschlossen.</string>
+  <string key="error.tei.no_target_lb">Kein &lt;lb edRef="#{witness}"/&gt; gefunden.</string>
+  <string key="error.tei.source_changed">Die TEI-Datei hat sich seit dem Import geändert: Importieren Sie sie vor dem Verknüpfen erneut.</string>
+  <string key="error.tei.line_count_mismatch">{tei} TEI-&lt;lb/&gt; für {physical} aktive physische Zeilen.</string>
+  <string key="error.tei.no_physical_lines">Keine aktive ALTO/PAGE-Zeile.</string>
+  <string key="error.binding.by_order">Nach Reihenfolge vorgeschlagene Zuordnung, an den Bildern zu prüfen</string>
+  <string key="error.binding.no_unique_match">Keine eindeutige Zuordnung; manuelle Auswahl nötig</string>
+  <string key="resources.witness.pivot_kept.tip">Dieser Textzeuge ist der Pivot des Projekts. Um den Pivot zu wechseln, öffnen Sie die Karte eines anderen Textzeugen und aktivieren Sie dort dieses Kästchen.</string>
 </translations>

@@ -13,6 +13,8 @@ import uuid
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+from .witness_ids import witness_id_for_siglum
+from .errors import Localized, localized
 from .reading_stream import reading_stream
 
 XML_ID = '{http://www.w3.org/XML/1998/namespace}id'
@@ -46,6 +48,9 @@ def extract_witness_tei(path, witness_id):
     """
     if not witness_id or not isinstance(witness_id, str):
         raise ValueError('Un sigle de témoin est indispensable pour lire une TEI.')
+    # A siglum that is not an XML name (« BnF lat. 123 ») is named in the
+    # TEI by the identifier Varians derives from it (« BnF_lat._123 »).
+    names = {witness_id, witness_id_for_siglum(witness_id)}
     path = Path(path)
     root = ET.parse(path).getroot()
     if _local(root.tag) not in ('TEI', 'teiCorpus'):
@@ -64,6 +69,7 @@ def extract_witness_tei(path, witness_id):
     identifiers = set()
 
     def issue(code, message):
+        # ``message``: a Localized text (French, keyed), shown translated.
         diagnostics.append({'code': code, 'message': message})
 
     def emit_text(value):
@@ -78,7 +84,7 @@ def extract_witness_tei(path, witness_id):
             return
         if tag == 'app':
             readings = [child for child in element if _local(child.tag) in ('lem', 'rdg')]
-            matching = [child for child in readings if witness_id in _refs(child.get('wit'))]
+            matching = [child for child in readings if names & _refs(child.get('wit'))]
             # Explicit witnesses in variant branches take precedence.  A lone
             # unqualified reading is unambiguous; multiple branches without
             # matching @wit must not be mixed or guessed.
@@ -86,8 +92,8 @@ def extract_witness_tei(path, witness_id):
             if len(candidates) == 1:
                 walk(candidates[0])
             else:
-                issue('apparatus_unresolved',
-                      f'Apparat sans lecture unique pour {witness_id} (xml:id={element.get(XML_ID) or "?"}).')
+                issue('apparatus_unresolved', Localized('error.tei.apparatus_unresolved', witness=witness_id,
+                                                        id=element.get(XML_ID) or '?'))
             # Apparat's own tail belongs to the parent context.
             return
         if tag == 'choice':
@@ -97,22 +103,22 @@ def extract_witness_tei(path, witness_id):
                 if selected is not None:
                     walk(selected)
                     return
-            issue('choice_unresolved', 'Élément <choice> sans branche exploitable.')
+            issue('choice_unresolved', Localized('error.tei.choice_unresolved'))
             return
-        if tag in ('lem', 'rdg') and element.get('wit') and witness_id not in _refs(element.get('wit')):
+        if tag in ('lem', 'rdg') and element.get('wit') and not names & _refs(element.get('wit')):
             return
         if tag == 'pb':
             ref = element.get('edRef')
-            if not ref or witness_id in _refs(ref):
+            if not ref or names & _refs(ref):
                 current_page = {'n': element.get('n'), 'facs': element.get('facs'),
                                 'xml_id': element.get(XML_ID)}
         if tag == 'lb':
             ref = element.get('edRef')
-            if ref and witness_id in _refs(ref):
+            if ref and names & _refs(ref):
                 identifier = element.get(XML_ID)
                 if identifier:
                     if identifier in identifiers:
-                        issue('duplicate_lb_id', f'Identifiant TEI dupliqué : {identifier}')
+                        issue('duplicate_lb_id', Localized('error.tei.duplicate_lb_id', id=identifier))
                     identifiers.add(identifier)
                 line = {'tei_key': identifier or f'lb-{len(lines)+1:06d}',
                         'lb_id': identifier, 'ordinal': len(lines)+1, 'edRef': ref,
@@ -131,13 +137,18 @@ def extract_witness_tei(path, witness_id):
             if child.tail:
                 emit_text(child.tail)
 
-    walk(bodies[0])
+    try:
+        walk(bodies[0])
+    except RecursionError:
+        # A TEI nested deeper than Python's recursion limit: an error made
+        # the main window unable to refresh.
+        raise localized(ValueError, 'error.tei_binding.too_deep') from None
     for item in lines:
         item['text'] = re.sub(r'\s+', ' ', item['text']).strip()
     if unqualified:
-        issue('unattributed_lb', f'{unqualified} <lb/> sans @edRef : exclus du témoin {witness_id}.')
+        issue('unattributed_lb', Localized('error.tei.unattributed_lb', count=unqualified, witness=witness_id))
     if not lines:
-        issue('no_target_lb', f'Aucun <lb edRef="#{witness_id}"/> trouvé.')
+        issue('no_target_lb', Localized('error.tei.no_target_lb', witness=witness_id))
     return {'path': str(path.resolve()), 'source_sha256': _digest(path),
             'witness_id': witness_id, 'lines': lines, 'diagnostics': diagnostics,
             'ignored_other_witness_lb': ignored_other_lb,
@@ -171,13 +182,13 @@ def preview_tei_binding(project, witness_id, resource_id):
                 for l in stream]
     diagnostics = list(extracted['diagnostics'])
     if resource.get('source_sha256') and resource['source_sha256'] != extracted['source_sha256']:
-        diagnostics.append({'code':'tei_source_changed',
-                            'message':'Le fichier TEI a changé depuis son import : réimportez-le avant de lier.'})
+        diagnostics.append({'code':'tei_source_changed', 'message': Localized('error.tei.source_changed')})
     if len(physical) != len(extracted['lines']):
         diagnostics.append({'code':'line_count_mismatch',
-                            'message':f'{len(extracted["lines"])} <lb/> TEI pour {len(physical)} lignes physiques actives.'})
+                            'message': Localized('error.tei.line_count_mismatch', tei=len(extracted['lines']),
+                                                 physical=len(physical))})
     if not physical:
-        diagnostics.append({'code':'no_physical_lines', 'message':'Aucune ligne ALTO/PAGE active.'})
+        diagnostics.append({'code':'no_physical_lines', 'message': Localized('error.tei.no_physical_lines')})
     pairs = [{'tei_key': t['tei_key'], 'tei_ordinal': t['ordinal'], 'tei_text': t['text'],
               'physical_line_id': p['id'], 'physical_fingerprint': p['fingerprint'],
               'page_id': p['page_id'], 'page_label': p['page_label'], 'physical_ordinal': p['ordinal']}

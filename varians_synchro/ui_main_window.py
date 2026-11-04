@@ -1,6 +1,8 @@
 """Fenêtre principale de Varians-Synchro : projet et témoins, pages, synchronisation, avancement et exports."""
 from __future__ import annotations
 
+import html
+
 from pathlib import Path
 
 from PySide6.QtCore import Qt, Signal
@@ -20,7 +22,7 @@ from .ui_pair import PairDialog
 from .ui_resources import WitnessResourceDialog
 from .ui_scope import SingleWitnessScopeDialog
 from .ui_tei_binding import TEIPhysicalBindingDialog
-from .ui_widgets import (_run_modal, QComboBox, QDialog, QFileDialog, QInputDialog, QLabel,
+from .ui_widgets import (_run_modal, plain_tip, QComboBox, QDialog, QFileDialog, QInputDialog, QLabel,
                          QListWidget, QMainWindow, QMessageBox, QPushButton, QTreeWidget)
 
 
@@ -44,6 +46,9 @@ class _PairList(QListWidget):
 class GuidedWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        # Qt's standard buttons (Yes, No, OK, Cancel) in the chosen language.
+        from .ui_widgets import install_qt_translation
+        install_qt_translation(get_language())
         self.project = new_project()
         self.path = None
         self._changes = ProjectChangeTracker(self.project)
@@ -65,6 +70,9 @@ class GuidedWindow(QMainWindow):
         help_button.clicked.connect(self.open_user_manual)
         from PySide6.QtGui import QKeySequence, QShortcut
         QShortcut(QKeySequence('F1'), self, self.open_user_manual)
+        QShortcut(QKeySequence(QKeySequence.StandardKey.Save), self, self.save)
+        QShortcut(QKeySequence(QKeySequence.StandardKey.Open), self, self.open)
+        QShortcut(QKeySequence(QKeySequence.StandardKey.New), self, self.new)
         top.addWidget(help_button)
         top.addWidget(QLabel(tr('common.language')))
         self.language_box = QComboBox()
@@ -133,6 +141,7 @@ class GuidedWindow(QMainWindow):
         if not self._changes.is_modified(self.project):
             return True
         prompt = QtMessageBox(self)
+        prompt.setTextFormat(Qt.TextFormat.PlainText)     # the project's name is data
         prompt.setIcon(QtMessageBox.Icon.Warning)
         prompt.setWindowTitle(tr('project.unsaved.title'))
         prompt.setText(tr('project.unsaved.question', name=self.project.get('name', '')))
@@ -185,6 +194,7 @@ class GuidedWindow(QMainWindow):
         self.inventory.setHeaderLabels([tr('resources.project.witness'),
                                         tr('resources.project.status')])
         self.inventory.itemClicked.connect(self.edit_inventory_item)
+        self.inventory.itemActivated.connect(self.edit_inventory_item)       # Entrée, Espace
         main.addWidget(self.inventory, 1)
         self.stack.addWidget(page)
 
@@ -259,7 +269,7 @@ class GuidedWindow(QMainWindow):
 
     def _build_alignment_tab(self):
         page=QWidget();main=QVBoxLayout(page)
-        main.addWidget(QLabel('<h3>' + tr('ui.alignment.heading') + '</h3>'))
+        main.addWidget(QLabel('<h3>' + html.escape(tr('ui.alignment.heading')) + '</h3>', rich=True))
         explanation = QLabel(tr('ui.alignment.intro'))
         explanation.setWordWrap(True)
         main.addWidget(explanation)
@@ -346,7 +356,7 @@ class GuidedWindow(QMainWindow):
     def _build_progress_tab(self):
         page = QWidget()
         main = QVBoxLayout(page)
-        main.addWidget(QLabel('<h3>' + tr('ui.final.heading') + '</h3>'))
+        main.addWidget(QLabel('<h3>' + html.escape(tr('ui.final.heading')) + '</h3>', rich=True))
         explanation = QLabel(tr('ui.final.intro'))
         explanation.setWordWrap(True)
         main.addWidget(explanation)
@@ -465,12 +475,12 @@ class GuidedWindow(QMainWindow):
                               else tr('resources.project.manifest_loaded',
                                       pages=len((source.get('manifest') or {}).get('canvases', []))))
                     item = QTreeWidgetItem(row, [tr('resources.witness.manifests'), detail])
-                    item.setToolTip(0, str(source['reference']))
+                    item.setToolTip(0, plain_tip(source['reference']))
                 else:
                     item = QTreeWidgetItem(row, [tr('resources.witness.images') + ' · '
                                              + Path(source['reference']).name,
                                              tr('resources.project.image_loaded')])
-                    item.setToolTip(0, str(source['reference']))
+                    item.setToolTip(0, plain_tip(source['reference']))
             for src in w['alto_sources']:
                 QTreeWidgetItem(row, [src.get('kind', 'alto').upper() + ' · '
                                           + Path(src['path']).name,
@@ -549,7 +559,7 @@ class GuidedWindow(QMainWindow):
         if not path:
             return
         try:
-            incoming = load_project(path)
+            incoming = load_project(path, refused=self._refused_paths(path))
         except Exception as exc:
             QMessageBox.critical(self, tr('project.open_error'), localized_text(exc))
             return
@@ -563,6 +573,42 @@ class GuidedWindow(QMainWindow):
         self.path = path
         self._changes.reset(self.project)
         self.refresh()
+
+    def _refused_paths(self, path):
+        """Paths of the project ``path`` leaving its folder (« .. ») or naming
+        a network share: the user is asked whether to read them (No by
+        default). An answer Yes is remembered for this project and these
+        paths. Returns the paths not to read."""
+        import hashlib
+        from .core import suspicious_paths
+        try:
+            paths = suspicious_paths(path)
+        except (OSError, ValueError):
+            return ()                     # load_project says what is wrong
+        if not paths:
+            return ()
+        key = str(Path(path).resolve()) + '\n' + hashlib.sha256('\n'.join(paths).encode('utf-8')).hexdigest()
+        if key in self._trusted_paths():
+            return ()
+        shown = '\n'.join(paths[:12]) + ('\n…' if len(paths) > 12 else '')
+        answer = QMessageBox.question(self, tr('project.paths.title'),
+                                      tr('project.paths.question', count=len(paths), paths=shown),
+                                      QtMessageBox.StandardButton.Yes | QtMessageBox.StandardButton.No,
+                                      QtMessageBox.StandardButton.No)
+        if answer == QtMessageBox.StandardButton.Yes:
+            self._trust_paths(key)
+            return ()
+        return paths
+
+    @staticmethod
+    def _trusted_paths():
+        from PySide6.QtCore import QSettings
+        return list(QSettings('Varians', 'Varians-Synchro').value('trusted_paths', []) or [])
+
+    @classmethod
+    def _trust_paths(cls, key):
+        from PySide6.QtCore import QSettings
+        QSettings('Varians', 'Varians-Synchro').setValue('trusted_paths', (cls._trusted_paths() + [key])[-200:])
 
     def save(self) -> bool:
         """Return False on Save As cancellation or write failure."""
@@ -668,7 +714,16 @@ class GuidedWindow(QMainWindow):
 
     def _open_pair(self, a, b):
         try:
+            known={s['id'] for s in self.project.get('pair_sessions',[])}
             session=create_pair_session(self.project,a,b)
-            dlg=PairDialog(self.project,session,self);_run_modal(dlg);self.refresh()
+            try:
+                dlg=PairDialog(self.project,session,self);_run_modal(dlg)
+            finally:
+                # Opened and closed without any group: no empty session kept
+                # (the project was marked modified for nothing).
+                if session['id'] not in known and not session.get('links'):
+                    self.project['pair_sessions']=[s for s in self.project['pair_sessions']
+                                                   if s['id']!=session['id']]
+            self.refresh()
         except Exception as exc:
             QMessageBox.warning(self,tr('Synchronisation'),localized_text(exc))

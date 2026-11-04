@@ -914,4 +914,37 @@ Technické podrobnosti najdete v konzoli nebo ve spouštěcím protokolu.</strin
   <string key="error.pairs.stale_lines">{reference} ↔ {target}: změněné nebo chybějící řádky ({count})</string>
   <string key="error.pairs.session_error">Relace {session}: {error}</string>
   <string key="error.export.no_direct_session">{witness}: žádná přímá relace s {reference}.</string>
+  <string key="ui.xml.replace_ignored">{count} ignorovaných řádků se v novém souboru nenachází beze změny: ztratí své označení. Zkontrolujte je v „Rozsahu“.</string>
+  <string key="resources.witness.remove_ignored">{count} ignorovaných řádků na těchto stránkách ztratí své označení.</string>
+  <string key="error.project_export.tei_binding_stale">Propojení TEI pivotu {witness} již neplatí: TEI, rozsah nebo pořadí čtení se mezitím změnily. Před exportem je vytvořte znovu v „2 · Přiřazení zdrojů“.</string>
+  <string key="error.witness.siglum_conflict">Sigla „{witness}“ by v exportech dala stejné názvy souborů jako svědek „{other}“. Zvolte jinou siglu.</string>
+  <string key="error.witness.siglum_reserved">Siglu „{witness}“ nelze ve Windows použít jako název souboru (vyhrazený název). Zvolte jinou siglu.</string>
+  <string key="error.witness.siglum_taken">Sigla „{witness}“ už patří svědkovi projektu: otevřete jeho kartu a doplňte ji, nebo zvolte jinou siglu.</string>
+  <string key="ui.audit.issue.xml_source_read_otherwise">Soubor PAGE s vnořenou strukturou, od této verze čtený jinak: projekt si ponechává své řádky, ale nové přiřazení by zastaralo skupiny, které se jich týkají</string>
+  <string key="error.binding.xml_page_bound">Tato stránka XML je již přiřazena k obrázku „{page}“: jednu stránku XML nelze přiřadit více obrázkům.</string>
+  <string key="ui.audit.issue.xml_page_bound_twice">Jedna stránka XML je přiřazena více obrázkům: její řádky by se počítaly vícekrát</string>
+  <string key="error.imaging.redirect_refused">Server přesměrovává na adresu, která není http ani https: přesměrování odmítnuto.</string>
+  <string key="error.imaging.too_slow">Server odpovídá příliš pomalu: ukončeno po {seconds} s.</string>
+  <string key="resources.witness.manifest_loading">Načítání {count} IIIF Manifest(ů)…</string>
+  <string key="error.resources.manifest_cancelled">Načítání Manifestu zrušeno.</string>
+  <string key="project.paths.title">Soubory mimo složku projektu</string>
+  <string key="project.paths.question">Tento projekt odkazuje na {count} soubor(ů) mimo svou složku (přes „..“) nebo na síťové sdílené složce:
+
+{paths}
+
+Varians-Synchro takové cesty nikdy nezapisuje: pocházejí z přijatého nebo ručně upraveného projektu. Číst tyto soubory? Pokud odpovíte Ne, budou považovány za nenalezené; projekt si jejich cesty ponechá.</string>
+  <string key="error.tei_binding.too_deep">TEI je vnořena příliš hluboko, aby ji bylo možné přečíst.</string>
+  <string key="common.discard_title">Zahodit změny</string>
+  <string key="common.discard_question">Změny provedené v tomto okně nejsou uloženy. Zahodit je?</string>
+  <string key="error.tei.apparatus_unresolved">Aparát bez jediného čtení pro {witness} (xml:id={id}).</string>
+  <string key="error.tei.choice_unresolved">Prvek &lt;choice&gt; bez použitelné větve.</string>
+  <string key="error.tei.duplicate_lb_id">Duplicitní identifikátor TEI: {id}</string>
+  <string key="error.tei.unattributed_lb">{count} &lt;lb/&gt; bez @edRef: vyloučeno ze svědka {witness}.</string>
+  <string key="error.tei.no_target_lb">Nenalezen žádný &lt;lb edRef="#{witness}"/&gt;.</string>
+  <string key="error.tei.source_changed">Soubor TEI se od importu změnil: před propojením jej importujte znovu.</string>
+  <string key="error.tei.line_count_mismatch">{tei} TEI &lt;lb/&gt; pro {physical} aktivních fyzických řádků.</string>
+  <string key="error.tei.no_physical_lines">Žádný aktivní řádek ALTO/PAGE.</string>
+  <string key="error.binding.by_order">Shoda navržená podle pořadí, ověřte ji na obrázcích</string>
+  <string key="error.binding.no_unique_match">Žádná jednoznačná shoda; je nutná ruční volba</string>
+  <string key="resources.witness.pivot_kept.tip">Tento svědek je pivotem projektu. Chcete-li pivot změnit, otevřete kartu jiného svědka a zaškrtněte toto políčko.</string>
 </translations>

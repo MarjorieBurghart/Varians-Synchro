@@ -3,27 +3,70 @@
 Images and ALTO are immutable external inputs. An export is a temporary working copy.
 """
 from __future__ import annotations
+import copy
 import io
 import json
 import re
 import zipfile
 from pathlib import Path
 from urllib.parse import urlparse
-from urllib.request import Request, urlopen
+from urllib.request import HTTPRedirectHandler, Request, build_opener
+import time
 from .errors import Localized, localized
+from .witness_ids import witness_id_for_siglum
 
 MAX_MANIFEST_BYTES = 20_000_000
 MAX_IMAGE_BYTES = 80_000_000
+HD_DEADLINE = 600   # one HD image (up to 160 MB)
 
 
-def _http_bytes(url, max_bytes=MAX_IMAGE_BYTES, timeout=30):
-    if urlparse(url).scheme != 'https' and urlparse(url).scheme != 'http':
+class _HTTPOnlyRedirect(HTTPRedirectHandler):
+    """Follow redirections within http/https only: checking the scheme of
+    the first address did not stop a server redirecting to ftp://…"""
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if urlparse(newurl).scheme not in ('http', 'https'):
+            raise localized(ValueError, 'error.imaging.redirect_refused')
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+_OPENER = build_opener(_HTTPOnlyRedirect)
+TOTAL_DEADLINE = 120
+
+
+def urlopen(request, timeout):
+    """``urllib.request.urlopen`` following redirections within http/https
+    only."""
+    return _OPENER.open(request, timeout=timeout)
+
+
+def _open(url, timeout):
+    if urlparse(url).scheme not in ('http', 'https'):
         raise ValueError('URL HTTP(S) attendue')
-    with urlopen(Request(url, headers={'User-Agent':'Varians-Synchro/0.2 (research software)'}), timeout=timeout) as res:
-        data = res.read(max_bytes + 1)
-        if len(data) > max_bytes:
-            raise ValueError('Ressource trop volumineuse')
-        return data
+    return urlopen(Request(url, headers={'User-Agent': 'Varians-Synchro (research software)'}), timeout=timeout)
+
+
+def _read_until(response, limit, started, deadline):
+    """One block of ``response``, or TimeoutError once ``deadline`` seconds
+    have passed since ``started``: the timeout of the socket bounds each
+    read, not the whole answer of a server answering drop by drop."""
+    if time.monotonic() - started > deadline:
+        raise localized(TimeoutError, 'error.imaging.too_slow', seconds=deadline)
+    # read1: what has arrived (read() would wait for the whole block).
+    reader = getattr(response, 'read1', None)
+    return reader(limit) if reader is not None else response.read(limit)
+
+
+def _http_bytes(url, max_bytes=MAX_IMAGE_BYTES, timeout=30, deadline=TOTAL_DEADLINE):
+    started = time.monotonic()
+    with _open(url, timeout) as res:
+        data = bytearray()
+        while True:
+            chunk = _read_until(res, 65_536, started, deadline)
+            if not chunk:
+                return bytes(data)
+            data += chunk
+            if len(data) > max_bytes:
+                raise ValueError('Ressource trop volumineuse')
 
 
 def _label(value):
@@ -136,7 +179,12 @@ def bind_alto(witness,page_id,alto_source_id,alto_page_index=0):
     src=next((a for a in witness.get('alto_sources',[]) if a['id']==alto_source_id),None)
     if page is None or src is None:raise ValueError('Page ou source ALTO/PAGE introuvable')
     if not 0<=alto_page_index<len(src['pages']): raise ValueError('Index de page XML invalide')
+    before=(mapped_alto_page(witness,page) or {}).get('lines',[])
     page['alto_binding']={'source_id':alto_source_id,'page_index':alto_page_index,'verified':False}
+    # Ignored lines are known by page and rank: carry each mark to the same
+    # line in the new file, or release it (never leave it on another line).
+    from .line_scope import carry_ignored_lines
+    return carry_ignored_lines(witness,page_id,before,src['pages'][alto_page_index].get('lines',[]))
 
 
 def mapped_alto_page(witness,page):
@@ -215,7 +263,9 @@ def export_iiif_htr_zip(witness, page_ids, output_path, max_width=2500, *,
                     raise InterruptedError('Export annulé')
                 p=pages[pid]
                 if p['image_kind']!='iiif':raise ValueError('Export IIIF : sélection contenant une image locale')
-                fname=f'{witness["id"]}_{num:04d}.jpg'
+                # The siglum is free text: name the images by the XML
+                # identifier derived from it, a safe file name (no « / »).
+                fname=f'{witness_id_for_siglum(witness["id"])}_{num:04d}.jpg'
                 body=image_bytes(p,max_width)
                 if not body.startswith(b'\xff\xd8'):
                     raise localized(ValueError, 'error.imaging.export_not_jpeg', page=p['label'])
@@ -250,6 +300,11 @@ def import_htr_results(witness, mapping_json_path, alto_directory, inspect_func=
     paths=list(folder.glob('*.xml'))
     sourcefn=inspect_func or add_alto_source
     imported=[];missing=[];ambiguous=[]
+    # All or nothing: the lot is read on a copy of the witness, published
+    # only once every file has been read (a truncated file left the witness
+    # half modified, an XML of several pages an orphan source).
+    final=witness
+    witness=copy.deepcopy(witness)
     bypage={p['id']:p for p in witness.get('pages',[])}
     for item in mapping.get('pages',[]):
         canvas=item['canvas_id']; page=bypage.get(canvas)
@@ -265,9 +320,12 @@ def import_htr_results(witness, mapping_json_path, alto_directory, inspect_func=
             ambiguous.append({'canvas':canvas,'reason':'Plusieurs fichiers XML candidats'});continue
         src=sourcefn(witness,matches[0])
         if len(src['pages'])!=1:
+            witness['alto_sources']=[s for s in witness['alto_sources'] if s is not src]
             ambiguous.append({'canvas':canvas,'reason':'XML comportant plusieurs pages'});continue
         bind_alto(witness,canvas,src['id'],0)
         imported.append(canvas)
+    final.clear()
+    final.update(witness)
     return {'imported':imported,'missing':missing,'skipped':ambiguous}
 
 
@@ -332,14 +390,14 @@ def export_iiif_hd_images(witness, page_ids, destination, *, cancelled=None,
             filename = f'{witness["id"]}_{index:04d}' + (f'_{safe_label}' if safe_label else '') + '.jpg'
             filename = re.sub(r'[^A-Za-z0-9_.-]', '_', filename)
             final = staging / filename
-            with urlopen(Request(url, headers={'User-Agent': 'Varians-Synchro/0.8.5.1'}),
-                         timeout=35) as response, final.open('wb') as outfile:
+            started = time.monotonic()
+            with _open(url, 35) as response, final.open('wb') as outfile:
                 total = 0
                 signature = b''
                 while True:
                     if cancelled():
                         raise InterruptedError('Téléchargement annulé')
-                    chunk = response.read(262_144)
+                    chunk = _read_until(response, 262_144, started, HD_DEADLINE)
                     if not chunk:
                         break
                     if not signature:

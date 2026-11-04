@@ -5,6 +5,8 @@ HTR is supplementary and never needed for visual selection. A 4200px-wide
 IIIF request provides useful magnification without downloading all canvases.
 """
 from __future__ import annotations
+
+import html
 from .imaging import image_bytes, mapped_alto_page
 from .page_order import ordered_pages
 from .errors import localized_text
@@ -15,7 +17,7 @@ from .overlay_selection import choose_line_at, choose_line_geometry
 from .alto_geometry import page_line_polygons
 from .reading_stream import reading_stream
 from .selection_policy import update_line_selection
-from .ui_widgets import call_soon
+from .ui_widgets import call_soon, decode_page_image
 from PySide6.QtCore import Qt, QRectF, QPointF, QThread, Signal, QItemSelectionModel
 from PySide6.QtGui import QPixmap, QPen, QColor, QBrush, QImage, QPainter, QPolygonF, QPainterPath
 from shiboken6 import isValid
@@ -189,12 +191,7 @@ class LineImagePanel(QWidget):
         self._page_lines = []
         self._last_anchor = None  # Stable physical UID, even across folios.
         # Explicit per-page/region/line reading order also drives Shift ranges.
-        try:
-            self._line_order = tuple(line['id'] for line in reading_stream(witness, include_ignored=True))
-        except (ValueError, KeyError, TypeError):
-            # A stale manual reading-order override is diagnosed elsewhere.
-            # It must not make the visual viewer itself unusable.
-            self._line_order = ()
+        self._line_order = self._reading_order()
         self._worker = None
         self._current_page = None
         self._pixmap_item = None
@@ -219,7 +216,7 @@ class LineImagePanel(QWidget):
         root.setContentsMargins(3, 3, 3, 3)
         root.setSpacing(5)
         header = QHBoxLayout(); root.addLayout(header)
-        header.addWidget(QLabel(f'<b>{witness["id"]}</b>'))
+        header.addWidget(QLabel(f'<b>{html.escape(witness["id"])}</b>'))      # the siglum is data
         self.page_combo = QComboBox(); self.page_combo.setMinimumWidth(110)
         for page in self.pages:
             available = '●' if mapped_alto_page(witness, page) else '○'
@@ -232,7 +229,13 @@ class LineImagePanel(QWidget):
         self.next.clicked.connect(lambda: self.switch_offset(1))
         self.page_combo.currentIndexChanged.connect(self._on_page_changed)
 
+        # Three short rows (zoom; selection and HTR text; display options):
+        # on one row a panel needed 775 px, on two rows still too much with
+        # Windows fonts, and the synchronisation window (two panels side by
+        # side) did not fit a laptop screen.
         controls = QHBoxLayout(); root.addLayout(controls)
+        selection_row = QHBoxLayout(); root.addLayout(selection_row)
+        options = QHBoxLayout(); root.addLayout(options)
         for label, tip, handler in (
             ('−', 'Dézoomer', lambda: self.view.scale(0.8, 0.8)),
             ('+', 'Agrandir', lambda: self.view.scale(1.25, 1.25)),
@@ -243,17 +246,19 @@ class LineImagePanel(QWidget):
             button.clicked.connect(handler); controls.addWidget(button)
         self.overlay_toggle = QCheckBox(tr('viewer.alto.toggle')); self.overlay_toggle.setChecked(True)
         self.overlay_toggle.toggled.connect(self.refresh_overlay)
-        controls.addWidget(self.overlay_toggle)
+        options.addWidget(self.overlay_toggle)
         self.compact_overlay = QCheckBox(tr('viewer.compact_overlay'))
         self.compact_overlay.setChecked(False)
         self.compact_overlay.setToolTip(tr('viewer.compact_overlay.tip'))
         self.compact_overlay.toggled.connect(self._compact_toggled)
-        controls.addWidget(self.compact_overlay)
+        options.addWidget(self.compact_overlay)
         self.show_htr = QCheckBox(tr('viewer.htr.toggle')); self.show_htr.setChecked(False)
         # Do not merely remove HTR words from the list: the complete HTR pane
         # must disappear so the manuscript can use the reclaimed height.
         self.show_htr.toggled.connect(self._toggle_htr_panel)
-        controls.addWidget(self.show_htr)
+        selection_row.addWidget(self.show_htr)
+        selection_row.addStretch(1)
+        options.addStretch(1)
         controls.addStretch(1)
 
         # The line list is still the internal selection model when hidden:
@@ -262,7 +267,7 @@ class LineImagePanel(QWidget):
         clear = QPushButton(tr('viewer.clear_selection'))
         clear.setToolTip(tr('viewer.clear_selection.tip'))
         clear.clicked.connect(self.clear_selection)
-        controls.addWidget(clear)
+        selection_row.addWidget(clear)
 
         self.scene = QGraphicsScene(self)
         self.view = ZoomableGraphicsView(self.scene)
@@ -289,6 +294,7 @@ class LineImagePanel(QWidget):
         self.htr_panel.hide()   # HTR is optional and OFF by default
         root.addWidget(self.content_splitter, 1)
         self.status = QLabel(tr('viewer.select_page')); self.status.setWordWrap(True)
+        self.status.setTextFormat(Qt.TextFormat.PlainText)   # shows a server's answer
         root.addWidget(self.status)
         self.selection_status = QLabel(tr('ui.0.ligne.selectionnee')); root.addWidget(self.selection_status)
         if self.pages:
@@ -481,6 +487,19 @@ class LineImagePanel(QWidget):
         worker.failed.connect(lambda error, s=serial: self._on_error(error, s))
         worker.start()
 
+    def _reading_order(self):
+        try:
+            return tuple(line['id'] for line in reading_stream(self.witness, include_ignored=True))
+        except (ValueError, KeyError, TypeError):
+            # A stale manual reading-order override is diagnosed elsewhere.
+            # It must not make the visual viewer itself unusable.
+            return ()
+
+    def refresh_reading_order(self):
+        """Read the reading order again (after « Reading order and
+        intervals… »): Shift ranges followed the order of the opening."""
+        self._line_order = self._reading_order() or tuple(self._line_to_page)
+
     def _gone(self):
         # The panel is destroyed with its dialog without its own closeEvent:
         # an image arriving afterwards must not reach deleted widgets.
@@ -493,7 +512,7 @@ class LineImagePanel(QWidget):
 
     def _on_image(self, data, serial):
         if self._gone() or serial != self._request_serial: return
-        image = QImage.fromData(data)
+        image = decode_page_image(data)
         if image.isNull():
             self._on_error(tr('ui.format.dimage.non.reconnu.par.qt'), serial)
             return

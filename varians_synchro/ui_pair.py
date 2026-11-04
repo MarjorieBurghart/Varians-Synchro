@@ -32,6 +32,9 @@ from .ui_widgets import (_run_modal, QComboBox, QDialog, QLabel, QListWidget, QM
 
 class PairDialog(QDialog):
     """Visual-first manual alignment; HTR is optional secondary information."""
+    # F1 : l'aide, à la section de cette fenêtre (enfant de la fenêtre,
+    # donc utilisable bien que celle-ci soit modale).
+    help_anchor = 'synchronisation'
     def __init__(self, project, session, parent=None):
         super().__init__(parent)
         self.project = project
@@ -86,6 +89,11 @@ class PairDialog(QDialog):
         self.interpolate_button.setToolTip(tr('progress.action.tip'))
         self.interpolate_button.clicked.connect(lambda: self.interpolate())
         top.addWidget(self.interpolate_button)
+        top.addStretch(1)
+        # The menus (and the TEI search) on a second row: one row did not
+        # fit a laptop screen with Windows fonts (German, Russian).
+        top = QHBoxLayout(); main.addLayout(top)
+        self._second_row = top
         self.more_actions = QToolButton()
         self.more_actions.setText(tr('alignment.action.more'))
         self.more_actions.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
@@ -125,14 +133,7 @@ class PairDialog(QDialog):
         self.assoc_shortcut2.activated.connect(lambda: self.attach('correspondence'))
         self.absence_shortcut = QShortcut(QKeySequence('Ctrl+Shift+A'), self)
         self.absence_shortcut.activated.connect(self.confirm_selected_absence)
-        # F1 : l'aide, à la section de cette fenêtre (enfant de la fenêtre,
-        # donc utilisable bien que celle-ci soit modale).
-        self.help_shortcut = QShortcut(QKeySequence('F1'), self)
-        self.help_shortcut.activated.connect(self.open_help)
 
-    def open_help(self):
-        from .ui_help import open_help
-        open_help(self, 'synchronisation')
 
     def _build_filters(self, main):
         """Consigne, cadres visibles, recherche dans le texte TEI, légende."""
@@ -151,6 +152,7 @@ class PairDialog(QDialog):
         # do not confuse users with two competing default algorithms.
         filter_row.addStretch(1)
         if self._tei_left or self._tei_right:
+            filter_row = self._second_row        # beside the menus: room enough
             filter_row.addWidget(QLabel(tr('tei.visual.search_label')))
             self.tei_search_side = QComboBox()
             if self._tei_left:
@@ -198,7 +200,9 @@ class PairDialog(QDialog):
     def _build_text_tab(self):
         """Second onglet : les lignes des deux témoins en texte."""
         text_page = QWidget(); text_layout = QVBoxLayout(text_page)
-        text_layout.addWidget(QLabel(tr('tei.visual.pair_help')))
+        help_label = QLabel(tr('tei.visual.pair_help'))
+        help_label.setWordWrap(True)            # unwrapped, it set the window's width
+        text_layout.addWidget(help_label)
         text_split = QSplitter(Qt.Orientation.Horizontal)
         self.left = QListWidget(); self.right = QListWidget()
         for widget in (self.left, self.right):
@@ -243,22 +247,27 @@ class PairDialog(QDialog):
         self.validate_review_button = QPushButton(tr('review.validate.next'))
         self.validate_review_button.clicked.connect(self.validate_and_next)
         review_bar.addWidget(self.validate_review_button)
+        review_bar.addStretch(1)
+        # Second row: the bar did not fit a laptop screen on one row.
+        review_actions = QHBoxLayout(); main.addLayout(review_actions)
         self.batch_review_button = QPushButton(tr('review.validate.selected'))
         self.batch_review_button.clicked.connect(self.validate_review_selection)
-        review_bar.addWidget(self.batch_review_button)
+        review_actions.addWidget(self.batch_review_button)
         self.local_review_button = QPushButton(tr('review.recalculate.next'))
         self.local_review_button.clicked.connect(self.recalculate_next_interval)
-        review_bar.addWidget(self.local_review_button)
+        review_actions.addWidget(self.local_review_button)
         # Groups whose lines changed after a new segmentation of a page.
         self.revalidate_button = QPushButton(tr('alignment.stale.revalidate'))
         self.revalidate_button.setToolTip(tr('alignment.stale.revalidate.tip'))
         self.revalidate_button.clicked.connect(self.revalidate_selection)
-        review_bar.addWidget(self.revalidate_button)
+        review_actions.addWidget(self.revalidate_button)
+        review_actions.addStretch(1)
         self.links = QListWidget(); self.links.setMaximumHeight(125)
         self.links.setMinimumHeight(50)
         self.links.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self._populating_links = False
         self.links.itemDoubleClicked.connect(lambda _: self.focus_link())
+        self.links.itemActivated.connect(lambda _: self.focus_link())        # Entrée
         self.links.currentItemChanged.connect(self._review_focus_changed)
         self.review_filter.currentIndexChanged.connect(lambda _: self.populate())
         main.addWidget(self.links)
@@ -279,6 +288,8 @@ class PairDialog(QDialog):
             # order. Image panels remain tied to unchanged physical UIDs.
             self.left_lines = reading_stream(self.left_witness, include_ignored=True)
             self.right_lines = reading_stream(self.right_witness, include_ignored=True)
+            for panel in (self.left_panel, self.right_panel):
+                panel.refresh_reading_order()
             for widget, lines in ((self.left, self.left_lines), (self.right, self.right_lines)):
                 widget.clear()
                 for line in lines:
@@ -323,8 +334,9 @@ class PairDialog(QDialog):
         stale = stale_link_ids(self.project, self.session)
         for link in ordered_links(self.project, self.session,
                                   self.review_filter.currentData() or 'all'):
-            a = ', '.join(name_a.get(x, '[ligne modifiée]') for x in link['reference_ids']) or '∅'
-            b = ', '.join(name_b.get(x, '[ligne modifiée]') for x in link['target_ids']) or '∅'
+            changed = tr('ui.ligne.modifiee')
+            a = ', '.join(name_a.get(x, changed) for x in link['reference_ids']) or '∅'
+            b = ', '.join(name_b.get(x, changed) for x in link['target_ids']) or '∅'
             from PySide6.QtWidgets import QListWidgetItem
             if link.get('kind') == 'absence':
                 source_label = self.left_witness['id'] if link['reference_ids'] else self.right_witness['id']

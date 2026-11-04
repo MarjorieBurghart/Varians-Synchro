@@ -16,6 +16,15 @@ from varians_synchro.ui_widgets import QMessageBox
 from test_manifest_retry import MANIFEST, URL, offline, online
 
 
+def _free(dialog):
+    """Fermer et libérer la fenêtre : laissée vivante, PySide la détruisait à
+    l'arrêt de Python (plantage à la sortie, voir test_detached_threads_qt)."""
+    from PySide6.QtCore import QCoreApplication, QEvent
+    dialog.close()
+    dialog.deleteLater()
+    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
+
+
 @pytest.fixture(scope='module')
 def app():
     return QApplication.instance() or QApplication([])
@@ -48,7 +57,7 @@ def test_an_unavailable_manifest_is_marked_in_the_witness_card(app, project):
         assert _texts(dialog) == [f"⚠  {URL} — {tr('resources.witness.manifest_unavailable')}"]
         assert _retry_button(dialog).isEnabled()
     finally:
-        dialog.close()
+        _free(dialog)
 
 
 def test_retrying_announces_the_result_and_saving_keeps_it(app, project, monkeypatch):
@@ -64,7 +73,7 @@ def test_retrying_announces_the_result_and_saving_keeps_it(app, project, monkeyp
         assert _texts(dialog) == [f'↻  {URL}']
         dialog.commit()
     finally:
-        dialog.close()
+        _free(dialog)
     witness = next(w for w in project['witnesses'] if w['id'] == 'F')
     assert unavailable_manifests(witness) == []
     assert len(witness['pages']) == 2
@@ -79,7 +88,7 @@ def test_a_manifest_still_unavailable_is_said_so(app, project, monkeypatch):
     try:
         _retry_button(dialog).click()
     finally:
-        dialog.close()
+        _free(dialog)
     assert told == [tr('resources.witness.retry_failed', url=URL, error='hors ligne')]
 
 
@@ -91,4 +100,32 @@ def test_without_unavailable_manifest_the_button_is_disabled(app):
         assert _texts(dialog) == [f'✓  {URL}']
         assert not _retry_button(dialog).isEnabled()
     finally:
-        dialog.close()
+        _free(dialog)
+
+
+def test_a_manifest_is_fetched_off_the_interface_thread(app, project, monkeypatch):
+    """Red team B4 : le Manifest était chargé dans le fil de l'interface ;
+    un serveur lent figeait la fenêtre (45 s observées, sans limite). Il est
+    chargé dans un fil à part, la fenêtre continue de répondre."""
+    import threading
+    import time
+    from PySide6.QtCore import QTimer
+    threads, ticks = [], []
+
+    def slow(url):
+        threads.append(threading.current_thread() is threading.main_thread())
+        time.sleep(1.0)
+        return online(url)
+    monkeypatch.setattr(resource_workflow, 'inspect_manifest', slow)
+    monkeypatch.setattr(QMessageBox, 'information', staticmethod(lambda *a, **k: None))
+    dialog, witness = _dialog(project)
+    timer = QTimer()
+    timer.timeout.connect(lambda: ticks.append(1))
+    timer.start(50)
+    try:
+        dialog.retry_manifests()
+    finally:
+        timer.stop()
+        _free(dialog)
+    assert threads == [False]
+    assert len(ticks) >= 5                     # l'interface a continué de tourner

@@ -29,6 +29,16 @@ def new_project(name='Projet sans titre'):
             'pair_sessions': [], 'workflow_preference': 'alto_only', 'pivot_witness_id': None}
 
 
+def default_mode(directory=False):
+    """Droits qu'aurait un fichier (ou dossier) créé normalement, selon le
+    masque de l'utilisateur. Un fichier temporaire est créé en 0600 (dossier
+    en 0700) : publié tel quel, une équipe sur un partage ne pouvait pas
+    lire le projet ou l'export."""
+    mask = os.umask(0)
+    os.umask(mask)
+    return (0o777 if directory else 0o666) & ~mask
+
+
 def _staged_file(destination: Path, payload: bytes | None = None) -> Path:
     """Create a private stage in the destination directory (same filesystem)."""
     fd, name = tempfile.mkstemp(prefix=f'.{destination.name}.', suffix='.tmp',
@@ -86,6 +96,8 @@ def save_project(project, path):
                 os.fsync(dst.fileno())
             os.replace(backup_stage, backup)
             backup_stage = None
+        else:
+            os.chmod(stage, default_mode())
         os.replace(stage, path)
         stage = None
     finally:
@@ -127,12 +139,61 @@ def _map_file_paths(project, change):
 def _resolve_relative_paths(project, base):
     """Chemins relatifs du projet lus par rapport au dossier ``base`` du
     fichier .vsynch (séparateurs « / » ou « \\ »). Les chemins absolus et les
-    URL ne changent pas. En mémoire, tous les chemins sont donc absolus."""
+    URL ne changent pas. En mémoire, tous les chemins sont donc absolus.
+    Les liens symboliques ne sont pas suivis : ouvrir puis enregistrer un
+    projet garde ses chemins relatifs."""
     def absolute(value):
         if not _is_relative_file_path(value):
             return value
-        return str((base / PureWindowsPath(value).as_posix()).resolve())
+        return os.path.normpath(os.path.join(str(base), PureWindowsPath(value).as_posix()))
     _map_file_paths(project, absolute)
+
+
+def _is_network_path(value):
+    return isinstance(value, str) and value.startswith(('\\\\', '//'))
+
+
+def suspicious_paths(path):
+    """Chemins du projet ``path``, tels qu'écrits dans le fichier, qui sortent
+    de son dossier par « .. » ou désignent un partage réseau. Varians-Synchro
+    n'en écrit jamais de tels relatifs : un projet reçu qui en contient en
+    ferait lire les fichiers à l'ouverture (et copier la TEI à l'export)."""
+    path = Path(path)
+    data = json.loads(path.read_text(encoding='utf-8'))
+    folder = os.path.normpath(str(path.absolute().parent))
+    found = []
+
+    def check(value):
+        if _is_network_path(value):
+            found.append(value)
+        elif _is_relative_file_path(value):
+            target = os.path.normpath(os.path.join(folder, PureWindowsPath(value).as_posix()))
+            if os.path.commonpath([folder, target]) != folder:
+                found.append(value)
+        return value
+    _map_file_paths(data, check)
+    return list(dict.fromkeys(found))
+
+
+REFUSED_FOLDER = '.vsynch-chemin-refuse'
+
+
+def _refuse_paths(project, refused, folder):
+    """Remplace les chemins ``refused`` par un chemin inexistant (le fichier
+    est alors introuvable pour tout le logiciel) et garde l'original dans
+    ``_refused_paths``, rendu à l'enregistrement."""
+    refused = set(refused)
+    originals = {}
+
+    def block(value):
+        if isinstance(value, str) and value in refused:
+            stand_in = str(Path(folder) / REFUSED_FOLDER / f'{len(originals) + 1}-{PureWindowsPath(value).name}')
+            originals[stand_in] = value
+            return stand_in
+        return value
+    _map_file_paths(project, block)
+    if originals:
+        project['_refused_paths'] = originals
 
 
 def _with_relative_paths(project, folder):
@@ -141,8 +202,11 @@ def _with_relative_paths(project, folder):
     « / », pour que le projet voyage avec ses fichiers ; un fichier ailleurs
     (autre dossier, autre disque) garde son chemin absolu."""
     bases = [Path(folder).absolute(), Path(folder).resolve()]
+    refused = project.get('_refused_paths') or {}
 
     def relative(value):
+        if isinstance(value, str) and value in refused:
+            return refused[value]           # chemin refusé à l'ouverture : rendu tel quel
         if not isinstance(value, str) or _is_relative_file_path(value) or not Path(value).is_absolute():
             return value
         for candidate in (Path(value), Path(value).resolve()):
@@ -151,16 +215,24 @@ def _with_relative_paths(project, folder):
                     inside = candidate.relative_to(base)
                 except ValueError:
                     continue
-                return inside.as_posix() if inside.parts else value
+                if not inside.parts or (os.sep == '/' and '\\' in inside.as_posix()):
+                    return value    # « \\ » d'un nom de fichier relu comme séparateur
+                return inside.as_posix()
         return value
     copy = json.loads(json.dumps(project))
+    copy.pop('_refused_paths', None)
     _map_file_paths(copy, relative)
     return copy
 
 
-def load_project(path):
+def load_project(path, refused=()):
+    """Lit le projet ``path``. Les chemins ``refused`` (voir
+    :func:`suspicious_paths`) ne sont pas lus : leurs fichiers sont
+    introuvables, mais le projet les garde à l'enregistrement."""
     data = json.loads(Path(path).read_text(encoding='utf-8'))
     validate_project(data)
+    if refused:
+        _refuse_paths(data, refused, Path(path).absolute().parent)
     _resolve_relative_paths(data, Path(path).resolve().parent)
     # In-memory migration from the original 0.5 project schema. Never rewrite
     # the user's original file until explicit Save.
@@ -205,9 +277,20 @@ def validate_project(project):
 
 
 def create_witness(project, identifier, label=''):
+    """New witness of siglum ``identifier``. Any siglum is accepted, as in
+    Varians; but two sigla which would give the same identifier or file
+    name in the exports, or a name Windows reserves, are refused."""
+    from .witness_ids import file_key, is_reserved_on_windows, witness_id_for_siglum
     identifier = identifier.strip()
     if not identifier or any(w['id'] == identifier for w in project['witnesses']):
         raise ValueError('Identifiant de témoin vide ou déjà utilisé')
+    if not witness_id_for_siglum(identifier):
+        raise ValueError('Identifiant de témoin vide ou déjà utilisé')
+    other = next((w['id'] for w in project['witnesses'] if file_key(w['id']) == file_key(identifier)), None)
+    if other is not None:
+        raise localized(ValueError, 'error.witness.siglum_conflict', witness=identifier, other=other)
+    if is_reserved_on_windows(identifier):
+        raise localized(ValueError, 'error.witness.siglum_reserved', witness=identifier)
     w = {'id': identifier, 'label': label or identifier, 'image_sources': [], 'alto_sources': [], 'pages': [], 'ignored_line_ids': []}
     project['witnesses'].append(w)
     return w

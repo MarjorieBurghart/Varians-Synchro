@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (QGroupBox, QHBoxLayout, QLineEdit, QListWidgetIte
 
 from .errors import localized_text
 from .i18n import tr
-from .ui_widgets import (_run_modal, QComboBox, QDialog, QLabel, QListWidget, QMessageBox,
+from .ui_widgets import (fit_to_screen, _run_modal, decode_page_image, QComboBox, QDialog, QLabel, QListWidget, QMessageBox,
                          QPushButton)
 
 
@@ -135,7 +135,7 @@ class TEIReviewCard(QGroupBox):
             return
         from .tei_visual import render_transform
         try:
-            image = QImage.fromData(data)
+            image = decode_page_image(data)
             if image.isNull():
                 raise ValueError(tr('tei.visual.decode_error'))
             model = render_transform(self._descriptor, image.width(), image.height())
@@ -179,7 +179,7 @@ class TEIPhysicalBindingDialog(QDialog):
         self._pairs = []
         self._previewed_endpoints = set()
         self.setWindowTitle(tr('tei.binding.title'))
-        self.resize(1200, 850)
+        fit_to_screen(self, 1200, 850)
         layout = QVBoxLayout(self)
         hint = QLabel(tr('tei.binding.help'))
         hint.setWordWrap(True)
@@ -296,7 +296,7 @@ class TEIPhysicalBindingDialog(QDialog):
                         physical=proposal['physical_count']),
                      tr('tei.binding.current', state=tr('tei.binding.status.' + current['status']))]
             for problem in proposal['diagnostics']:
-                lines.append('⚠ ' + problem['message'])
+                lines.append('⚠ ' + localized_text(problem['message']))
             lines.append(tr('tei.binding.ready') if proposal['eligible']
                          else tr('tei.binding.not_ready'))
             self.summary.setPlainText('\n'.join(lines))

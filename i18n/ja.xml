@@ -914,4 +914,37 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="error.pairs.stale_lines">{reference} ↔ {target}：{count} 行が変更されたか、存在しません</string>
   <string key="error.pairs.session_error">セッション {session}：{error}</string>
   <string key="error.export.no_direct_session">{witness}：{reference} との直接のセッションがありません。</string>
+  <string key="ui.xml.replace_ignored">無視する行のうち {count} 行は新しいファイルに同一のまま見つかりません。印は外れます。「対象範囲」で確認してください。</string>
+  <string key="resources.witness.remove_ignored">これらのページの無視する行 {count} 行の印が外れます。</string>
+  <string key="error.project_export.tei_binding_stale">ピボット {witness} の TEI 連携はもう有効ではありません。その後 TEI、対象範囲、または読み順が変更されました。書き出す前に「2 · 資料の関連付け」でやり直してください。</string>
+  <string key="error.witness.siglum_conflict">シグラム「{witness}」は、書き出し時に伝本「{other}」と同じファイル名になります。別のシグラムを選んでください。</string>
+  <string key="error.witness.siglum_reserved">シグラム「{witness}」は Windows ではファイル名に使えません（予約名）。別のシグラムを選んでください。</string>
+  <string key="error.witness.siglum_taken">シグラム「{witness}」はすでにプロジェクトの伝本のものです。補うにはそのカードを開くか、別のシグラムを選んでください。</string>
+  <string key="ui.audit.issue.xml_source_read_otherwise">入れ子構造の PAGE ファイルは、このバージョンから別の読み方になります。プロジェクトの行はそのままですが、もう一度関連付けると、それらの行を含むグループは古くなります</string>
+  <string key="error.binding.xml_page_bound">この XML ページはすでに画像「{page}」に関連付けられています。1 つの XML ページを複数の画像に割り当てることはできません。</string>
+  <string key="ui.audit.issue.xml_page_bound_twice">1 つの XML ページが複数の画像に関連付けられています。その行が重複して数えられます</string>
+  <string key="error.imaging.redirect_refused">サーバーが http でも https でもないアドレスへリダイレクトしています。リダイレクトを拒否しました。</string>
+  <string key="error.imaging.too_slow">サーバーの応答が遅すぎます。{seconds} 秒で中止しました。</string>
+  <string key="resources.witness.manifest_loading">IIIF Manifest を {count} 件読み込み中…</string>
+  <string key="error.resources.manifest_cancelled">Manifest の読み込みを取り消しました。</string>
+  <string key="project.paths.title">プロジェクトフォルダー外のファイル</string>
+  <string key="project.paths.question">このプロジェクトは、フォルダー外（「..」経由）またはネットワーク共有上の {count} 個のファイルを指しています：
+
+{paths}
+
+Varians-Synchro がこのようなパスを書くことはありません。受け取ったか手で編集されたプロジェクトによるものです。これらのファイルを読み込みますか？「いいえ」と答えると見つからないファイルとして扱われ、パスはプロジェクトに残ります。</string>
+  <string key="error.tei_binding.too_deep">TEI の入れ子が深すぎて読み込めません。</string>
+  <string key="common.discard_title">変更の破棄</string>
+  <string key="common.discard_question">このウィンドウでの変更は保存されていません。破棄しますか？</string>
+  <string key="error.tei.apparatus_unresolved">{witness} の読みが一つに定まらない校異 (xml:id={id})。</string>
+  <string key="error.tei.choice_unresolved">使用できる分岐のない &lt;choice&gt; 要素。</string>
+  <string key="error.tei.duplicate_lb_id">重複した TEI 識別子：{id}</string>
+  <string key="error.tei.unattributed_lb">@edRef のない &lt;lb/&gt; {count} 個：伝本 {witness} から除外。</string>
+  <string key="error.tei.no_target_lb">&lt;lb edRef="#{witness}"/&gt; が見つかりません。</string>
+  <string key="error.tei.source_changed">インポート後に TEI ファイルが変更されました。連携の前に再インポートしてください。</string>
+  <string key="error.tei.line_count_mismatch">有効な物理行 {physical} 行に対して TEI の &lt;lb/&gt; が {tei} 個。</string>
+  <string key="error.tei.no_physical_lines">有効な ALTO/PAGE 行がありません。</string>
+  <string key="error.binding.by_order">順序から提案された対応。画像で確認してください</string>
+  <string key="error.binding.no_unique_match">一意な対応がありません。手動で選んでください</string>
+  <string key="resources.witness.pivot_kept.tip">この伝本はプロジェクトのピボット伝本です。ピボットを変えるには、別の伝本のカードを開いてこのチェックボックスをオンにしてください。</string>
 </translations>

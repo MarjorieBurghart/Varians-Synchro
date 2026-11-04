@@ -15,8 +15,13 @@ from .imaging import create_pages, import_htr_results, mapped_alto_page
 from .physical_alignment import page_links_impact
 from .reading_stream import rebind_page
 from .ui_batch_binding import BatchBindingDialog
-from .ui_widgets import (_run_modal, call_soon, QDialog, QFileDialog, QInputDialog, QLabel, QListWidget,
-                         QMessageBox, QPushButton)
+from .ui_widgets import (fit_to_screen, _run_modal, call_soon, decode_page_image, page_image_reader_ok, plain_tip,
+                         start_detached, QDialog, QFileDialog, QInputDialog,
+                         QLabel, QListWidget, QMessageBox, QPushButton)
+from shiboken6 import isValid
+
+
+THUMBNAIL_MAX_BYTES = 2_000_000
 
 
 class DraggablePagesList(QListWidget):
@@ -115,7 +120,7 @@ class PagesDialog(QDialog):
         self._network = QNetworkAccessManager(self)
         self._rebuilding = False
         self.setWindowTitle(tr('ui.xml.pages_title') + witness['id'])
-        self.resize(1020, 700)
+        fit_to_screen(self, 1020, 700)
         main = QVBoxLayout(self)
         hint = QLabel(tr('ui.xml.pages_hint')); hint.setWordWrap(True)
         main.addWidget(hint)
@@ -193,6 +198,7 @@ class PagesDialog(QDialog):
         htr_layout.addLayout(htr_row)
         main.addWidget(htr_group)
         self.pages.itemDoubleClicked.connect(lambda _: self.preview())
+        self.pages.itemActivated.connect(lambda _: self.preview())          # Entrée
         self.update_list()
 
     def _item_ids(self):
@@ -240,9 +246,9 @@ class PagesDialog(QDialog):
                 item = QListWidgetItem(self._page_label(page, index))
                 item.setData(Qt.ItemDataRole.UserRole, page['id'])
                 item.setSizeHint(QSize(0, 98))
-                item.setToolTip(tr('pages.order.tooltip', image=(page.get('image_path') or
+                item.setToolTip(plain_tip(tr('pages.order.tooltip', image=(page.get('image_path') or
                                   (page.get('canvas') or {}).get('id') or ''),
-                                  page_id=page['id']))
+                                  page_id=page['id'])))
                 cached = self._thumb_cache.get(page['id'])
                 if cached is not None:
                     item.setIcon(cached)
@@ -283,6 +289,8 @@ class PagesDialog(QDialog):
                 path = page.get('image_path')
                 if path:
                     reader = QImageReader(str(path))
+                    if not page_image_reader_ok(reader):
+                        continue
                     reader.setAutoTransform(True)
                     image_size = reader.size()
                     if image_size.isValid():
@@ -303,19 +311,24 @@ class PagesDialog(QDialog):
                     continue
                 from .imaging import image_request_url
                 url = image_request_url(page, max_width=180)
-                if url:
+                # http(s) only (a « file:// » service read the disk), and a
+                # bounded answer (a vignette is a few kilobytes).
+                if url and QUrl(url).scheme() in ('http', 'https'):
                     request = QNetworkRequest(QUrl(url))
                     if hasattr(request, 'setTransferTimeout'):
                         request.setTransferTimeout(12000)
                     reply = self._network.get(request)
                     self._remote_replies[page_id] = reply
+                    reply.downloadProgress.connect(
+                        lambda received, total, r=reply: r.abort()
+                        if max(received, total) > THUMBNAIL_MAX_BYTES else None)
                     reply.finished.connect(lambda pid=page_id, r=reply:
                                            self._remote_thumbnail_finished(pid, r))
 
     def _remote_thumbnail_finished(self, page_id, reply):
         try:
             if reply.error() == QNetworkReply.NetworkError.NoError:
-                image = QImage.fromData(bytes(reply.readAll()))
+                image = decode_page_image(bytes(reply.readAll()))
                 if not image.isNull():
                     self._assign_thumbnail(page_id, image)
         finally:
@@ -402,16 +415,25 @@ class PagesDialog(QDialog):
         chosen,ok = QInputDialog.getItem(self,tr('ui.xml.source'),tr('ui.xml.select_page'),labels,0,False)
         if ok:
             src,i = candidates[labels.index(chosen)]
+            other = next((p for p in self.witness['pages'] if p['id'] != sel[0]['id']
+                          and (p.get('alto_binding') or {}).get('source_id') == src['id']
+                          and (p.get('alto_binding') or {}).get('page_index') == i), None)
+            if other is not None:
+                QMessageBox.warning(self, tr('ui.xml.source'), tr('error.binding.xml_page_bound',
+                                    page=str(other.get('label') or other['id'])))
+                return
             binding = sel[0].get('alto_binding') or {}
             if binding and (binding.get('source_id'), binding.get('page_index')) != (src['id'], i):
                 # Say beforehand what a new segmentation affects: groups citing
                 # the page's lines become stale if those lines change.
-                impact = page_links_impact(self.project, self.witness['id'], sel[0]['id'])
+                impact = page_links_impact(self.project, self.witness['id'], sel[0]['id'], src['id'], i)
                 text = (tr('ui.xml.replace_impact', links=impact['links'],
                            validated=impact['validated'])
                         if impact['links'] else tr('ui.xml.replace_question'))
                 if impact['reading_order']:
                     text += '\n\n' + tr('ui.xml.replace_order')
+                if impact['ignored_lost']:
+                    text += '\n\n' + tr('ui.xml.replace_ignored', count=impact['ignored_lost'])
                 answer = QMessageBox.question(self,tr('ui.xml.replace_title'),text)
                 if answer != QMessageBox.StandardButton.Yes:return
             rebind_page(self.witness,sel[0]['id'],src['id'],i)
@@ -439,7 +461,7 @@ class PagesDialog(QDialog):
         progress.setWindowModality(Qt.WindowModality.WindowModal)
         progress.setAutoClose(False)
         progress.setAutoReset(False)
-        thread = HTRExportThread(self.witness, selected, path, cancel, self)
+        thread = HTRExportThread(self.witness, selected, path, cancel)
         self._htr_export_thread = thread
         self._htr_export_progress = progress
         progress.canceled.connect(cancel.set)
@@ -448,6 +470,8 @@ class PagesDialog(QDialog):
                 progress.setValue(done)
                 progress.setLabelText(tr('ui.pages.htr.wait', current=done, total=total))
         def complete(status, count, error):
+            if not isValid(self) or not isValid(progress):
+                return                  # window closed meanwhile
             try:
                 progress.canceled.disconnect(cancel.set)
             except (RuntimeError, TypeError):
@@ -464,11 +488,11 @@ class PagesDialog(QDialog):
         thread.progressed.connect(updated)
         thread.done.connect(complete)
         def released():
-            thread.deleteLater()
-            self._htr_export_thread = None
-            self._htr_export_progress = None
+            if isValid(self):
+                self._htr_export_thread = None
+                self._htr_export_progress = None
         thread.finished.connect(released)
-        thread.start()
+        start_detached(thread, self, cancel)
         progress.show()
 
     def download_hd(self):
@@ -508,7 +532,7 @@ class PagesDialog(QDialog):
         # Qt/platform, that can emit canceled() despite a successful export.
         progress.setAutoClose(False)
         progress.setAutoReset(False)
-        thread = HDDownloadThread(self.witness, selected, folder, cancel, self)
+        thread = HDDownloadThread(self.witness, selected, folder, cancel)
         self._hd_download_thread = thread
         self._hd_download_progress = progress
         progress.canceled.connect(cancel.set)
@@ -520,6 +544,8 @@ class PagesDialog(QDialog):
             # Closing a Qt progress dialog can emit canceled(): disconnect
             # before programmatic closure. Never infer a cancelled export
             # from an event set by the progress window *after* publication.
+            if not isValid(self) or not isValid(progress):
+                return                  # window closed meanwhile
             try:
                 progress.canceled.disconnect(cancel.set)
             except (RuntimeError, TypeError):
@@ -546,11 +572,11 @@ class PagesDialog(QDialog):
         thread.progressed.connect(updated)
         thread.done.connect(complete)
         def released():
-            thread.deleteLater()
-            self._hd_download_thread = None
-            self._hd_download_progress = None
+            if isValid(self):
+                self._hd_download_thread = None
+                self._hd_download_progress = None
         thread.finished.connect(released)
-        thread.start()
+        start_detached(thread, self, cancel)
         progress.show()
 
     def attach_hd_folder(self):

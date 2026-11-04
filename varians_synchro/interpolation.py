@@ -112,12 +112,26 @@ def _column_interval(lines, first_id, last_id):
     return [line for line,_ in inner], positions
 
 
-def _htr_similarity(a, b):
-    aa = normalize(' '.join(x.get('text','') for x in a))
-    bb = normalize(' '.join(x.get('text','') for x in b))
+def _htr_similarity(a, b, aa=None, bb=None, matcher=None):
+    """Similarity of the HTR texts of two groups of lines, or None below
+    0.60. ``aa`` and ``bb``: their normalised texts, when already known;
+    ``matcher``: a SequenceMatcher already holding ``bb[:400]`` as its
+    second sequence (its analysis is then reused)."""
+    if aa is None:
+        aa = normalize(' '.join(x.get('text','') for x in a))
+    if bb is None:
+        bb = normalize(' '.join(x.get('text','') for x in b))
     if min(len(aa), len(bb)) < 12 or min(len(set(aa)), len(set(bb))) < 6:
         return None
-    ratio = SequenceMatcher(None, aa[:400], bb[:400], autojunk=False).ratio()
+    if matcher is None:
+        matcher = SequenceMatcher(None, aa[:400], bb[:400], autojunk=False)
+    else:
+        matcher.set_seq1(aa[:400])
+    # Both quick ratios are upper bounds of ratio(): below the threshold,
+    # the full comparison cannot reach it (same result, much cheaper).
+    if matcher.real_quick_ratio() < 0.60 or matcher.quick_ratio() < 0.60:
+        return None
+    ratio = matcher.ratio()
     return ratio if ratio >= 0.60 else None
 
 
@@ -132,6 +146,22 @@ def _partition(a, b, positions_a, positions_b):
     if not n or not m:
         return []
     moves = ((1,1),(1,2),(2,1),(1,3),(3,1),(2,2),(2,3),(3,2),(3,3))
+    texts, matchers = {}, {}
+
+    def text(side, lines, start, count):
+        # Each run of lines is normalised once, not at every transition.
+        key = (side, start, count)
+        if key not in texts:
+            texts[key] = normalize(' '.join(x.get('text','') for x in lines[start:start+count]))
+        return texts[key]
+
+    def matcher(start, count):
+        # One comparison object per run of lines of ``b``: its analysis of
+        # the text is reused for every run of ``a`` compared with it.
+        key = (start, count)
+        if key not in matchers:
+            matchers[key] = SequenceMatcher(None, '', text('b', b, start, count)[:400], autojunk=False)
+        return matchers[key]
     dp = [[inf]*(m+1) for _ in range(n+1)]
     back = {}
     dp[0][0] = 0.
@@ -150,7 +180,9 @@ def _partition(a, b, positions_a, positions_b):
                     cost += .22
                 # Avoid an expensive and untrustworthy OCR comparison except
                 # for already geometrically plausible candidates.
-                similarity = _htr_similarity(a[i:i+na], b[j:j+nb]) if middle <= .06 else None
+                similarity = (_htr_similarity(None, None, text('a', a, i, na), text('b', b, j, nb),
+                                              matcher(j, nb))
+                              if middle <= .06 else None)
                 if similarity is not None:
                     cost -= .16*(similarity-.6)/.4
                 value = dp[i][j]+cost

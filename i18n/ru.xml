@@ -914,4 +914,37 @@
   <string key="error.pairs.stale_lines">{reference} ↔ {target}: изменённых или отсутствующих строк: {count}</string>
   <string key="error.pairs.session_error">Сеанс {session}: {error}</string>
   <string key="error.export.no_direct_session">{witness}: нет сеанса прямого выравнивания с {reference}.</string>
+  <string key="ui.xml.replace_ignored">{count} игнорируемых строк не найдены в новом файле без изменений: они потеряют отметку. Проверьте их в «Объёме».</string>
+  <string key="resources.witness.remove_ignored">{count} игнорируемых строк на этих страницах потеряют отметку.</string>
+  <string key="error.project_export.tei_binding_stale">Связь TEI опорного свидетеля {witness} больше недействительна: TEI, объём или порядок чтения с тех пор изменились. Восстановите её в «2 · Связывание ресурсов» перед экспортом.</string>
+  <string key="error.witness.siglum_conflict">Сигла «{witness}» дала бы при экспорте те же имена файлов, что и свидетель «{other}». Выберите другую сиглу.</string>
+  <string key="error.witness.siglum_reserved">Сиглу «{witness}» нельзя использовать как имя файла в Windows (зарезервированное имя). Выберите другую сиглу.</string>
+  <string key="error.witness.siglum_taken">Сигла «{witness}» уже принадлежит свидетелю проекта: откройте его карточку, чтобы дополнить её, или выберите другую сиглу.</string>
+  <string key="ui.audit.issue.xml_source_read_otherwise">Файл PAGE с вложенной структурой, начиная с этой версии читается иначе: проект сохраняет свои строки, но повторное сопоставление сделает устаревшими затрагивающие их группы</string>
+  <string key="error.binding.xml_page_bound">Эта страница XML уже сопоставлена с изображением «{page}»: одну страницу XML нельзя назначить нескольким изображениям.</string>
+  <string key="ui.audit.issue.xml_page_bound_twice">Одна страница XML сопоставлена с несколькими изображениями: её строки учитывались бы несколько раз</string>
+  <string key="error.imaging.redirect_refused">Сервер перенаправляет на адрес, который не является http или https: перенаправление отклонено.</string>
+  <string key="error.imaging.too_slow">Сервер отвечает слишком медленно: прервано через {seconds} с.</string>
+  <string key="resources.witness.manifest_loading">Загрузка IIIF Manifest: {count}…</string>
+  <string key="error.resources.manifest_cancelled">Загрузка Manifest отменена.</string>
+  <string key="project.paths.title">Файлы вне папки проекта</string>
+  <string key="project.paths.question">Этот проект указывает {count} файл(ов) вне своей папки (через «..») или в сетевой папке:
+
+{paths}
+
+Varians-Synchro никогда не записывает такие пути: они пришли из полученного или отредактированного вручную проекта. Читать эти файлы? Если вы ответите «Нет», они будут считаться ненайденными; проект сохранит их пути.</string>
+  <string key="error.tei_binding.too_deep">TEI вложена слишком глубоко, чтобы её можно было прочитать.</string>
+  <string key="common.discard_title">Отменить изменения</string>
+  <string key="common.discard_question">Изменения, сделанные в этом окне, не сохранены. Отменить их?</string>
+  <string key="error.tei.apparatus_unresolved">Аппарат без единственного чтения для {witness} (xml:id={id}).</string>
+  <string key="error.tei.choice_unresolved">Элемент &lt;choice&gt; без пригодной ветви.</string>
+  <string key="error.tei.duplicate_lb_id">Повторяющийся идентификатор TEI: {id}</string>
+  <string key="error.tei.unattributed_lb">{count} &lt;lb/&gt; без @edRef: исключены из свидетеля {witness}.</string>
+  <string key="error.tei.no_target_lb">Не найдено ни одного &lt;lb edRef="#{witness}"/&gt;.</string>
+  <string key="error.tei.source_changed">Файл TEI изменился после импорта: импортируйте его заново перед связыванием.</string>
+  <string key="error.tei.line_count_mismatch">{tei} &lt;lb/&gt; TEI на {physical} активных физических строк.</string>
+  <string key="error.tei.no_physical_lines">Нет активных строк ALTO/PAGE.</string>
+  <string key="error.binding.by_order">Соответствие предложено по порядку, проверьте по изображениям</string>
+  <string key="error.binding.no_unique_match">Нет единственного соответствия; нужен ручной выбор</string>
+  <string key="resources.witness.pivot_kept.tip">Этот свидетель — опорный в проекте. Чтобы сменить опорного свидетеля, откройте карточку другого свидетеля и отметьте этот флажок.</string>
 </translations>

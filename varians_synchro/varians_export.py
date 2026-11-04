@@ -167,6 +167,50 @@ def _reference_health(witness, uid, known, lookup, fp):
     return 'stale'
 
 
+def witness_file_names(project):
+    """{siglum: name of its files in the exports}: the XML identifier Varians
+    derives from the siglum (``witness_ids``), which is also a safe file name.
+    Refuses a project in which two witnesses would get the same file (case
+    ignored) or a name Windows reserves; new projects refuse such sigla
+    from the creation of the witness."""
+    from .witness_ids import file_key, is_reserved_on_windows, witness_id_for_siglum
+    names, seen = {}, {}
+    for witness in project.get('witnesses', []):
+        wid = witness.get('id')
+        name = witness_id_for_siglum(wid) if isinstance(wid, str) else ''
+        if not name or is_reserved_on_windows(wid) or file_key(wid) in seen:
+            raise localized(ValueError, 'error.project_export.siglum_filename', witness=str(wid))
+        seen[file_key(wid)] = wid
+        names[wid] = name
+    return names
+
+
+def links_kept_by_uuid_continuity(project):
+    """IDs of the correspondence groups the export keeps only through the
+    PERO identifier continuity (an ALTO file replaced by the PAGE file of the
+    same segmentation): they need the old file to prove it, and are lost
+    from the export when it is removed."""
+    known, lookups = {}, {}
+    for witness in project.get('witnesses', []):
+        lookups[witness['id']] = _build_witness_cache(witness, base_id=witness['id'])[1]
+        known[witness['id']] = {row['id']: row for row in physical_lines(witness)}
+    kept = set()
+    for session in project.get('pair_sessions', []):
+        sides = [(session.get('reference_witness_id'), 'reference_ids'),
+                 (session.get('target_witness_id'), 'target_ids')]
+        if any(wid not in known for wid, _ in sides):
+            continue
+        for link in session.get('links', []):
+            if link.get('kind') != 'correspondence':
+                continue
+            fp = link.get('fingerprints') or {}
+            health = [_reference_health(_get_witness(project, wid), uid, known[wid], lookups[wid], fp)
+                      for wid, field in sides for uid in link.get(field, [])]
+            if 'per_uuid' in health and 'stale' not in health:
+                kept.add(link['id'])
+    return kept
+
+
 def _pair_for_base(project, base_id, target_id):
     candidates = [s for s in project.get('pair_sessions', [])
                   if {s.get('reference_witness_id'), s.get('target_witness_id')} == {base_id, target_id}]
@@ -374,10 +418,7 @@ def export_varians_alignments(project, base_witness_id, destination):
         raise FileExistsError('Destination non valide (fichier ou lien symbolique).')
     if destination.exists() and any(destination.iterdir()):
         raise FileExistsError('Choisissez un dossier vide pour éviter tout écrasement de synchronisations existantes.')
-    safe_names = [w.get('id') for w in project.get('witnesses', [])]
-    if any(not isinstance(x, str) or not x or x in ('.', '..') or
-           any(c in x for c in '/\\.') for x in safe_names):
-        raise ValueError('Sigle de témoin invalide pour un fichier JSON')
+    names = witness_file_names(project)
     # ALL potentially failing domain calculations happen before disk mutation.
     packages, reports = {}, {}
     for folder, include_uncertain in [('validated', False), ('working', True)]:
@@ -391,19 +432,21 @@ def export_varians_alignments(project, base_witness_id, destination):
     destination.parent.mkdir(parents=True, exist_ok=True)
     staging = Path(tempfile.mkdtemp(prefix='.varians-synchro-export-',
                                     dir=str(destination.parent)))
+    from .core import default_mode
+    os.chmod(staging, default_mode(directory=True))       # mkdtemp: 0700
     published = False
     try:
         for folder, cache in packages.items():
             sub = staging / folder
             sub.mkdir()
             for wid, data in cache.items():
-                (sub / f'{wid}.json').write_text(
+                (sub / f'{names[wid]}.json').write_text(
                     json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
         (staging / 'rapport_export.json').write_text(
             json.dumps(reports, ensure_ascii=False, indent=2), encoding='utf-8')
         # Check real serialized files, not merely the dictionary before writing.
         for folder in packages:
-            parsed = {wid: json.loads((staging / folder / f'{wid}.json').read_text(encoding='utf-8'))
+            parsed = {wid: json.loads((staging / folder / f'{names[wid]}.json').read_text(encoding='utf-8'))
                       for wid in packages[folder]}
             verify_export_payloads(parsed, base_witness_id)
         if destination.exists():

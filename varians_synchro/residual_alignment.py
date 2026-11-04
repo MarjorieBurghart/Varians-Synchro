@@ -52,12 +52,14 @@ def _local_pitch(line, same_page):
     return max(1., median(distances))
 
 
-def _linked_info(session, index_a, index_b, ignored_a, ignored_b):
-    """Only clean, physical correspondence groups can serve as neighbours."""
+def _linked_info(session, index_a, index_b, ignored_a, ignored_b, stale=frozenset()):
+    """Only clean, physical correspondence groups can serve as neighbours.
+    A stale group (its lines changed) is never one: extending it was refused
+    at saving time, which refused the whole selection."""
     info=[]
     for link in session.get('links', []):
         ra=link.get('reference_ids', []); rb=link.get('target_ids', [])
-        if link.get('kind') != 'correspondence' or not ra or not rb:
+        if link.get('kind') != 'correspondence' or not ra or not rb or link.get('id') in stale:
             continue
         if set(ra) & ignored_a or set(rb) & ignored_b:
             continue
@@ -125,7 +127,8 @@ def suggest_residual_extensions(project, session, *, max_distance=3.6,
     ignored_b=set(wb.get('ignored_line_ids',[]))
     a={ln['id']:ln for ln in physical_lines(wa) if ln['id'] not in ignored_a}
     b={ln['id']:ln for ln in physical_lines(wb) if ln['id'] not in ignored_b}
-    groups=_linked_info(session,a,b,ignored_a,ignored_b)
+    from .physical_alignment import stale_link_ids
+    groups=_linked_info(session,a,b,ignored_a,ignored_b,stale_link_ids(project,session))
     used_a={uid for link in session.get('links',[]) for uid in link.get('reference_ids',[])}
     used_b={uid for link in session.get('links',[]) for uid in link.get('target_ids',[])}
     page_a={p:[v for v in a.values() if v['page_id']==p] for p in {v['page_id'] for v in a.values()}}

@@ -17,7 +17,8 @@ from __future__ import annotations
 
 import copy
 
-from .imaging import create_pages
+from .imaging import create_pages, mapped_alto_page
+from .line_scope import carry_ignored_lines
 from .physical_alignment import physical_lines
 
 KINDS = ('images', 'xml', 'tei', 'hd')
@@ -52,12 +53,15 @@ def _drop_resource(staged, witness_id, kind, source_id):
         sources = witness.get('alto_sources', [])
         if not any(s['id'] == source_id for s in sources):
             raise ValueError('Ressource introuvable dans ce témoin.')
-        witness['alto_sources'] = [s for s in sources if s['id'] != source_id]
         for page in witness.get('pages', []):
             if (page.get('alto_binding') or {}).get('source_id') == source_id:
+                # Its ignored lines go with it: the marks would otherwise
+                # fall on the lines of the next file bound to the page.
+                carry_ignored_lines(witness, page['id'], (mapped_alto_page(witness, page) or {}).get('lines', []), [])
                 page['alto_binding'] = None
                 page.pop('reading_region_order', None)
                 page.pop('reading_line_order', None)
+        witness['alto_sources'] = [s for s in sources if s['id'] != source_id]
     elif kind == 'tei':
         resources = staged.get('text_resources', [])
         if not any(r['id'] == source_id and r.get('witness_id') == witness_id for r in resources):
@@ -112,16 +116,27 @@ def removal_impact(project, witness_id, kind=None, source_id=None):
         pages = len(before.get('pages', []))
     else:
         sessions = []
+        # Groups whose lines disappear, and groups the export keeps only
+        # through the PERO identifier continuity proven by this old file.
+        from .varians_export import links_kept_by_uuid_continuity
+        try:
+            continuity = links_kept_by_uuid_continuity(project) - links_kept_by_uuid_continuity(staged)
+        except (ValueError, KeyError):
+            continuity = set()      # project the export refuses anyway
         links = [link for s in project.get('pair_sessions', []) for link in s.get('links', [])
-                 if lost & set(link.get('reference_ids', []) + link.get('target_ids', []))]
+                 if lost & set(link.get('reference_ids', []) + link.get('target_ids', []))
+                 or link.get('id') in continuity]
         after = _witness(staged, witness_id)
         if kind == 'xml':
             pages = sum(bool(p.get('alto_binding')) for p in before.get('pages', [])) \
                 - sum(bool(p.get('alto_binding')) for p in after.get('pages', []))
         else:
             pages = len(before.get('pages', [])) - len(after.get('pages', []))
+    ignored = 0 if kind is None else len(set(before.get('ignored_line_ids', []))
+                                          - set(_witness(staged, witness_id).get('ignored_line_ids', [])))
     return {'pages': pages, 'lines': len(lost), 'groups': len(links),
-            'validated': sum(link.get('state') == 'validated' for link in links), 'sessions': len(sessions)}
+            'validated': sum(link.get('state') == 'validated' for link in links), 'sessions': len(sessions),
+            'ignored': ignored}
 
 
 def _replace(project, staged):

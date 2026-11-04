@@ -9,7 +9,7 @@ from .imaging import mapped_alto_page
 from .reading_stream import (anchor_intervals, page_regions, reading_stream,
                              reset_page_line_order, set_line_order, set_page_order,
                              set_region_order)
-from .ui_widgets import QComboBox, QDialog, QLabel, QListWidget, QMessageBox, QPushButton
+from .ui_widgets import fit_to_screen, QComboBox, QDialog, QLabel, QListWidget, QMessageBox, QPushButton
 
 
 class ReadingOrderDialog(QDialog):
@@ -23,7 +23,7 @@ class ReadingOrderDialog(QDialog):
         self.project = project
         self.session = session
         self.setWindowTitle(tr('stream.window.title'))
-        self.resize(1080, 640)
+        fit_to_screen(self, 1080, 640)
         main = QVBoxLayout(self)
         hint = QLabel(tr('stream.window.help')); hint.setWordWrap(True)
         main.addWidget(hint)

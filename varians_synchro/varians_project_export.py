@@ -15,10 +15,11 @@ import tempfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from .varians_export import make_varians_alignments, verify_export_payloads
+from .varians_export import make_varians_alignments, verify_export_payloads, witness_file_names
 from .core import validate_project
 from .hd_registry import local_copy_plan, varians_offline_index
 from .errors import Localized, localized
+from .witness_ids import witness_id_for_siglum
 
 
 def _varians_safe_id(witness_id):
@@ -105,13 +106,27 @@ def blank_tei_edition(title, witnesses):
     source_desc = ET.SubElement(file_desc, q('sourceDesc'))
     ET.SubElement(publication, q('p')).text = 'Édition en préparation.'
     list_wit = ET.SubElement(source_desc, q('listWit'))
+    mixed = []
     for witness in witnesses:
-        ET.SubElement(list_wit, q('witness'), {f'{{{XML_NS}}}id': witness['id']}).text = \
-            str(witness.get('label') or witness['id']).strip()
+        # As Varians: the XML identifier derived from the siglum, and the
+        # siglum in an <idno type="siglum"> when they differ.
+        siglum = witness['id']
+        element = ET.SubElement(list_wit, q('witness'), {f'{{{XML_NS}}}id': witness_id_for_siglum(siglum)})
+        label = str(witness.get('label') or siglum).strip()
+        if witness_id_for_siglum(siglum) != siglum:
+            idno = ET.SubElement(element, q('idno'), {'type': 'siglum'})
+            idno.text, idno.tail = siglum, label
+            mixed.append(element)
+        else:
+            element.text = label
     ET.SubElement(ET.SubElement(ET.SubElement(root, q('text')), q('body')), q('p'))
     ET.indent(root, space='  ')
-    xml = ET.tostring(root, encoding='unicode', short_empty_elements=False,
-                      default_namespace=TEI_NS)
+    for element in mixed:
+        element.text = None         # mixed content: no indentation before <idno>
+    # As Varians: TEI as the default namespace (an <idno type="…"> has an
+    # unqualified attribute, which ``default_namespace`` refuses).
+    ET.register_namespace('', TEI_NS)
+    xml = ET.tostring(root, encoding='unicode', short_empty_elements=False)
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
             f'<?xml-model href="{TEI_ALL_RNG}" type="application/xml" '
             'schematypens="http://relaxng.org/ns/structure/1.0"?>\n'
@@ -138,10 +153,11 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
     ids = [w['id'] for w in witnesses]
     if pivot_id not in ids:
         raise ValueError('Le pivot choisi ne fait pas partie du projet')
-    for wid in ids:
-        if wid in ('', '.', '..') or any(c in wid for c in '/\\.'):
-            raise localized(ValueError, 'error.project_export.siglum_filename', witness=str(wid))
-    safe_ids = [_varians_safe_id(wid) for wid in ids]
+    # Varians names a witness by the XML identifier it derives from the
+    # siglum (« BnF lat. 123 » → « BnF_lat._123 ») and keeps the siglum for
+    # display: so do its files here.
+    names = witness_file_names(project)
+    safe_ids = [_varians_safe_id(names[wid]) for wid in ids]
     if len(set(safe_ids)) != len(safe_ids):
         raise ValueError('Deux sigles deviennent identiques dans le cache IIIF local Varians')
     tei = [r for r in project.get('text_resources', [])
@@ -149,6 +165,12 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
     if len(tei) > 1:
         raise ValueError('Le pivot doit posséder au plus une édition TEI pour cet export ; '
                          'sélectionnez une édition de référence.')
+    if tei and tei[0].get('tei_binding'):
+        # A stale binding would put the TEI's <lb/> in front of the wrong
+        # lines, unseen by Varians (same number of lines): refuse.
+        from .tei_binding import tei_binding_status
+        if tei_binding_status(project, pivot_id, tei[0]['id'])['status'] != 'valid':
+            raise localized(ValueError, 'error.project_export.tei_binding_stale', witness=pivot_id)
     tei_path = _source_path(tei[0]['path']) if tei else None
     if tei_path is not None:
         tree = ET.parse(tei_path)
@@ -186,11 +208,13 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
     ET.SubElement(root, 'webViewer', outputDir='web_output', filename='viewer.html')
     json_pages = {wid: {str(page['id']) for page in data.get('pages', [])}
                   for wid, data in packages.items()}
-    witness_list = ET.SubElement(root, 'witnesses', base=pivot_id)
+    witness_list = ET.SubElement(root, 'witnesses', base=names[pivot_id])
     for w in witnesses:
         wid = w['id']
-        child = ET.SubElement(witness_list, 'witness', id=wid,
-                              label=str(w.get('label') or wid), alignment=f'alignments/{wid}.json')
+        child = ET.SubElement(witness_list, 'witness', id=names[wid],
+                              label=str(w.get('label') or wid), alignment=f'alignments/{names[wid]}.json')
+        if names[wid] != wid:
+            child.set('siglum', wid)
         if wid == pivot_id:
             child.set('role', 'base')
         images = w.get('image_sources', [])
@@ -237,6 +261,8 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
 
     dest.parent.mkdir(parents=True, exist_ok=True)
     stage = Path(tempfile.mkdtemp(prefix='.varians-project-', dir=str(dest.parent)))
+    from .core import default_mode
+    os.chmod(stage, default_mode(directory=True))         # mkdtemp: 0700
     published = False
     try:
         # Export the local IIIF working-copy format that Varians 0.8.x reads:
@@ -249,7 +275,7 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
             if not plan or not plan['eligible']:
                 continue
             index_entries = varians_offline_index(w, plan)
-            target = stage / 'iiif' / 'local' / _varians_safe_id(wid)
+            target = stage / 'iiif' / 'local' / _varians_safe_id(names[wid])
             target.mkdir(parents=True, exist_ok=True)
             entries = {}
             for key, entry in index_entries.items():
@@ -269,7 +295,7 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
             remote = next((r for r in w.get('image_sources', [])
                            if r.get('kind') == 'iiif'), None)
             if remote:
-                _cache_varians_manifest(remote, stage, wid)
+                _cache_varians_manifest(remote, stage, names[wid])
         (stage / 'xml').mkdir()
         if tei_path is not None:
             shutil.copy2(tei_path, stage / 'xml' / 'edition.xml')
@@ -278,7 +304,7 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
                 blank_tei_edition(title, witnesses), encoding='utf-8', newline='\n')
         (stage / 'alignments').mkdir()
         for wid, data in packages.items():
-            (stage / 'alignments' / f'{wid}.json').write_text(
+            (stage / 'alignments' / f'{names[wid]}.json').write_text(
                 json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
         (stage / 'rendering').mkdir()
         (stage / 'rendering' / 'tei.css').write_text(
@@ -317,7 +343,7 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
         # Check what was actually serialized.
         if ET.parse(stage / 'project.xml').getroot().find('witnesses') is None:
             raise AssertionError('Configuration Varians incomplète')
-        parsed = {wid: json.loads((stage / 'alignments' / f'{wid}.json').read_text(
+        parsed = {wid: json.loads((stage / 'alignments' / f'{names[wid]}.json').read_text(
             encoding='utf-8')) for wid in packages}
         verify_export_payloads(parsed, pivot_id)
         if dest.exists():

@@ -23,6 +23,27 @@ def _item(severity, code, *, witness=None, pair=None, link_id=None, detail=None)
     return item
 
 
+def _read_otherwise(source):
+    """True for an unchanged PAGE file whose lines this version reads
+    otherwise than its import did (nested reading order or regions, read
+    wrongly before): the project keeps its lines, but associating the file
+    again would give other ranks, so groups touching them would go stale."""
+    if source.get('kind') != 'page' or not source.get('source_sha256'):
+        return False
+    import hashlib
+    from .page_xml import inspect_page_xml
+    path = Path(source['path'])
+    try:
+        if hashlib.sha256(path.read_bytes()).hexdigest() != source['source_sha256']:
+            return False             # another file: its new lines are expected
+        fresh = inspect_page_xml(path)['pages']
+    except (OSError, ValueError, SyntaxError):
+        return False
+    def lines(pages):
+        return [[(line.get('alto_id'), line.get('text')) for line in page.get('lines', [])] for page in pages]
+    return lines(fresh) != lines(source.get('pages', []))
+
+
 def audit_project(project, base_witness_id=None, *, check_paths=False):
     """Return a JSON-serializable preflight, without changing ``project``.
 
@@ -47,6 +68,12 @@ def audit_project(project, base_witness_id=None, *, check_paths=False):
             messages.append(_item('error', 'invalid_reading_stream', witness=wid, detail=str(exc)))
             known[wid] = set()
             continue
+        bindings = Counter(((page.get('alto_binding') or {}).get('source_id'),
+                            (page.get('alto_binding') or {}).get('page_index'))
+                           for page in w.get('pages', []) if page.get('alto_binding'))
+        twice = [key for key, count in bindings.items() if count > 1]
+        if twice:
+            messages.append(_item('warning', 'xml_page_bound_twice', witness=wid, detail=len(twice)))
         physical_ids = {row['id'] for row in physical}
         active_ids = {row['id'] for row in active}
         ignored = set(w.get('ignored_line_ids', []))
@@ -59,6 +86,9 @@ def audit_project(project, base_witness_id=None, *, check_paths=False):
                 if not Path(source.get('path') or '').is_file():
                     messages.append(_item('warning', 'xml_source_unavailable', witness=wid,
                                           detail=source.get('path')))
+                elif _read_otherwise(source):
+                    messages.append(_item('warning', 'xml_source_read_otherwise', witness=wid,
+                                          detail=Path(source['path']).name))
             for page in w.get('pages', []):
                 if page.get('image_kind') == 'local' and not Path(page.get('image_path') or '').is_file():
                     messages.append(_item('warning', 'local_image_unavailable', witness=wid,

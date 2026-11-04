@@ -921,4 +921,37 @@ Technical details are in the console or the startup log.</string>
   <string key="error.pairs.stale_lines">{reference} ↔ {target}: {count} line(s) modified or missing</string>
   <string key="error.pairs.session_error">Session {session}: {error}</string>
   <string key="error.export.no_direct_session">{witness}: no direct session with {reference}.</string>
+  <string key="ui.xml.replace_ignored">{count} ignored line(s) are not found unchanged in the new file: they will lose their mark. Review them in “Scope”.</string>
+  <string key="resources.witness.remove_ignored">{count} ignored line(s) on these pages will lose their mark.</string>
+  <string key="error.project_export.tei_binding_stale">The TEI binding of the pivot {witness} is no longer valid: the TEI, the scope or the reading order has changed since. Redo it in “2 · Associate resources” before exporting.</string>
+  <string key="error.witness.siglum_conflict">The siglum “{witness}” would give the same file names as the witness “{other}” in exports. Choose another siglum.</string>
+  <string key="error.witness.siglum_reserved">The siglum “{witness}” cannot be used as a file name on Windows (reserved name). Choose another siglum.</string>
+  <string key="error.witness.siglum_taken">The siglum “{witness}” already belongs to a witness of the project: open its card to complete it, or choose another siglum.</string>
+  <string key="ui.audit.issue.xml_source_read_otherwise">PAGE file with a nested structure, read differently since this version: the project keeps its lines, but associating it again would make the groups touching them stale</string>
+  <string key="error.binding.xml_page_bound">This XML page is already associated with the image “{page}”: one XML page cannot be assigned to several images.</string>
+  <string key="ui.audit.issue.xml_page_bound_twice">One XML page is associated with several images: its lines would count several times</string>
+  <string key="error.imaging.redirect_refused">The server redirects to an address that is not http or https: redirection refused.</string>
+  <string key="error.imaging.too_slow">The server answers too slowly: given up after {seconds} s.</string>
+  <string key="resources.witness.manifest_loading">Loading {count} IIIF Manifest(s)…</string>
+  <string key="error.resources.manifest_cancelled">Loading of the Manifest cancelled.</string>
+  <string key="project.paths.title">Files outside the project folder</string>
+  <string key="project.paths.question">This project names {count} file(s) outside its folder (through “..”) or on a network share:
+
+{paths}
+
+Varians-Synchro never writes such paths: they come from a received or hand-edited project. Read these files? If you answer No, they will be treated as missing; the project keeps their paths.</string>
+  <string key="error.tei_binding.too_deep">The TEI is nested too deeply to be read.</string>
+  <string key="common.discard_title">Discard the changes</string>
+  <string key="common.discard_question">The changes made in this window are not saved. Discard them?</string>
+  <string key="error.tei.apparatus_unresolved">Apparatus without a single reading for {witness} (xml:id={id}).</string>
+  <string key="error.tei.choice_unresolved">&lt;choice&gt; element without a usable branch.</string>
+  <string key="error.tei.duplicate_lb_id">Duplicated TEI identifier: {id}</string>
+  <string key="error.tei.unattributed_lb">{count} &lt;lb/&gt; without @edRef: left out of the witness {witness}.</string>
+  <string key="error.tei.no_target_lb">No &lt;lb edRef="#{witness}"/&gt; found.</string>
+  <string key="error.tei.source_changed">The TEI file has changed since its import: import it again before binding.</string>
+  <string key="error.tei.line_count_mismatch">{tei} TEI &lt;lb/&gt; for {physical} active physical lines.</string>
+  <string key="error.tei.no_physical_lines">No active ALTO/PAGE line.</string>
+  <string key="error.binding.by_order">Match proposed by order, to be checked on the images</string>
+  <string key="error.binding.no_unique_match">No single match; manual choice needed</string>
+  <string key="resources.witness.pivot_kept.tip">This witness is the project’s pivot. To change the pivot, open another witness’s card and tick this box.</string>
 </translations>

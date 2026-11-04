@@ -14,6 +14,48 @@ def ignored_ids(witness):
     return set(witness.get('ignored_line_ids', []))
 
 
+def _same_line_key(line):
+    return line.get('alto_id'), (line.get('text') or '').strip()
+
+
+def carried_ignored_lines(witness, page_id, before, after):
+    """Ignored lines of page ``page_id`` once its XML lines ``before`` are
+    replaced by ``after`` (lists of XML lines; empty when the page has, or
+    gets, no file). A line is known by its page and rank only: without this,
+    the mark stayed on the rank and fell on whatever line took it.
+
+    An ignored line found again in ``after`` with the same ALTO identifier
+    and text keeps its mark, at its new rank; the other marks of the page are
+    released. Returns (new ignored_line_ids, number of marks released)."""
+    from .physical_alignment import line_uid
+    ignored = list(witness.get('ignored_line_ids') or [])
+    span = max(len(before), len(after))
+    ranks = {line_uid(witness['id'], page_id, rank): rank for rank in range(1, span + 1)}
+    on_page = [uid for uid in ignored if uid in ranks]
+    if not on_page:
+        return ignored, 0
+    free = {}
+    for rank, line in enumerate(after, 1):
+        free.setdefault(_same_line_key(line), []).append(rank)
+    kept = []
+    for uid in on_page:
+        rank = ranks[uid]
+        candidates = free.get(_same_line_key(before[rank - 1])) if rank <= len(before) else None
+        if candidates:
+            kept.append(line_uid(witness['id'], page_id, candidates.pop(0)))
+    others = [uid for uid in ignored if uid not in ranks]
+    return sorted(set(others) | set(kept)), len(on_page) - len(kept)
+
+
+def carry_ignored_lines(witness, page_id, before, after):
+    """Apply :func:`carried_ignored_lines`; return the number of marks
+    released."""
+    ignored, released = carried_ignored_lines(witness, page_id, before, after)
+    if ignored != list(witness.get('ignored_line_ids') or []):
+        witness['ignored_line_ids'] = ignored
+    return released
+
+
 def linked_scope_conflicts(project, changes):
     """Count session groups affected by newly excluded physical line IDs."""
     counts = {}

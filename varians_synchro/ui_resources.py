@@ -4,15 +4,32 @@ from __future__ import annotations
 import copy
 from pathlib import Path
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QThread
 from PySide6.QtWidgets import (QCheckBox, QFrame, QGroupBox, QHBoxLayout, QLineEdit,
                                QListWidgetItem, QScrollArea, QVBoxLayout, QWidget)
 
-from .errors import localized_text
+from .errors import localized, localized_text
 from .i18n import tr
 from .ui_batch_binding import BatchBindingDialog
-from .ui_widgets import (_run_modal, QDialog, QFileDialog, QInputDialog, QLabel, QListWidget,
+from .ui_widgets import (fit_to_screen, _run_modal, start_detached, QDialog, QFileDialog, QInputDialog, QLabel, QListWidget,
                          QMessageBox, QPushButton)
+
+
+class _ManifestFetcher(QThread):
+    """Fetch IIIF Manifests outside the interface thread."""
+    def __init__(self, urls, cancel):
+        super().__init__()
+        self.urls, self.cancel, self.results = list(urls), cancel, {}
+
+    def run(self):
+        from . import resource_workflow
+        for url in self.urls:
+            if self.cancel.is_set():
+                return
+            try:
+                self.results[url] = ('ok', resource_workflow.inspect_manifest(url))
+            except Exception as exc:
+                self.results[url] = ('error', exc)
 
 
 class WitnessResourceDialog(QDialog):
@@ -22,10 +39,15 @@ class WitnessResourceDialog(QDialog):
         self.original_project = project
         self.original_witness = witness
         self.staged_project = None
+        self._manifests = {}      # url -> ('ok', manifest) | ('error', exception)
         self.pending = {'images': [], 'xml_files': [], 'tei_files': [], 'manifests': []}
         self.removals = []        # (kind, id) des ressources enregistrées à retirer
+        # Associations faites dans le brouillon (« Associer automatiquement… ») :
+        # page (image) -> (chemin du XML, page du XML). Le brouillon est
+        # reconstruit à chaque changement ; elles y sont refaites.
+        self._draft_bindings = {}
         self.setWindowTitle(tr('resources.witness.edit' if witness else 'resources.witness.new'))
-        self.resize(790, 690)
+        fit_to_screen(self, 790, 690)
         layout = QVBoxLayout(self)
         hint = QLabel(tr('resources.witness.help'))
         hint.setWordWrap(True)
@@ -42,6 +64,11 @@ class WitnessResourceDialog(QDialog):
         layout.addLayout(form)
         self.pivot = QCheckBox(tr('resources.witness.pivot'))
         self.pivot.setChecked(project.get('pivot_witness_id') == (witness or {}).get('id'))
+        if witness is not None and self.pivot.isChecked():
+            # Décochée, la case ne retirait rien : un projet garde un pivot.
+            self.pivot.setEnabled(False)
+            self.pivot.setToolTip(tr('resources.witness.pivot_kept.tip'))
+        self._initial_pivot = self.pivot.isChecked()
         layout.addWidget(self.pivot)
         self.lists = {}
         scroll = QScrollArea(self)
@@ -76,7 +103,6 @@ class WitnessResourceDialog(QDialog):
                 self.retry_button.setObjectName('retryManifestsButton')
                 self.retry_button.setToolTip(tr('resources.witness.retry.tip'))
                 self.retry_button.clicked.connect(self.retry_manifests)
-                self.retry_button.setEnabled(bool(self._unavailable()))
                 actions.addWidget(self.retry_button)
             actions.addStretch(1)
             group_layout.addLayout(actions)
@@ -107,9 +133,21 @@ class WitnessResourceDialog(QDialog):
         accept.setToolTip(tr('ui.resources.save.tip'))
         footer.addWidget(accept)
         cancel = QPushButton(tr('resources.cancel'))
-        cancel.clicked.connect(self.reject)
+        cancel.clicked.connect(self.cancel)
         cancel.setToolTip(tr('ui.resources.cancel.tip'))
         footer.addWidget(cancel)
+
+    def has_unsaved_draft(self):
+        """Resources added or marked for removal, a sigil or description
+        typed or changed, the pivot box changed: Escape, the close button or
+        « Cancel » ask first."""
+        original = self.original_witness
+        if original is None:
+            typed = bool(self.sigil.text().strip() or self.label_edit.text().strip())
+        else:
+            typed = self.label_edit.text().strip() != (original.get('label') or '').strip()
+        return (any(self.pending.values()) or bool(self.removals) or typed
+                or self.pivot.isChecked() != self._initial_pivot)
 
     def _existing(self, category):
         if self.original_witness is None:
@@ -140,9 +178,14 @@ class WitnessResourceDialog(QDialog):
                 if r.get('kind') == 'tei' and r.get('witness_id') == witness['id']]
 
     def _unavailable(self):
-        """Manifests IIIF enregistrés du témoin qui n'avaient pas répondu."""
+        """Manifests IIIF enregistrés du témoin qui n'avaient pas répondu,
+        hors ceux marqués « − » (« Réessayer » levait alors une KeyError)."""
         from .resource_workflow import unavailable_manifests
-        return unavailable_manifests(self.original_witness) if self.original_witness else []
+        if not self.original_witness:
+            return []
+        removed = {source_id for kind, source_id in self.removals if kind == 'images'}
+        ids = dict(self._existing_ids('manifests'))
+        return [url for url in unavailable_manifests(self.original_witness) if ids.get(url) not in removed]
 
     def refresh_lists(self):
         unavailable = self._unavailable()
@@ -171,6 +214,8 @@ class WitnessResourceDialog(QDialog):
                 item = QListWidgetItem(('↻  ' if path in unavailable else '+  ') + str(path))
                 item.setData(Qt.ItemDataRole.UserRole, str(path))
                 lst.addItem(item)
+        if hasattr(self, 'retry_button'):
+            self.retry_button.setEnabled(bool(unavailable))
 
     def retry_manifests(self):
         """Interroge de nouveau les Manifests indisponibles, dans le brouillon
@@ -184,6 +229,8 @@ class WitnessResourceDialog(QDialog):
             if url not in self.pending['manifests']:
                 self.pending['manifests'].append(url)
         self.staged_project = None
+        for url in urls:
+            self._manifests.pop(url, None)          # asked again
         try:
             staged = self.stage_current()
         except Exception as exc:
@@ -260,11 +307,12 @@ class WitnessResourceDialog(QDialog):
                 QMessageBox.warning(self, tr('resources.witness.edit'), localized_text(exc))
                 return
             path = item.data(Qt.ItemDataRole.UserRole + 2)
-            answer = QMessageBox.question(
-                self, tr('resources.witness.edit'),
-                tr('resources.witness.remove_confirm', name=path if '://' in path else Path(path).name,
-                   pages=impact['pages'], lines=impact['lines'], groups=impact['groups'],
-                   validated=impact['validated']))
+            text = tr('resources.witness.remove_confirm', name=path if '://' in path else Path(path).name,
+                      pages=impact['pages'], lines=impact['lines'], groups=impact['groups'],
+                      validated=impact['validated'])
+            if impact.get('ignored'):
+                text += '\n\n' + tr('resources.witness.remove_ignored', count=impact['ignored'])
+            answer = QMessageBox.question(self, tr('resources.witness.edit'), text)
             if answer != QMessageBox.StandardButton.Yes:
                 return
             self.removals.append(removal)
@@ -290,21 +338,104 @@ class WitnessResourceDialog(QDialog):
         remove_witness(self.original_project, witness_id)
         self.accept()
 
+    def _manifests_to_fetch(self):
+        """Manifests ``apply_witness_draft`` would query: new ones, and known
+        ones that did not answer; not those fetched already."""
+        from .resource_workflow import _manifest_key
+        known = {_manifest_key(s['reference']): s for s in (self.original_witness or {}).get('image_sources', [])
+                 if s.get('kind') == 'iiif'}
+        return [url for url in dict.fromkeys(str(u).strip() for u in self.pending['manifests'] if str(u).strip())
+                if url not in self._manifests
+                and (known.get(_manifest_key(url)) is None
+                     or known[_manifest_key(url)].get('status') == 'unavailable')]
+
+    def _fetch_manifests(self):
+        """Fetch the Manifests in a thread of their own, the window going on
+        (it froze while a slow server answered), with a cancellable wait."""
+        urls = self._manifests_to_fetch()
+        if not urls:
+            return
+        import threading
+        from PySide6.QtCore import QEventLoop
+        from PySide6.QtWidgets import QProgressDialog
+        cancel = threading.Event()
+        worker = _ManifestFetcher(urls, cancel)
+        progress = QProgressDialog(tr('resources.witness.manifest_loading', count=len(urls)),
+                                   tr('common.cancel'), 0, 0, self)
+        progress.setWindowTitle(tr('resources.witness.manifests'))
+        progress.setWindowModality(Qt.WindowModality.WindowModal)
+        progress.setMinimumDuration(0)
+        loop = QEventLoop()
+        worker.finished.connect(loop.quit)
+        progress.canceled.connect(cancel.set)
+        progress.canceled.connect(loop.quit)
+        start_detached(worker, self, cancel)
+        progress.show()
+        if not worker.isFinished():
+            loop.exec()
+        progress.hide()
+        progress.deleteLater()
+        for url in urls:
+            self._manifests[url] = worker.results.get(url) or (
+                'error', localized(ValueError, 'error.resources.manifest_cancelled'))
+
+    def _cached_manifest(self, url):
+        kind, value = self._manifests.get(url) or ('ok', None)
+        if value is None:
+            from . import resource_workflow
+            return resource_workflow.inspect_manifest(url)
+        if kind == 'error':
+            raise value
+        return value
+
     def build_stage(self):
         from .resource_workflow import apply_witness_draft
+        self._fetch_manifests()
         # Build from a fresh snapshot; existing resources remain identical.
         draft = copy.deepcopy(self.original_project)
         apply_witness_draft(draft, identifier=self.sigil.text(),
                             label=self.label_edit.text(), is_pivot=self.pivot.isChecked(),
-                            **self.pending)
+                            new_witness=self.original_witness is None,
+                            manifest_loader=self._cached_manifest, **self.pending)
         if self.removals:
             from .resource_removal import remove_resource
             for kind, source_id in self.removals:
                 remove_resource(draft, self.sigil.text().strip(), kind, source_id)
+        self._replay_bindings(draft)
         self.staged_project = draft
         self._staged_identity = (self.sigil.text(), self.label_edit.text(),
                                  self.pivot.isChecked(), repr(self.pending), repr(self.removals))
         return draft
+
+    @staticmethod
+    def _page_key(page):
+        """A page known across rebuilds of the draft: a new image's page gets
+        a new identifier each time, its file stays the same."""
+        if page.get('image_kind') == 'local':
+            return ('local', str(page.get('image_path')))
+        return ('iiif', str(page['id']))
+
+    def _replay_bindings(self, draft):
+        """Redo in a rebuilt draft the bindings made in this card, for pages
+        still unbound whose XML page is still there and free."""
+        if not self._draft_bindings:
+            return
+        from .reading_stream import rebind_page
+        witness = next((w for w in draft['witnesses'] if w['id'] == self.sigil.text().strip()), None)
+        if witness is None:
+            return
+        sources = {str(s['path']): s for s in witness.get('alto_sources', [])}
+        for page in list(witness.get('pages', [])):
+            target = self._draft_bindings.get(self._page_key(page))
+            if target is None or page.get('alto_binding'):
+                continue
+            source = sources.get(target[0])
+            if source is None or target[1] >= len(source.get('pages', [])):
+                continue
+            try:
+                rebind_page(witness, page['id'], source['id'], target[1])
+            except ValueError:
+                continue                          # page XML prise entre-temps
 
     def stage_current(self):
         identity = (self.sigil.text(), self.label_edit.text(),
@@ -319,8 +450,15 @@ class WitnessResourceDialog(QDialog):
                 QMessageBox.information(self, tr('resources.binding.title'),
                                         tr('resources.binding.missing'))
                 return
+            before = {p['id'] for p in witness['pages'] if p.get('alto_binding')}
             dialog = BatchBindingDialog(witness, self)
             _run_modal(dialog)
+            paths = {s['id']: str(s['path']) for s in witness['alto_sources']}
+            for page in witness['pages']:
+                binding = page.get('alto_binding')
+                if binding and page['id'] not in before and binding['source_id'] in paths:
+                    self._draft_bindings[self._page_key(page)] = (paths[binding['source_id']],
+                                                                  binding['page_index'])
         except Exception as exc:
             QMessageBox.warning(self, tr('resources.witness.edit'), localized_text(exc))
 

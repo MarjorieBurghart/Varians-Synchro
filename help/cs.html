@@ -115,10 +115,10 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h2 id="notions">5. Základní pojmy</h2>
 <table>
 <tr><th>Pojem</th><th>Co označuje</th></tr>
-<tr><td>Svědek, sigla</td><td>Rukopis (nebo starší edice). Sigla je jeho identifikátor: po uložení svědka ji už nelze změnit a aby byl export možný, nesmí obsahovat tečku, <code>/</code> ani <code>\</code>. Ponechte siglu z projektu Varians.</td></tr>
+<tr><td>Svědek, sigla</td><td>Rukopis (nebo starší edice). Sigla je jeho identifikátor: po uložení svědka ji už nelze změnit. Stejně jako ve Varians smí obsahovat mezery a tečky („BnF lat. 123“): exporty z ní odvodí identifikátor XML („BnF_lat._123“), který pojmenuje i jejich soubory, a siglu ponechají pro zobrazení. Dvě sigly, z nichž by vznikl stejný identifikátor („a“ a „A“, „T 2“ a „T_2“), se odmítnou už při vytvoření svědka, stejně jako názvy vyhrazené systémem Windows (CON, NUL…). Ponechte siglu z projektu Varians.</td></tr>
 <tr><td>Pivotní svědek</td><td>Referenční svědek projektu: ostatní se zarovnávají s ním a Varians jej sleduje podle jeho <code>&lt;lb/&gt;</code>. Tato volba je technická: nepředjímá ani stema, ani základní rukopis edice. Ve výchozím stavu je pivotem první přidaný svědek; chcete-li pivot změnit, zaškrtněte políčko pivotu ve formuláři jiného svědka. Nabídka <b class="ui" data-tr="alignment.reference.label">Technický pivot</b> v kroku 3 volí jen levého svědka k zarovnání a pivot projektu nemění.</td></tr>
 <tr><td>Fyzický řádek</td><td>Řádek popsaný souborem ALTO/PAGE stránky. Je určen svou stránkou a svým pořadovým číslem v tomto souboru. Obsah souboru se při importu zkopíruje do projektu.</td></tr>
-<tr><td>Ignorovaný řádek (rozsah)</td><td>Řádek mimo zkoumaný text. Ignorování platí pro svědka v celém projektu: je vyloučen z výpočtů, z propojení TEI i z exportů. Ignorování již propojeného řádku po potvrzení odstraní jeho vazby, ve všech dvojicích.</td></tr>
+<tr><td>Ignorovaný řádek (rozsah)</td><td>Řádek mimo zkoumaný text. Ignorování platí pro svědka v celém projektu: je vyloučen z výpočtů, z propojení TEI i z exportů. Ignorování již propojeného řádku po potvrzení odstraní jeho vazby, ve všech dvojicích. Dostane-li stránka jiný soubor ALTO/PAGE, označení přejde na řádek, který se v tomto souboru najde beze změny (stejný identifikátor, stejný text); ostatní označení stránky se zruší a potvrzení uvede jejich počet. Odebrání souboru ALTO/PAGE zruší označení jeho stránek.</td></tr>
 <tr><td>Skupina (korespondence)</td><td>Řádky levého svědka propojené s řádky pravého svědka: 1↔1, 1↔n nebo n↔m. Řádek patří v každé dvojici nejvýše do jedné skupiny.</td></tr>
 <tr><td>Stav skupiny</td><td><code>validated</code> (potvrzená), <code>uncertain</code> (nejistá) nebo <code>proposed</code> (navržená). Seznam skupin je zobrazuje v tomto tvaru. Filtr <b class="ui" data-tr="review.filter.pending">Ke kontrole</b> zahrnuje nepotvrzené skupiny.</td></tr>
 <tr><td>Kotva</td><td>Potvrzená korespondence, o kterou se opírají návrhy. Kotvy musí v obou svědcích následovat ve stejném pořadí; jsou nutné alespoň dvě.</td></tr>
@@ -129,22 +129,22 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </table>
 
 <h2 id="etape1">6. Krok 1: přidání svědků</h2>
-<p><b class="ui" data-tr="resources.witness.new">Přidat svědka…</b> otevře formulář nového svědka; kliknutím na svědka v seznamu (nebo na některý z jeho zdrojů) otevřete jeho formulář a můžete jej doplnit. Seznam u každého svědka ukazuje jeho zdroje a jejich stav (přiřazené stránky, importované řádky, propojení TEI).</p>
+<p><b class="ui" data-tr="resources.witness.new">Přidat svědka…</b> otevře formulář nového svědka; kliknutím na svědka v seznamu (nebo na některý z jeho zdrojů) otevřete jeho formulář a můžete jej doplnit. Seznam u každého svědka ukazuje jeho zdroje a jejich stav (přiřazené stránky, importované řádky, propojení TEI). Z klávesnice otevře formulář svědka také <kbd>Enter</kbd> nebo <kbd>Mezerník</kbd> na svědkovi v seznamu.</p>
 <h3 id="fiche-temoin">Formulář svědka</h3>
 <ul>
 <li><b class="ui" data-tr="resources.witness.sigil">Sigla</b> a <b class="ui" data-tr="resources.witness.label">Popis</b>. Siglu po uložení svědka už nelze změnit.</li>
-<li><b class="ui" data-tr="resources.witness.pivot">Použít tohoto svědka jako pivot pro zarovnání svědků</b>.</li>
+<li><b class="ui" data-tr="resources.witness.pivot">Použít tohoto svědka jako pivot pro zarovnání svědků</b>. Ve formuláři pivotu je políčko zaškrtnuté a zašedlé: chcete-li pivot změnit, zaškrtněte je ve formuláři jiného svědka.</li>
 <li>Čtyři skupiny zdrojů, každá s tlačítkem <b class="ui" data-tr="resources.witness.add">Přidat…</b>:
 <ul>
-<li><b class="ui" data-tr="resources.witness.images">Místní obrázky</b>: obrázky se řadí podle názvu („2“ před „10“);</li>
-<li><b class="ui" data-tr="resources.witness.manifests">Manifest IIIF</b>: adresa manifestu; pokud neodpovídá, adresa se zachová a označí jako nedostupná; <b class="ui" data-tr="resources.witness.retry">Zkusit znovu</b> se na něj dotáže znovu;</li>
+<li><b class="ui" data-tr="resources.witness.images">Místní obrázky</b>: JPEG, PNG, TIFF, WebP nebo JPEG 2000; obrázky se řadí podle názvu („2“ před „10“);</li>
+<li><b class="ui" data-tr="resources.witness.manifests">Manifest IIIF</b>: adresa manifestu; pokud neodpovídá, adresa se zachová a označí jako nedostupná; <b class="ui" data-tr="resources.witness.retry">Zkusit znovu</b> se na něj dotáže znovu; během načítání lze načítání zrušit v okně s průběhem;</li>
 <li><b class="ui" data-tr="resources.witness.xml">Soubory ALTO/PAGE-XML</b>: formát se rozpozná podle obsahu;</li>
 <li><b class="ui" data-tr="resources.witness.tei">Edice TEI XML</b>: volitelná, užitečná pro pivot.</li>
 </ul></li>
 <li><b class="ui" data-tr="resources.witness.remove_pending">Odebrat</b> odebere vybraný zdroj. Zdroj přidaný během tohoto otevření formuláře jednoduše zmizí ze seznamu. U již uloženého zdroje program nejprve uvede, co jeho odebrání způsobí (odebrané nebo uvolněné strany, řádky, dotčené skupiny); po potvrzení se označí „−“ a odebere se tlačítkem <b class="ui" data-tr="resources.witness.confirm">Uložit svědka</b>. Skupiny, které se týkaly jeho řádků, zůstanou zachovány a označí se jako zastaralé: poté je odpojte (viz <a href="#perimes">Zastaralé skupiny</a>). Z disku se nesmaže žádný soubor.</li>
 <li><b class="ui" data-tr="resources.witness.remove_witness">Odebrat svědka…</b> po potvrzení odebere svědka z projektu i s jeho synchronizacemi a edicemi TEI. Pivotního svědka nelze odebrat: nejprve zvolte jiný pivot.</li>
 <li><b class="ui" data-tr="resources.binding.title">Automaticky přiřadit ALTO/PAGE k obrázkům</b> hned navrhne přiřazení stránek (viz <a href="#association-auto">níže</a>).</li>
-<li><b class="ui" data-tr="resources.witness.confirm">Uložit svědka</b> použije všechny změny najednou; <b class="ui" data-tr="resources.cancel">Zrušit</b> projekt nijak nezmění.</li>
+<li><b class="ui" data-tr="resources.witness.confirm">Uložit svědka</b> použije všechny změny najednou; <b class="ui" data-tr="resources.cancel">Zrušit</b> projekt nijak nezmění. Obsahuje-li formulář změny, <kbd>Esc</kbd>, křížek okna nebo <b class="ui" data-tr="resources.cancel">Zrušit</b> se nejprve zeptají, zda je zahodit.</li>
 </ul>
 
 <h2 id="etape2">7. Krok 2: přiřazení zdrojů</h2>
@@ -153,7 +153,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <p><b class="ui" data-tr="pages.order.open">Spravovat obrázky, jejich pořadí a přiřazení ALTO/PAGE…</b> zobrazí stránky svědka s jejich náhledem a souborem řádků.</p>
 <ul>
 <li><strong>Pořadí čtení</strong>: přetáhněte stránky nebo použijte <b class="ui" data-tr="pages.order.up">Nahoru</b>, <b class="ui" data-tr="pages.order.down">Dolů</b>, <b class="ui" data-tr="pages.order.reverse">Obrátit pořadí</b>.</li>
-<li><b class="ui" data-tr="ui.xml.link_source">Přiřadit ALTO/PAGE</b> přiřadí zvolené stránce soubor řádků. Pokud už nějaký měla, program uvede, kolika skupin se to dotkne: stanou se zastaralými (viz <a href="#perimes">Zastaralé skupiny</a>).</li>
+<li><b class="ui" data-tr="ui.xml.link_source">Přiřadit ALTO/PAGE</b> přiřadí zvolené stránce soubor řádků. Pokud už nějaký měla, program uvede, kolika skupin se to dotkne: stanou se zastaralými (viz <a href="#perimes">Zastaralé skupiny</a>). Uvede také, kolik ignorovaných řádků přijde o své označení. Stránka ALTO/PAGE, která je už přiřazena jinému obrázku, se odmítne: její řádky by se počítaly dvakrát.</li>
 <li><b class="ui" data-tr="ui.afficher.page">Zobrazit stránku</b> (nebo dvojklik) ukáže stránku a její řádky.</li>
 <li><strong>Kopie obrázků IIIF v HD</strong>: <b class="ui" data-tr="ui.pages.hd.action">Stáhnout vybrané obrázky IIIF v HD…</b> uloží zvolené obrázky do prázdné složky; <b class="ui" data-tr="ui.pages.hd.attach">Připojit již staženou sadu HD…</b> znovu najde dříve staženou sadu. Projekt Varians tyto kopie použije, má-li kopii každá potřebná stránka.</li>
 <li><strong>Externí HTR (volitelné)</strong>: <b class="ui" data-tr="ui.exporter.pour.htr">Exportovat pro HTR</b> uloží zvolené obrázky IIIF do souboru ZIP pro program pro rozpoznávání; <b class="ui" data-tr="ui.reimporter.htr">Znovu importovat HTR</b> pak přiřadí získané soubory ALTO/PAGE podle jejich názvu.</li>
@@ -162,7 +162,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3 id="association-auto">Automatické přiřazení</h3>
 <p><b class="ui" data-tr="resources.binding.title">Automaticky přiřadit ALTO/PAGE k obrázkům</b> navrhne soubor řádků pro každou stránku, která ho ještě nemá: nejprve podle názvů a odkazů na obrázky (<b class="ui" data-tr="resources.binding.name">Jedinečný název</b>), pak, pokud jsou všechny zbývající stránky místní obrázky a zbývá přesně stejný počet nepřiřazených stránek ALTO/PAGE, jejich spárováním v přirozeném pořadí názvů souborů. Kontrolujte hlavně tato druhá přiřazení: posun se přenese na celou sérii. Tentýž soubor navržený pro dvě stránky je označen červeně. <b class="ui" data-tr="resources.binding.apply">Použít přiřazení</b> nepřepíše žádné existující přiřazení.</p>
 <h3 id="perimetre">Řádky k ignorování (rozsah)</h3>
-<p><b class="ui" data-tr="tei.scope.action">Určit řádky ignorované na obrázcích svědka…</b>: na obrázcích vyberte řádky mimo zkoumaný text, i na více stránkách, a pak použijte <b class="ui" data-tr="tei.scope.ignore">Ignorovat vybrané řádky</b> (nebo <b class="ui" data-tr="tei.scope.restore">Obnovit vybrané řádky</b>). <b class="ui" data-tr="tei.scope.save">Uložit rozsah</b> změny použije; <b class="ui" data-tr="resources.cancel">Zrušit</b> nic nezmění. Stejné nastavení je k dispozici i v okně zarovnání (<b class="ui" data-tr="scope.menu">Rozsah ▾</b>).</p>
+<p><b class="ui" data-tr="tei.scope.action">Určit řádky ignorované na obrázcích svědka…</b>: na obrázcích vyberte řádky mimo zkoumaný text, i na více stránkách, a pak použijte <b class="ui" data-tr="tei.scope.ignore">Ignorovat vybrané řádky</b> (nebo <b class="ui" data-tr="tei.scope.restore">Obnovit vybrané řádky</b>). <b class="ui" data-tr="tei.scope.save">Uložit rozsah</b> změny použije; <b class="ui" data-tr="resources.cancel">Zrušit</b> nic nezmění. Stejné nastavení je k dispozici i v okně zarovnání (<b class="ui" data-tr="scope.menu">Rozsah ▾</b>). Pokud jste řádky změnili, <kbd>Esc</kbd>, křížek okna nebo <b class="ui" data-tr="resources.cancel">Zrušit</b> se nejprve zeptají, zda tyto změny zahodit.</p>
 <h3 id="tei">Propojení edice TEI (volitelné)</h3>
 <p><b class="ui" data-tr="tei.binding.action">Propojit edici TEI s řádky ALTO/PAGE…</b> přiřadí značky <code>&lt;lb edRef="#SIGLA"/&gt;</code> edice TEI k aktivním řádkům svědka, v pořadí čtení. Počty musí být stejné: okno je porovná a uvede, co propojení brání (zapomenuté řádky k ignorování, nejednoznačná čtení v aparátu). Zkontrolujte několik řádků, zejména pomocí <b class="ui" data-tr="tei.visual.begin">Začátek</b> a <b class="ui" data-tr="tei.visual.end">Konec</b>, na textu i na oříznutém obrázku, a pak klikněte na <b class="ui" data-tr="tei.binding.apply">Potvrdit propojení</b>.</p>
 <p>Propojení není pro export nutné: slouží k ověření, že počet řádků pivotu skutečně odpovídá jeho <code>&lt;lb/&gt;</code>, a díky němu okno zarovnání zobrazuje text TEI místo textu HTR. Pokud se změní edice, rozsah, pořadí nebo segmentace, přejde propojení do stavu <b class="ui" data-tr="tei.binding.status.stale">nutno znovu ověřit (změněné zdroje)</b>.</p>
@@ -221,7 +221,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h2 id="etape4">10. Krok 4: dokončení a export</h2>
 <p><b class="ui" data-tr="ui.final.refresh">Aktualizovat přehled</b> shrne svědky a zarovnání a upozorní na změněné řádky nebo nenalezené soubory.</p>
 <h3 id="controle">Kontrola konzistence</h3>
-<p><b class="ui" data-tr="audit.action">Zkontrolovat konzistenci projektu…</b> prověří projekt a nic přitom nezmění: aktivní řádky a přiřazené stránky každého svědka, potvrzené skupiny a absence každé dvojice, chybějící nebo zastaralé odkazy, nenalezené soubory. Spusťte tuto kontrolu před každým exportem.</p>
+<p><b class="ui" data-tr="audit.action">Zkontrolovat konzistenci projektu…</b> prověří projekt a nic přitom nezmění: aktivní řádky a přiřazené stránky každého svědka, potvrzené skupiny a absence každé dvojice, chybějící nebo zastaralé odkazy, nenalezené soubory. Upozorní také na stránku ALTO/PAGE přiřazenou dvěma obrázkům a na soubor PAGE, který tato verze čte jinak než při jeho importu (vnořené skupiny nebo oblasti): jeho nové přiřazení by učinilo zastaralými skupiny, které se dotýkají jeho řádků. Spusťte tuto kontrolu před každým exportem.</p>
 <h3 id="export-projet">Předvyplněný projekt Varians</h3>
 <p><b class="ui" data-tr="ui.final.export_project.action">Vytvořit předvyplněný projekt Varians…</b> zapíše do prázdné složky projekt, který Varians otevře bez úprav:</p>
 <ul>
@@ -232,7 +232,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li><code>RAPPORT_EXPORT_VARIANS.txt</code>: zpráva o exportu;</li>
 <li>případně <code>iiif/</code>: kopie obrázků IIIF v HD, má-li kopii každá potřebná stránka.</li>
 </ul>
-<p>Obrázky zůstávají na svém místě: projekt na ně odkazuje (řádky jsou v souborech zarovnání). Export se odmítne, pokud složka není prázdná, pokud sigla obsahuje tečku, <code>/</code> nebo <code>\</code>, pokud má pivot více edic TEI, pokud svědek kombinuje obrázky IIIF a místní obrázky, nebo pokud nějaký soubor nelze najít.</p>
+<p>Obrázky zůstávají na svém místě: projekt na ně odkazuje (řádky jsou v souborech zarovnání). Export se odmítne, pokud složka není prázdná, pokud má pivot více edic TEI, pokud je jeho <a href="#tei">propojení TEI</a> ve stavu <b class="ui" data-tr="tei.binding.status.stale">nutno znovu ověřit (změněné zdroje)</b> (proveďte je znovu: jinak by jeho <code>&lt;lb/&gt;</code> stály proti jiným řádkům), pokud svědek kombinuje obrázky IIIF a místní obrázky, nebo pokud nějaký soubor nelze najít.</p>
 <h3 id="export-json">Exportovat JSON pro Varians</h3>
 <p><b class="ui" data-tr="export.varians.action">Exportovat JSON pro Varians…</b> slouží k přidání nebo aktualizaci svědků v existujícím projektu Varians (<a href="#ajout-temoin">Postup B</a>). Zvolte referenčního svědka (pivot projektu Varians), potvrďte a pak vyberte prázdnou složku. Program do ní zapíše:</p>
 <ul>
@@ -311,6 +311,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Ukládání je bezpečné: soubor se nahradí najednou a předchozí verze se uchová v <code>&lt;projekt&gt;.vsynch.bak</code>. Chcete-li se vrátit k předchozí verzi, zkopírujte tento <code>.bak</code> pod novým názvem s příponou <code>.vsynch</code> a otevřete jej.</li>
 <li>Příkaz „Uložit jako“ neexistuje: chcete-li si uchovat verzi, zkopírujte soubor <code>.vsynch</code>.</li>
 <li>Obrázky, soubory ALTO/PAGE a TEI ukládejte do složky souboru <code>.vsynch</code> nebo do jejích podsložek: uloží se relativní cestou a projekt lze s touto složkou přesunout nebo zkopírovat (jako dodaný příklad). Soubor umístěný jinde se uloží úplnou cestou.</li>
+<li><strong>Projekt od někoho jiného</strong>: odkazuje-li soubor <code>.vsynch</code> na soubory mimo svou složku (cesta s <code>..</code>) nebo ve sdílené síťové složce, program je při otevření vypíše a zeptá se, zda je číst (výchozí odpověď „Ne“). Odmítnete-li, považují se tyto soubory za nenalezené a jejich cesty se při uložení zachovají beze změny; souhlasíte-li, odpověď se pro tento projekt zapamatuje.</li>
 <li>Změna souboru ALTO/PAGE na disku po importu projekt nezmění; přehled na to upozorní. U opravené segmentace importujte nový soubor a přiřaďte jej ke stránce (dotčené skupiny se stanou zastaralými).</li>
 <li>Při zavření programu a při otevření nebo vytvoření projektu program nabídne uložení rozpracovaných změn.</li>
 </ul>
@@ -320,7 +321,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li><strong>Obrázek IIIF není dostupný</strong>: server neodpovídá; přiřazení se neztratí. Zkuste to později znovu, nebo stáhněte kopie v HD.</li>
 <li><strong>Manifest IIIF není dostupný</strong>: při přidání svědka neodpověděl; jeho adresa zůstává uložena a přehled to uvádí. V kroku <b class="ui" data-tr="navigation.project">1 · Přidání svědků</b> klikněte na svědka a pak na <b class="ui" data-tr="resources.witness.retry">Zkusit znovu</b>: program oznámí, zda manifest odpověděl a kolik má stran; <b class="ui" data-tr="resources.witness.confirm">Uložit svědka</b> výsledek zachová.</li>
 <li><strong>Obrysy posunuté vůči obrázku</strong>: obrázek a soubor ALTO/PAGE nemají stejné proporce (stavový řádek na to upozorní); ověřte, že soubor skutečně odpovídá tomuto obrázku.</li>
-<li><strong>Export odmítnut</strong>: zvolená složka není prázdná, nebo sigla obsahuje tečku, <code>/</code> nebo <code>\</code>.</li>
+<li><strong>Export odmítnut</strong>: zvolená složka není prázdná, propojení TEI pivotu je nutno znovu ověřit, nebo dvě sigly dávají stejný název souboru (starší projekt; viz <a href="#notions">Základní pojmy</a>).</li>
 <li><strong>Ve Varians řádky pivotu neodpovídají textu</strong>: počet <code>&lt;lb edRef="#PIVOT"/&gt;</code> se liší od počtu aktivních řádků pivotu (zapomenuté řádky k ignorování nebo chybějící <code>&lt;lb/&gt;</code>). Rozdíl pomohou najít <b class="varians" data-varians="diagnostics.menu">Diagnostika rukopisů…</b> ve Varians a <a href="#tei">propojení TEI</a> ve Varians-Synchro.</li>
 <li><strong>Ve Varians vazby v souboru neodpovídají žádnému řádku pivotu</strong>: zarovnání pivotu nepochází z téhož projektu <code>.vsynch</code> (viz <a href="#ajout-temoin">Postup B</a>).</li>
 <li><strong>Ve Spyderu</strong>: spusťte <code>run.py</code>; program se otevře v samostatném procesu, aby nenarušoval konzoli Spyderu. Protokol spuštění je v <code>~/.varians_synchro/logs</code>.</li>
@@ -329,7 +330,10 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h2 id="raccourcis">13. Klávesové zkratky</h2>
 <table>
 <tr><th>Klávesa</th><th>Účinek</th></tr>
-<tr><td><kbd>F1</kbd></td><td>Otevřít nápovědu (v okně zarovnání: na oddílu o tomto okně).</td></tr>
+<tr><td><kbd>F1</kbd></td><td>Otevřít nápovědu, z kteréhokoli okna (v okně zarovnání: na oddílu o tomto okně).</td></tr>
+<tr><td><kbd>Ctrl+S</kbd> / <kbd>Ctrl+O</kbd> / <kbd>Ctrl+N</kbd></td><td>V hlavním okně: uložit, otevřít, nový projekt.</td></tr>
+<tr><td><kbd>Enter</kbd></td><td>V seznamu: jako dvojklik (otevřít formulář, zobrazit stránku, přejít na skupinu). Enter nikdy nespustí tlačítko, které nemá fokus; otázky mají výchozí odpověď „Ne“.</td></tr>
+<tr><td><kbd>Esc</kbd></td><td>Zavřít okno bez použití změn; obsahuje-li formulář svědka nebo rozsah změny, program se nejprve zeptá, zda je zahodit.</td></tr>
 <tr><td><kbd>Ctrl+Enter</kbd></td><td><b class="ui" data-tr="alignment.action.link_lines">Propojit řádky</b> (vybrané).</td></tr>
 <tr><td><kbd>Ctrl+Shift+A</kbd></td><td>Potvrdit absenci vybraných řádků.</td></tr>
 <tr><td><kbd>F8</kbd> / <kbd>Shift+F8</kbd></td><td>Další / předchozí skupina v seznamu.</td></tr>

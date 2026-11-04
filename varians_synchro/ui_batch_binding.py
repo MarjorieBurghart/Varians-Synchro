@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (QCheckBox, QHBoxLayout, QMessageBox as QtMessageB
 
 from .errors import localized_text
 from .i18n import tr
-from .ui_widgets import call_soon, QComboBox, QDialog, QLabel, QMessageBox, QPushButton
+from .ui_widgets import fit_to_screen, call_soon, page_image_reader_ok, plain_tip, QComboBox, QDialog, QLabel, QMessageBox, QPushButton
 
 
 class ProtectedBindingComboBox(QComboBox):
@@ -34,7 +34,7 @@ class BatchBindingDialog(QDialog):
         self.witness = witness
         self.plan = propose_bindings(witness)
         self.setWindowTitle(tr('resources.binding.title'))
-        self.resize(950, 610)
+        fit_to_screen(self, 950, 610)
         layout = QVBoxLayout(self)
         help_text = QLabel(tr('resources.binding.help'))
         help_text.setWordWrap(True)
@@ -65,7 +65,7 @@ class BatchBindingDialog(QDialog):
             page = next(p for p in witness['pages'] if p['id'] == row['page_id'])
             label = str(page.get('label') or row['image'])
             item = QTableWidgetItem(label)
-            item.setToolTip(str(row['image']))
+            item.setToolTip(plain_tip(row['image']))
             self.table.setItem(row_index, 0, item)
             combo = ProtectedBindingComboBox()
             combo.addItem(tr('resources.binding.none'), None)
@@ -85,7 +85,7 @@ class BatchBindingDialog(QDialog):
             self.table.setItem(row_index, 2, method)
             self.table.setItem(row_index, 3, QTableWidgetItem(
                 tr('resources.binding.review_ordinal') if row['method'] == 'ordinal'
-                else row['warning']))
+                else localized_text(row['warning'])))
         self.table.verticalHeader().setDefaultSectionSize(54)
         layout.addWidget(self.table, 1)
         self._thumbnail_attempted = set()
@@ -118,6 +118,8 @@ class BatchBindingDialog(QDialog):
             if page is None or page.get('image_kind') != 'local':
                 continue
             reader = QImageReader(str(page.get('image_path', '')))
+            if not page_image_reader_ok(reader):
+                continue
             reader.setAutoTransform(True)
             size = reader.size()
             if size.isValid():
@@ -160,7 +162,7 @@ class BatchBindingDialog(QDialog):
                       row['method'] if chosen == prior else 'manual')
             self.table.item(index, 2).setText(tr('resources.binding.' + method))
             warning = (tr('resources.binding.duplicate_row') if pid in in_conflict
-                       else (row.get('warning', '') if chosen == prior else ''))
+                       else (localized_text(row.get('warning', '')) if chosen == prior else ''))
             warning_item = self.table.item(index, 3)
             warning_item.setText(warning)
             warning_item.setBackground(QBrush(QColor('#ffdad5')) if pid in in_conflict
@@ -194,8 +196,9 @@ class BatchBindingDialog(QDialog):
                 QMessageBox.information(self, tr('resources.binding.title'),
                                         tr('resources.binding.empty'))
                 return
-            ordinal = [r for r in self.plan['rows']
-                       if r['method'] == 'ordinal' and selections[r['page_id']] is not None]
+            # Rows changed by hand are no longer proposals « par ordre ».
+            ordinal = [r for r in self.plan['rows'] if r['method'] == 'ordinal'
+                       and r['target'] is not None and selections[r['page_id']] == tuple(r['target'])]
             if ordinal:
                 reply = QMessageBox.question(self, tr('resources.binding.title'),
                     tr('resources.binding.ordinal_confirm', count=len(ordinal)),

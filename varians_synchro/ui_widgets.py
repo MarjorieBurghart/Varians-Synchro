@@ -7,7 +7,8 @@ PySide6 : un texte passé à ``QLabel``, ``setWindowTitle`` ou
 connu des catalogues) et s'affiche dans la langue choisie."""
 from __future__ import annotations
 
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import Qt, QTimer
+from PySide6.QtGui import Qt as QtGuiNamespace, QKeySequence, QShortcut
 from PySide6.QtWidgets import (QComboBox as QtComboBox, QDialog as QtDialog,
                                QFileDialog as QtFileDialog, QInputDialog as QtInputDialog,
                                QLabel as QtLabel, QListWidget as QtListWidget,
@@ -46,13 +47,145 @@ def call_soon(owner, callback):
     timer.start(0)
 
 
+_DETACHED_THREADS = {}
+
+
+def start_detached(thread, owner, cancel):
+    """Start ``thread`` (a QThread without parent) so that it outlives
+    ``owner``, its window. A worker that was a child of its window was
+    destroyed with it while still running (a download waiting for a slow
+    server): « QThread: Destroyed while thread is still running », then the
+    whole program stopped and unsaved work was lost.
+
+    Closing ``owner`` sets ``cancel`` (a threading.Event); the thread ends at
+    its next check and is freed then. When the application quits, every
+    such thread is cancelled and waited for briefly. Callbacks connected to
+    the thread must check that their window still exists (``isValid``)."""
+    from PySide6.QtCore import QCoreApplication
+    import shiboken6
+    _DETACHED_THREADS[thread] = cancel
+
+    def owner_destroyed(*_):
+        cancel.set()
+    owner.destroyed.connect(owner_destroyed)
+
+    def finished():
+        _DETACHED_THREADS.pop(thread, None)
+        # Nothing left tied to the window: a window still alive when Python
+        # stops was destroyed by PySide during the shutdown, and this
+        # callback then ran in a half-dismantled interpreter (crash at exit).
+        if shiboken6.isValid(owner):
+            try:
+                owner.destroyed.disconnect(owner_destroyed)
+            except (RuntimeError, TypeError):
+                pass
+        thread.deleteLater()
+    thread.finished.connect(finished)
+    app = QCoreApplication.instance()
+    if app is not None and not getattr(app, '_vsynch_waits_threads', False):
+        app._vsynch_waits_threads = True
+        app.aboutToQuit.connect(_stop_detached_threads)
+    thread.start()
+
+
+_QT_TRANSLATOR = None
+
+
+def install_qt_translation(language):
+    """Translate Qt's own texts (standard buttons « Yes », « No », « OK »,
+    « Cancel »…) into ``language``, with the translations PySide6 ships
+    (none for English, Qt's own language). Without it they stayed in
+    English whatever the language chosen. Returns True when installed."""
+    global _QT_TRANSLATOR
+    from PySide6.QtCore import QCoreApplication, QLibraryInfo, QTranslator
+    app = QCoreApplication.instance()
+    if app is None:
+        return False
+    if _QT_TRANSLATOR is not None:
+        app.removeTranslator(_QT_TRANSLATOR)
+        _QT_TRANSLATOR = None
+    translator = QTranslator(app)
+    if not translator.load(f'qtbase_{language}', QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)):
+        translator.deleteLater()
+        return False
+    app.installTranslator(translator)
+    _QT_TRANSLATOR = translator
+    return True
+
+
+def fit_to_screen(widget, width, height):
+    """``widget.resize(width, height)``, bounded to the usable area of its
+    screen: a window of 1 200 × 850 px did not fit a laptop screen, and its
+    bottom buttons were out of reach."""
+    from PySide6.QtWidgets import QApplication
+    screen = widget.screen() or QApplication.primaryScreen()
+    if screen is None:
+        widget.resize(width, height)
+        return
+    area = screen.availableGeometry()
+    widget.resize(min(width, int(area.width() * .95)), min(height, int(area.height() * .90)))
+
+
+def _stop_detached_threads():
+    for thread, cancel in list(_DETACHED_THREADS.items()):
+        cancel.set()
+        thread.wait(5000)
+
+
+def _text_format(original):
+    """Rich text only for a heading of the catalogs (« <h3>… »). Any other
+    text, above all a text received (siglum, HTR or TEI text, project name,
+    server answer), is shown as it is: Qt's « AutoText » took it for HTML as
+    soon as it looked like a tag (``<img src=…>`` loaded local files)."""
+    from .i18n import is_catalog_text
+    if is_catalog_text(original) and tr(original).lstrip().startswith('<'):
+        return Qt.TextFormat.RichText
+    return Qt.TextFormat.PlainText
+
+
+def plain_tip(text):
+    """A tooltip showing ``text`` as it is (tooltips are rich text as soon
+    as they look like HTML)."""
+    return QtGuiNamespace.convertFromPlainText(str(text))
+
+
+# Raster formats a page image may have. Qt also decodes SVG or PDF, which
+# may load other files (local, or network shares under Windows): a received
+# « image » in such a format is not shown.
+PAGE_IMAGE_FORMATS = frozenset({b'jpeg', b'jpg', b'png', b'tif', b'tiff', b'webp', b'jp2'})
+
+
+def page_image_reader_ok(reader):
+    """True when ``reader`` (a QImageReader) reads a raster page format."""
+    return bytes(reader.format()).lower() in PAGE_IMAGE_FORMATS
+
+
+def decode_page_image(data):
+    """QImage of a page image received as bytes; a null QImage when it is
+    not in a raster page format."""
+    from PySide6.QtCore import QBuffer, QByteArray, QIODevice
+    from PySide6.QtGui import QImage, QImageReader
+    buffer = QBuffer()
+    buffer.setData(QByteArray(bytes(data)))
+    buffer.open(QIODevice.OpenModeFlag.ReadOnly)
+    reader = QImageReader(buffer)
+    return reader.read() if page_image_reader_ok(reader) else QImage()
+
+
 class QLabel(QtLabel):
-    def __init__(self, *args, **kwargs):
-        if args and isinstance(args[0], str):
-            args=(tr(args[0]),)+args[1:]
+    """Label translating its text, shown as plain text (``rich=True`` for
+    markup written by the program itself)."""
+    def __init__(self, *args, rich=False, **kwargs):
+        original = args[0] if args and isinstance(args[0], str) else None
+        if original is not None:
+            args=(tr(original),)+args[1:]
         super().__init__(*args, **kwargs)
+        self._rich = rich
+        self.setTextFormat(Qt.TextFormat.RichText if rich else _text_format(original))
     def setText(self, text):
         super().setText(tr(text))
+        if not self._rich:
+            self.setTextFormat(_text_format(text))
 
 
 class QPushButton(QtButton):
@@ -87,8 +220,62 @@ class QTreeWidget(QtTreeWidget):
 
 
 class QDialog(QtDialog):
+    """Dialog translating its title, with three behaviours common to all
+    windows of the program:
+
+    - Enter never presses a button the user did not choose: Qt pressed the
+      first « default » button (in the pages, a page moved up a rank; in the
+      synchronisation, a validated group was created). In a list, Enter
+      does what a double click does (``itemActivated``).
+    - F1 opens the user guide, at ``help_anchor`` (None: no F1).
+    - Escape, the close button or « Cancel » (``cancel``) ask before dropping
+      a draft with changes (``has_unsaved_draft``), No being the default.
+    """
+    help_anchor = ''
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.help_anchor is not None:
+            self._help_shortcut = QShortcut(QKeySequence('F1'), self)
+            self._help_shortcut.activated.connect(self.open_help)
+
     def setWindowTitle(self, title):
         return super().setWindowTitle(tr(title))
+
+    def open_help(self):
+        from . import ui_help
+        ui_help.open_help(self, self.help_anchor or None)
+
+    def has_unsaved_draft(self):
+        return False
+
+    def confirm_discard(self):
+        if not self.has_unsaved_draft():
+            return True
+        return QMessageBox.question(self, tr('common.discard_title'), tr('common.discard_question')) \
+            == QtMessageBox.StandardButton.Yes
+
+    def cancel(self):
+        """For « Cancel » buttons: reject, after asking if needed."""
+        if self.confirm_discard():
+            self.reject()
+
+    def keyPressEvent(self, event):
+        from PySide6.QtWidgets import QAbstractButton
+        key = event.key()
+        if key in (Qt.Key.Key_Return, Qt.Key.Key_Enter) and not isinstance(self.focusWidget(), QAbstractButton):
+            event.accept()
+            return
+        if key == Qt.Key.Key_Escape and not self.confirm_discard():
+            event.accept()
+            return
+        super().keyPressEvent(event)
+
+    def closeEvent(self, event):
+        if event.spontaneous() and self.isVisible() and not self.confirm_discard():
+            event.ignore()
+            return
+        super().closeEvent(event)
 
 
 class QMainWindow(QtMainWindow):
@@ -96,19 +283,45 @@ class QMainWindow(QtMainWindow):
         return super().setWindowTitle(tr(title))
 
 
+def message_box(parent, icon, title, text, buttons=QtMessageBox.StandardButton.Ok,
+                default=QtMessageBox.StandardButton.NoButton):
+    """A message box translating its texts and showing ``text`` as plain
+    text (it often carries a file name, a siglum or a server's answer)."""
+    box = QtMessageBox(icon, tr(title), tr(text), buttons, parent)
+    box.setTextFormat(Qt.TextFormat.PlainText)
+    if default != QtMessageBox.StandardButton.NoButton:
+        box.setDefaultButton(default)
+    return box
+
+
+def _answer(box):
+    try:
+        box.exec()
+        clicked = box.clickedButton()
+        return box.standardButton(clicked) if clicked is not None else QtMessageBox.StandardButton.NoButton
+    finally:
+        box.deleteLater()
+
+
 class QMessageBox(QtMessageBox):
     @staticmethod
-    def information(parent, title, detail, *args):
-        return QtMessageBox.information(parent,tr(title),tr(detail),*args)
+    def information(parent, title, detail, buttons=QtMessageBox.StandardButton.Ok,
+                    default=QtMessageBox.StandardButton.NoButton):
+        return _answer(message_box(parent, QtMessageBox.Icon.Information, title, detail, buttons, default))
     @staticmethod
-    def warning(parent, title, detail, *args):
-        return QtMessageBox.warning(parent,tr(title),tr(detail),*args)
+    def warning(parent, title, detail, buttons=QtMessageBox.StandardButton.Ok,
+                default=QtMessageBox.StandardButton.NoButton):
+        return _answer(message_box(parent, QtMessageBox.Icon.Warning, title, detail, buttons, default))
     @staticmethod
-    def critical(parent, title, detail, *args):
-        return QtMessageBox.critical(parent,tr(title),tr(detail),*args)
+    def critical(parent, title, detail, buttons=QtMessageBox.StandardButton.Ok,
+                 default=QtMessageBox.StandardButton.NoButton):
+        return _answer(message_box(parent, QtMessageBox.Icon.Critical, title, detail, buttons, default))
     @staticmethod
-    def question(parent, title, detail, *args):
-        return QtMessageBox.question(parent,tr(title),tr(detail),*args)
+    def question(parent, title, detail,
+                 buttons=QtMessageBox.StandardButton.Yes | QtMessageBox.StandardButton.No,
+                 default=QtMessageBox.StandardButton.No):
+        # « No » by default: Enter answered Yes to « Remove the witness? ».
+        return _answer(message_box(parent, QtMessageBox.Icon.Question, title, detail, buttons, default))
 
 
 class QInputDialog(QtInputDialog):

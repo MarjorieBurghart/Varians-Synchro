@@ -115,10 +115,10 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h2 id="notions">5. Key concepts</h2>
 <table>
 <tr><th>Concept</th><th>Meaning</th></tr>
-<tr><td>Witness, siglum</td><td>A manuscript (or an early edition). The siglum is its identifier: it can no longer be changed once the witness is saved, and it must contain no dot, no <code>/</code> and no <code>\</code>, or export will not be possible. Keep the siglum used in the Varians project.</td></tr>
+<tr><td>Witness, siglum</td><td>A manuscript (or an early edition). The siglum is its identifier: it can no longer be changed once the witness is saved. As in Varians, it may contain spaces and dots (“BnF lat. 123”): exports derive from it an XML identifier (“BnF_lat._123”), which also names their files, and keep the siglum for display. Two sigla that would give the same identifier (“a” and “A”, “T 2” and “T_2”) are refused when the witness is created, as are names reserved by Windows (CON, NUL…). Keep the siglum used in the Varians project.</td></tr>
 <tr><td>Pivot witness</td><td>The reference witness of the project: the other witnesses are aligned with it, and Varians follows it through its <code>&lt;lb/&gt;</code> elements. This choice is technical: it implies nothing about the stemma or about the base manuscript of the edition. The first witness added is the pivot by default; to change it, check the pivot box in the record of another witness. The <b class="ui" data-tr="alignment.reference.label">Technical reference</b> menu in step 3 only chooses the left-hand witness to align; it does not change the pivot of the project.</td></tr>
 <tr><td>Physical line</td><td>A line described by the ALTO/PAGE file of a page. It is identified by its page and its position in that file. The content of the file is copied into the project on import.</td></tr>
-<tr><td>Ignored line (scope)</td><td>A line outside the text under study. It applies to the witness throughout the project: it is excluded from calculations, from the TEI binding and from exports. Ignoring a line that is already linked removes its links, in all pairs, after confirmation.</td></tr>
+<tr><td>Ignored line (scope)</td><td>A line outside the text under study. It applies to the witness throughout the project: it is excluded from calculations, from the TEI binding and from exports. Ignoring a line that is already linked removes its links, in all pairs, after confirmation. If the page receives another ALTO/PAGE file, the mark follows the line found identical in that file (same identifier, same text); the page’s other marks are removed, and the confirmation says how many. Removing an ALTO/PAGE file removes the marks of its pages.</td></tr>
 <tr><td>Group (correspondence)</td><td>Lines of the left-hand witness linked to lines of the right-hand witness: 1↔1, 1↔n or n↔m. A line belongs to at most one group per pair.</td></tr>
 <tr><td>Group state</td><td><code>validated</code>, <code>uncertain</code> or <code>proposed</code>. The list of groups shows these states as they are. The <b class="ui" data-tr="review.filter.pending">To review</b> filter gathers the unvalidated groups.</td></tr>
 <tr><td>Anchor</td><td>A validated correspondence on which suggestions rely. Anchors must follow one another in the same order in both witnesses; at least two are needed.</td></tr>
@@ -129,22 +129,22 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </table>
 
 <h2 id="etape1">6. Step 1: add witnesses</h2>
-<p><b class="ui" data-tr="resources.witness.new">Add witness…</b> opens the record of a new witness; clicking a witness in the list (or one of its resources) opens its record so that you can complete it. For each witness, the list shows its resources and their status (associated pages, imported lines, TEI binding).</p>
+<p><b class="ui" data-tr="resources.witness.new">Add witness…</b> opens the record of a new witness; clicking a witness in the list (or one of its resources) opens its record so that you can complete it. For each witness, the list shows its resources and their status (associated pages, imported lines, TEI binding). With the keyboard, <kbd>Enter</kbd> or <kbd>Space</kbd> on a witness in the list also opens its record.</p>
 <h3 id="fiche-temoin">The witness record</h3>
 <ul>
 <li><b class="ui" data-tr="resources.witness.sigil">Siglum</b> and <b class="ui" data-tr="resources.witness.label">Description</b>. The siglum can no longer be changed once the witness is saved.</li>
-<li><b class="ui" data-tr="resources.witness.pivot">Use this witness as the pivot for aligning witnesses</b>.</li>
+<li><b class="ui" data-tr="resources.witness.pivot">Use this witness as the pivot for aligning witnesses</b>. In the pivot’s record, the box is ticked and greyed out: to change the pivot, tick it in another witness’s record.</li>
 <li>Four groups of resources, each with <b class="ui" data-tr="resources.witness.add">Add…</b>:
 <ul>
-<li><b class="ui" data-tr="resources.witness.images">Local images</b>: images are sorted by name (“2” before “10”);</li>
-<li><b class="ui" data-tr="resources.witness.manifests">IIIF Manifest</b>: the URL of the Manifest; if it does not respond, the URL is kept, with the status “unavailable”, and <b class="ui" data-tr="resources.witness.retry">Retry</b> queries it again;</li>
+<li><b class="ui" data-tr="resources.witness.images">Local images</b>: JPEG, PNG, TIFF, WebP or JPEG 2000; images are sorted by name (“2” before “10”);</li>
+<li><b class="ui" data-tr="resources.witness.manifests">IIIF Manifest</b>: the URL of the Manifest; if it does not respond, the URL is kept, with the status “unavailable”, and <b class="ui" data-tr="resources.witness.retry">Retry</b> queries it again; while it loads, a waiting window lets you cancel;</li>
 <li><b class="ui" data-tr="resources.witness.xml">ALTO/PAGE XML files</b>: the format is recognized from the content;</li>
 <li><b class="ui" data-tr="resources.witness.tei">TEI XML edition</b>: optional, useful for the pivot.</li>
 </ul></li>
 <li><b class="ui" data-tr="resources.witness.remove_pending">Remove</b> removes the selected resource. A resource added since the record was opened simply disappears from the list. For a resource that is already saved, the software first tells you what removing it entails (pages removed or freed, lines, groups affected); once confirmed, it is marked “−” and removed when you click <b class="ui" data-tr="resources.witness.confirm">Save witness</b>. The groups that touched its lines are kept and marked as stale: unlink them afterwards (see <a href="#perimes">Stale groups</a>). No file is deleted from disk.</li>
 <li><b class="ui" data-tr="resources.witness.remove_witness">Remove witness…</b> removes the witness from the project, with its synchronisations and TEI editions, after confirmation. The pivot witness cannot be removed: first choose another pivot.</li>
 <li><b class="ui" data-tr="resources.binding.title">Automatically link images and ALTO/PAGE</b> suggests page associations right away (see <a href="#association-auto">below</a>).</li>
-<li><b class="ui" data-tr="resources.witness.confirm">Save witness</b> applies everything at once; <b class="ui" data-tr="resources.cancel">Cancel</b> leaves the project unchanged.</li>
+<li><b class="ui" data-tr="resources.witness.confirm">Save witness</b> applies everything at once; <b class="ui" data-tr="resources.cancel">Cancel</b> leaves the project unchanged. If the record contains changes, <kbd>Esc</kbd>, the window’s close button or <b class="ui" data-tr="resources.cancel">Cancel</b> first ask whether to discard them.</li>
 </ul>
 
 <h2 id="etape2">7. Step 2: associate resources</h2>
@@ -153,7 +153,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <p><b class="ui" data-tr="pages.order.open">Manage images, their order and ALTO/PAGE associations…</b> shows the pages of the witness, with their thumbnails and their line files.</p>
 <ul>
 <li><strong>Reading order</strong>: drag the pages, or use <b class="ui" data-tr="pages.order.up">Move up</b>, <b class="ui" data-tr="pages.order.down">Move down</b>, <b class="ui" data-tr="pages.order.reverse">Reverse order</b>.</li>
-<li><b class="ui" data-tr="ui.xml.link_source">Associate ALTO/PAGE</b> gives the selected page a line file. If the page already had one, the software states how many groups will be affected: they will become stale (see <a href="#perimes">Stale groups</a>).</li>
+<li><b class="ui" data-tr="ui.xml.link_source">Associate ALTO/PAGE</b> gives the selected page a line file. If the page already had one, the software states how many groups will be affected: they will become stale (see <a href="#perimes">Stale groups</a>). It also says how many ignored lines will lose their mark. An ALTO/PAGE page already associated with another image is refused: its lines would count twice.</li>
 <li><b class="ui" data-tr="ui.afficher.page">View page</b> (or a double-click) shows the page and its lines.</li>
 <li><strong>HD copies of IIIF images</strong>: <b class="ui" data-tr="ui.pages.hd.action">Download selected IIIF images in high resolution…</b> saves the chosen images into an empty folder; <b class="ui" data-tr="ui.pages.hd.attach">Attach an existing HD download…</b> retrieves a previous batch. The Varians project uses these copies if every relevant page has one.</li>
 <li><strong>External HTR (optional)</strong>: <b class="ui" data-tr="ui.exporter.pour.htr">Export for HTR</b> saves the chosen IIIF images in a ZIP for recognition software; <b class="ui" data-tr="ui.reimporter.htr">Reimport HTR</b> then associates the resulting ALTO/PAGE files, by name.</li>
@@ -162,7 +162,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3 id="association-auto">Automatic association</h3>
 <p><b class="ui" data-tr="resources.binding.title">Automatically link images and ALTO/PAGE</b> suggests a line file for each page that does not have one yet: first based on names and image references (<b class="ui" data-tr="resources.binding.name">Unique name</b>), then, if the remaining pages are all local images and exactly as many unlinked ALTO/PAGE pages remain, by pairing them in the natural order of the file names. Check the latter carefully: an offset carries over to the whole series. A file suggested for two pages is flagged in red. <b class="ui" data-tr="resources.binding.apply">Apply links</b> never overwrites an existing association.</p>
 <h3 id="perimetre">Lines to ignore (scope)</h3>
-<p><b class="ui" data-tr="tei.scope.action">Choose lines to ignore on witness images…</b>: on the images, select the lines outside the text under study, even across several pages, then <b class="ui" data-tr="tei.scope.ignore">Ignore selected lines</b> (or <b class="ui" data-tr="tei.scope.restore">Restore selected lines</b>). <b class="ui" data-tr="tei.scope.save">Save scope</b> applies the changes; <b class="ui" data-tr="resources.cancel">Cancel</b> changes nothing. The same setting is available in the alignment window (<b class="ui" data-tr="scope.menu">Scope ▾</b>).</p>
+<p><b class="ui" data-tr="tei.scope.action">Choose lines to ignore on witness images…</b>: on the images, select the lines outside the text under study, even across several pages, then <b class="ui" data-tr="tei.scope.ignore">Ignore selected lines</b> (or <b class="ui" data-tr="tei.scope.restore">Restore selected lines</b>). <b class="ui" data-tr="tei.scope.save">Save scope</b> applies the changes; <b class="ui" data-tr="resources.cancel">Cancel</b> changes nothing. The same setting is available in the alignment window (<b class="ui" data-tr="scope.menu">Scope ▾</b>). If you have changed lines, <kbd>Esc</kbd>, the close button or <b class="ui" data-tr="resources.cancel">Cancel</b> first ask whether to discard these changes.</p>
 <h3 id="tei">Link the TEI edition (optional)</h3>
 <p><b class="ui" data-tr="tei.binding.action">Link the TEI edition to ALTO/PAGE lines…</b> matches the <code>&lt;lb edRef="#SIGLUM"/&gt;</code> elements of a TEI edition with the active lines of the witness, in reading order. The numbers must be equal: the window compares them and reports what is blocking (lines to ignore that were not marked, ambiguous readings in an apparatus). Check a few lines, in particular with <b class="ui" data-tr="tei.visual.begin">Beginning</b> and <b class="ui" data-tr="tei.visual.end">End</b>, on the text and the cropped image, then <b class="ui" data-tr="tei.binding.apply">Confirm bindings</b>.</p>
 <p>The binding is not required for export: it serves to check that the number of lines of the pivot matches its <code>&lt;lb/&gt;</code> elements, and it makes the alignment window show the TEI text instead of the HTR text. Its status changes to <b class="ui" data-tr="tei.binding.status.stale">needs review (sources changed)</b> if the edition, the scope, the order or the segmentation changes.</p>
@@ -221,7 +221,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h2 id="etape4">10. Step 4: finalize and export</h2>
 <p><b class="ui" data-tr="ui.final.refresh">Refresh summary</b> summarizes the witnesses and the alignments, and reports changed lines or missing files.</p>
 <h3 id="controle">Checking consistency</h3>
-<p><b class="ui" data-tr="audit.action">Check project consistency…</b> checks the project without changing anything: active lines and associated pages of each witness, validated groups and absences of each pair, missing or stale references, missing files. Run it before each export.</p>
+<p><b class="ui" data-tr="audit.action">Check project consistency…</b> checks the project without changing anything: active lines and associated pages of each witness, validated groups and absences of each pair, missing or stale references, missing files. It also reports an ALTO/PAGE page associated with two images, and a PAGE file that this version reads differently from when it was imported (nested groups or regions): associating it again would make stale the groups that touch its lines. Run it before each export.</p>
 <h3 id="export-projet">Preconfigured Varians project</h3>
 <p><b class="ui" data-tr="ui.final.export_project.action">Create a preconfigured Varians project…</b> writes, into an empty folder, a project that Varians opens as it is:</p>
 <ul>
@@ -232,7 +232,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li><code>RAPPORT_EXPORT_VARIANS.txt</code>: the export report;</li>
 <li>possibly <code>iiif/</code>: the HD copies of the IIIF images, if every relevant page has one.</li>
 </ul>
-<p>The images stay where they are: the project points to them (the lines are in the alignment files). Export is refused if the folder is not empty, if a siglum contains a dot, <code>/</code> or <code>\</code>, if the pivot has several TEI editions, if a witness mixes IIIF and local images, or if a file cannot be found.</p>
+<p>The images stay where they are: the project points to them (the lines are in the alignment files). Export is refused if the folder is not empty, if the pivot has several TEI editions, if its <a href="#tei">TEI binding</a> <b class="ui" data-tr="tei.binding.status.stale">needs review (sources changed)</b> (redo it: otherwise its <code>&lt;lb/&gt;</code> would face other lines), if a witness mixes IIIF and local images, or if a file cannot be found.</p>
 <h3 id="export-json">Export JSON for Varians</h3>
 <p><b class="ui" data-tr="export.varians.action">Export JSON for Varians…</b> is used to add or update witnesses in an existing Varians project (<a href="#ajout-temoin">Workflow B</a>). Choose the reference witness (the pivot of the Varians project), confirm, then choose an empty folder. The software writes into it:</p>
 <ul>
@@ -311,6 +311,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Saving is safe: the file is replaced in a single operation, and the previous version is kept in <code>&lt;project&gt;.vsynch.bak</code>. To go back, copy this <code>.bak</code> file under a new name ending in <code>.vsynch</code> and open it.</li>
 <li>There is no “Save As” command: to keep a version, copy the <code>.vsynch</code> file.</li>
 <li>Keep the images, ALTO/PAGE files and TEI files in the folder of the <code>.vsynch</code> file or in its subfolders: they are saved with a relative path, and the project can be moved or copied with that folder (like the supplied sample). A file located elsewhere is saved with its full path.</li>
+<li><strong>Project received from someone else</strong>: if the <code>.vsynch</code> file points to files outside its folder (a path with <code>..</code>) or on a network share, the software lists them when opening it and asks whether to read them (“No” by default). If you refuse, these files are treated as missing, and their paths are saved unchanged; if you accept, the answer is remembered for this project.</li>
 <li>Modifying an ALTO/PAGE file on disk after import does not change the project; the summary reports it. For a corrected segmentation, import the new file and associate it with the page (the affected groups become stale).</li>
 <li>Closing the software, or opening or creating a project, offers to save the current changes.</li>
 </ul>
@@ -320,7 +321,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li><strong>IIIF image unavailable</strong>: the server is not responding; the associations are not lost. Try again later, or download HD copies.</li>
 <li><strong>IIIF Manifest unavailable</strong>: it did not respond when the witness was added; its URL is kept and the summary says so. In <b class="ui" data-tr="navigation.project">1 · Add witnesses</b>, click the witness, then <b class="ui" data-tr="resources.witness.retry">Retry</b>: the software tells you whether the Manifest responded and how many pages it has; <b class="ui" data-tr="resources.witness.confirm">Save witness</b> keeps the result.</li>
 <li><strong>Line frames offset on the image</strong>: the image and the ALTO/PAGE file do not have the same proportions (the status bar reports it); check that the file really belongs to this image.</li>
-<li><strong>Export refused</strong>: the chosen folder is not empty, or a siglum contains a dot, <code>/</code> or <code>\</code>.</li>
+<li><strong>Export refused</strong>: the chosen folder is not empty, the pivot’s TEI binding needs review, or two sigla give the same file name (older project; see <a href="#notions">Key concepts</a>).</li>
 <li><strong>In Varians, the lines of the pivot do not match the text</strong>: the number of <code>&lt;lb edRef="#PIVOT"/&gt;</code> elements differs from the number of active lines of the pivot (lines to ignore that were not marked, or missing <code>&lt;lb/&gt;</code> elements). <b class="varians" data-varians="diagnostics.menu">Witness diagnostics…</b> in Varians and the <a href="#tei">TEI binding</a> in Varians-Synchro help to find the discrepancy.</li>
 <li><strong>In Varians, the links in the file match no line of the pivot</strong>: the alignment file of the pivot does not come from the same <code>.vsynch</code> project (see <a href="#ajout-temoin">Workflow B</a>).</li>
 <li><strong>With Spyder</strong>: run <code>run.py</code>; the software opens in a separate process, so as not to disturb the Spyder console. The startup log is in <code>~/.varians_synchro/logs</code>.</li>
@@ -329,7 +330,10 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h2 id="raccourcis">13. Shortcuts</h2>
 <table>
 <tr><th>Key</th><th>Action</th></tr>
-<tr><td><kbd>F1</kbd></td><td>Open the help (in the alignment window: at the section on that window).</td></tr>
+<tr><td><kbd>F1</kbd></td><td>Open the help, from any window (in the alignment window: at the section on that window).</td></tr>
+<tr><td><kbd>Ctrl+S</kbd> / <kbd>Ctrl+O</kbd> / <kbd>Ctrl+N</kbd></td><td>In the main window: save, open, new project.</td></tr>
+<tr><td><kbd>Enter</kbd></td><td>In a list: like a double-click (open the record, show the page, go to the group). Enter never triggers a button that does not have the focus; questions answer “No” by default.</td></tr>
+<tr><td><kbd>Esc</kbd></td><td>Close the window without applying anything; if a witness record or the scope contains changes, the software first asks whether to discard them.</td></tr>
 <tr><td><kbd>Ctrl+Enter</kbd></td><td><b class="ui" data-tr="alignment.action.link_lines">Link selected lines</b>.</td></tr>
 <tr><td><kbd>Ctrl+Shift+A</kbd></td><td>Confirm the absence of the selected lines.</td></tr>
 <tr><td><kbd>F8</kbd> / <kbd>Shift+F8</kbd></td><td>Next / previous group in the list.</td></tr>

@@ -914,4 +914,37 @@ I dettagli tecnici sono nella console o nel registro di avvio.</string>
   <string key="error.pairs.stale_lines">{reference} ↔ {target}: {count} righe modificate o mancanti</string>
   <string key="error.pairs.session_error">Sessione {session}: {error}</string>
   <string key="error.export.no_direct_session">{witness}: nessuna sessione diretta con {reference}.</string>
+  <string key="ui.xml.replace_ignored">{count} riga/righe ignorata/e non si ritrovano identiche nel nuovo file: perderanno il loro contrassegno. Da rivedere in «Ambito».</string>
+  <string key="resources.witness.remove_ignored">{count} riga/righe ignorata/e di queste pagine perderanno il loro contrassegno.</string>
+  <string key="error.project_export.tei_binding_stale">Il collegamento TEI del pivot {witness} non è più valido: la TEI, l’ambito o l’ordine di lettura sono cambiati nel frattempo. Rifatelo in «2 · Associare le risorse» prima di esportare.</string>
+  <string key="error.witness.siglum_conflict">La sigla «{witness}» darebbe negli export gli stessi nomi di file del testimone «{other}». Scegliete un’altra sigla.</string>
+  <string key="error.witness.siglum_reserved">La sigla «{witness}» non può servire da nome di file in Windows (nome riservato). Scegliete un’altra sigla.</string>
+  <string key="error.witness.siglum_taken">La sigla «{witness}» appartiene già a un testimone del progetto: aprite la sua scheda per completarlo, o scegliete un’altra sigla.</string>
+  <string key="ui.audit.issue.xml_source_read_otherwise">File PAGE con struttura annidata, letto diversamente da questa versione: il progetto conserva le sue righe, ma una nuova associazione renderebbe obsoleti i gruppi che le toccano</string>
+  <string key="error.binding.xml_page_bound">Questa pagina XML è già associata all’immagine «{page}»: una stessa pagina XML non può essere attribuita a più immagini.</string>
+  <string key="ui.audit.issue.xml_page_bound_twice">Una stessa pagina XML è associata a più immagini: le sue righe sarebbero contate più volte</string>
+  <string key="error.imaging.redirect_refused">Il server reindirizza a un indirizzo che non è http o https: reindirizzamento rifiutato.</string>
+  <string key="error.imaging.too_slow">Il server risponde troppo lentamente: abbandono dopo {seconds} s.</string>
+  <string key="resources.witness.manifest_loading">Caricamento di {count} Manifest IIIF…</string>
+  <string key="error.resources.manifest_cancelled">Caricamento del Manifest annullato.</string>
+  <string key="project.paths.title">File fuori dalla cartella del progetto</string>
+  <string key="project.paths.question">Questo progetto indica {count} file fuori dalla sua cartella (tramite «..») o su una condivisione di rete:
+
+{paths}
+
+Varians-Synchro non scrive mai percorsi simili: provengono da un progetto ricevuto o modificato a mano. Leggere questi file? Se rispondete No, saranno considerati introvabili; il progetto conserva i loro percorsi.</string>
+  <string key="error.tei_binding.too_deep">La TEI è annidata troppo in profondità per essere letta.</string>
+  <string key="common.discard_title">Abbandonare le modifiche</string>
+  <string key="common.discard_question">Le modifiche fatte in questa finestra non sono salvate. Abbandonarle?</string>
+  <string key="error.tei.apparatus_unresolved">Apparato senza lezione unica per {witness} (xml:id={id}).</string>
+  <string key="error.tei.choice_unresolved">Elemento &lt;choice&gt; senza ramo utilizzabile.</string>
+  <string key="error.tei.duplicate_lb_id">Identificatore TEI duplicato: {id}</string>
+  <string key="error.tei.unattributed_lb">{count} &lt;lb/&gt; senza @edRef: esclusi dal testimone {witness}.</string>
+  <string key="error.tei.no_target_lb">Nessun &lt;lb edRef="#{witness}"/&gt; trovato.</string>
+  <string key="error.tei.source_changed">Il file TEI è cambiato dopo l’importazione: reimportatelo prima di collegare.</string>
+  <string key="error.tei.line_count_mismatch">{tei} &lt;lb/&gt; TEI per {physical} righe fisiche attive.</string>
+  <string key="error.tei.no_physical_lines">Nessuna riga ALTO/PAGE attiva.</string>
+  <string key="error.binding.by_order">Corrispondenza proposta per ordine, da controllare sulle immagini</string>
+  <string key="error.binding.no_unique_match">Nessuna corrispondenza unica; scelta manuale necessaria</string>
+  <string key="resources.witness.pivot_kept.tip">Questo testimone è il pivot del progetto. Per cambiare pivot, aprite la scheda di un altro testimone e spuntate questa casella.</string>
 </translations>

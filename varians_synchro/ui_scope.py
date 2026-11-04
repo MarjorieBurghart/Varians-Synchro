@@ -8,7 +8,7 @@ from PySide6.QtWidgets import QHBoxLayout, QMessageBox as QtMessageBox, QVBoxLay
 from .errors import localized_text
 from .i18n import tr
 from .line_scope import ignored_ids, linked_scope_conflicts, update_ignored_lines
-from .ui_widgets import QDialog, QLabel, QMessageBox, QPushButton
+from .ui_widgets import fit_to_screen, QDialog, QLabel, QMessageBox, QPushButton
 
 
 class SingleWitnessScopeDialog(QDialog):
@@ -23,7 +23,7 @@ class SingleWitnessScopeDialog(QDialog):
         self.witness = next(w for w in self.staged_project['witnesses']
                             if w['id'] == witness_id)
         self.setWindowTitle(tr('tei.scope.title'))
-        self.resize(1100, 800)
+        fit_to_screen(self, 1100, 800)
         layout = QVBoxLayout(self)
         hint = QLabel(tr('tei.scope.help'))
         hint.setWordWrap(True)
@@ -45,10 +45,13 @@ class SingleWitnessScopeDialog(QDialog):
         save_button.clicked.connect(self.commit)
         footer.addWidget(save_button)
         cancel = QPushButton(tr('resources.cancel'))
-        cancel.clicked.connect(self.reject)
+        cancel.clicked.connect(self.cancel)
         cancel.setToolTip(tr('ui.resources.cancel.tip'))
         footer.addWidget(cancel)
         self.update_styles()
+
+    def has_unsaved_draft(self):
+        return self.staged_project != self.original_project
 
     def update_styles(self):
         ignored = ignored_ids(self.witness)

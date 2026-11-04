@@ -136,6 +136,18 @@ La fenêtre `PairDialog` offre désormais trois parcours non ambigus : **Associe
 
 Les sessions physiques ne supposent aucune TEI. Une TEI du pivot peut être liée à ses lignes physiques (`tei_binding.py`), mais l'export n'en a pas besoin : Varians fait correspondre les lignes du pivot, dans l'ordre du fichier de synchronisation, à ses `<lb edRef="#PIVOT"/>`, et prépare lui-même les `<pb/>` et `<lb/>` d'une TEI vide. Aucune fausse TEI n'est fabriquée à partir de la HTR.
 
+## Garde-fous de l'interface et des données reçues
+
+Issus de la red team (voir [`../RED_TEAM.md`](../RED_TEAM.md)) ; chaque règle a son test.
+
+- **Texte reçu affiché tel quel.** `ui_widgets.QLabel` est en texte brut, sauf pour un titre du catalogue (`i18n.is_catalog_text`) ou un balisage écrit par le programme (`rich=True`, texte échappé) ; les boîtes de message sont construites en texte brut (`ui_widgets.message_box`, y compris l'erreur imprévue d'`error_report`) ; une infobulle qui cite une donnée passe par `plain_tip`. Sinon Qt lit comme du HTML un sigle, un texte HTR ou TEI, ou la réponse d'un serveur.
+- **Questions et clavier.** Les questions ont « Non » par défaut. `ui_widgets.QDialog` : Entrée n'active pas de bouton par défaut ; F1 ouvre l'aide (section `help_anchor`) ; une fenêtre qui définit `has_unsaved_draft()` (fiche du témoin, périmètre) demande avant d'abandonner un brouillon modifié (Échap, croix, « Annuler »). `fit_to_screen` borne une fenêtre à l'écran ; la fenêtre de synchronisation tient sous 1 280 px dans les sept langues.
+- **Fils.** `ui_widgets.start_detached` démarre un fil sans parent, l'annule quand sa fenêtre disparaît et le libère à sa fin ; les fonctions de fin vérifient que la fenêtre existe encore. Le Manifest IIIF de la fiche du témoin est chargé ainsi (`_ManifestFetcher`), avec une attente annulable.
+- **Images.** Seuls JPEG, PNG, TIFF, WebP et JPEG 2000 sont décodés comme images de page (`decode_page_image`, `page_image_reader_ok`) : un SVG pouvait charger des fichiers locaux ou réseau. Les miniatures IIIF ne sont demandées qu'en http/https et abandonnées au-delà de 2 Mo.
+- **Réseau.** Les téléchargements (`imaging._http_bytes`) refusent une redirection hors http/https, plafonnent la taille et ont une échéance totale (120 s ; 600 s pour une copie HD), lue par blocs.
+- **Sigles.** `witness_ids.py` reprend la règle de Varians (`witness_id_for_siglum`) et nomme fichiers et entrées d'archive (« Exporter pour HTR ») ; un sigle ne sert jamais tel quel de nom de fichier.
+- **Moteurs.** Enregistrer des propositions se fait en temps linéaire (`physical_alignment._link_context`, calculé une fois par lot) ; la proposition HTR–HTR suit l'ordre de lecture corrigé (`reading_stream`) ; la réimportation HTR est tout ou rien.
+
 ## Limites connues
 
 Le logiciel ne réconcilie pas automatiquement une page dont le Canvas IIIF a changé d'identité. Les propositions automatiques sont calculées dans le fil de l'interface, sans progression asynchrone : sur de très grandes HTR, le calcul peut être long. La projection des rectangles ALTO/PAGE sur l'image suppose une image ni recadrée ni tournée par rapport au fichier ALTO/PAGE.

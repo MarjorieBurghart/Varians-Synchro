@@ -921,4 +921,37 @@ Les détails techniques sont dans la console ou le journal de démarrage.</strin
   <string key="error.pairs.stale_lines">{reference} ↔ {target} : {count} ligne(s) modifiée(s) ou absente(s)</string>
   <string key="error.pairs.session_error">Session {session} : {error}</string>
   <string key="error.export.no_direct_session">{witness} : aucune session directe avec {reference}.</string>
+  <string key="ui.xml.replace_ignored">{count} ligne(s) ignorée(s) ne se retrouvent pas à l’identique dans le nouveau fichier : elles perdront leur marque. À revoir dans « Périmètre ».</string>
+  <string key="resources.witness.remove_ignored">{count} ligne(s) ignorée(s) de ces pages perdront leur marque.</string>
+  <string key="error.project_export.tei_binding_stale">La liaison TEI du pivot {witness} n’est plus valide : la TEI, le périmètre ou l’ordre de lecture ont changé depuis. Refaites-la dans « 2 · Associer les ressources » avant d’exporter.</string>
+  <string key="error.witness.siglum_conflict">Le sigle « {witness} » donnerait les mêmes noms de fichiers que le témoin « {other} » dans les exports. Choisissez un autre sigle.</string>
+  <string key="error.witness.siglum_reserved">Le sigle « {witness} » ne peut pas servir de nom de fichier sous Windows (nom réservé). Choisissez un autre sigle.</string>
+  <string key="error.witness.siglum_taken">Le sigle « {witness} » est déjà celui d’un témoin du projet : ouvrez sa fiche pour le compléter, ou choisissez un autre sigle.</string>
+  <string key="ui.audit.issue.xml_source_read_otherwise">Fichier PAGE à structure imbriquée, lu autrement depuis cette version : le projet garde ses lignes, mais une nouvelle association rendrait périmés les groupes qui les touchent</string>
+  <string key="error.binding.xml_page_bound">Cette page XML est déjà associée à l’image « {page} » : une même page XML ne peut pas être attribuée à plusieurs images.</string>
+  <string key="ui.audit.issue.xml_page_bound_twice">Une même page XML est associée à plusieurs images : ses lignes compteraient plusieurs fois</string>
+  <string key="error.imaging.redirect_refused">Le serveur redirige vers une adresse qui n’est pas http ou https : redirection refusée.</string>
+  <string key="error.imaging.too_slow">Le serveur répond trop lentement : abandon après {seconds} s.</string>
+  <string key="resources.witness.manifest_loading">Chargement de {count} Manifest(s) IIIF…</string>
+  <string key="error.resources.manifest_cancelled">Chargement du Manifest annulé.</string>
+  <string key="project.paths.title">Fichiers hors du dossier du projet</string>
+  <string key="project.paths.question">Ce projet désigne {count} fichier(s) hors de son dossier (par « .. ») ou sur un partage réseau :
+
+{paths}
+
+Varians-Synchro n’écrit jamais de tels chemins : ils viennent d’un projet reçu ou modifié à la main. Lire ces fichiers ? Si vous répondez Non, ils seront traités comme introuvables ; le projet garde leurs chemins.</string>
+  <string key="error.tei_binding.too_deep">La TEI est imbriquée trop profondément pour être lue.</string>
+  <string key="common.discard_title">Abandonner les modifications</string>
+  <string key="common.discard_question">Les modifications faites dans cette fenêtre ne sont pas enregistrées. Les abandonner ?</string>
+  <string key="error.tei.apparatus_unresolved">Apparat sans lecture unique pour {witness} (xml:id={id}).</string>
+  <string key="error.tei.choice_unresolved">Élément &lt;choice&gt; sans branche exploitable.</string>
+  <string key="error.tei.duplicate_lb_id">Identifiant TEI dupliqué : {id}</string>
+  <string key="error.tei.unattributed_lb">{count} &lt;lb/&gt; sans @edRef : exclus du témoin {witness}.</string>
+  <string key="error.tei.no_target_lb">Aucun &lt;lb edRef="#{witness}"/&gt; trouvé.</string>
+  <string key="error.tei.source_changed">Le fichier TEI a changé depuis son import : réimportez-le avant de lier.</string>
+  <string key="error.tei.line_count_mismatch">{tei} &lt;lb/&gt; TEI pour {physical} lignes physiques actives.</string>
+  <string key="error.tei.no_physical_lines">Aucune ligne ALTO/PAGE active.</string>
+  <string key="error.binding.by_order">Correspondance proposée par ordre, à contrôler sur les images</string>
+  <string key="error.binding.no_unique_match">Aucune correspondance unique ; choix manuel nécessaire</string>
+  <string key="resources.witness.pivot_kept.tip">Ce témoin est le pivot du projet. Pour changer de pivot, ouvrez la fiche d’un autre témoin et cochez cette case.</string>
 </translations>
