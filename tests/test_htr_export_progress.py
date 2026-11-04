@@ -45,13 +45,10 @@ def test_the_window_stays_responsive_during_the_export(monkeypatch, tmp_path):
     os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
     pytest.importorskip('PySide6')
     from PySide6.QtWidgets import QApplication
-    from varians_synchro.guided_ui import make_guided_window
     from varians_synchro.i18n import tr
+    from varians_synchro.ui_pages import PagesDialog as pages_class
 
     app = QApplication.instance() or QApplication([])
-    window_type = make_guided_window(lambda: None)
-    pages_class = next(c.cell_contents for c in window_type.manage_pages.__closure__
-                       if getattr(c.cell_contents, '__name__', None) == 'PagesDialog')
     from varians_synchro.ui_widgets import QFileDialog, QMessageBox
     monkeypatch.setattr(QFileDialog, 'getSaveFileName',
                         staticmethod(lambda *a, **k: (str(tmp_path / 'F_HTR.zip'), '')))

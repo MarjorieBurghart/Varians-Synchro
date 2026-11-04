@@ -11,6 +11,7 @@ from varians_synchro.guided_ui import make_guided_window
 from varians_synchro.i18n import tr
 from varians_synchro.physical_alignment import stale_link_ids
 from varians_synchro.reading_stream import rebind_page
+from varians_synchro.ui_pages import PagesDialog
 from varians_synchro.ui_widgets import QInputDialog, QMessageBox
 from test_stale_links import setting  # noqa: F401  (fixture)
 
@@ -26,8 +27,6 @@ def _nested(method, name):
 
 
 def _assign(app, monkeypatch, project, witness, answer):
-    window_type = make_guided_window(lambda: None)
-    pages_class = _nested(window_type.manage_pages, 'PagesDialog')
     asked = []
     target = witness['alto_sources'][-1]
 
@@ -36,7 +35,7 @@ def _assign(app, monkeypatch, project, witness, answer):
     monkeypatch.setattr(QInputDialog, 'getItem', staticmethod(choose))
     monkeypatch.setattr(QMessageBox, 'question',
                         staticmethod(lambda parent, title, text, *a, **k: asked.append(text) or answer))
-    dialog = pages_class(project, witness)
+    dialog = PagesDialog(project, witness)
     dialog.pages.item(0).setSelected(True)
     dialog.assign()
     dialog.close()

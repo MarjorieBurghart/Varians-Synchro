@@ -13,7 +13,7 @@ from PySide6.QtGui import QImage
 from varians_synchro.core import new_project, create_witness, add_image_source
 from varians_synchro.imaging import create_pages, bind_alto
 from varians_synchro.page_management import page_ids_in_reading_order
-from varians_synchro.guided_ui import make_guided_window
+from varians_synchro.ui_pages import PagesDialog
 
 
 def test_page_dialog_reverse_drag_selection_and_thumbnails(tmp_path):
@@ -33,12 +33,8 @@ def test_page_dialog_reverse_drag_selection_and_thumbnails(tmp_path):
     before = page_ids_in_reading_order(witness)
     bindings = {p['id']:p['alto_binding'].copy() for p in pages}
 
-    # The class is private to the UI factory; inspect the lexical closure
-    # without requiring the main window to open.
-    window_type = make_guided_window(lambda: None)
-    pages_class = next(cell.cell_contents for cell in window_type.manage_pages.__closure__
-                       if getattr(cell.cell_contents, '__name__', '') == 'PagesDialog')
-    dialog = pages_class(project, witness)
+    # The window opens on its own, without the main window.
+    dialog = PagesDialog(project, witness)
     dialog.show()
     app.processEvents()
     assert dialog.pages.count() == 3

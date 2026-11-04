@@ -2,16 +2,15 @@
 from __future__ import annotations
 
 import ast
-from pathlib import Path
 
 from varians_synchro.core import VERSION
 
 
 def test_download_completion_is_driven_by_worker_status_not_progress_close():
     """Always run: guard the actual UI code even when Qt isn't installed."""
-    source = (Path(__file__).resolve().parents[1] / 'varians_synchro' / 'guided_ui.py').read_text(encoding='utf-8')
-    tree = ast.parse(source)
-    download = next(n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef) and n.name == 'download_hd')
+    from ui_source import ui_class
+    source, pages, _path = ui_class('PagesDialog')
+    download = next(n for n in ast.walk(pages) if isinstance(n, ast.FunctionDef) and n.name == 'download_hd')
     complete = next(n for n in ast.walk(download) if isinstance(n, ast.FunctionDef) and n.name == 'complete')
     code = ast.get_source_segment(source, complete)
     assert 'if status == \'success\':' in code
@@ -34,14 +33,8 @@ def test_worker_reports_distinct_success_cancel_failure_with_qt(monkeypatch, tmp
     from PySide6.QtCore import QEventLoop, QTimer
     from PySide6.QtWidgets import QApplication
     import varians_synchro.imaging as imaging
-    from varians_synchro.guided_ui import make_guided_window
+    from varians_synchro.ui_pages import HDDownloadThread as thread_type
     app = QApplication.instance() or QApplication([])
-    main_type = make_guided_window(lambda: None)
-    # The thread class lives in the lexical closure of PagesDialog/download_hd.
-    pages_class = next(c.cell_contents for c in main_type.manage_pages.__closure__
-                       if getattr(c.cell_contents, '__name__', None) == 'PagesDialog')
-    thread_type = next(c.cell_contents for c in pages_class.download_hd.__closure__
-                       if getattr(c.cell_contents, '__name__', None) == 'HDDownloadThread')
     import threading
     for expected, action in (('success', lambda: 2),
                              ('cancelled', lambda: (_ for _ in ()).throw(InterruptedError('cancel'))),
@@ -72,14 +65,11 @@ def test_gui_100_percent_progress_reports_success_not_cancelled(monkeypatch, tmp
     pytest.importorskip('PySide6')
     from PySide6.QtWidgets import QApplication
     from varians_synchro.core import create_witness, new_project
-    from varians_synchro.guided_ui import make_guided_window
     import varians_synchro.imaging as imaging
     import time
 
     app = QApplication.instance() or QApplication([])
-    window_type = make_guided_window(lambda: None)
-    pages_class = next(c.cell_contents for c in window_type.manage_pages.__closure__
-                       if getattr(c.cell_contents, '__name__', None) == 'PagesDialog')
+    from varians_synchro.ui_pages import PagesDialog as pages_class
     # Patch just the translating wrappers, not global Qt GUI types.
     from varians_synchro.ui_widgets import QFileDialog as file_dialog, QMessageBox as message_box
     dest = tmp_path / 'HD'
@@ -137,13 +127,10 @@ def test_gui_progress_bar_follows_the_download(monkeypatch, tmp_path):
     pytest.importorskip('PySide6')
     from PySide6.QtWidgets import QApplication
     from varians_synchro.core import create_witness, new_project
-    from varians_synchro.guided_ui import make_guided_window
     import varians_synchro.imaging as imaging
 
     app = QApplication.instance() or QApplication([])
-    window_type = make_guided_window(lambda: None)
-    pages_class = next(c.cell_contents for c in window_type.manage_pages.__closure__
-                       if getattr(c.cell_contents, '__name__', None) == 'PagesDialog')
+    from varians_synchro.ui_pages import PagesDialog as pages_class
     from varians_synchro.ui_widgets import QFileDialog, QMessageBox
     dest = tmp_path / 'HD'
     dest.mkdir()
