@@ -79,9 +79,9 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Classes déclarées au premier niveau** : `Section` (l.25), `Hit` (l.34), `Utf16Positions` (l.106)
 **Fonctions au premier niveau** : `fold` (l.43), `query_terms` (l.61), `search` (l.71), `_excerpt` (l.92)
 
-## `varians_synchro/i18n.py` (115 lignes)
+## `varians_synchro/i18n.py` (121 lignes)
 **Objet (docstring source)** : Varians-Synchro localization: XML catalogs, same schema as Varians. The files ``i18n/fr.xml`` and ``i18n/en.xml`` live beside ``run.py``. All UI message values (including the French defaults) come from these files. Application state, source texts, folio labels and manuscripts are NEVER translated.
-**Fonctions au premier niveau** : `_load_one` (l.21), `_parameters` (l.39), `reload_catalogs` (l.43), `available_languages` (l.71), `language_labels` (l.75), `set_language` (l.80), `get_language` (l.87), `tr` (l.91), `french` (l.104), `translate_template` (l.111)
+**Fonctions au premier niveau** : `_load_one` (l.21), `_parameters` (l.39), `reload_catalogs` (l.43), `available_languages` (l.71), `language_labels` (l.75), `set_language` (l.80), `get_language` (l.87), `tr` (l.91), `is_catalog_text` (l.104), `french` (l.110), `translate_template` (l.117)
 
 ## `varians_synchro/imaging.py` (392 lignes)
 **Objet (docstring source)** : IIIF/local page registry, ALTO-to-page mapping, export for external HTR. Images and ALTO are immutable external inputs. An export is a temporary working copy.
@@ -200,10 +200,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Classes déclarées au premier niveau** : `HelpDialog` (l.41)
 **Fonctions au premier niveau** : `help_path` (l.31), `open_help` (l.264)
 
-## `varians_synchro/ui_main_window.py` (674 lignes)
+## `varians_synchro/ui_main_window.py` (677 lignes)
 **Objet (docstring source)** : Fenêtre principale de Varians-Synchro : projet et témoins, pages, synchronisation, avancement et exports.
 **Dépendances internes observées** : `core`, `errors`, `i18n`, `physical_alignment`, `project_state`, `resource_workflow`, `tei_binding`, `ui_batch_binding`, `ui_help`, `ui_pages`, `ui_pair`, `ui_resources`, `ui_scope`, `ui_tei_binding`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`
-**Classes déclarées au premier niveau** : `_PairList` (l.27), `GuidedWindow` (l.44)
+**Classes déclarées au premier niveau** : `_PairList` (l.29), `GuidedWindow` (l.46)
 
 ## `varians_synchro/ui_pages.py` (596 lignes)
 **Objet (docstring source)** : Fenêtre « Images et associations ALTO/PAGE » d’un témoin : ordre des pages, association des XML, copies HD et export pour une HTR.
@@ -241,11 +241,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `errors`, `i18n`, `tei_binding`, `tei_visual`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `TEILineFetchThread` (l.23), `TEIReviewCard` (l.39), `TEIPhysicalBindingDialog` (l.164)
 
-## `varians_synchro/ui_widgets.py` (167 lignes)
+## `varians_synchro/ui_widgets.py` (217 lignes)
 **Objet (docstring source)** : Widgets Qt qui traduisent leurs textes, ouverture modale d'une fenêtre et appels différés liés à une fenêtre. Les fenêtres de l'interface utilisent ces classes à la place de celles de PySide6 : un texte passé à ``QLabel``, ``setWindowTitle`` ou ``QMessageBox.warning`` est une clé de traduction (ou un texte français connu des catalogues) et s'affiche dans la langue choisie.
 **Dépendances internes observées** : `i18n`
-**Classes déclarées au premier niveau** : `QLabel` (l.84), `QPushButton` (l.93), `QListWidget` (l.102), `QComboBox` (l.107), `QTabWidget` (l.114), `QTreeWidget` (l.119), `QDialog` (l.124), `QMainWindow` (l.129), `QMessageBox` (l.134), `QInputDialog` (l.149), `QFileDialog` (l.158)
-**Fonctions au premier niveau** : `_run_modal` (l.21), `call_soon` (l.33), `start_detached` (l.52), `_stop_detached_threads` (l.78)
+**Classes déclarées au premier niveau** : `QLabel` (l.102), `QPushButton` (l.118), `QListWidget` (l.127), `QComboBox` (l.132), `QTabWidget` (l.139), `QTreeWidget` (l.144), `QDialog` (l.149), `QMainWindow` (l.154), `QMessageBox` (l.179), `QInputDialog` (l.199), `QFileDialog` (l.208)
+**Fonctions au premier niveau** : `_run_modal` (l.22), `call_soon` (l.34), `start_detached` (l.53), `_stop_detached_threads` (l.79), `_text_format` (l.85), `plain_tip` (l.96), `message_box` (l.159), `_answer` (l.170)
 
 ## `varians_synchro/validation.py` (193 lignes)
 **Objet (docstring source)** : Read-only V0.7.4 preflight for documentary streams and physical pairs. The audit NEVER repairs historical links, guesses an omission, or modifies data. Warnings may reflect unavailable external resources on a different workstation. Hard errors mark contradictions that must not be silently treated as reliable.
@@ -262,10 +262,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `core`, `errors`, `hd_registry`, `tei_binding`, `varians_export`, `witness_ids`
 **Fonctions au premier niveau** : `_varians_safe_id` (l.25), `_source_path` (l.30), `_relative_or_absolute` (l.37), `_cache_varians_manifest` (l.43), `blank_tei_edition` (l.92), `export_varians_project` (l.137)
 
-## `varians_synchro/viewer.py` (752 lignes)
+## `varians_synchro/viewer.py` (755 lignes)
 **Objet (docstring source)** : Reusable manuscript page viewer with clickable ALTO overlay. Images can be IIIF or local. Full physical lines are the interaction unit; HTR is supplementary and never needed for visual selection. A 4200px-wide IIIF request provides useful magnification without downloading all canvases.
 **Dépendances internes observées** : `alto_geometry`, `errors`, `i18n`, `imaging`, `overlay_filters`, `overlay_selection`, `page_order`, `physical_alignment`, `reading_stream`, `selection_policy`, `ui_widgets`
-**Classes déclarées au premier niveau** : `FetchThread` (l.30), `ZoomableGraphicsView` (l.57), `ClickableLine` (l.78), `WitnessLineList` (l.147), `LineImagePanel` (l.169), `PageViewer` (l.735)
+**Classes déclarées au premier niveau** : `FetchThread` (l.32), `ZoomableGraphicsView` (l.59), `ClickableLine` (l.80), `WitnessLineList` (l.149), `LineImagePanel` (l.171), `PageViewer` (l.738)
 
 ## `varians_synchro/witness_ids.py` (69 lignes)
 **Objet (docstring source)** : Sigle d'un témoin et identifiant XML que Varians en tire. Varians-Synchro garde le sigle saisi comme identifiant du témoin (il entre dans l'identifiant de chaque ligne et ne change donc jamais). Varians, lui, a besoin d'un ``xml:id`` (NCName) : quand le sigle n'en est pas un, il en tire un par :func:`witness_id_for_siglum` et garde le sigle pour l'affichage (``siglum`` dans project.xml, ``<idno type="siglum">`` dans la TEI). Cette règle est celle de Varians (module ``witness_ids``, V0.9.2.8.2), reprise à l'identique : les exports nomment les témoins et leurs fichiers comme Varians les nommerait (« BnF lat. 123 » → « BnF_lat._123 »). Module sa

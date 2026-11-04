@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (QCheckBox, QHBoxLayout, QMessageBox as QtMessageB
 
 from .errors import localized_text
 from .i18n import tr
-from .ui_widgets import call_soon, QComboBox, QDialog, QLabel, QMessageBox, QPushButton
+from .ui_widgets import call_soon, plain_tip, QComboBox, QDialog, QLabel, QMessageBox, QPushButton
 
 
 class ProtectedBindingComboBox(QComboBox):
@@ -65,7 +65,7 @@ class BatchBindingDialog(QDialog):
             page = next(p for p in witness['pages'] if p['id'] == row['page_id'])
             label = str(page.get('label') or row['image'])
             item = QTableWidgetItem(label)
-            item.setToolTip(str(row['image']))
+            item.setToolTip(plain_tip(row['image']))
             self.table.setItem(row_index, 0, item)
             combo = ProtectedBindingComboBox()
             combo.addItem(tr('resources.binding.none'), None)

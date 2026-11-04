@@ -7,7 +7,8 @@ PySide6 : un texte passé à ``QLabel``, ``setWindowTitle`` ou
 connu des catalogues) et s'affiche dans la langue choisie."""
 from __future__ import annotations
 
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import Qt, QTimer
+from PySide6.QtGui import Qt as QtGuiNamespace
 from PySide6.QtWidgets import (QComboBox as QtComboBox, QDialog as QtDialog,
                                QFileDialog as QtFileDialog, QInputDialog as QtInputDialog,
                                QLabel as QtLabel, QListWidget as QtListWidget,
@@ -81,13 +82,37 @@ def _stop_detached_threads():
         thread.wait(5000)
 
 
+def _text_format(original):
+    """Rich text only for a heading of the catalogs (« <h3>… »). Any other
+    text, above all a text received (siglum, HTR or TEI text, project name,
+    server answer), is shown as it is: Qt's « AutoText » took it for HTML as
+    soon as it looked like a tag (``<img src=…>`` loaded local files)."""
+    from .i18n import is_catalog_text
+    if is_catalog_text(original) and tr(original).lstrip().startswith('<'):
+        return Qt.TextFormat.RichText
+    return Qt.TextFormat.PlainText
+
+
+def plain_tip(text):
+    """A tooltip showing ``text`` as it is (tooltips are rich text as soon
+    as they look like HTML)."""
+    return QtGuiNamespace.convertFromPlainText(str(text))
+
+
 class QLabel(QtLabel):
-    def __init__(self, *args, **kwargs):
-        if args and isinstance(args[0], str):
-            args=(tr(args[0]),)+args[1:]
+    """Label translating its text, shown as plain text (``rich=True`` for
+    markup written by the program itself)."""
+    def __init__(self, *args, rich=False, **kwargs):
+        original = args[0] if args and isinstance(args[0], str) else None
+        if original is not None:
+            args=(tr(original),)+args[1:]
         super().__init__(*args, **kwargs)
+        self._rich = rich
+        self.setTextFormat(Qt.TextFormat.RichText if rich else _text_format(original))
     def setText(self, text):
         super().setText(tr(text))
+        if not self._rich:
+            self.setTextFormat(_text_format(text))
 
 
 class QPushButton(QtButton):
@@ -131,19 +156,44 @@ class QMainWindow(QtMainWindow):
         return super().setWindowTitle(tr(title))
 
 
+def message_box(parent, icon, title, text, buttons=QtMessageBox.StandardButton.Ok,
+                default=QtMessageBox.StandardButton.NoButton):
+    """A message box translating its texts and showing ``text`` as plain
+    text (it often carries a file name, a siglum or a server's answer)."""
+    box = QtMessageBox(icon, tr(title), tr(text), buttons, parent)
+    box.setTextFormat(Qt.TextFormat.PlainText)
+    if default != QtMessageBox.StandardButton.NoButton:
+        box.setDefaultButton(default)
+    return box
+
+
+def _answer(box):
+    try:
+        box.exec()
+        clicked = box.clickedButton()
+        return box.standardButton(clicked) if clicked is not None else QtMessageBox.StandardButton.NoButton
+    finally:
+        box.deleteLater()
+
+
 class QMessageBox(QtMessageBox):
     @staticmethod
-    def information(parent, title, detail, *args):
-        return QtMessageBox.information(parent,tr(title),tr(detail),*args)
+    def information(parent, title, detail, buttons=QtMessageBox.StandardButton.Ok,
+                    default=QtMessageBox.StandardButton.NoButton):
+        return _answer(message_box(parent, QtMessageBox.Icon.Information, title, detail, buttons, default))
     @staticmethod
-    def warning(parent, title, detail, *args):
-        return QtMessageBox.warning(parent,tr(title),tr(detail),*args)
+    def warning(parent, title, detail, buttons=QtMessageBox.StandardButton.Ok,
+                default=QtMessageBox.StandardButton.NoButton):
+        return _answer(message_box(parent, QtMessageBox.Icon.Warning, title, detail, buttons, default))
     @staticmethod
-    def critical(parent, title, detail, *args):
-        return QtMessageBox.critical(parent,tr(title),tr(detail),*args)
+    def critical(parent, title, detail, buttons=QtMessageBox.StandardButton.Ok,
+                 default=QtMessageBox.StandardButton.NoButton):
+        return _answer(message_box(parent, QtMessageBox.Icon.Critical, title, detail, buttons, default))
     @staticmethod
-    def question(parent, title, detail, *args):
-        return QtMessageBox.question(parent,tr(title),tr(detail),*args)
+    def question(parent, title, detail,
+                 buttons=QtMessageBox.StandardButton.Yes | QtMessageBox.StandardButton.No,
+                 default=QtMessageBox.StandardButton.NoButton):
+        return _answer(message_box(parent, QtMessageBox.Icon.Question, title, detail, buttons, default))
 
 
 class QInputDialog(QtInputDialog):

@@ -15,7 +15,7 @@ from .imaging import create_pages, import_htr_results, mapped_alto_page
 from .physical_alignment import page_links_impact
 from .reading_stream import rebind_page
 from .ui_batch_binding import BatchBindingDialog
-from .ui_widgets import (_run_modal, call_soon, start_detached, QDialog, QFileDialog, QInputDialog,
+from .ui_widgets import (_run_modal, call_soon, plain_tip, start_detached, QDialog, QFileDialog, QInputDialog,
                          QLabel, QListWidget, QMessageBox, QPushButton)
 from shiboken6 import isValid
 
@@ -241,9 +241,9 @@ class PagesDialog(QDialog):
                 item = QListWidgetItem(self._page_label(page, index))
                 item.setData(Qt.ItemDataRole.UserRole, page['id'])
                 item.setSizeHint(QSize(0, 98))
-                item.setToolTip(tr('pages.order.tooltip', image=(page.get('image_path') or
+                item.setToolTip(plain_tip(tr('pages.order.tooltip', image=(page.get('image_path') or
                                   (page.get('canvas') or {}).get('id') or ''),
-                                  page_id=page['id']))
+                                  page_id=page['id'])))
                 cached = self._thumb_cache.get(page['id'])
                 if cached is not None:
                     item.setIcon(cached)

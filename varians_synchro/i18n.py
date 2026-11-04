@@ -101,6 +101,12 @@ def tr(key_or_legacy_text: str, **values) -> str:
     return value.format(**values) if values else value
 
 
+def is_catalog_text(text) -> bool:
+    """``text`` is a key of the catalogs, or the French value of one (never
+    a text received from a file, a server or a project)."""
+    return isinstance(text, str) and (text in _CATALOGS['fr'] or text in _ALIASES)
+
+
 def french(key: str, **values) -> str:
     """Le texte français de *key*, quelle que soit la langue de l'interface :
     celui des messages d'erreur et des journaux (voir ``errors.py``)."""

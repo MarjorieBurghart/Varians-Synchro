@@ -5,6 +5,8 @@ HTR is supplementary and never needed for visual selection. A 4200px-wide
 IIIF request provides useful magnification without downloading all canvases.
 """
 from __future__ import annotations
+
+import html
 from .imaging import image_bytes, mapped_alto_page
 from .page_order import ordered_pages
 from .errors import localized_text
@@ -214,7 +216,7 @@ class LineImagePanel(QWidget):
         root.setContentsMargins(3, 3, 3, 3)
         root.setSpacing(5)
         header = QHBoxLayout(); root.addLayout(header)
-        header.addWidget(QLabel(f'<b>{witness["id"]}</b>'))
+        header.addWidget(QLabel(f'<b>{html.escape(witness["id"])}</b>'))      # the siglum is data
         self.page_combo = QComboBox(); self.page_combo.setMinimumWidth(110)
         for page in self.pages:
             available = '●' if mapped_alto_page(witness, page) else '○'
@@ -284,6 +286,7 @@ class LineImagePanel(QWidget):
         self.htr_panel.hide()   # HTR is optional and OFF by default
         root.addWidget(self.content_splitter, 1)
         self.status = QLabel(tr('viewer.select_page')); self.status.setWordWrap(True)
+        self.status.setTextFormat(Qt.TextFormat.PlainText)   # shows a server's answer
         root.addWidget(self.status)
         self.selection_status = QLabel(tr('ui.0.ligne.selectionnee')); root.addWidget(self.selection_status)
         if self.pages:

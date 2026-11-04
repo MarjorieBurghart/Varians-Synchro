@@ -1,6 +1,8 @@
 """Fenêtre principale de Varians-Synchro : projet et témoins, pages, synchronisation, avancement et exports."""
 from __future__ import annotations
 
+import html
+
 from pathlib import Path
 
 from PySide6.QtCore import Qt, Signal
@@ -20,7 +22,7 @@ from .ui_pair import PairDialog
 from .ui_resources import WitnessResourceDialog
 from .ui_scope import SingleWitnessScopeDialog
 from .ui_tei_binding import TEIPhysicalBindingDialog
-from .ui_widgets import (_run_modal, QComboBox, QDialog, QFileDialog, QInputDialog, QLabel,
+from .ui_widgets import (_run_modal, plain_tip, QComboBox, QDialog, QFileDialog, QInputDialog, QLabel,
                          QListWidget, QMainWindow, QMessageBox, QPushButton, QTreeWidget)
 
 
@@ -133,6 +135,7 @@ class GuidedWindow(QMainWindow):
         if not self._changes.is_modified(self.project):
             return True
         prompt = QtMessageBox(self)
+        prompt.setTextFormat(Qt.TextFormat.PlainText)     # the project's name is data
         prompt.setIcon(QtMessageBox.Icon.Warning)
         prompt.setWindowTitle(tr('project.unsaved.title'))
         prompt.setText(tr('project.unsaved.question', name=self.project.get('name', '')))
@@ -259,7 +262,7 @@ class GuidedWindow(QMainWindow):
 
     def _build_alignment_tab(self):
         page=QWidget();main=QVBoxLayout(page)
-        main.addWidget(QLabel('<h3>' + tr('ui.alignment.heading') + '</h3>'))
+        main.addWidget(QLabel('<h3>' + html.escape(tr('ui.alignment.heading')) + '</h3>', rich=True))
         explanation = QLabel(tr('ui.alignment.intro'))
         explanation.setWordWrap(True)
         main.addWidget(explanation)
@@ -346,7 +349,7 @@ class GuidedWindow(QMainWindow):
     def _build_progress_tab(self):
         page = QWidget()
         main = QVBoxLayout(page)
-        main.addWidget(QLabel('<h3>' + tr('ui.final.heading') + '</h3>'))
+        main.addWidget(QLabel('<h3>' + html.escape(tr('ui.final.heading')) + '</h3>', rich=True))
         explanation = QLabel(tr('ui.final.intro'))
         explanation.setWordWrap(True)
         main.addWidget(explanation)
@@ -465,12 +468,12 @@ class GuidedWindow(QMainWindow):
                               else tr('resources.project.manifest_loaded',
                                       pages=len((source.get('manifest') or {}).get('canvases', []))))
                     item = QTreeWidgetItem(row, [tr('resources.witness.manifests'), detail])
-                    item.setToolTip(0, str(source['reference']))
+                    item.setToolTip(0, plain_tip(source['reference']))
                 else:
                     item = QTreeWidgetItem(row, [tr('resources.witness.images') + ' · '
                                              + Path(source['reference']).name,
                                              tr('resources.project.image_loaded')])
-                    item.setToolTip(0, str(source['reference']))
+                    item.setToolTip(0, plain_tip(source['reference']))
             for src in w['alto_sources']:
                 QTreeWidgetItem(row, [src.get('kind', 'alto').upper() + ' · '
                                           + Path(src['path']).name,

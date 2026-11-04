@@ -184,7 +184,7 @@ def test_a_refused_pair_is_explained_in_the_chosen_language(english, app, projec
     traduit (il ne l'était pas : texte français écrit dans le code)."""
     from varians_synchro.core import create_witness
     shown = []
-    monkeypatch.setattr(ui_main_window.QtMessageBox, 'warning',
+    monkeypatch.setattr(ui_main_window.QMessageBox, 'warning',
                         staticmethod(lambda parent, title, text, *a: shown.append(text)))
     create_witness(project, 'D')                        # sans images ni ALTO
     window = ui_main_window.GuidedWindow()
