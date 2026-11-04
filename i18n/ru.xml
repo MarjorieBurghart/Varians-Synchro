@@ -936,4 +936,14 @@ Varians-Synchro никогда не записывает такие пути: о
   <string key="error.tei_binding.too_deep">TEI вложена слишком глубоко, чтобы её можно было прочитать.</string>
   <string key="common.discard_title">Отменить изменения</string>
   <string key="common.discard_question">Изменения, сделанные в этом окне, не сохранены. Отменить их?</string>
+  <string key="error.tei.apparatus_unresolved">Аппарат без единственного чтения для {witness} (xml:id={id}).</string>
+  <string key="error.tei.choice_unresolved">Элемент &lt;choice&gt; без пригодной ветви.</string>
+  <string key="error.tei.duplicate_lb_id">Повторяющийся идентификатор TEI: {id}</string>
+  <string key="error.tei.unattributed_lb">{count} &lt;lb/&gt; без @edRef: исключены из свидетеля {witness}.</string>
+  <string key="error.tei.no_target_lb">Не найдено ни одного &lt;lb edRef="#{witness}"/&gt;.</string>
+  <string key="error.tei.source_changed">Файл TEI изменился после импорта: импортируйте его заново перед связыванием.</string>
+  <string key="error.tei.line_count_mismatch">{tei} &lt;lb/&gt; TEI на {physical} активных физических строк.</string>
+  <string key="error.tei.no_physical_lines">Нет активных строк ALTO/PAGE.</string>
+  <string key="error.binding.by_order">Соответствие предложено по порядку, проверьте по изображениям</string>
+  <string key="error.binding.no_unique_match">Нет единственного соответствия; нужен ручной выбор</string>
 </translations>

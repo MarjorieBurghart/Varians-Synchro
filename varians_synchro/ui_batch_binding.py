@@ -85,7 +85,7 @@ class BatchBindingDialog(QDialog):
             self.table.setItem(row_index, 2, method)
             self.table.setItem(row_index, 3, QTableWidgetItem(
                 tr('resources.binding.review_ordinal') if row['method'] == 'ordinal'
-                else row['warning']))
+                else localized_text(row['warning'])))
         self.table.verticalHeader().setDefaultSectionSize(54)
         layout.addWidget(self.table, 1)
         self._thumbnail_attempted = set()
@@ -162,7 +162,7 @@ class BatchBindingDialog(QDialog):
                       row['method'] if chosen == prior else 'manual')
             self.table.item(index, 2).setText(tr('resources.binding.' + method))
             warning = (tr('resources.binding.duplicate_row') if pid in in_conflict
-                       else (row.get('warning', '') if chosen == prior else ''))
+                       else (localized_text(row.get('warning', '')) if chosen == prior else ''))
             warning_item = self.table.item(index, 3)
             warning_item.setText(warning)
             warning_item.setBackground(QBrush(QColor('#ffdad5')) if pid in in_conflict

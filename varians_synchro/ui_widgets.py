@@ -76,6 +76,31 @@ def start_detached(thread, owner, cancel):
     thread.start()
 
 
+_QT_TRANSLATOR = None
+
+
+def install_qt_translation(language):
+    """Translate Qt's own texts (standard buttons « Yes », « No », « OK »,
+    « Cancel »…) into ``language``, with the translations PySide6 ships
+    (none for English, Qt's own language). Without it they stayed in
+    English whatever the language chosen. Returns True when installed."""
+    global _QT_TRANSLATOR
+    from PySide6.QtCore import QCoreApplication, QLibraryInfo, QTranslator
+    app = QCoreApplication.instance()
+    if app is None:
+        return False
+    if _QT_TRANSLATOR is not None:
+        app.removeTranslator(_QT_TRANSLATOR)
+        _QT_TRANSLATOR = None
+    translator = QTranslator(app)
+    if not translator.load(f'qtbase_{language}', QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)):
+        translator.deleteLater()
+        return False
+    app.installTranslator(translator)
+    _QT_TRANSLATOR = translator
+    return True
+
+
 def fit_to_screen(widget, width, height):
     """``widget.resize(width, height)``, bounded to the usable area of its
     screen: a window of 1 200 × 850 px did not fit a laptop screen, and its

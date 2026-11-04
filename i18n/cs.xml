@@ -936,4 +936,14 @@ Varians-Synchro takové cesty nikdy nezapisuje: pocházejí z přijatého nebo r
   <string key="error.tei_binding.too_deep">TEI je vnořena příliš hluboko, aby ji bylo možné přečíst.</string>
   <string key="common.discard_title">Zahodit změny</string>
   <string key="common.discard_question">Změny provedené v tomto okně nejsou uloženy. Zahodit je?</string>
+  <string key="error.tei.apparatus_unresolved">Aparát bez jediného čtení pro {witness} (xml:id={id}).</string>
+  <string key="error.tei.choice_unresolved">Prvek &lt;choice&gt; bez použitelné větve.</string>
+  <string key="error.tei.duplicate_lb_id">Duplicitní identifikátor TEI: {id}</string>
+  <string key="error.tei.unattributed_lb">{count} &lt;lb/&gt; bez @edRef: vyloučeno ze svědka {witness}.</string>
+  <string key="error.tei.no_target_lb">Nenalezen žádný &lt;lb edRef="#{witness}"/&gt;.</string>
+  <string key="error.tei.source_changed">Soubor TEI se od importu změnil: před propojením jej importujte znovu.</string>
+  <string key="error.tei.line_count_mismatch">{tei} TEI &lt;lb/&gt; pro {physical} aktivních fyzických řádků.</string>
+  <string key="error.tei.no_physical_lines">Žádný aktivní řádek ALTO/PAGE.</string>
+  <string key="error.binding.by_order">Shoda navržená podle pořadí, ověřte ji na obrázcích</string>
+  <string key="error.binding.no_unique_match">Žádná jednoznačná shoda; je nutná ruční volba</string>
 </translations>

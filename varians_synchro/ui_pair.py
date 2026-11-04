@@ -326,8 +326,9 @@ class PairDialog(QDialog):
         stale = stale_link_ids(self.project, self.session)
         for link in ordered_links(self.project, self.session,
                                   self.review_filter.currentData() or 'all'):
-            a = ', '.join(name_a.get(x, '[ligne modifiée]') for x in link['reference_ids']) or '∅'
-            b = ', '.join(name_b.get(x, '[ligne modifiée]') for x in link['target_ids']) or '∅'
+            changed = tr('ui.ligne.modifiee')
+            a = ', '.join(name_a.get(x, changed) for x in link['reference_ids']) or '∅'
+            b = ', '.join(name_b.get(x, changed) for x in link['target_ids']) or '∅'
             from PySide6.QtWidgets import QListWidgetItem
             if link.get('kind') == 'absence':
                 source_label = self.left_witness['id'] if link['reference_ids'] else self.right_witness['id']

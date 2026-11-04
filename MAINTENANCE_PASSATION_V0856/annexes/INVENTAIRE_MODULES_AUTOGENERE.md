@@ -175,10 +175,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : Safe Spyder entrypoint: start the Qt GUI in a separate Python process. No Qt imports are permitted here. A single Spyder kernel may load a different Qt binding or platform plugin; creating Qt widgets in that same native process can terminate the kernel without raising a Python exception.
 **Fonctions au premier niveau** : `in_spyder_kernel` (l.20), `isolated_environment` (l.42), `log_directory` (l.53), `launch_isolated` (l.63)
 
-## `varians_synchro/tei_binding.py` (283 lignes)
+## `varians_synchro/tei_binding.py` (284 lignes)
 **Objet (docstring source)** : Safe, witness-specific TEI extraction and explicit TEI↔physical line bindings. TEI is read only. Bindings are *not* witness-to-witness correspondence links. No '<lb/>' without the exact target @edRef is silently assigned. Unresolved apparatus readings block bulk linking, never fabricate witness text.
 **Dépendances internes observées** : `errors`, `reading_stream`, `witness_ids`
-**Fonctions au premier niveau** : `_local` (l.25), `_refs` (l.29), `_digest` (l.33), `_stamp` (l.37), `extract_witness_tei` (l.42), `_resource` (l.158), `preview_tei_binding` (l.168), `apply_tei_binding` (l.208), `refresh_tei_source` (l.228), `tei_binding_status` (l.249), `linked_tei_texts` (l.265)
+**Fonctions au premier niveau** : `_local` (l.25), `_refs` (l.29), `_digest` (l.33), `_stamp` (l.37), `extract_witness_tei` (l.42), `_resource` (l.159), `preview_tei_binding` (l.169), `apply_tei_binding` (l.209), `refresh_tei_source` (l.229), `tei_binding_status` (l.250), `linked_tei_texts` (l.266)
 
 ## `varians_synchro/tei_visual.py` (159 lignes)
 **Objet (docstring source)** : Read-only visual review model for TEI↔physical-line proposals. This module deliberately has no PySide6 dependency. It never changes project sources, correspondence groups, TEI bindings, or the TEI XML. All coordinates are expressed in the XML page coordinate system, then projected to the actual image/IIIF Canvas dimensions for fetching and rendering.
@@ -201,7 +201,7 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Classes déclarées au premier niveau** : `HelpDialog` (l.41)
 **Fonctions au premier niveau** : `help_path` (l.31), `open_help` (l.265)
 
-## `varians_synchro/ui_main_window.py` (717 lignes)
+## `varians_synchro/ui_main_window.py` (720 lignes)
 **Objet (docstring source)** : Fenêtre principale de Varians-Synchro : projet et témoins, pages, synchronisation, avancement et exports.
 **Dépendances internes observées** : `core`, `errors`, `i18n`, `physical_alignment`, `project_state`, `resource_workflow`, `tei_binding`, `ui_batch_binding`, `ui_help`, `ui_pages`, `ui_pair`, `ui_resources`, `ui_scope`, `ui_tei_binding`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`
 **Classes déclarées au premier niveau** : `_PairList` (l.29), `GuidedWindow` (l.46)
@@ -211,7 +211,7 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `errors`, `hd_registry`, `i18n`, `imaging`, `page_management`, `page_order`, `physical_alignment`, `reading_stream`, `ui_batch_binding`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `DraggablePagesList` (l.27), `HDDownloadThread` (l.40), `HTRExportThread` (l.77), `PagesDialog` (l.102)
 
-## `varians_synchro/ui_pair.py` (963 lignes)
+## `varians_synchro/ui_pair.py` (964 lignes)
 **Objet (docstring source)** : Fenêtre « Synchronisation visuelle entre témoins » : groupes de lignes de deux témoins, propositions, révision rapide et revalidation.
 **Dépendances internes observées** : `correspondence_navigation`, `errors`, `exceptions`, `i18n`, `interpolation`, `line_scope`, `overlay_filters`, `physical_alignment`, `rapid_review`, `reading_stream`, `residual_alignment`, `tei_binding`, `textual_progress`, `ui_proposals`, `ui_reading_order`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `PairDialog` (l.33)
@@ -242,11 +242,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `errors`, `i18n`, `tei_binding`, `tei_visual`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `TEILineFetchThread` (l.23), `TEIReviewCard` (l.39), `TEIPhysicalBindingDialog` (l.164)
 
-## `varians_synchro/ui_widgets.py` (308 lignes)
+## `varians_synchro/ui_widgets.py` (333 lignes)
 **Objet (docstring source)** : Widgets Qt qui traduisent leurs textes, ouverture modale d'une fenêtre et appels différés liés à une fenêtre. Les fenêtres de l'interface utilisent ces classes à la place de celles de PySide6 : un texte passé à ``QLabel``, ``setWindowTitle`` ou ``QMessageBox.warning`` est une clé de traduction (ou un texte français connu des catalogues) et s'affiche dans la langue choisie.
 **Dépendances internes observées** : `i18n`
-**Classes déclarées au premier niveau** : `QLabel` (l.138), `QPushButton` (l.154), `QListWidget` (l.163), `QComboBox` (l.168), `QTabWidget` (l.175), `QTreeWidget` (l.180), `QDialog` (l.185), `QMainWindow` (l.244), `QMessageBox` (l.269), `QInputDialog` (l.290), `QFileDialog` (l.299)
-**Fonctions au premier niveau** : `_run_modal` (l.22), `call_soon` (l.34), `start_detached` (l.53), `fit_to_screen` (l.79), `_stop_detached_threads` (l.92), `_text_format` (l.98), `plain_tip` (l.109), `page_image_reader_ok` (l.121), `decode_page_image` (l.126), `message_box` (l.249), `_answer` (l.260)
+**Classes déclarées au premier niveau** : `QLabel` (l.163), `QPushButton` (l.179), `QListWidget` (l.188), `QComboBox` (l.193), `QTabWidget` (l.200), `QTreeWidget` (l.205), `QDialog` (l.210), `QMainWindow` (l.269), `QMessageBox` (l.294), `QInputDialog` (l.315), `QFileDialog` (l.324)
+**Fonctions au premier niveau** : `_run_modal` (l.22), `call_soon` (l.34), `start_detached` (l.53), `install_qt_translation` (l.82), `fit_to_screen` (l.104), `_stop_detached_threads` (l.117), `_text_format` (l.123), `plain_tip` (l.134), `page_image_reader_ok` (l.146), `decode_page_image` (l.151), `message_box` (l.274), `_answer` (l.285)
 
 ## `varians_synchro/validation.py` (193 lignes)
 **Objet (docstring source)** : Read-only V0.7.4 preflight for documentary streams and physical pairs. The audit NEVER repairs historical links, guesses an omission, or modifies data. Warnings may reflect unavailable external resources on a different workstation. Hard errors mark contradictions that must not be silently treated as reliable.

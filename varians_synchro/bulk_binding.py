@@ -116,12 +116,12 @@ def propose_bindings(witness):
                              key=lambda item: (_natural(Path(item[0]['path']).name), item[1]))
         for p, (s, i, _) in zip(remainder_pages, ordered_xml):
             rows.append({'page_id': p['id'], 'target': [s['id'], i], 'method': 'ordinal',
-                         'warning': 'Correspondance proposée par ordre, à contrôler sur les images',
+                         'warning': Localized('error.binding.by_order'),
                          'image': p.get('image_path') or p.get('label') or p['id']})
     else:
         for p in remainder_pages:
             rows.append({'page_id': p['id'], 'target': None, 'method': 'unresolved',
-                         'warning': 'Aucune correspondance unique ; choix manuel nécessaire',
+                         'warning': Localized('error.binding.no_unique_match'),
                          'image': p.get('image_path') or p.get('label') or p['id']})
     by_page = {x['page_id']: x for x in rows}
     return {'fingerprint': binding_fingerprint(witness),

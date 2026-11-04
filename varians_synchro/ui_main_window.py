@@ -46,6 +46,9 @@ class _PairList(QListWidget):
 class GuidedWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        # Qt's standard buttons (Yes, No, OK, Cancel) in the chosen language.
+        from .ui_widgets import install_qt_translation
+        install_qt_translation(get_language())
         self.project = new_project()
         self.path = None
         self._changes = ProjectChangeTracker(self.project)

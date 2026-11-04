@@ -296,7 +296,7 @@ class TEIPhysicalBindingDialog(QDialog):
                         physical=proposal['physical_count']),
                      tr('tei.binding.current', state=tr('tei.binding.status.' + current['status']))]
             for problem in proposal['diagnostics']:
-                lines.append('⚠ ' + problem['message'])
+                lines.append('⚠ ' + localized_text(problem['message']))
             lines.append(tr('tei.binding.ready') if proposal['eligible']
                          else tr('tei.binding.not_ready'))
             self.summary.setPlainText('\n'.join(lines))
