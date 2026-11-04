@@ -279,6 +279,8 @@ class PairDialog(QDialog):
             # order. Image panels remain tied to unchanged physical UIDs.
             self.left_lines = reading_stream(self.left_witness, include_ignored=True)
             self.right_lines = reading_stream(self.right_witness, include_ignored=True)
+            for panel in (self.left_panel, self.right_panel):
+                panel.refresh_reading_order()
             for widget, lines in ((self.left, self.left_lines), (self.right, self.right_lines)):
                 widget.clear()
                 for line in lines:

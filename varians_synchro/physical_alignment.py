@@ -551,11 +551,20 @@ def suggest_htr_pair_alignment(project, session, min_support=.38):
     Existing manual/validated links become protected anchors.
     """
     from .automatic import propose_alignment
-    from .alignment import base_key, target_lines
+    from .alignment import base_key
     ref_w = _witness(project, session['reference_witness_id'])
     target_w = _witness(project, session['target_witness_id'])
-    ref_lines = [x for x in physical_lines(ref_w) if x['id'] not in ref_w.get('ignored_line_ids', [])]
-    target_physical = [x for x in physical_lines(target_w) if x['id'] not in target_w.get('ignored_line_ids', [])]
+    # Both streams in the corrected reading order (pages, regions, lines),
+    # ignored lines left out: the raw order of the pages gave non-monotone
+    # anchors and wrong proposals for leaves bound out of order.
+    from .reading_stream import reading_stream
+    ref_lines = reading_stream(ref_w)
+    target_physical = reading_stream(target_w)
+    pages_b = {page['id']: page for page in target_w.get('pages', [])}
+    targets = [{'ref': f"{x['page_id']}::{x['ordinal']}", 'page_id': x['page_id'],
+                'page_label': x.get('page_label', ''), 'line': x['ordinal'], 'text': x.get('text', ''),
+                'alto_id': x.get('alto_id'), 'bbox': x.get('bbox', {}), 'page': pages_b[x['page_id']]}
+               for x in target_physical]
     ref_legacy = [{'page_id': x['page_id'], 'ordinal': x['ordinal'], 'text': x['text']}
                   for x in ref_lines]
     key_a = {base_key(l): x['id'] for l, x in zip(ref_legacy, ref_lines)}
@@ -578,7 +587,7 @@ def suggest_htr_pair_alignment(project, session, min_support=.38):
     synthetic_session = {'base_resource_id': resource_id,
                          'target_witness_id': target_w['id'], 'links': protected}
     result = propose_alignment(simulated, synthetic_session, min_support=min_support,
-                               max_window_lines=30)
+                               max_window_lines=30, targets=targets)
     candidates=[]
     coarse_count = 0
     for link in result['proposals']:

@@ -189,12 +189,7 @@ class LineImagePanel(QWidget):
         self._page_lines = []
         self._last_anchor = None  # Stable physical UID, even across folios.
         # Explicit per-page/region/line reading order also drives Shift ranges.
-        try:
-            self._line_order = tuple(line['id'] for line in reading_stream(witness, include_ignored=True))
-        except (ValueError, KeyError, TypeError):
-            # A stale manual reading-order override is diagnosed elsewhere.
-            # It must not make the visual viewer itself unusable.
-            self._line_order = ()
+        self._line_order = self._reading_order()
         self._worker = None
         self._current_page = None
         self._pixmap_item = None
@@ -480,6 +475,19 @@ class LineImagePanel(QWidget):
         worker.loaded.connect(lambda data, s=serial: self._on_image(data, s))
         worker.failed.connect(lambda error, s=serial: self._on_error(error, s))
         worker.start()
+
+    def _reading_order(self):
+        try:
+            return tuple(line['id'] for line in reading_stream(self.witness, include_ignored=True))
+        except (ValueError, KeyError, TypeError):
+            # A stale manual reading-order override is diagnosed elsewhere.
+            # It must not make the visual viewer itself unusable.
+            return ()
+
+    def refresh_reading_order(self):
+        """Read the reading order again (after « Reading order and
+        intervals… »): Shift ranges followed the order of the opening."""
+        self._line_order = self._reading_order() or tuple(self._line_to_page)
 
     def _gone(self):
         # The panel is destroyed with its dialog without its own closeEvent:

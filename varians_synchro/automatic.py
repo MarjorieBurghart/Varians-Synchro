@@ -43,7 +43,7 @@ def _free_spans(base, targets, session):
 
 
 def propose_alignment(project, session, min_match=7, min_support=0.38,
-                      max_window_lines=250, allow_estimates=False):
+                      max_window_lines=250, allow_estimates=False, targets=None):
     """Return proposed links only, without mutating project.
 
     Anchors are shared character spans, grouped into line-to-line components.
@@ -55,7 +55,8 @@ def propose_alignment(project, session, min_match=7, min_support=0.38,
     if not 0 <= min_support <= 1: raise ValueError('min_support doit être entre 0 et 1')
     bases=get_base_lines(project, session['base_resource_id'])
     witness=next(w for w in project['witnesses'] if w['id']==session['target_witness_id'])
-    targets=target_lines(witness)
+    # ``targets``: the target lines in reading order, when the caller has them.
+    targets=target_lines(witness) if targets is None else targets
     occupied_b, occupied_t = _free_spans(bases,targets,session)
     # Existing links delimit safe intervals: never suggest crossing any occupied line.
     bkeys=[base_key(ln) for ln in bases]
