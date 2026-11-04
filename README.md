@@ -2,7 +2,7 @@
 
 Varians-Synchro relie, ligne à ligne, les manuscrits d'une édition critique, pour [Varians](https://github.com/MarjorieBurghart/Varians). Il montre deux témoins côte à côte, avec le contour de chaque ligne ; vous placez quelques repères, il propose les correspondances intermédiaires d'après la quantité de texte, vous les vérifiez sur les images et les validez. Chaque témoin est aligné sur un témoin pivot. Le résultat s'exporte vers Varians : un fichier de synchronisation par témoin, ou un projet Varians complet, prêt à ouvrir.
 
-Les lignes viennent d'un logiciel de reconnaissance (eScriptorium, Transkribus, Kraken…), en ALTO ou PAGE XML ; les images sont des fichiers locaux ou un Manifest IIIF. Varians-Synchro ne modifie jamais ces fichiers : tout son travail est dans le fichier de projet `.vsynch`.
+Les lignes viennent d'un logiciel de reconnaissance (eScriptorium, Transkribus, Kraken, PERO OCR…), en ALTO ou PAGE XML ; les images sont des fichiers locaux ou un Manifest IIIF. Varians-Synchro ne modifie jamais ces fichiers : tout son travail est dans le fichier de projet `.vsynch`.
 
 *English: Varians-Synchro aligns the lines of manuscript witnesses for the Varians editor. The user guide exists in seven languages ([English](help/en.html)), as does the [developer guide](docs/developer/en.md).*
 
