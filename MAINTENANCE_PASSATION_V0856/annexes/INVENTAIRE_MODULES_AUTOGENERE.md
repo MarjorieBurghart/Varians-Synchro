@@ -183,11 +183,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `bulk_binding`, `i18n`, `ui_widgets`
 **Classes déclarées au premier niveau** : `ProtectedBindingComboBox` (l.13), `BatchBindingDialog` (l.25)
 
-## `varians_synchro/ui_help.py` (269 lignes)
+## `varians_synchro/ui_help.py` (281 lignes)
 **Objet (docstring source)** : Aide intégrée de Varians-Synchro : le guide ``help/<langue>.html`` affiché dans une fenêtre du logiciel (et non plus un fichier ouvert par une autre application). La fenêtre n'est pas modale : on lit l'aide en travaillant. ``open_help`` en garde une par fenêtre parente ; ouverte depuis la fenêtre de synchronisation (elle-même modale), elle en est l'enfant et reste donc utilisable. Recherche reprise de Varians (``help_search``) : un champ (Ctrl+F), la liste des sections qui contiennent tous les mots, avec un extrait, et les occurrences surlignées, parcourues par ◀ ▶ (F3, Maj+F3). Le sommaire, fait de liens, n'est pas une section.
 **Dépendances internes observées** : `help_search`, `i18n`, `ui_widgets`
 **Classes déclarées au premier niveau** : `HelpDialog` (l.40)
-**Fonctions au premier niveau** : `help_path` (l.30), `open_help` (l.251)
+**Fonctions au premier niveau** : `help_path` (l.30), `open_help` (l.263)
 
 ## `varians_synchro/ui_main_window.py` (602 lignes)
 **Objet (docstring source)** : Fenêtre principale de Varians-Synchro : projet et témoins, pages, synchronisation, avancement et exports.

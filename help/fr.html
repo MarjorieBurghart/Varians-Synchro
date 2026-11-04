@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Varians-Synchro — Guide</title><style>
+body{font-family:sans-serif;line-height:1.5;max-width:980px;margin:24px auto;padding:0 22px;color:#202124}
+h1{margin-bottom:.25em}h2{margin-top:1.8em;border-bottom:1px solid #ddd;padding-bottom:.2em}h3{margin-top:1.25em}
+code{background:#f1f3f4;padding:1px 4px;border-radius:3px}pre{background:#f7f7f7;border:1px solid #ddd;padding:10px}
+kbd{border:1px solid #bbb;border-radius:3px;padding:1px 4px;background:#f7f7f7}
+table{border-collapse:collapse;width:100%}td,th{border:1px solid #ccc;padding:6px 9px;text-align:left;vertical-align:top}
+.note{background:#f4f8ff;border-left:4px solid #8db8e8;padding:9px 12px}.warn{background:#fff8e8;border-left:4px solid #e0b35a;padding:9px 12px}
+ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
+</style></head><body>
+<h1>Varians-Synchro — Guide utilisateur</h1>
+<p>Varians-Synchro aligne, ligne par ligne, les manuscrits d’une même œuvre, à partir de leurs images et de la segmentation de leurs lignes (ALTO ou PAGE XML). Il prépare ainsi les fichiers de synchronisation qui permettent à <strong>Varians</strong> d’afficher chaque témoin à côté de l’édition, la bonne ligne du manuscrit en face du texte.</p>
+
+<div class="toc"><h2>Sommaire</h2><ol>
+<li><a href="#presentation">Présentation</a></li>
+<li><a href="#essai">Premier essai : le projet d’exemple</a></li>
+<li><a href="#nouveau-projet">Parcours A : créer un nouveau projet Varians</a></li>
+<li><a href="#ajout-temoin">Parcours B : ajouter un témoin à un projet Varians existant</a></li>
+<li><a href="#notions">Notions clés</a></li>
+<li><a href="#etape1">Étape 1 : ajout des témoins</a></li>
+<li><a href="#etape2">Étape 2 : associer les ressources</a></li>
+<li><a href="#etape3">Étape 3 : aligner les témoins</a></li>
+<li><a href="#synchronisation">La fenêtre de synchronisation</a></li>
+<li><a href="#etape4">Étape 4 : finaliser et exporter</a></li>
+<li><a href="#format-json">Format des fichiers de synchronisation (JSON)</a></li>
+<li><a href="#fichiers">Fichiers, sauvegardes et dépannage</a></li>
+<li><a href="#raccourcis">Raccourcis</a></li>
+</ol></div>
+
+<h2 id="presentation">1. Présentation</h2>
+<h3>Ce que fait Varians-Synchro</h3>
+<ul>
+<li><strong>Il relie les lignes de deux manuscrits.</strong> Vous voyez les deux témoins côte à côte, avec le contour de chaque ligne, et vous dites quelles lignes de l’un correspondent à quelles lignes de l’autre. Une correspondance peut réunir plusieurs lignes de chaque côté.</li>
+<li><strong>Il propose, vous décidez.</strong> À partir de quelques repères que vous placez, il propose les correspondances intermédiaires d’après la quantité de texte ; vous les vérifiez sur les images et les validez.</li>
+<li><strong>Il travaille par rapport à un témoin pivot.</strong> Chaque autre témoin est aligné sur le pivot. Dans Varians, les lignes du pivot sont repérées dans l’édition par ses <code>&lt;lb/&gt;</code> ; les autres témoins suivent grâce à leur alignement sur le pivot.</li>
+<li><strong>Il exporte pour Varians</strong> un fichier de synchronisation (JSON) par témoin, ou un projet Varians complet, prêt à ouvrir.</li>
+</ul>
+<h3>Ce qu’il ne fait pas</h3>
+<ul>
+<li>Il ne transcrit pas et ne segmente pas les images : les lignes viennent d’un logiciel de reconnaissance (eScriptorium, Transkribus, Kraken…), sous forme de fichiers ALTO ou PAGE XML.</li>
+<li>Il n’édite pas le texte TEI : c’est le rôle de Varians.</li>
+<li>Il ne modifie jamais vos fichiers sources (images, ALTO, PAGE, TEI). Tout son travail est dans le fichier de projet <code>.vsynch</code>.</li>
+</ul>
+<h3>Ce qu’il faut pour commencer</h3>
+<ul>
+<li>Pour chaque témoin : ses images (fichiers locaux, ou un Manifest IIIF) et, pour chaque page à aligner, un fichier ALTO ou PAGE XML qui décrit ses lignes.</li>
+<li>Facultativement, l’édition TEI du témoin pivot, si elle existe déjà.</li>
+</ul>
+<h3>La démarche en quatre étapes</h3>
+<p>La fenêtre principale suit quatre étapes, à gauche :</p>
+<ol>
+<li><b class="ui" data-tr="navigation.project">1 · Ajout des témoins</b> : déclarer les manuscrits et leurs fichiers ;</li>
+<li><b class="ui" data-tr="navigation.pages">2 · Associer les ressources</b> : relier chaque image à son fichier de lignes, régler l’ordre des pages et les lignes à ignorer ;</li>
+<li><b class="ui" data-tr="navigation.alignment">3 · Aligner les témoins</b> : aligner chaque témoin sur le pivot ;</li>
+<li><b class="ui" data-tr="navigation.progress">4 · Finaliser</b> : contrôler, puis exporter vers Varians.</li>
+</ol>
+<p>Pensez à <b class="ui" data-tr="common.save">Enregistrer</b> le projet après chaque séance de travail. L’aide s’ouvre à tout moment par <b class="ui" data-tr="help.open">Ouvrir le guide utilisateur</b> ou <kbd>F1</kbd>.</p>
+
+<h2 id="essai">2. Premier essai : le projet d’exemple</h2>
+<p>Le dossier <code>demo_local_ALTO/</code>, livré avec le logiciel, contient deux petits témoins fictifs, A et B, d’une page de trois lignes chacun, avec leurs fichiers ALTO. Leur texte est découpé différemment, comme dans deux vrais manuscrits. Dix minutes suffisent pour parcourir toute la démarche.</p>
+<ol>
+<li>Copiez le dossier <code>demo_local_ALTO</code> ailleurs : l’enregistrement modifie le fichier de projet.</li>
+<li>Cliquez sur <b class="ui" data-tr="project.open">Ouvrir .vsynch</b> et choisissez <code>exemple.vsynch</code> dans la copie.</li>
+<li>Dans <b class="ui" data-tr="navigation.project">1 · Ajout des témoins</b>, cliquez sur le témoin A, cochez <b class="ui" data-tr="resources.witness.pivot">Définir ce témoin comme pivot pour l’alignement des témoins</b>, puis <b class="ui" data-tr="resources.witness.confirm">Enregistrer le témoin</b>.</li>
+<li>Dans <b class="ui" data-tr="navigation.alignment">3 · Aligner les témoins</b>, gardez A dans <b class="ui" data-tr="alignment.reference.label">Pivot technique</b> et B dans <b class="ui" data-tr="alignment.target.label">Témoin à aligner</b>, puis cliquez sur <b class="ui" data-tr="ui.xml.open_alignment">Aligner les témoins</b>.</li>
+<li>Dans la fenêtre de synchronisation, cliquez sur la première ligne de A, puis sur la première ligne de B, et faites <kbd>Ctrl+Entrée</kbd> (<b class="ui" data-tr="alignment.action.link_lines">Associer les lignes</b>). Faites de même pour les troisièmes lignes. Ces deux correspondances, en vert, sont vos repères.</li>
+<li>Cliquez sur <b class="ui" data-tr="progress.action">Synchroniser entre repères (texte)</b> : le logiciel propose de relier les deuxièmes lignes. Cliquez sur <b class="ui" data-tr="progress.save">Enregistrer la sélection</b>. La proposition apparaît en bleu pointillé : elle est à vérifier.</li>
+<li>En bas, avec le filtre <b class="ui" data-tr="review.filter.pending">À vérifier</b>, choisissez la proposition dans la liste, vérifiez-la sur les images, puis cliquez sur <b class="ui" data-tr="review.validate.next">Valider et suivant</b>.</li>
+<li>Fermez la fenêtre de synchronisation et cliquez sur <b class="ui" data-tr="common.save">Enregistrer</b>.</li>
+<li>Dans <b class="ui" data-tr="navigation.progress">4 · Finaliser</b>, cliquez sur <b class="ui" data-tr="ui.final.export_project.action">Créer un projet Varians pré-renseigné…</b>, choisissez un dossier vide, puis ouvrez le <code>project.xml</code> créé dans Varians.</li>
+</ol>
+
+<h2 id="nouveau-projet">3. Parcours A : créer un nouveau projet Varians</h2>
+<p>Vous commencez une édition : aucun projet Varians n’existe encore. Varians-Synchro prépare le projet entier : témoins, images, synchronisations et, si vous l’avez, l’édition TEI du pivot.</p>
+<h3>Dans Varians-Synchro</h3>
+<ol>
+<li><strong>Créer le projet.</strong> <b class="ui" data-tr="project.new">Nouveau projet</b> demande un nom, puis l’emplacement du fichier <code>.vsynch</code>, aussitôt enregistré.</li>
+<li><strong>Déclarer les témoins.</strong> Dans <b class="ui" data-tr="navigation.project">1 · Ajout des témoins</b>, ajoutez chaque manuscrit avec <b class="ui" data-tr="resources.witness.new">Ajouter un témoin…</b> : son sigle, ses images, ses fichiers ALTO/PAGE et, pour le pivot seulement, son édition TEI s’il y en a une. Choisissez le pivot (voir <a href="#notions">Notions clés</a>) : le premier témoin ajouté l’est par défaut. Détails : <a href="#etape1">Étape 1</a>.</li>
+<li><strong>Associer les images et les lignes.</strong> Dans <b class="ui" data-tr="navigation.pages">2 · Associer les ressources</b>, vérifiez que chaque page est associée au bon fichier ALTO/PAGE et que les pages sont dans l’ordre de lecture. Indiquez les lignes à ignorer : celles qui sont hors du texte que vous éditez (début et fin d’un passage, titres courants, autre œuvre sur la même page). Détails : <a href="#etape2">Étape 2</a>.</li>
+<li><strong>Aligner chaque témoin sur le pivot.</strong> Dans <b class="ui" data-tr="navigation.alignment">3 · Aligner les témoins</b>, choisissez le pivot dans <b class="ui" data-tr="alignment.reference.label">Pivot technique</b>, un autre témoin dans <b class="ui" data-tr="alignment.target.label">Témoin à aligner</b>, et ouvrez <b class="ui" data-tr="ui.xml.open_alignment">Aligner les témoins</b>. Placez des repères, laissez le logiciel proposer le reste, vérifiez et validez. Recommencez pour chaque témoin. Détails : <a href="#synchronisation">La fenêtre de synchronisation</a>.</li>
+<li><strong>Enregistrer</strong>, puis, dans <b class="ui" data-tr="navigation.progress">4 · Finaliser</b>, lancer <b class="ui" data-tr="audit.action">Contrôler la cohérence du projet…</b> et lire les avertissements.</li>
+<li><strong>Créer le projet Varians.</strong> <b class="ui" data-tr="ui.final.export_project.action">Créer un projet Varians pré-renseigné…</b> écrit le projet dans un dossier vide. Il ne contient que les correspondances <strong>validées</strong> : validez donc tout ce qui doit compter avant cette étape. Détails : <a href="#export-projet">Projet Varians pré-renseigné</a>.</li>
+</ol>
+<h3>Dans Varians</h3>
+<ol>
+<li><b class="varians" data-varians="menu.file">Fichier</b> → <b class="varians" data-varians="menu.open_project">Ouvrir un projet…</b>, puis le <code>project.xml</code> créé.</li>
+<li><strong>Sans édition TEI</strong>, le projet reçoit une TEI vide, comme une nouvelle transcription dans Varians. Pour y préparer les pages et les lignes du pivot : <b class="varians" data-varians="menu.file">Fichier</b> → <b class="varians" data-varians="menu.project_settings">Paramètres du projet…</b>, encadré <b class="varians" data-varians="pivot.title">Préparation de la transcription du témoin pivot</b>, cochez <b class="varians" data-varians="pivot.option.pb">Préparer les &lt;pb/&gt; du témoin pivot dans la TEI vide</b> et, si vous le souhaitez, <b class="varians" data-varians="pivot.option.lb">Générer aussi les &lt;lb/&gt; depuis ALTO, PAGE ou la synchronisation</b>.</li>
+<li><strong>Avec une édition TEI</strong>, elle doit contenir exactement un <code>&lt;lb edRef="#PIVOT"/&gt;</code> par ligne retenue du pivot, dans l’ordre de lecture : Varians fait correspondre la n-ième ligne du pivot au n-ième <code>&lt;lb/&gt;</code>. L’étape facultative <a href="#tei">Lier l’édition TEI</a> de Varians-Synchro vous permet de le vérifier avant l’export.</li>
+<li>Contrôlez le résultat avec <b class="varians" data-varians="menu.display">Affichage</b> → <b class="varians" data-varians="diagnostics.menu">État des témoins…</b>.</li>
+</ol>
+
+<h2 id="ajout-temoin">4. Parcours B : ajouter un témoin à un projet Varians existant</h2>
+<p>Votre projet Varians existe déjà et a été créé à partir d’un projet Varians-Synchro (ou la synchronisation de son pivot en vient). Vous voulez lui ajouter un nouveau manuscrit, synchronisé avec l’édition.</p>
+<div class="note"><strong>Le principe.</strong> Le fichier de synchronisation du nouveau témoin désigne les lignes du pivot par l’identifiant de leur page et leur rang dans cette page, tels que les connaît <em>votre</em> projet <code>.vsynch</code>. Il faut donc travailler dans le même projet <code>.vsynch</code> que celui qui a servi à créer le projet Varians, et ne pas toucher au pivot.</div>
+<h3>Dans Varians-Synchro</h3>
+<ol>
+<li><b class="ui" data-tr="project.open">Ouvrir .vsynch</b> : ouvrez le projet qui a servi à créer le projet Varians.</li>
+<li>Dans <b class="ui" data-tr="navigation.project">1 · Ajout des témoins</b>, ajoutez le nouveau manuscrit avec <b class="ui" data-tr="resources.witness.new">Ajouter un témoin…</b> (sigle, images, ALTO/PAGE). Donnez-lui le sigle qu’il aura dans Varians.</li>
+<li>Dans <b class="ui" data-tr="navigation.pages">2 · Associer les ressources</b>, associez ses pages à leurs fichiers ALTO/PAGE et indiquez ses lignes à ignorer.</li>
+<li>Dans <b class="ui" data-tr="navigation.alignment">3 · Aligner les témoins</b>, gardez le pivot dans <b class="ui" data-tr="alignment.reference.label">Pivot technique</b>, choisissez le nouveau témoin dans <b class="ui" data-tr="alignment.target.label">Témoin à aligner</b>, alignez et validez.</li>
+<li><b class="ui" data-tr="common.save">Enregistrer</b>.</li>
+<li>Dans <b class="ui" data-tr="navigation.progress">4 · Finaliser</b>, <b class="ui" data-tr="export.varians.action">Exporter JSON pour Varians…</b> : choisissez le pivot comme témoin de référence et un dossier vide. Le fichier du nouveau témoin est <code>validated/&lt;sigle&gt;.json</code> (correspondances validées) ; <code>working/&lt;sigle&gt;.json</code> contient aussi les propositions non validées. Voir <a href="#export-json">Exporter JSON pour Varians</a>.</li>
+</ol>
+<div class="warn"><strong>Ne modifiez pas le pivot</strong> (ses pages, leurs fichiers ALTO/PAGE, ses lignes ignorées, son ordre de lecture) : ses lignes changeraient de rang ou de nombre, et ne correspondraient plus aux <code>&lt;lb/&gt;</code> de l’édition. Si vous devez le faire, remplacez aussi la synchronisation du pivot dans Varians par <code>validated/&lt;pivot&gt;.json</code>, et vérifiez que le nombre de ses lignes est toujours celui de ses <code>&lt;lb/&gt;</code>.</div>
+<h3>Dans Varians</h3>
+<ol>
+<li><b class="varians" data-varians="menu.file">Fichier</b> → <b class="varians" data-varians="menu.project_settings">Paramètres du projet…</b> ; dans la liste des témoins, <b class="varians" data-varians="project.witness.add">Ajouter…</b>.</li>
+<li>Indiquez le sigle, les images (<b class="varians" data-varians="project.witness.images">Source des images</b>) et, dans <b class="varians" data-varians="project.witness.alignment.optional">Fichier de synchronisation (facultatif)</b>, le fichier <code>validated/&lt;sigle&gt;.json</code>. Cochez <b class="varians" data-varians="project.witness.alignment.copy">Copier la synchronisation dans le projet</b> : le projet reste ainsi complet si vous le déplacez.</li>
+<li>Contrôlez avec <b class="varians" data-varians="menu.display">Affichage</b> → <b class="varians" data-varians="diagnostics.menu">État des témoins…</b> : le nouveau témoin doit avoir des liens valides vers le pivot.</li>
+</ol>
+<h3>Mettre à jour un témoin déjà présent</h3>
+<p>Après avoir complété l’alignement d’un témoin dans Varians-Synchro, exportez de nouveau, puis, dans Varians, donnez au témoin le nouveau fichier (<b class="varians" data-varians="project.witness.edit">Modifier…</b> dans les paramètres du projet), ou remplacez son fichier dans le dossier <code>alignments/</code> du projet. <b class="varians" data-varians="menu.display">Affichage</b> → <b class="varians" data-varians="diagnostics.refresh">Actualiser les synchronisations…</b> (<kbd>Ctrl+Maj+R</kbd>) relit les fichiers sans rouvrir le projet.</p>
+<p><strong>Projet Varians qui ne vient pas de ce <code>.vsynch</code>.</strong> Les identifiants de pages diffèrent : Varians signale alors que les liens du fichier ne correspondent à aucune ligne du pivot. Il faut aussi remplacer la synchronisation du pivot par <code>validated/&lt;pivot&gt;.json</code>, avec le même nombre de lignes que ses <code>&lt;lb/&gt;</code>.</p>
+
+<h2 id="notions">5. Notions clés</h2>
+<table>
+<tr><th>Notion</th><th>Ce qu’elle désigne</th></tr>
+<tr><td>Témoin, sigle</td><td>Un manuscrit (ou une édition ancienne). Le sigle est son identifiant : il ne peut plus être changé après l’enregistrement du témoin, et ne doit contenir ni point, ni <code>/</code>, ni <code>\</code> pour que l’export soit possible. Gardez celui du projet Varians.</td></tr>
+<tr><td>Témoin pivot</td><td>Le témoin de référence du projet : les autres sont alignés sur lui, et Varians le suit par ses <code>&lt;lb/&gt;</code>. Ce choix est technique : il ne préjuge ni du stemma ni du manuscrit de base de l’édition. Le premier témoin ajouté est pivot par défaut ; pour en changer, cochez la case du pivot dans la fiche d’un autre témoin. Le menu <b class="ui" data-tr="alignment.reference.label">Pivot technique</b> de l’étape 3 choisit seulement le témoin de gauche à aligner, sans changer le pivot du projet.</td></tr>
+<tr><td>Ligne physique</td><td>Une ligne décrite par le fichier ALTO/PAGE d’une page. Elle est identifiée par sa page et son rang dans ce fichier. Le contenu du fichier est copié dans le projet à l’import.</td></tr>
+<tr><td>Ligne ignorée (périmètre)</td><td>Une ligne hors du texte étudié. Elle vaut pour le témoin dans tout le projet : elle est exclue des calculs, de la liaison TEI et des exports. Ignorer une ligne déjà liée retire ses liens, dans toutes les paires, après confirmation.</td></tr>
+<tr><td>Groupe (correspondance)</td><td>Des lignes du témoin de gauche reliées à des lignes du témoin de droite : 1↔1, 1↔n ou n↔m. Une ligne appartient au plus à un groupe par paire.</td></tr>
+<tr><td>État d’un groupe</td><td><code>validated</code> (validé), <code>uncertain</code> (incertain) ou <code>proposed</code> (proposé). La liste des groupes les affiche tels quels. Le filtre <b class="ui" data-tr="review.filter.pending">À vérifier</b> réunit les groupes non validés.</td></tr>
+<tr><td>Repère</td><td>Une correspondance validée qui sert d’appui aux propositions. Les repères doivent se suivre dans le même ordre dans les deux témoins ; il en faut au moins deux.</td></tr>
+<tr><td>Absence confirmée</td><td>Des lignes d’un témoin qui n’ont pas d’équivalent dans l’autre (omission, lacune). Elle vaut pour une paire, apparaît en rouge et ne produit aucun lien à l’export.</td></tr>
+<tr><td>Ligne non synchronisée</td><td>Une ligne retenue qui n’appartient encore à aucun groupe dans la paire (en violet).</td></tr>
+<tr><td>Groupe périmé</td><td>Un groupe dont une ligne a changé : en général, la page a reçu un autre fichier ALTO/PAGE. Il n’est jamais supprimé, mais il est exclu des repères, des calculs et des exports jusqu’à ce que vous le revalidiez ou le dissociiez.</td></tr>
+<tr><td>Protection</td><td>Les groupes manuels et les groupes validés ne sont jamais remplacés par un calcul. Seules les propositions automatiques non validées peuvent l’être.</td></tr>
+</table>
+
+<h2 id="etape1">6. Étape 1 : ajout des témoins</h2>
+<p><b class="ui" data-tr="resources.witness.new">Ajouter un témoin…</b> ouvre la fiche d’un nouveau témoin ; un clic sur un témoin de la liste (ou sur l’une de ses ressources) ouvre sa fiche pour la compléter. La liste montre, pour chaque témoin, ses ressources et leur état (pages associées, lignes importées, liaison TEI).</p>
+<h3 id="fiche-temoin">La fiche du témoin</h3>
+<ul>
+<li><b class="ui" data-tr="resources.witness.sigil">Sigle</b> et <b class="ui" data-tr="resources.witness.label">Description</b>. Le sigle n’est plus modifiable une fois le témoin enregistré.</li>
+<li><b class="ui" data-tr="resources.witness.pivot">Définir ce témoin comme pivot pour l’alignement des témoins</b>.</li>
+<li>Quatre groupes de ressources, chacun avec <b class="ui" data-tr="resources.witness.add">Ajouter…</b> :
+<ul>
+<li><b class="ui" data-tr="resources.witness.images">Images locales</b> : les images sont triées par nom (« 2 » avant « 10 ») ;</li>
+<li><b class="ui" data-tr="resources.witness.manifests">Manifest IIIF</b> : l’adresse du Manifest ; s’il ne répond pas, l’adresse est gardée, avec l’état indisponible ;</li>
+<li><b class="ui" data-tr="resources.witness.xml">Fichiers ALTO/PAGE-XML</b> : le format est reconnu d’après le contenu ;</li>
+<li><b class="ui" data-tr="resources.witness.tei">Édition TEI XML</b> : facultative, utile pour le pivot.</li>
+</ul></li>
+<li><b class="ui" data-tr="resources.witness.remove_pending">Supprimer</b> retire seulement une ressource ajoutée pendant cette ouverture de la fiche : une ressource déjà enregistrée reste dans le projet, pour ne pas casser ses associations.</li>
+<li><b class="ui" data-tr="resources.binding.title">Associer automatiquement les images et les ALTO/PAGE</b> propose tout de suite les associations des pages (voir <a href="#association-auto">ci-dessous</a>).</li>
+<li><b class="ui" data-tr="resources.witness.confirm">Enregistrer le témoin</b> applique tout d’un bloc ; <b class="ui" data-tr="resources.cancel">Annuler</b> ne change rien au projet.</li>
+</ul>
+
+<h2 id="etape2">7. Étape 2 : associer les ressources</h2>
+<p>Quatre opérations, chacune pour un témoin à choisir :</p>
+<h3 id="pages">Pages, ordre et fichiers de lignes</h3>
+<p><b class="ui" data-tr="pages.order.open">Gérer les images, leur ordre et les associations ALTO/PAGE…</b> montre les pages du témoin, avec leur miniature et leur fichier de lignes.</p>
+<ul>
+<li><strong>Ordre de lecture</strong> : glissez les pages, ou utilisez <b class="ui" data-tr="pages.order.up">Monter</b>, <b class="ui" data-tr="pages.order.down">Descendre</b>, <b class="ui" data-tr="pages.order.reverse">Inverser l’ordre</b>.</li>
+<li><b class="ui" data-tr="ui.xml.link_source">Associer ALTO/PAGE</b> donne à la page choisie un fichier de lignes. Si elle en avait déjà un, le logiciel dit combien de groupes seront touchés : ils deviendront périmés (voir <a href="#perimes">Groupes périmés</a>).</li>
+<li><b class="ui" data-tr="ui.afficher.page">Afficher page</b> (ou un double-clic) montre la page et ses lignes.</li>
+<li><strong>Copies HD des images IIIF</strong> : <b class="ui" data-tr="ui.pages.hd.action">Télécharger les images IIIF sélectionnées en HD…</b> enregistre les images choisies dans un dossier vide ; <b class="ui" data-tr="ui.pages.hd.attach">Rattacher un lot HD déjà téléchargé…</b> retrouve un lot précédent. Le projet Varians utilise ces copies si toutes les pages utiles en ont une.</li>
+<li><strong>HTR externe (facultatif)</strong> : <b class="ui" data-tr="ui.exporter.pour.htr">Exporter pour HTR</b> enregistre les images IIIF choisies dans un ZIP pour un logiciel de reconnaissance ; <b class="ui" data-tr="ui.reimporter.htr">Réimporter HTR</b> associe ensuite les fichiers ALTO/PAGE obtenus, par leur nom.</li>
+</ul>
+<p>Ces changements sont faits directement : fermez avec <b class="ui" data-tr="common.close">Fermer</b>, puis enregistrez le projet.</p>
+<h3 id="association-auto">Associer automatiquement</h3>
+<p><b class="ui" data-tr="resources.binding.title">Associer automatiquement les images et les ALTO/PAGE</b> propose un fichier de lignes pour chaque page qui n’en a pas encore : d’abord d’après les noms et les références d’image (<b class="ui" data-tr="resources.binding.name">Nom unique</b>), puis, pour des images locales en nombre égal, d’après l’ordre naturel des noms. Contrôlez surtout ces dernières : un décalage se répercute sur toute la série. Un même fichier proposé pour deux pages est signalé en rouge. <b class="ui" data-tr="resources.binding.apply">Appliquer les associations</b> n’écrase aucune association existante.</p>
+<h3 id="perimetre">Lignes à ignorer (périmètre)</h3>
+<p><b class="ui" data-tr="tei.scope.action">Définir les lignes à ignorer sur les images du témoin…</b> : sélectionnez sur les images les lignes hors du texte étudié, même sur plusieurs pages, puis <b class="ui" data-tr="tei.scope.ignore">Ignorer les lignes sélectionnées</b> (ou <b class="ui" data-tr="tei.scope.restore">Réintégrer les lignes sélectionnées</b>). <b class="ui" data-tr="tei.scope.save">Conserver le périmètre</b> applique ; <b class="ui" data-tr="resources.cancel">Annuler</b> ne change rien. Le même réglage existe dans la fenêtre de synchronisation (<b class="ui" data-tr="scope.menu">Périmètre ▾</b>).</p>
+<h3 id="tei">Lier l’édition TEI (facultatif)</h3>
+<p><b class="ui" data-tr="tei.binding.action">Lier l’édition TEI aux lignes ALTO/PAGE…</b> rapproche les <code>&lt;lb edRef="#SIGLE"/&gt;</code> d’une édition TEI des lignes retenues du témoin, dans l’ordre de lecture. Les nombres doivent être égaux : la fenêtre les compare et signale ce qui bloque (lignes à ignorer oubliées, leçons ambiguës d’un apparat). Vérifiez quelques lignes, notamment avec <b class="ui" data-tr="tei.visual.begin">Début</b> et <b class="ui" data-tr="tei.visual.end">Fin</b>, sur le texte et l’image recadrée, puis <b class="ui" data-tr="tei.binding.apply">Confirmer les liaisons</b>.</p>
+<p>La liaison n’est pas nécessaire à l’export : elle sert à vérifier que le nombre de lignes du pivot correspond bien à ses <code>&lt;lb/&gt;</code>, et fait afficher le texte TEI à la place du texte HTR dans la fenêtre de synchronisation. Elle passe à <b class="ui" data-tr="tei.binding.status.stale">à revérifier (sources modifiées)</b> si l’édition, le périmètre, l’ordre ou la segmentation changent.</p>
+
+<h2 id="etape3">8. Étape 3 : aligner les témoins</h2>
+<p>Choisissez le témoin de gauche dans <b class="ui" data-tr="alignment.reference.label">Pivot technique</b> (en général le pivot du projet) et l’autre témoin dans <b class="ui" data-tr="alignment.target.label">Témoin à aligner</b>, puis cliquez sur <b class="ui" data-tr="ui.xml.open_alignment">Aligner les témoins</b>. Il n’existe qu’une synchronisation par paire : l’ouvrir dans l’autre sens rouvre la même, avec le même témoin à gauche.</p>
+<p>Sous le bouton, la liste des paires déjà alignées montre leur avancement (nombre de groupes, lignes reliées de chaque côté). Un double-clic sur une paire, ou <kbd>Entrée</kbd>, rouvre sa synchronisation ; un simple clic la choisit dans les deux menus.</p>
+<p>Pour l’export vers Varians, chaque témoin doit être aligné <strong>directement</strong> sur le pivot : un alignement B↔C ne sert pas à l’export si le pivot est A.</p>
+
+<h2 id="synchronisation">9. La fenêtre de synchronisation</h2>
+<p>Les deux témoins sont côte à côte, le témoin de référence à gauche. Les contours des lignes sont colorés selon leur état. Tout le travail se fait en mémoire : enregistrez le projet dans la fenêtre principale après l’avoir fermée. <kbd>F1</kbd> ouvre ici cette section de l’aide.</p>
+<h3>La méthode conseillée</h3>
+<ol>
+<li><strong>Placer des repères.</strong> Reliez quelques lignes sûres, au début, à la fin, et aux endroits où les manuscrits divergent (changement de colonne, lacune, ajout) : sélectionnez la ou les lignes à gauche et à droite, puis <b class="ui" data-tr="alignment.action.link_lines">Associer les lignes</b> (<kbd>Ctrl+Entrée</kbd>). Un groupe créé ainsi est manuel et validé (vert plein).</li>
+<li><strong>Faire proposer le reste.</strong> <b class="ui" data-tr="progress.action">Synchroniser entre repères (texte)</b> calcule, entre deux repères, les correspondances les plus probables d’après la quantité de texte de chaque ligne. Une fenêtre montre les propositions : gardez celles qui conviennent, puis <b class="ui" data-tr="progress.save">Enregistrer la sélection</b>. Elles sont enregistrées à vérifier (bleu pointillé).</li>
+<li><strong>Vérifier et valider.</strong> En bas, choisissez le filtre <b class="ui" data-tr="review.filter.pending">À vérifier</b> et parcourez les groupes avec <b class="ui" data-tr="review.next">Suivant ▶</b> (<kbd>F8</kbd>) et <b class="ui" data-tr="review.previous">◀ Précédent</b> (<kbd>Maj+F8</kbd>). Le groupe choisi apparaît en rose sur les deux images. <b class="ui" data-tr="review.validate.next">Valider et suivant</b> (<kbd>Alt+V</kbd>) le valide et passe au suivant.</li>
+<li><strong>Corriger.</strong> Pour ajouter une ligne à un groupe, sélectionnez-la avec une ligne du groupe et faites <b class="ui" data-tr="alignment.action.link_lines">Associer les lignes</b>. Pour en retirer, sélectionnez-la et faites <b class="ui" data-tr="alignment.action.unlink_lines">Dissocier</b>. Un groupe corrigé devient manuel (vert) et protégé.</li>
+<li><strong>Traiter les absences</strong> (voir <a href="#absences">ci-dessous</a>), puis fermer et enregistrer.</li>
+</ol>
+<h3>Sélectionner les lignes</h3>
+<ul>
+<li>Un clic sur une ligne la sélectionne (orange) et remplace la sélection du témoin, sur toutes ses pages.</li>
+<li><kbd>Ctrl</kbd>+clic ajoute ou retire une ligne ; <kbd>Maj</kbd>+clic sélectionne une suite de lignes dans l’ordre de lecture du témoin, d’une page à l’autre.</li>
+<li>Un clic sur une ligne déjà reliée montre en rose ses lignes correspondantes dans l’autre témoin (en changeant de page s’il le faut). Le rose n’est jamais une sélection.</li>
+<li>Molette : zoom ; glisser : déplacer l’image ; double-clic : zoom sur la ligne. <b class="ui" data-tr="viewer.fit_page">Adapter</b> montre la page entière.</li>
+<li><b class="ui" data-tr="viewer.htr.toggle">Texte HTR</b> affiche le texte des lignes sous l’image (le texte TEI si une liaison TEI est valide). <b class="ui" data-tr="viewer.alto.toggle">Cadres lignes</b> masque ou montre les contours ; <b class="ui" data-tr="viewer.clear_selection">Effacer sélection</b> vide la sélection.</li>
+</ul>
+<h3>Couleurs</h3>
+<table>
+<tr><th>Couleur</th><th>Sens</th></tr>
+<tr><td>orange</td><td>ligne sélectionnée</td></tr>
+<tr><td>rose</td><td>correspondance consultée</td></tr>
+<tr><td>violet</td><td>ligne non synchronisée</td></tr>
+<tr><td>vert plein / pointillé</td><td>groupe manuel validé / à vérifier</td></tr>
+<tr><td>bleu plein / pointillé</td><td>groupe automatique validé / à vérifier</td></tr>
+<tr><td>rouge pointillé</td><td>absence confirmée</td></tr>
+<tr><td>gris pointillé</td><td>ligne ignorée</td></tr>
+</table>
+<p><b class="ui" data-tr="alignment.filter.title">Cadres visibles</b> limite l’affichage aux <b class="ui" data-tr="alignment.filter.unlinked">Lignes non synchronisées</b> ou aux <b class="ui" data-tr="alignment.filter.automatic_review">Synchronisations automatiques à vérifier</b>, pour repérer ce qui reste à faire.</p>
+<h3 id="revision">La liste des groupes</h3>
+<p>En bas, <b class="ui" data-tr="review.queue.label">Vérification</b> filtre les groupes : <b class="ui" data-tr="review.filter.all">Tous les groupes</b>, <b class="ui" data-tr="review.filter.pending">À vérifier</b>, <b class="ui" data-tr="review.filter.validated">Validés</b>, <b class="ui" data-tr="review.filter.absences">Absences confirmées</b>, <b class="ui" data-tr="review.filter.stale">Périmés</b>. Chaque groupe y est décrit par son état et ses lignes, nommées <code>page:rang</code> (libellé de la page, rang de la ligne). On peut en sélectionner plusieurs (<kbd>Ctrl</kbd>, <kbd>Maj</kbd>) pour <b class="ui" data-tr="review.validate.selected">Valider la sélection…</b>.</p>
+<p><b class="ui" data-tr="review.recalculate.next">Recalcul local…</b> refait les propositions du seul intervalle qui suit le repère choisi, par exemple après avoir ajouté un repère.</p>
+<h3 id="absences">Absences confirmées</h3>
+<p>Quand des lignes d’un témoin n’ont pas d’équivalent dans l’autre, sélectionnez-les d’un seul côté, puis <b class="ui" data-tr="alignment.action.more">Autres opérations</b> → <b class="ui" data-tr="exception.action.confirm">Confirmer l’absence des lignes sélectionnées (Ctrl+Maj+A)</b>. Elles cessent d’être « non synchronisées » et apparaissent en rouge. <b class="ui" data-tr="exception.action.revoke">Retirer les absences sélectionnées dans la liste</b> annule une absence choisie avec le filtre <b class="ui" data-tr="review.filter.absences">Absences confirmées</b>.</p>
+<h3 id="perimes">Groupes périmés</h3>
+<p>Donner à une page un autre fichier ALTO/PAGE (une segmentation corrigée) peut changer ses lignes. Avant le remplacement, le logiciel dit combien de groupes citent ces lignes ; après, ceux dont une ligne a changé sont marqués « [périmé] ». Le filtre <b class="ui" data-tr="review.filter.stale">Périmés</b> les liste. Après vérification sur les images, <b class="ui" data-tr="alignment.stale.revalidate">Revalider…</b> les rétablit ; sinon, dissociez-les. L’ordre de lecture corrigé de la page est remis à zéro.</p>
+<h3>Autres opérations</h3>
+<ul>
+<li><b class="ui" data-tr="Supprimer le(s) groupe(s) sélectionné(s) dans la liste">Supprimer le(s) groupe(s) sélectionné(s) dans la liste</b> et <b class="ui" data-tr="alignment.action.mark_uncertain">Marquer incertain</b> agissent sur les groupes choisis dans la liste.</li>
+<li><b class="ui" data-tr="alignment.action.suggest_htr">Proposer via HTR (facultatif)</b> cherche des correspondances d’après la ressemblance du texte HTR des lignes. Rien n’est présélectionné : choisissez les propositions à garder.</li>
+<li><b class="ui" data-tr="stream.window.action">Ordre de lecture et intervalles…</b> corrige l’ordre des pages, des régions (colonnes) et des lignes d’un témoin, quand la segmentation ne le donne pas correctement, et montre les intervalles entre repères.</li>
+<li><b class="ui" data-tr="progress.legacy.geometry">Ancienne interpolation géométrique (compatibilité)</b> et <b class="ui" data-tr="progress.legacy.residual">Ancien complément des lignes résiduelles (compatibilité)</b> sont d’anciennes méthodes, gardées pour les projets qui les utilisaient.</li>
+</ul>
+<p>L’onglet <b class="ui" data-tr="alignment.tab.text">Vue textuelle (facultative)</b> montre les lignes des deux témoins en texte. Les commandes agissent sur la sélection de l’onglet affiché.</p>
+
+<h2 id="etape4">10. Étape 4 : finaliser et exporter</h2>
+<p><b class="ui" data-tr="ui.final.refresh">Actualiser le bilan</b> résume les témoins et les synchronisations, et signale les lignes modifiées ou les fichiers introuvables.</p>
+<h3 id="controle">Contrôler la cohérence</h3>
+<p><b class="ui" data-tr="audit.action">Contrôler la cohérence du projet…</b> vérifie le projet sans rien modifier : lignes retenues et pages associées de chaque témoin, groupes validés et absences de chaque paire, références manquantes ou périmées, fichiers introuvables. Faites-le avant chaque export.</p>
+<h3 id="export-projet">Projet Varians pré-renseigné</h3>
+<p><b class="ui" data-tr="ui.final.export_project.action">Créer un projet Varians pré-renseigné…</b> écrit, dans un dossier vide, un projet que Varians ouvre tel quel :</p>
+<ul>
+<li><code>project.xml</code> : les témoins, leurs images (Manifest IIIF, ou chemins des images locales) et le pivot ;</li>
+<li><code>xml/edition.xml</code> : l’édition TEI du pivot, ou une TEI vide s’il n’en a pas ;</li>
+<li><code>alignments/&lt;sigle&gt;.json</code> : la synchronisation de chaque témoin, <strong>correspondances validées seulement</strong> ;</li>
+<li><code>rendering/</code>, <code>i18n/</code>, <code>web_output/</code> : les dossiers habituels d’un projet Varians ;</li>
+<li><code>RAPPORT_EXPORT_VARIANS.txt</code> : le compte rendu de l’export ;</li>
+<li>éventuellement <code>iiif/</code> : les copies HD des images IIIF, si toutes les pages utiles en ont une.</li>
+</ul>
+<p>Les images restent à leur place : le projet pointe vers elles (les lignes sont dans les fichiers de synchronisation). L’export est refusé si le dossier n’est pas vide, si un sigle contient un point, <code>/</code> ou <code>\</code>, si le pivot a plusieurs éditions TEI, si un témoin mélange images IIIF et locales, ou si un fichier est introuvable.</p>
+<h3 id="export-json">Exporter JSON pour Varians</h3>
+<p><b class="ui" data-tr="export.varians.action">Exporter JSON pour Varians…</b> sert à ajouter ou mettre à jour des témoins dans un projet Varians existant (<a href="#ajout-temoin">Parcours B</a>). Choisissez le témoin de référence (le pivot du projet Varians), confirmez, puis choisissez un dossier vide. Le logiciel y écrit :</p>
+<ul>
+<li><code>validated/&lt;sigle&gt;.json</code> : un fichier par témoin, correspondances validées seulement ;</li>
+<li><code>working/&lt;sigle&gt;.json</code> : les mêmes, plus les propositions non validées ;</li>
+<li><code>rapport_export.json</code> : les comptes et les contrôles de l’export.</li>
+</ul>
+<p>Varians ne connaît pas les états de Varians-Synchro : importez <code>validated/</code>, sauf pour un essai en connaissance de cause. Seules les synchronisations directes avec le témoin de référence sont exportées, sans déduction par un troisième témoin. Si un témoin n’a aucune correspondance exportable, le logiciel le dit avant l’export, avec la cause.</p>
+
+<h2 id="format-json">11. Format des fichiers de synchronisation (JSON)</h2>
+<p>Un fichier par témoin, en UTF-8, au format <code>tei-manuscript-alignment</code>, version 1, que lit Varians. Le fichier du pivot décrit ses lignes ; celui de chaque autre témoin décrit les siennes et les relie aux lignes du pivot.</p>
+<h3 id="format-racine">Racine</h3>
+<table>
+<tr><th>Champ</th><th>Contenu</th></tr>
+<tr><td><code class="field">meta.format</code></td><td><code>"tei-manuscript-alignment"</code>.</td></tr>
+<tr><td><code class="field">meta.format_version</code></td><td><code>1</code>.</td></tr>
+<tr><td><code class="field">meta.witness</code></td><td>Le sigle du témoin décrit.</td></tr>
+<tr><td><code class="field">meta.base_witness</code></td><td>Le sigle du pivot (témoin de référence).</td></tr>
+<tr><td><code class="field">meta.role</code></td><td><code>"base"</code> pour le pivot, <code>"secondary"</code> pour les autres.</td></tr>
+<tr><td><code class="field">meta.source</code></td><td><code>"Varians-Synchro"</code>.</td></tr>
+<tr><td><code class="field">meta.reference_basis</code></td><td><code>"physical-lines-in-study-scope"</code> : les clés désignent des lignes physiques, hors lignes ignorées.</td></tr>
+<tr><td><code class="field">meta.editorial_tei_alignment</code></td><td><code>"NOT_ESTABLISHED"</code> : le fichier ne contient pas de lien vers la TEI ; c’est Varians qui fait correspondre les lignes du pivot à ses <code>&lt;lb/&gt;</code>.</td></tr>
+<tr><td><code class="field">pages</code></td><td>Les pages du témoin qui ont un fichier ALTO/PAGE, dans l’ordre de lecture.</td></tr>
+</table>
+<h3 id="format-page">Page</h3>
+<table>
+<tr><th>Champ</th><th>Contenu</th></tr>
+<tr><td><code class="field">pages[].id</code></td><td>L’identifiant de la page dans le projet <code>.vsynch</code>. Il ne change pas tant que la page reste dans le projet.</td></tr>
+<tr><td><code class="field">pages[].label</code></td><td>Le libellé de la page (folio, nom de l’image).</td></tr>
+<tr><td><code class="field">pages[].alto_width</code>, <code class="field">pages[].alto_height</code></td><td>Les dimensions de la page dans le fichier ALTO/PAGE (pixels), auxquelles se rapportent les coordonnées des lignes.</td></tr>
+<tr><td><code class="field">pages[].image</code></td><td>L’image de la page ; <code class="field">pages[].image.type</code> vaut <code>"file"</code>, <code>"iiif"</code> ou <code>"none"</code>.</td></tr>
+<tr><td><code class="field">pages[].image.path</code></td><td>Image locale : son chemin, tel qu’il est dans le projet.</td></tr>
+<tr><td><code class="field">pages[].image.label</code></td><td>Le libellé de l’image.</td></tr>
+<tr><td><code class="field">pages[].image.service</code>, <code class="field">pages[].image.image</code>, <code class="field">pages[].image.canvas</code>, <code class="field">pages[].image.width</code>, <code class="field">pages[].image.height</code>, <code class="field">pages[].image.iiif_version</code></td><td>Image IIIF : le service d’images, l’adresse de l’image, l’identifiant du Canvas, ses dimensions et la version de l’API IIIF Image.</td></tr>
+<tr><td><code class="field">pages[].lines</code></td><td>Les lignes retenues de la page, dans l’ordre de lecture.</td></tr>
+</table>
+<h3 id="format-ligne">Ligne</h3>
+<table>
+<tr><th>Champ</th><th>Contenu</th></tr>
+<tr><td><code class="field">pages[].lines[].line</code></td><td>Le rang de la ligne dans le fichier ALTO/PAGE de sa page (à partir de 1). Les lignes ignorées ne sont pas écrites, mais les rangs ne sont pas renumérotés : il peut donc y avoir des trous.</td></tr>
+<tr><td><code class="field">pages[].lines[].order</code></td><td>La place de la ligne dans l’ordre de lecture du témoin, toutes pages confondues.</td></tr>
+<tr><td><code class="field">pages[].lines[].bbox</code></td><td>Le rectangle de la ligne : <code class="field">pages[].lines[].bbox.hpos</code>, <code class="field">pages[].lines[].bbox.vpos</code> (coin supérieur gauche), <code class="field">pages[].lines[].bbox.width</code>, <code class="field">pages[].lines[].bbox.height</code>, en pixels du fichier ALTO/PAGE.</td></tr>
+<tr><td><code class="field">pages[].lines[].polygon</code></td><td>Facultatif : le contour de la ligne (fichiers PAGE), liste de points <code>[x, y]</code>.</td></tr>
+<tr><td><code class="field">pages[].lines[].alto_id</code></td><td>L’identifiant de la ligne dans le fichier ALTO/PAGE.</td></tr>
+<tr><td><code class="field">pages[].lines[].alto</code></td><td>Le texte HTR de la ligne (vide s’il n’y en a pas).</td></tr>
+<tr><td><code class="field">pages[].lines[].base_keys</code></td><td>Autres témoins seulement : les lignes du pivot auxquelles la ligne correspond, sous la forme <code>"id_de_page::rang"</code> (<code class="field">pages[].id</code> et <code class="field">pages[].lines[].line</code> d’une ligne du pivot). Une ligne d’un groupe n↔m porte les clés de toutes les lignes du pivot du groupe. Une ligne sans correspondance (non synchronisée, absence confirmée, groupe non validé dans <code>validated/</code>) n’a pas ce champ.</td></tr>
+<tr><td><code class="field">pages[].lines[].vsynch_state</code></td><td>L’état du groupe dans Varians-Synchro : <code>validated</code>, <code>uncertain</code> ou <code>proposed</code> (ces deux derniers seulement dans <code>working/</code>). Informatif : Varians ne s’en sert pas.</td></tr>
+<tr><td><code class="field">pages[].lines[].vsynch_origin</code></td><td>L’origine du groupe (<code>manual</code>, <code>manual-correction</code>, <code>automatic-textual-progress-v071</code>, <code>automatic-htr-htr</code>…). Informatif.</td></tr>
+<tr><td><code class="field">pages[].lines[].score</code></td><td>Facultatif : la confiance d’une proposition automatique, entre 0 et 1. Informatif.</td></tr>
+</table>
+<h3>Ce que Varians en fait</h3>
+<ul>
+<li>Les lignes du fichier du pivot, dans l’ordre du fichier, correspondent une à une aux <code>&lt;lb edRef="#PIVOT"/&gt;</code> de l’édition : la première ligne au premier <code>&lt;lb/&gt;</code>, et ainsi de suite. Varians vérifie que les nombres sont égaux.</li>
+<li>Une clé du pivot est <code>id_de_page::rang</code> : elle reste valable tant que la page garde son identifiant et son fichier ALTO/PAGE. C’est pourquoi le nouveau témoin d’un projet existant doit être aligné dans le même projet <code>.vsynch</code> (<a href="#ajout-temoin">Parcours B</a>).</li>
+<li>Quand le texte arrive à une ligne du pivot, Varians montre, dans chaque autre témoin, la ou les lignes dont les <code>base_keys</code> la désignent.</li>
+</ul>
+<h3>Exemple</h3>
+<p>Une ligne du témoin B, reliée aux lignes 1 et 2 d’une page du pivot A :</p>
+<pre>{"meta": {"format": "tei-manuscript-alignment", "format_version": 1,
+          "witness": "B", "base_witness": "A", "role": "secondary",
+          "source": "Varians-Synchro",
+          "reference_basis": "physical-lines-in-study-scope",
+          "editorial_tei_alignment": "NOT_ESTABLISHED"},
+ "pages": [{"id": "8f2c…", "label": "f. 12r", "alto_width": 2480, "alto_height": 3508,
+            "image": {"type": "file", "path": "C:/images/B/f12r.jpg", "label": "f12r"},
+            "lines": [{"line": 1, "order": 1,
+                       "bbox": {"hpos": 210.0, "vpos": 340.0, "width": 1630.0, "height": 72.0},
+                       "alto_id": "line_1", "alto": "Beatus Germanus in hac vita",
+                       "base_keys": ["5d1a…::1", "5d1a…::2"],
+                       "vsynch_state": "validated", "vsynch_origin": "manual"}]}]}</pre>
+
+<h2 id="fichiers">12. Fichiers, sauvegardes et dépannage</h2>
+<h3>Le fichier de projet</h3>
+<ul>
+<li>Tout le travail est dans le fichier <code>.vsynch</code> : témoins, contenu des fichiers ALTO/PAGE importés, associations, lignes ignorées, ordre de lecture, synchronisations. Les fichiers sources ne sont jamais modifiés.</li>
+<li>L’enregistrement est sûr : le fichier est remplacé d’un seul coup, et la version précédente est gardée dans <code>&lt;projet&gt;.vsynch.bak</code>. Pour revenir en arrière, copiez ce <code>.bak</code> sous un nouveau nom en <code>.vsynch</code> et ouvrez-le.</li>
+<li>Il n’y a pas de commande « Enregistrer sous » : pour garder une version, copiez le fichier <code>.vsynch</code>.</li>
+<li>Un projet dont les chemins sont relatifs (comme l’exemple livré) s’ouvre depuis n’importe quel dossier ; à l’enregistrement, les chemins sont écrits en entier.</li>
+<li>Modifier un fichier ALTO/PAGE sur le disque après l’import ne change pas le projet ; le bilan le signale. Pour une segmentation corrigée, importez le nouveau fichier et associez-le à la page (les groupes touchés deviennent périmés).</li>
+<li>Fermer le logiciel, ouvrir ou créer un projet propose d’enregistrer les modifications en cours.</li>
+</ul>
+<h3>Problèmes fréquents</h3>
+<ul>
+<li><strong>« Associez des pages ALTO aux deux témoins avant de synchroniser »</strong> : un des deux témoins n’a encore aucune page associée à un fichier de lignes (<a href="#etape2">Étape 2</a>).</li>
+<li><strong>Image IIIF indisponible</strong> : le serveur ne répond pas ; les associations ne sont pas perdues. Réessayez plus tard, ou téléchargez des copies HD.</li>
+<li><strong>Cadres décalés sur l’image</strong> : l’image et le fichier ALTO/PAGE n’ont pas les mêmes proportions (la barre d’état le signale) ; vérifiez que le fichier correspond bien à cette image.</li>
+<li><strong>Export refusé</strong> : le dossier choisi n’est pas vide, ou un sigle contient un point, <code>/</code> ou <code>\</code>.</li>
+<li><strong>Dans Varians, les lignes du pivot ne correspondent pas au texte</strong> : le nombre de <code>&lt;lb edRef="#PIVOT"/&gt;</code> diffère du nombre de lignes retenues du pivot (lignes à ignorer oubliées, ou <code>&lt;lb/&gt;</code> manquants). <b class="varians" data-varians="diagnostics.menu">État des témoins…</b> dans Varians et la <a href="#tei">liaison TEI</a> de Varians-Synchro aident à trouver l’écart.</li>
+<li><strong>Dans Varians, les liens du fichier ne correspondent à aucune ligne du pivot</strong> : la synchronisation du pivot ne vient pas du même projet <code>.vsynch</code> (voir <a href="#ajout-temoin">Parcours B</a>).</li>
+<li><strong>Avec Spyder</strong> : lancez <code>run.py</code> ; le logiciel s’ouvre dans un processus à part, pour ne pas troubler la console de Spyder. Le journal de démarrage est dans <code>~/.varians_synchro/logs</code>.</li>
+</ul>
+
+<h2 id="raccourcis">13. Raccourcis</h2>
+<table>
+<tr><th>Touche</th><th>Effet</th></tr>
+<tr><td><kbd>F1</kbd></td><td>Ouvrir l’aide (dans la fenêtre de synchronisation : à sa section).</td></tr>
+<tr><td><kbd>Ctrl+Entrée</kbd></td><td><b class="ui" data-tr="alignment.action.link_lines">Associer les lignes</b> sélectionnées.</td></tr>
+<tr><td><kbd>Ctrl+Maj+A</kbd></td><td>Confirmer l’absence des lignes sélectionnées.</td></tr>
+<tr><td><kbd>F8</kbd> / <kbd>Maj+F8</kbd></td><td>Groupe suivant / précédent de la liste.</td></tr>
+<tr><td><kbd>Alt+V</kbd></td><td><b class="ui" data-tr="review.validate.next">Valider et suivant</b>.</td></tr>
+<tr><td>clic / <kbd>Ctrl</kbd>+clic / <kbd>Maj</kbd>+clic</td><td>Sélectionner une ligne / ajouter ou retirer une ligne / sélectionner une suite de lignes.</td></tr>
+<tr><td>double-clic, molette</td><td>Zoom sur la ligne ; zoom.</td></tr>
+<tr><td><kbd>Ctrl+F</kbd>, <kbd>F3</kbd> / <kbd>Maj+F3</kbd></td><td>Dans l’aide : rechercher, occurrence suivante / précédente.</td></tr>
+</table>
+</body></html>
