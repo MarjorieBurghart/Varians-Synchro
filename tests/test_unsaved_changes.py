@@ -1,6 +1,5 @@
 """Non-Qt regression tests for project-save safety."""
 import ast
-from pathlib import Path
 
 from varians_synchro.core import new_project, save_project, load_project, create_witness
 from varians_synchro.project_state import ProjectChangeTracker, project_fingerprint
@@ -68,11 +67,8 @@ def test_fingerprint_ignores_dict_order_but_not_values():
 
 
 def test_ui_guards_close_new_open_and_language_handoff():
-    source = Path(__file__).resolve().parents[1] / 'varians_synchro' / 'guided_ui.py'
-    code = source.read_text(encoding='utf-8')
-    tree = ast.parse(code)
-    guided = next(n for f in tree.body if isinstance(f, ast.FunctionDef) and f.name=='make_guided_window'
-                  for n in f.body if isinstance(n, ast.ClassDef) and n.name=='GuidedWindow')
+    from ui_source import ui_class
+    code, guided, _path = ui_class('GuidedWindow')
     methods = {n.name: n for n in guided.body if isinstance(n, ast.FunctionDef)}
     for name in ('closeEvent','new','open','save','change_language'):
         assert name in methods

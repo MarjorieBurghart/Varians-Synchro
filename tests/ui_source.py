@@ -11,7 +11,7 @@ PACKAGE = Path(__file__).resolve().parents[1] / 'varians_synchro'
 
 
 def ui_files():
-    return [PACKAGE / 'guided_ui.py', *sorted(PACKAGE.glob('ui_*.py'))]
+    return sorted(PACKAGE.glob('ui_*.py'))
 
 
 def ui_class(name):

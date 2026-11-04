@@ -14,16 +14,16 @@ from varians_synchro.core import (create_witness, load_project, new_project,
 from varians_synchro.project_state import ProjectChangeTracker
 
 
-_SOURCE = Path(__file__).resolve().parents[1] / 'varians_synchro' / 'guided_ui.py'
+_SOURCE = Path(__file__).resolve().parents[1] / 'varians_synchro' / 'ui_main_window.py'
+
+
+def _guided_window(tree):
+    return next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'GuidedWindow')
 
 
 def _method(name: str, *, open_path='', save_path='', name_value='Nouveau', name_ok=True):
     """Compile actual source method with fake dialogs, not a rewritten copy."""
-    tree = ast.parse(_SOURCE.read_text(encoding='utf-8'))
-    factory = next(n for n in tree.body if isinstance(n, ast.FunctionDef)
-                   and n.name == 'make_guided_window')
-    cls = next(n for n in factory.body if isinstance(n, ast.ClassDef)
-               and n.name == 'GuidedWindow')
+    cls = _guided_window(ast.parse(_SOURCE.read_text(encoding='utf-8')))
     method = next(n for n in cls.body if isinstance(n, ast.FunctionDef) and n.name == name)
     method.decorator_list = []
     code = compile(ast.fix_missing_locations(ast.Module(body=[method], type_ignores=[])),
@@ -149,11 +149,7 @@ def test_open_invalid_file_cannot_replace_existing_document(tmp_path):
 def test_no_unreachable_project_assignment_after_return():
     # Static check guards against accidentally reintroducing the indentation
     # error in either of the two UI entry points.
-    tree = ast.parse(_SOURCE.read_text(encoding='utf-8'))
-    factory = next(n for n in tree.body if isinstance(n, ast.FunctionDef)
-                   and n.name == 'make_guided_window')
-    cls = next(n for n in factory.body if isinstance(n, ast.ClassDef)
-               and n.name == 'GuidedWindow')
+    cls = _guided_window(ast.parse(_SOURCE.read_text(encoding='utf-8')))
     for name in ('new', 'open'):
         method = next(n for n in cls.body if isinstance(n, ast.FunctionDef) and n.name == name)
         for branch in ast.walk(method):

@@ -76,3 +76,12 @@ def test_the_resources_dialog_opens_on_its_own(app, setting):
     dialog = WitnessResourceDialog(project)
     assert dialog.sigil.text() == ''
     dialog.close()
+
+
+def test_the_entry_point_returns_the_main_window_of_its_module():
+    import inspect
+    pytest.importorskip('PySide6')
+    from varians_synchro.guided_ui import make_guided_window
+    from varians_synchro.ui_main_window import GuidedWindow
+    assert make_guided_window() is GuidedWindow
+    assert not inspect.signature(make_guided_window).parameters

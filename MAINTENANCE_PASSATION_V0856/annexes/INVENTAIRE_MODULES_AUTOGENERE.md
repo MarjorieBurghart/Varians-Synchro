@@ -4,7 +4,7 @@ Génération reproductible : `python tools/generate_module_inventory.py` depuis 
 Inspection statique AST : **aucun module applicatif n’est importé ni exécuté**.
 Les numéros de ligne sont ceux de **cette livraison uniquement**.
 
-**46 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
+**47 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
 
 ## `varians_synchro/__init__.py` (1 lignes)
 **Dépendances internes observées** : `core`
@@ -54,10 +54,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `error_report`, `guided_ui`, `i18n`, `qt_lifecycle`
 **Fonctions au premier niveau** : `main` (l.17)
 
-## `varians_synchro/guided_ui.py` (639 lignes)
-**Objet (docstring source)** : Witness-centered PySide6 GUI; the V0.7 physical alignment engine is preserved.
-**Dépendances internes observées** : `core`, `correspondence_navigation`, `exceptions`, `i18n`, `imaging`, `interpolation`, `line_scope`, `overlay_filters`, `physical_alignment`, `project_state`, `rapid_review`, `reading_stream`, `residual_alignment`, `resource_workflow`, `tei_binding`, `textual_progress`, `ui_batch_binding`, `ui_pages`, `ui_pair`, `ui_reading_order`, `ui_resources`, `ui_scope`, `ui_tei_binding`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`
-**Fonctions au premier niveau** : `make_guided_window` (l.30)
+## `varians_synchro/guided_ui.py` (23 lignes)
+**Objet (docstring source)** : Point d'entrée de l'interface de Varians-Synchro. Les fenêtres sont réparties dans les modules ``ui_*`` : - ``ui_main_window`` : fenêtre principale (``GuidedWindow``) ; - ``ui_pair`` : synchronisation visuelle d'une paire de témoins ; - ``ui_pages`` : images et associations ALTO/PAGE d'un témoin ; - ``ui_batch_binding`` : association automatique par lot ; - ``ui_resources`` : ajout et modification d'un témoin ; - ``ui_tei_binding`` : liaison TEI ↔ lignes physiques ; - ``ui_reading_order``, ``ui_scope`` : ordre de lecture, périmètre ; - ``ui_widgets`` : widgets Qt qui traduisent leurs textes, ``_run_modal``. Ce module ne charge PySide6 qu'à l'
+**Dépendances internes observées** : `ui_main_window`
+**Fonctions au premier niveau** : `make_guided_window` (l.20)
 
 ## `varians_synchro/hd_registry.py` (159 lignes)
 **Objet (docstring source)** : Durable, source-bound IIIF HD downloads linked to manuscript Canvas IDs. No network requests. The registry stores where successful downloads live; it never turns an image into a new manuscript page or replaces an IIIF source. The original ``images.json`` remains the authoritative download receipt.
@@ -173,6 +173,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : Fenêtre « Associer automatiquement les images et les ALTO/PAGE » : propositions par lot, que l’utilisateur peut modifier.
 **Dépendances internes observées** : `bulk_binding`, `i18n`, `ui_widgets`
 **Classes déclarées au premier niveau** : `ProtectedBindingComboBox` (l.13), `BatchBindingDialog` (l.25)
+
+## `varians_synchro/ui_main_window.py` (603 lignes)
+**Objet (docstring source)** : Fenêtre principale de Varians-Synchro : projet et témoins, pages, synchronisation, avancement et exports.
+**Dépendances internes observées** : `core`, `i18n`, `physical_alignment`, `project_state`, `resource_workflow`, `tei_binding`, `ui_batch_binding`, `ui_pages`, `ui_pair`, `ui_resources`, `ui_scope`, `ui_tei_binding`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`
+**Classes déclarées au premier niveau** : `GuidedWindow` (l.26)
 
 ## `varians_synchro/ui_pages.py` (580 lignes)
 **Objet (docstring source)** : Fenêtre « Images et associations ALTO/PAGE » d’un témoin : ordre des pages, association des XML, copies HD et export pour une HTR.
