@@ -712,4 +712,24 @@ I dettagli tecnici sono nella console o nel registro di avvio.</string>
   <string key="alignment.error.recalculation_conflict">Ricalcolo interrotto: le nuove corrispondenze sono in conflitto tra loro.</string>
   <string key="alignment.error.invalid_state">Stato non valido</string>
   <string key="alignment.error.link_not_found_unchanged">Associazione non trovata: nulla è stato modificato</string>
+  <string key="alignment.state.proposed">proposto</string>
+  <string key="alignment.state.uncertain">incerto</string>
+  <string key="alignment.state.validated">convalidato</string>
+  <string key="alignment.kind.correspondence">corrispondenza</string>
+  <string key="alignment.htr.none">Nessuna corrispondenza testuale trovata. L’HTR è facoltativa: puoi lavorare direttamente sulle immagini.</string>
+  <string key="alignment.witness_choice">{witness} ({lines} righe XML)</string>
+  <string key="progress.warning.counts">(pivot: {reference}, destinazione: {target})</string>
+  <string key="stream.warning.stale_anchor">Ancora obsoleta: le sue righe sono cambiate dopo la convalida</string>
+  <string key="ui.audit.issue.anchor_stale_anchor">Ancora obsoleta: le sue righe sono cambiate dopo la convalida</string>
+  <string key="ui.audit.issue.anchor_empty_anchor">Ancora senza righe su uno dei lati</string>
+  <string key="ui.audit.issue.anchor_stale_or_ignored_anchor">Ancora con una riga mancante o ignorata</string>
+  <string key="ui.audit.issue.anchor_noncontiguous_anchor">Le righe dell’ancora non sono consecutive nell’ordine di lettura</string>
+  <string key="ui.audit.issue.anchor_crossing_or_overlapping_anchors">Ancore incrociate o sovrapposte</string>
+  <string key="ui.pages.hd.choose_empty">Scegli una cartella vuota per le immagini HD: il download non sovrascrive alcun file.</string>
+  <string key="ui.xml.page_choice">{kind} — {name} (pagina {number})</string>
+  <string key="resources.binding.entry">{name} ({lines} righe)</string>
+  <string key="resources.project.summary">{witness}: {pages} pagine, {mapped} con XML, {lines} righe</string>
+  <string key="dialog.filter.project">Progetto Varians-Synchro</string>
+  <string key="dialog.filter.images">Immagini</string>
+  <string key="viewer.status">{width} × {height} pixel · rotella: zoom; trascinare: spostare</string>
 </translations>

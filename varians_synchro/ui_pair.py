@@ -332,7 +332,8 @@ class PairDialog(QDialog):
                 content = tr('exception.link.label', source=source_label,
                              lines=detail, missing=missing_label)
             else:
-                content = f"[{link['state']}]  {a} ↔ {b}  · {link['kind']}"
+                content = (f"[{tr('alignment.state.' + link['state'])}]  {a} ↔ {b}"
+                           f"  · {tr('alignment.kind.' + link['kind'])}")
             if link['id'] in stale:
                 content = tr('alignment.stale.tag') + ' ' + content
             entry = QListWidgetItem(content)
@@ -658,15 +659,13 @@ class PairDialog(QDialog):
             candidates = outcome['proposals']
             if not candidates:
                 QMessageBox.information(self, 'Aucune proposition',
-                    'Aucun rapprochement textuel obtenu. La HTR est facultative : '
-                    'vous pouvez travailler directement sur les images.\n'
-                    + '\n'.join(outcome['warnings']))
+                    '\n'.join([tr('alignment.htr.none'), *outcome['warnings']]))
                 return
             names_a, names_b = line_names(self.left_lines), line_names(self.right_lines)
             review = ProposalReviewDialog(
                 self, title='Propositions HTR–HTR (facultatives)', size=(900, 550),
                 intro=f"{len(candidates)} " + tr('ui.groupes.proposes.aucune.validation.automatique.selectionnez.ceux'),
-                items=[f"{s['confidence']:.0%} HTR [{s['state']}] · "
+                items=[f"{s['confidence']:.0%} HTR [{tr('alignment.state.' + s['state'])}] · "
                        f"{named(names_a, s['reference_ids'])} ↔ {named(names_b, s['target_ids'])}"
                        for s in candidates],
                 preselect=False, wrap_intro=False, list_stretch=0)
@@ -711,7 +710,9 @@ class PairDialog(QDialog):
                 if message == 'progress.warning.' + reason:
                     message = reason
                 if reason in ('one_sided_gap', 'outside_anchors_start', 'outside_anchors_end'):
-                    message += f" (pivot: {diagnostic.get('reference_count', 0)}, cible: {diagnostic.get('target_count', 0)})"
+                    message += ' ' + tr('progress.warning.counts',
+                                        reference=diagnostic.get('reference_count', 0),
+                                        target=diagnostic.get('target_count', 0))
                 if message not in explanations:
                     explanations.append(message)
             warning_text = '\n'.join(explanations)
