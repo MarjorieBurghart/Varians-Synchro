@@ -83,10 +83,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : Varians-Synchro localization: XML catalogs, same schema as Varians. The files ``i18n/fr.xml`` and ``i18n/en.xml`` live beside ``run.py``. All UI message values (including the French defaults) come from these files. Application state, source texts, folio labels and manuscripts are NEVER translated.
 **Fonctions au premier niveau** : `_load_one` (l.21), `_parameters` (l.39), `reload_catalogs` (l.43), `available_languages` (l.71), `language_labels` (l.75), `set_language` (l.80), `get_language` (l.87), `tr` (l.91), `is_catalog_text` (l.104), `french` (l.110), `translate_template` (l.117)
 
-## `varians_synchro/imaging.py` (392 lignes)
+## `varians_synchro/imaging.py` (433 lignes)
 **Objet (docstring source)** : IIIF/local page registry, ALTO-to-page mapping, export for external HTR. Images and ALTO are immutable external inputs. An export is a temporary working copy.
 **Dépendances internes observées** : `core`, `errors`, `line_scope`, `page_order`, `witness_ids`
-**Fonctions au premier niveau** : `_http_bytes` (l.21), `_label` (l.31), `_first` (l.42), `parse_manifest` (l.48), `fetch_manifest` (l.87), `create_pages` (l.91), `bind_alto` (l.136), `mapped_alto_page` (l.149), `bind_line_source` (l.156), `mapped_line_page` (l.160), `suggest_alto_bindings` (l.164), `suggest_line_bindings` (l.183), `image_request_url` (l.187), `image_bytes` (l.196), `export_iiif_htr_zip` (l.206), `import_htr_results` (l.245), `iiif_hd_url` (l.291), `export_iiif_hd_images` (l.311)
+**Classes déclarées au premier niveau** : `_HTTPOnlyRedirect` (l.23)
+**Fonctions au premier niveau** : `urlopen` (l.36), `_open` (l.42), `_read_until` (l.48), `_http_bytes` (l.59), `_label` (l.72), `_first` (l.83), `parse_manifest` (l.89), `fetch_manifest` (l.128), `create_pages` (l.132), `bind_alto` (l.177), `mapped_alto_page` (l.190), `bind_line_source` (l.197), `mapped_line_page` (l.201), `suggest_alto_bindings` (l.205), `suggest_line_bindings` (l.224), `image_request_url` (l.228), `image_bytes` (l.237), `export_iiif_htr_zip` (l.247), `import_htr_results` (l.286), `iiif_hd_url` (l.332), `export_iiif_hd_images` (l.352)
 
 ## `varians_synchro/interpolation.py` (376 lignes)
 **Objet (docstring source)** : Geometry-first manuscript column matching between confirmed 1:1 anchors. This module never assumes a transcription is correct. A physical ALTO column can be aligned between its first and last confirmed lines even when the ALTO reading-order list is interleaved with other columns, text lines are ragged, or OCR order contains small vertical inversions. The output is *suggestions*, not validated textual equivalence; no source or confirmed link is modified.

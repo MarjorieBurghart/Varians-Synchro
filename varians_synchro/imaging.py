@@ -10,22 +10,63 @@ import re
 import zipfile
 from pathlib import Path
 from urllib.parse import urlparse
-from urllib.request import Request, urlopen
+from urllib.request import HTTPRedirectHandler, Request, build_opener
+import time
 from .errors import Localized, localized
 from .witness_ids import witness_id_for_siglum
 
 MAX_MANIFEST_BYTES = 20_000_000
 MAX_IMAGE_BYTES = 80_000_000
+HD_DEADLINE = 600   # one HD image (up to 160 MB)
 
 
-def _http_bytes(url, max_bytes=MAX_IMAGE_BYTES, timeout=30):
-    if urlparse(url).scheme != 'https' and urlparse(url).scheme != 'http':
+class _HTTPOnlyRedirect(HTTPRedirectHandler):
+    """Follow redirections within http/https only: checking the scheme of
+    the first address did not stop a server redirecting to ftp://…"""
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if urlparse(newurl).scheme not in ('http', 'https'):
+            raise localized(ValueError, 'error.imaging.redirect_refused')
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+_OPENER = build_opener(_HTTPOnlyRedirect)
+TOTAL_DEADLINE = 120
+
+
+def urlopen(request, timeout):
+    """``urllib.request.urlopen`` following redirections within http/https
+    only."""
+    return _OPENER.open(request, timeout=timeout)
+
+
+def _open(url, timeout):
+    if urlparse(url).scheme not in ('http', 'https'):
         raise ValueError('URL HTTP(S) attendue')
-    with urlopen(Request(url, headers={'User-Agent':'Varians-Synchro/0.2 (research software)'}), timeout=timeout) as res:
-        data = res.read(max_bytes + 1)
-        if len(data) > max_bytes:
-            raise ValueError('Ressource trop volumineuse')
-        return data
+    return urlopen(Request(url, headers={'User-Agent': 'Varians-Synchro (research software)'}), timeout=timeout)
+
+
+def _read_until(response, limit, started, deadline):
+    """One block of ``response``, or TimeoutError once ``deadline`` seconds
+    have passed since ``started``: the timeout of the socket bounds each
+    read, not the whole answer of a server answering drop by drop."""
+    if time.monotonic() - started > deadline:
+        raise localized(TimeoutError, 'error.imaging.too_slow', seconds=deadline)
+    # read1: what has arrived (read() would wait for the whole block).
+    reader = getattr(response, 'read1', None)
+    return reader(limit) if reader is not None else response.read(limit)
+
+
+def _http_bytes(url, max_bytes=MAX_IMAGE_BYTES, timeout=30, deadline=TOTAL_DEADLINE):
+    started = time.monotonic()
+    with _open(url, timeout) as res:
+        data = bytearray()
+        while True:
+            chunk = _read_until(res, 65_536, started, deadline)
+            if not chunk:
+                return bytes(data)
+            data += chunk
+            if len(data) > max_bytes:
+                raise ValueError('Ressource trop volumineuse')
 
 
 def _label(value):
@@ -349,14 +390,14 @@ def export_iiif_hd_images(witness, page_ids, destination, *, cancelled=None,
             filename = f'{witness["id"]}_{index:04d}' + (f'_{safe_label}' if safe_label else '') + '.jpg'
             filename = re.sub(r'[^A-Za-z0-9_.-]', '_', filename)
             final = staging / filename
-            with urlopen(Request(url, headers={'User-Agent': 'Varians-Synchro/0.8.5.1'}),
-                         timeout=35) as response, final.open('wb') as outfile:
+            started = time.monotonic()
+            with _open(url, 35) as response, final.open('wb') as outfile:
                 total = 0
                 signature = b''
                 while True:
                     if cancelled():
                         raise InterruptedError('Téléchargement annulé')
-                    chunk = response.read(262_144)
+                    chunk = _read_until(response, 262_144, started, HD_DEADLINE)
                     if not chunk:
                         break
                     if not signature:

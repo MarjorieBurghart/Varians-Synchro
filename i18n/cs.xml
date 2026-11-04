@@ -923,4 +923,6 @@ Technické podrobnosti najdete v konzoli nebo ve spouštěcím protokolu.</strin
   <string key="ui.audit.issue.xml_source_read_otherwise">Soubor PAGE s vnořenou strukturou, od této verze čtený jinak: projekt si ponechává své řádky, ale nové přiřazení by zastaralo skupiny, které se jich týkají</string>
   <string key="error.binding.xml_page_bound">Tato stránka XML je již přiřazena k obrázku „{page}“: jednu stránku XML nelze přiřadit více obrázkům.</string>
   <string key="ui.audit.issue.xml_page_bound_twice">Jedna stránka XML je přiřazena více obrázkům: její řádky by se počítaly vícekrát</string>
+  <string key="error.imaging.redirect_refused">Server přesměrovává na adresu, která není http ani https: přesměrování odmítnuto.</string>
+  <string key="error.imaging.too_slow">Server odpovídá příliš pomalu: ukončeno po {seconds} s.</string>
 </translations>

@@ -930,4 +930,6 @@ Technical details are in the console or the startup log.</string>
   <string key="ui.audit.issue.xml_source_read_otherwise">PAGE file with a nested structure, read differently since this version: the project keeps its lines, but associating it again would make the groups touching them stale</string>
   <string key="error.binding.xml_page_bound">This XML page is already associated with the image “{page}”: one XML page cannot be assigned to several images.</string>
   <string key="ui.audit.issue.xml_page_bound_twice">One XML page is associated with several images: its lines would count several times</string>
+  <string key="error.imaging.redirect_refused">The server redirects to an address that is not http or https: redirection refused.</string>
+  <string key="error.imaging.too_slow">The server answers too slowly: given up after {seconds} s.</string>
 </translations>

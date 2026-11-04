@@ -923,4 +923,6 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="ui.audit.issue.xml_source_read_otherwise">入れ子構造の PAGE ファイルは、このバージョンから別の読み方になります。プロジェクトの行はそのままですが、もう一度関連付けると、それらの行を含むグループは古くなります</string>
   <string key="error.binding.xml_page_bound">この XML ページはすでに画像「{page}」に関連付けられています。1 つの XML ページを複数の画像に割り当てることはできません。</string>
   <string key="ui.audit.issue.xml_page_bound_twice">1 つの XML ページが複数の画像に関連付けられています。その行が重複して数えられます</string>
+  <string key="error.imaging.redirect_refused">サーバーが http でも https でもないアドレスへリダイレクトしています。リダイレクトを拒否しました。</string>
+  <string key="error.imaging.too_slow">サーバーの応答が遅すぎます。{seconds} 秒で中止しました。</string>
 </translations>

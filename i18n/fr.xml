@@ -930,4 +930,6 @@ Les détails techniques sont dans la console ou le journal de démarrage.</strin
   <string key="ui.audit.issue.xml_source_read_otherwise">Fichier PAGE à structure imbriquée, lu autrement depuis cette version : le projet garde ses lignes, mais une nouvelle association rendrait périmés les groupes qui les touchent</string>
   <string key="error.binding.xml_page_bound">Cette page XML est déjà associée à l’image « {page} » : une même page XML ne peut pas être attribuée à plusieurs images.</string>
   <string key="ui.audit.issue.xml_page_bound_twice">Une même page XML est associée à plusieurs images : ses lignes compteraient plusieurs fois</string>
+  <string key="error.imaging.redirect_refused">Le serveur redirige vers une adresse qui n’est pas http ou https : redirection refusée.</string>
+  <string key="error.imaging.too_slow">Le serveur répond trop lentement : abandon après {seconds} s.</string>
 </translations>

@@ -923,4 +923,6 @@ I dettagli tecnici sono nella console o nel registro di avvio.</string>
   <string key="ui.audit.issue.xml_source_read_otherwise">File PAGE con struttura annidata, letto diversamente da questa versione: il progetto conserva le sue righe, ma una nuova associazione renderebbe obsoleti i gruppi che le toccano</string>
   <string key="error.binding.xml_page_bound">Questa pagina XML è già associata all’immagine «{page}»: una stessa pagina XML non può essere attribuita a più immagini.</string>
   <string key="ui.audit.issue.xml_page_bound_twice">Una stessa pagina XML è associata a più immagini: le sue righe sarebbero contate più volte</string>
+  <string key="error.imaging.redirect_refused">Il server reindirizza a un indirizzo che non è http o https: reindirizzamento rifiutato.</string>
+  <string key="error.imaging.too_slow">Il server risponde troppo lentamente: abbandono dopo {seconds} s.</string>
 </translations>

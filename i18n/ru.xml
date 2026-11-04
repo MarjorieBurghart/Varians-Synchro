@@ -923,4 +923,6 @@
   <string key="ui.audit.issue.xml_source_read_otherwise">Файл PAGE с вложенной структурой, начиная с этой версии читается иначе: проект сохраняет свои строки, но повторное сопоставление сделает устаревшими затрагивающие их группы</string>
   <string key="error.binding.xml_page_bound">Эта страница XML уже сопоставлена с изображением «{page}»: одну страницу XML нельзя назначить нескольким изображениям.</string>
   <string key="ui.audit.issue.xml_page_bound_twice">Одна страница XML сопоставлена с несколькими изображениями: её строки учитывались бы несколько раз</string>
+  <string key="error.imaging.redirect_refused">Сервер перенаправляет на адрес, который не является http или https: перенаправление отклонено.</string>
+  <string key="error.imaging.too_slow">Сервер отвечает слишком медленно: прервано через {seconds} с.</string>
 </translations>
