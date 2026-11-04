@@ -927,4 +927,11 @@ Technische Details stehen in der Konsole oder im Startprotokoll.</string>
   <string key="error.imaging.too_slow">Der Server antwortet zu langsam: Abbruch nach {seconds} s.</string>
   <string key="resources.witness.manifest_loading">{count} IIIF-Manifest(e) werden geladen…</string>
   <string key="error.resources.manifest_cancelled">Laden des Manifests abgebrochen.</string>
+  <string key="project.paths.title">Dateien außerhalb des Projektordners</string>
+  <string key="project.paths.question">Dieses Projekt verweist auf {count} Datei(en) außerhalb seines Ordners (über „..“) oder auf einer Netzwerkfreigabe:
+
+{paths}
+
+Varians-Synchro schreibt solche Pfade nie: Sie stammen aus einem erhaltenen oder von Hand bearbeiteten Projekt. Diese Dateien lesen? Wenn Sie mit Nein antworten, gelten sie als nicht auffindbar; das Projekt behält ihre Pfade.</string>
+  <string key="error.tei_binding.too_deep">Die TEI ist zu tief verschachtelt, um gelesen zu werden.</string>
 </translations>

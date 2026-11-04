@@ -934,4 +934,11 @@ Les détails techniques sont dans la console ou le journal de démarrage.</strin
   <string key="error.imaging.too_slow">Le serveur répond trop lentement : abandon après {seconds} s.</string>
   <string key="resources.witness.manifest_loading">Chargement de {count} Manifest(s) IIIF…</string>
   <string key="error.resources.manifest_cancelled">Chargement du Manifest annulé.</string>
+  <string key="project.paths.title">Fichiers hors du dossier du projet</string>
+  <string key="project.paths.question">Ce projet désigne {count} fichier(s) hors de son dossier (par « .. ») ou sur un partage réseau :
+
+{paths}
+
+Varians-Synchro n’écrit jamais de tels chemins : ils viennent d’un projet reçu ou modifié à la main. Lire ces fichiers ? Si vous répondez Non, ils seront traités comme introuvables ; le projet garde leurs chemins.</string>
+  <string key="error.tei_binding.too_deep">La TEI est imbriquée trop profondément pour être lue.</string>
 </translations>

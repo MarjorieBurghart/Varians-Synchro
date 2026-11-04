@@ -261,6 +261,8 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
 
     dest.parent.mkdir(parents=True, exist_ok=True)
     stage = Path(tempfile.mkdtemp(prefix='.varians-project-', dir=str(dest.parent)))
+    from .core import default_mode
+    os.chmod(stage, default_mode(directory=True))         # mkdtemp: 0700
     published = False
     try:
         # Export the local IIIF working-copy format that Varians 0.8.x reads:

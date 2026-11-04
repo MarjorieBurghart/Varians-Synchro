@@ -927,4 +927,11 @@ I dettagli tecnici sono nella console o nel registro di avvio.</string>
   <string key="error.imaging.too_slow">Il server risponde troppo lentamente: abbandono dopo {seconds} s.</string>
   <string key="resources.witness.manifest_loading">Caricamento di {count} Manifest IIIF…</string>
   <string key="error.resources.manifest_cancelled">Caricamento del Manifest annullato.</string>
+  <string key="project.paths.title">File fuori dalla cartella del progetto</string>
+  <string key="project.paths.question">Questo progetto indica {count} file fuori dalla sua cartella (tramite «..») o su una condivisione di rete:
+
+{paths}
+
+Varians-Synchro non scrive mai percorsi simili: provengono da un progetto ricevuto o modificato a mano. Leggere questi file? Se rispondete No, saranno considerati introvabili; il progetto conserva i loro percorsi.</string>
+  <string key="error.tei_binding.too_deep">La TEI è annidata troppo in profondità per essere letta.</string>
 </translations>

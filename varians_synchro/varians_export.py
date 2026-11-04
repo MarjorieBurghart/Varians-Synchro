@@ -432,6 +432,8 @@ def export_varians_alignments(project, base_witness_id, destination):
     destination.parent.mkdir(parents=True, exist_ok=True)
     staging = Path(tempfile.mkdtemp(prefix='.varians-synchro-export-',
                                     dir=str(destination.parent)))
+    from .core import default_mode
+    os.chmod(staging, default_mode(directory=True))       # mkdtemp: 0700
     published = False
     try:
         for folder, cache in packages.items():

@@ -552,7 +552,7 @@ class GuidedWindow(QMainWindow):
         if not path:
             return
         try:
-            incoming = load_project(path)
+            incoming = load_project(path, refused=self._refused_paths(path))
         except Exception as exc:
             QMessageBox.critical(self, tr('project.open_error'), localized_text(exc))
             return
@@ -566,6 +566,42 @@ class GuidedWindow(QMainWindow):
         self.path = path
         self._changes.reset(self.project)
         self.refresh()
+
+    def _refused_paths(self, path):
+        """Paths of the project ``path`` leaving its folder (« .. ») or naming
+        a network share: the user is asked whether to read them (No by
+        default). An answer Yes is remembered for this project and these
+        paths. Returns the paths not to read."""
+        import hashlib
+        from .core import suspicious_paths
+        try:
+            paths = suspicious_paths(path)
+        except (OSError, ValueError):
+            return ()                     # load_project says what is wrong
+        if not paths:
+            return ()
+        key = str(Path(path).resolve()) + '\n' + hashlib.sha256('\n'.join(paths).encode('utf-8')).hexdigest()
+        if key in self._trusted_paths():
+            return ()
+        shown = '\n'.join(paths[:12]) + ('\n…' if len(paths) > 12 else '')
+        answer = QMessageBox.question(self, tr('project.paths.title'),
+                                      tr('project.paths.question', count=len(paths), paths=shown),
+                                      QtMessageBox.StandardButton.Yes | QtMessageBox.StandardButton.No,
+                                      QtMessageBox.StandardButton.No)
+        if answer == QtMessageBox.StandardButton.Yes:
+            self._trust_paths(key)
+            return ()
+        return paths
+
+    @staticmethod
+    def _trusted_paths():
+        from PySide6.QtCore import QSettings
+        return list(QSettings('Varians', 'Varians-Synchro').value('trusted_paths', []) or [])
+
+    @classmethod
+    def _trust_paths(cls, key):
+        from PySide6.QtCore import QSettings
+        QSettings('Varians', 'Varians-Synchro').setValue('trusted_paths', (cls._trusted_paths() + [key])[-200:])
 
     def save(self) -> bool:
         """Return False on Save As cancellation or write failure."""

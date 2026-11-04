@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from .witness_ids import witness_id_for_siglum
+from .errors import localized
 from .reading_stream import reading_stream
 
 XML_ID = '{http://www.w3.org/XML/1998/namespace}id'
@@ -135,7 +136,12 @@ def extract_witness_tei(path, witness_id):
             if child.tail:
                 emit_text(child.tail)
 
-    walk(bodies[0])
+    try:
+        walk(bodies[0])
+    except RecursionError:
+        # A TEI nested deeper than Python's recursion limit: an error made
+        # the main window unable to refresh.
+        raise localized(ValueError, 'error.tei_binding.too_deep') from None
     for item in lines:
         item['text'] = re.sub(r'\s+', ' ', item['text']).strip()
     if unqualified:
