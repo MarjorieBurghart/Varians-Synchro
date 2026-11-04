@@ -89,6 +89,11 @@ class PairDialog(QDialog):
         self.interpolate_button.setToolTip(tr('progress.action.tip'))
         self.interpolate_button.clicked.connect(lambda: self.interpolate())
         top.addWidget(self.interpolate_button)
+        top.addStretch(1)
+        # The menus (and the TEI search) on a second row: one row did not
+        # fit a laptop screen with Windows fonts (German, Russian).
+        top = QHBoxLayout(); main.addLayout(top)
+        self._second_row = top
         self.more_actions = QToolButton()
         self.more_actions.setText(tr('alignment.action.more'))
         self.more_actions.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
@@ -147,6 +152,7 @@ class PairDialog(QDialog):
         # do not confuse users with two competing default algorithms.
         filter_row.addStretch(1)
         if self._tei_left or self._tei_right:
+            filter_row = self._second_row        # beside the menus: room enough
             filter_row.addWidget(QLabel(tr('tei.visual.search_label')))
             self.tei_search_side = QComboBox()
             if self._tei_left:
@@ -194,7 +200,9 @@ class PairDialog(QDialog):
     def _build_text_tab(self):
         """Second onglet : les lignes des deux témoins en texte."""
         text_page = QWidget(); text_layout = QVBoxLayout(text_page)
-        text_layout.addWidget(QLabel(tr('tei.visual.pair_help')))
+        help_label = QLabel(tr('tei.visual.pair_help'))
+        help_label.setWordWrap(True)            # unwrapped, it set the window's width
+        text_layout.addWidget(help_label)
         text_split = QSplitter(Qt.Orientation.Horizontal)
         self.left = QListWidget(); self.right = QListWidget()
         for widget in (self.left, self.right):

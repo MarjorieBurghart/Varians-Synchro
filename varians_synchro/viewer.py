@@ -229,9 +229,12 @@ class LineImagePanel(QWidget):
         self.next.clicked.connect(lambda: self.switch_offset(1))
         self.page_combo.currentIndexChanged.connect(self._on_page_changed)
 
-        # Two rows (zoom, then display options): on one row, a panel needed
-        # 775 px and the synchronisation window did not fit a laptop screen.
+        # Three short rows (zoom; selection and HTR text; display options):
+        # on one row a panel needed 775 px, on two rows still too much with
+        # Windows fonts, and the synchronisation window (two panels side by
+        # side) did not fit a laptop screen.
         controls = QHBoxLayout(); root.addLayout(controls)
+        selection_row = QHBoxLayout(); root.addLayout(selection_row)
         options = QHBoxLayout(); root.addLayout(options)
         for label, tip, handler in (
             ('−', 'Dézoomer', lambda: self.view.scale(0.8, 0.8)),
@@ -253,7 +256,8 @@ class LineImagePanel(QWidget):
         # Do not merely remove HTR words from the list: the complete HTR pane
         # must disappear so the manuscript can use the reclaimed height.
         self.show_htr.toggled.connect(self._toggle_htr_panel)
-        options.addWidget(self.show_htr)
+        selection_row.addWidget(self.show_htr)
+        selection_row.addStretch(1)
         options.addStretch(1)
         controls.addStretch(1)
 
@@ -263,7 +267,7 @@ class LineImagePanel(QWidget):
         clear = QPushButton(tr('viewer.clear_selection'))
         clear.setToolTip(tr('viewer.clear_selection.tip'))
         clear.clicked.connect(self.clear_selection)
-        controls.addWidget(clear)
+        selection_row.addWidget(clear)
 
         self.scene = QGraphicsScene(self)
         self.view = ZoomableGraphicsView(self.scene)

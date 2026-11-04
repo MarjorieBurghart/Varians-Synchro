@@ -211,7 +211,7 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `errors`, `hd_registry`, `i18n`, `imaging`, `page_management`, `page_order`, `physical_alignment`, `reading_stream`, `ui_batch_binding`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `DraggablePagesList` (l.27), `HDDownloadThread` (l.40), `HTRExportThread` (l.77), `PagesDialog` (l.102)
 
-## `varians_synchro/ui_pair.py` (964 lignes)
+## `varians_synchro/ui_pair.py` (972 lignes)
 **Objet (docstring source)** : Fenêtre « Synchronisation visuelle entre témoins » : groupes de lignes de deux témoins, propositions, révision rapide et revalidation.
 **Dépendances internes observées** : `correspondence_navigation`, `errors`, `exceptions`, `i18n`, `interpolation`, `line_scope`, `overlay_filters`, `physical_alignment`, `rapid_review`, `reading_stream`, `residual_alignment`, `tei_binding`, `textual_progress`, `ui_proposals`, `ui_reading_order`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `PairDialog` (l.33)
@@ -263,10 +263,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `core`, `errors`, `hd_registry`, `tei_binding`, `varians_export`, `witness_ids`
 **Fonctions au premier niveau** : `_varians_safe_id` (l.25), `_source_path` (l.30), `_relative_or_absolute` (l.37), `_cache_varians_manifest` (l.43), `blank_tei_edition` (l.92), `export_varians_project` (l.137)
 
-## `varians_synchro/viewer.py` (759 lignes)
+## `varians_synchro/viewer.py` (763 lignes)
 **Objet (docstring source)** : Reusable manuscript page viewer with clickable ALTO overlay. Images can be IIIF or local. Full physical lines are the interaction unit; HTR is supplementary and never needed for visual selection. A 4200px-wide IIIF request provides useful magnification without downloading all canvases.
 **Dépendances internes observées** : `alto_geometry`, `errors`, `i18n`, `imaging`, `overlay_filters`, `overlay_selection`, `page_order`, `physical_alignment`, `reading_stream`, `selection_policy`, `ui_widgets`
-**Classes déclarées au premier niveau** : `FetchThread` (l.32), `ZoomableGraphicsView` (l.59), `ClickableLine` (l.80), `WitnessLineList` (l.149), `LineImagePanel` (l.171), `PageViewer` (l.742)
+**Classes déclarées au premier niveau** : `FetchThread` (l.32), `ZoomableGraphicsView` (l.59), `ClickableLine` (l.80), `WitnessLineList` (l.149), `LineImagePanel` (l.171), `PageViewer` (l.746)
 
 ## `varians_synchro/witness_ids.py` (69 lignes)
 **Objet (docstring source)** : Sigle d'un témoin et identifiant XML que Varians en tire. Varians-Synchro garde le sigle saisi comme identifiant du témoin (il entre dans l'identifiant de chaque ligne et ne change donc jamais). Varians, lui, a besoin d'un ``xml:id`` (NCName) : quand le sigle n'en est pas un, il en tire un par :func:`witness_id_for_siglum` et garde le sigle pour l'affichage (``siglum`` dans project.xml, ``<idno type="siglum">`` dans la TEI). Cette règle est celle de Varians (module ``witness_ids``, V0.9.2.8.2), reprise à l'identique : les exports nomment les témoins et leurs fichiers comme Varians les nommerait (« BnF lat. 123 » → « BnF_lat._123 »). Module sa

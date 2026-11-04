@@ -29,7 +29,7 @@ Quatre questions, avant de publier une nouvelle version :
    « Décisions ») ; un neuvième, sans question, lui a été annoncé.
 4. Chaque faiblesse a d'abord été reproduite par un test, vu en échec ; puis
    corrigée, un commit par étape, la suite complète verte à chaque fois
-   (684 tests à la fin, dont l'interface Qt), puis la suite entière répétée
+   (705 tests à la fin, dont l'interface Qt), puis la suite entière répétée
    pour vérifier la sortie du processus (voir « Trouvé en vérifiant »).
 
 ## Décisions de l'utilisatrice
@@ -40,7 +40,7 @@ Quatre questions, avant de publier une nouvelle version :
 | A2 Export avec une liaison TEI du pivot périmée | Refuser, avec le motif et l'étape où refaire la liaison. |
 | A4 Sigles des témoins | Comme Varians : sigles libres ; les exports en tirent l'identifiant XML par la règle de Varians ; deux sigles de même identifiant refusés dès la création. |
 | B3 Projet reçu qui désigne des fichiers hors de son dossier ou sur un partage réseau | Demander à l'ouverture (« Non » par défaut) ; refusés, ces fichiers sont introuvables, et leurs chemins sont gardés à l'enregistrement. |
-| D3 Fenêtre de synchronisation trop large | Commandes des panneaux et barre de révision sur deux rangées ; largeur minimale ≤ 1 280 px dans les sept langues, vérifiée par un test. |
+| D3 Fenêtre de synchronisation trop large | Commandes sur plusieurs rangées (d'abord deux, puis trois par panneau après l'essai sous Windows) ; largeur minimale ≤ 1 280 px dans les sept langues, vérifiée par un test, y compris avec les polices de Windows. |
 | D2, D6 Touche Entrée et confirmations | Entrée n'active plus de bouton par défaut ; dans une liste, elle fait comme le double-clic ; toutes les questions ont « Non » par défaut. |
 | D12 Échap ou la croix sur un brouillon | Demander avant d'abandonner un brouillon modifié (fiche du témoin, périmètre) ; sans changement, fermer directement. |
 | C4, C5 Fichiers PAGE à structure imbriquée | Corriger pour les nouveaux imports ; l'audit signale les fichiers déjà importés que cette version lit autrement, sans les modifier. |
@@ -96,7 +96,7 @@ usage ordinaire.
 |---|---|---|---|---|---|
 | D1 | critique | Fermer la fenêtre des pages pendant un téléchargement annulé (copies HD, export pour HTR) détruisait le fil en cours : arrêt brutal, travail non enregistré perdu. | `ui_widgets.start_detached` : fil sans parent, annulé avec sa fenêtre, libéré à sa fin. | `test_pages_threads_qt.py` | c64eb60 |
 | D2 | haute | Entrée déclenchait le premier bouton : une page remontait d'un rang (pivot compris), un groupe manuel validé était créé. | Voir « Décisions ». | `test_keyboard_qt.py` | 45ed84f |
-| D3 | haute | La fenêtre de synchronisation demandait 1 600 à 1 700 px : sur un portable, le bord droit sortait de l'écran. | Voir « Décisions » ; fenêtres de taille fixe bornées à l'écran (`fit_to_screen`). | `test_small_screen_qt.py` | a7f3b94 |
+| D3 | haute | La fenêtre de synchronisation demandait 1 600 à 1 700 px : sur un portable, le bord droit sortait de l'écran. Après la première correction, la CI Windows mesurait encore 1 364 à 1 640 px : les polices de Windows sont environ 2,2 fois plus larges que celles du serveur de test, la consigne de l'onglet texte n'était pas coupée et la rangée d'actions restait longue. | Voir « Décisions » ; consigne coupée ; menus et recherche TEI sur une seconde rangée ; commandes de chaque panneau d'image sur trois rangées ; fenêtres de taille fixe bornées à l'écran (`fit_to_screen`). Le test mesure aussi avec une police 2,2 fois plus large et avec la recherche TEI : au plus 1 119 px. | `test_small_screen_qt.py` | a7f3b94, voir la PR |
 | D4 | moyenne à haute | Les associations faites dans la fiche d'un nouveau témoin (« Associer automatiquement… ») étaient perdues dès qu'on touchait à la description, au pivot ou aux ressources. | Elles sont refaites quand le brouillon est reconstruit. | `test_witness_card_qt.py` | 6b946eb |
 | D5 | moyenne | « Ajouter un témoin… » avec un sigle déjà pris complétait en silence le témoin existant (le pivot compris). | Refus. | `test_witness_sigla.py` | 81aca73 |
 | D6 | moyenne | Trois confirmations destructives répondaient « Oui » à Entrée. | « Non » par défaut. | `test_keyboard_qt.py` | 45ed84f |

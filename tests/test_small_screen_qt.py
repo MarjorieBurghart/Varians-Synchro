@@ -7,6 +7,13 @@ HTR », « Recalcul local… », « Revalider… »). Décision : les commandes 
 panneaux d'image et la barre de révision passent sur deux rangées ; la
 largeur minimale reste sous 1 280 px dans les sept langues. La liaison TEI
 et le périmètre sont bornés à l'écran.
+
+Les polices de Windows sont environ 2,2 fois plus larges que celles du
+serveur de test Linux (mesuré sur la CI : 1 640 px en français sous Windows
+pour 745 ici). La largeur est donc aussi mesurée avec une police agrandie
+2,2 fois, et avec la recherche dans le texte TEI (pivot lié) : sous Windows,
+la consigne de l'onglet texte, non coupée, et la rangée d'actions du haut
+dépassaient 1 280 px.
 """
 import os
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
@@ -51,13 +58,31 @@ def _project():
     return project
 
 
+@pytest.fixture
+def font_scale(app):
+    from PySide6.QtGui import QFont
+    previous = QFont(app.font())
+
+    def scale(factor):
+        font = QFont(previous)
+        font.setPointSizeF(previous.pointSizeF() * factor)
+        app.setFont(font)
+    yield scale
+    app.setFont(previous)
+
+
+@pytest.mark.parametrize('tei', [False, True], ids=['htr', 'tei'])
+@pytest.mark.parametrize('scale', [1.0, 2.2], ids=['linux', 'windows'])
 @pytest.mark.parametrize('lang', LANGUAGES)
-def test_the_pair_window_fits_a_laptop_screen(app, language, lang):
+def test_the_pair_window_fits_a_laptop_screen(app, language, font_scale, monkeypatch, lang, scale, tei):
+    from varians_synchro import tei_binding, ui_pair
     from varians_synchro.physical_alignment import create_pair_session
-    from varians_synchro.ui_pair import PairDialog
     language(lang)
+    font_scale(scale)
+    if tei:                                      # pivot lié : recherche dans le texte TEI
+        monkeypatch.setattr(tei_binding, 'linked_tei_texts', lambda project, wid: {'ligne': 'texte'})
     project = _project()
-    dialog = PairDialog(project, create_pair_session(project, 'A', 'B'))
+    dialog = ui_pair.PairDialog(project, create_pair_session(project, 'A', 'B'))
     try:
         assert dialog.minimumSizeHint().width() <= 1280, dialog.minimumSizeHint().width()
     finally:

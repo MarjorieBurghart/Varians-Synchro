@@ -27,7 +27,7 @@
   - Fermer la fenêtre des pages pendant un téléchargement ne plante plus le logiciel.
   - Moteurs : enregistrer des propositions en temps linéaire (0,5 s au lieu de 3 min 30 s pour 3 000 lignes) ; propositions HTR–HTR dans l'ordre de lecture corrigé ; déplacer une région garde l'ordre des lignes corrigé ; « Recalculer jusqu'au prochain ancrage » après une correction ; second passage résiduel sans groupe périmé ; réimportation HTR tout ou rien ; une page ALTO/PAGE associée à une seule image ; fichiers PAGE à groupes ou régions imbriqués lus correctement (l'audit signale ceux déjà importés).
   - Clavier : Entrée n'active plus de bouton par défaut (dans une liste, elle fait comme le double-clic) ; toutes les questions ont « Non » par défaut ; Échap ou la croix demandent avant d'abandonner une fiche de témoin ou un périmètre modifiés ; F1 dans toute fenêtre ; fiche d'un témoin au clavier ; Ctrl+S, Ctrl+O, Ctrl+N.
-  - Petit écran : la fenêtre de synchronisation tient sous 1 280 px dans les sept langues (commandes sur deux rangées) ; fenêtres bornées à l'écran.
+  - Petit écran : la fenêtre de synchronisation tient sous 1 280 px dans les sept langues, polices de Windows comprises (commandes sur plusieurs rangées, consigne de l'onglet texte coupée) ; fenêtres bornées à l'écran.
   - Traductions : boutons standard de Qt (Oui, Non, OK, Annuler), diagnostics de la liaison TEI, avertissements de l'association par lots.
   - Fiche du témoin : associations faites dans la fiche gardées après une modification ; « Réessayer » après un retrait ; compte de la confirmation « par ordre » ; case pivot grisée dans la fiche du pivot ; une paire ouverte puis fermée sans groupe ne laisse plus de session vide.
 
