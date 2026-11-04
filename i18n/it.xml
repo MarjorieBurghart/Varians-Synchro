@@ -946,4 +946,5 @@ Varians-Synchro non scrive mai percorsi simili: provengono da un progetto ricevu
   <string key="error.tei.no_physical_lines">Nessuna riga ALTO/PAGE attiva.</string>
   <string key="error.binding.by_order">Corrispondenza proposta per ordine, da controllare sulle immagini</string>
   <string key="error.binding.no_unique_match">Nessuna corrispondenza unica; scelta manuale necessaria</string>
+  <string key="resources.witness.pivot_kept.tip">Questo testimone è il pivot del progetto. Per cambiare pivot, aprite la scheda di un altro testimone e spuntate questa casella.</string>
 </translations>

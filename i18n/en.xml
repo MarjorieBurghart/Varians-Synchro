@@ -953,4 +953,5 @@ Varians-Synchro never writes such paths: they come from a received or hand-edite
   <string key="error.tei.no_physical_lines">No active ALTO/PAGE line.</string>
   <string key="error.binding.by_order">Match proposed by order, to be checked on the images</string>
   <string key="error.binding.no_unique_match">No single match; manual choice needed</string>
+  <string key="resources.witness.pivot_kept.tip">This witness is the project’s pivot. To change the pivot, open another witness’s card and tick this box.</string>
 </translations>

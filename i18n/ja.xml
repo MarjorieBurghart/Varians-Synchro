@@ -946,4 +946,5 @@ Varians-Synchro がこのようなパスを書くことはありません。受�
   <string key="error.tei.no_physical_lines">有効な ALTO/PAGE 行がありません。</string>
   <string key="error.binding.by_order">順序から提案された対応。画像で確認してください</string>
   <string key="error.binding.no_unique_match">一意な対応がありません。手動で選んでください</string>
+  <string key="resources.witness.pivot_kept.tip">この伝本はプロジェクトのピボット伝本です。ピボットを変えるには、別の伝本のカードを開いてこのチェックボックスをオンにしてください。</string>
 </translations>

@@ -953,4 +953,5 @@ Varians-Synchro n’écrit jamais de tels chemins : ils viennent d’un projet r
   <string key="error.tei.no_physical_lines">Aucune ligne ALTO/PAGE active.</string>
   <string key="error.binding.by_order">Correspondance proposée par ordre, à contrôler sur les images</string>
   <string key="error.binding.no_unique_match">Aucune correspondance unique ; choix manuel nécessaire</string>
+  <string key="resources.witness.pivot_kept.tip">Ce témoin est le pivot du projet. Pour changer de pivot, ouvrez la fiche d’un autre témoin et cochez cette case.</string>
 </translations>

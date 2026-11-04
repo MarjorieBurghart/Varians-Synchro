@@ -946,4 +946,5 @@ Varians-Synchro никогда не записывает такие пути: о
   <string key="error.tei.no_physical_lines">Нет активных строк ALTO/PAGE.</string>
   <string key="error.binding.by_order">Соответствие предложено по порядку, проверьте по изображениям</string>
   <string key="error.binding.no_unique_match">Нет единственного соответствия; нужен ручной выбор</string>
+  <string key="resources.witness.pivot_kept.tip">Этот свидетель — опорный в проекте. Чтобы сменить опорного свидетеля, откройте карточку другого свидетеля и отметьте этот флажок.</string>
 </translations>

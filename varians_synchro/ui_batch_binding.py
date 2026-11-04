@@ -196,8 +196,9 @@ class BatchBindingDialog(QDialog):
                 QMessageBox.information(self, tr('resources.binding.title'),
                                         tr('resources.binding.empty'))
                 return
-            ordinal = [r for r in self.plan['rows']
-                       if r['method'] == 'ordinal' and selections[r['page_id']] is not None]
+            # Rows changed by hand are no longer proposals « par ordre ».
+            ordinal = [r for r in self.plan['rows'] if r['method'] == 'ordinal'
+                       and r['target'] is not None and selections[r['page_id']] == tuple(r['target'])]
             if ordinal:
                 reply = QMessageBox.question(self, tr('resources.binding.title'),
                     tr('resources.binding.ordinal_confirm', count=len(ordinal)),

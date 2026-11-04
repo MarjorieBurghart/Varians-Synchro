@@ -946,4 +946,5 @@ Varians-Synchro schreibt solche Pfade nie: Sie stammen aus einem erhaltenen oder
   <string key="error.tei.no_physical_lines">Keine aktive ALTO/PAGE-Zeile.</string>
   <string key="error.binding.by_order">Nach Reihenfolge vorgeschlagene Zuordnung, an den Bildern zu prüfen</string>
   <string key="error.binding.no_unique_match">Keine eindeutige Zuordnung; manuelle Auswahl nötig</string>
+  <string key="resources.witness.pivot_kept.tip">Dieser Textzeuge ist der Pivot des Projekts. Um den Pivot zu wechseln, öffnen Sie die Karte eines anderen Textzeugen und aktivieren Sie dort dieses Kästchen.</string>
 </translations>

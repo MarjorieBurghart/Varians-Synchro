@@ -714,7 +714,16 @@ class GuidedWindow(QMainWindow):
 
     def _open_pair(self, a, b):
         try:
+            known={s['id'] for s in self.project.get('pair_sessions',[])}
             session=create_pair_session(self.project,a,b)
-            dlg=PairDialog(self.project,session,self);_run_modal(dlg);self.refresh()
+            try:
+                dlg=PairDialog(self.project,session,self);_run_modal(dlg)
+            finally:
+                # Opened and closed without any group: no empty session kept
+                # (the project was marked modified for nothing).
+                if session['id'] not in known and not session.get('links'):
+                    self.project['pair_sessions']=[s for s in self.project['pair_sessions']
+                                                   if s['id']!=session['id']]
+            self.refresh()
         except Exception as exc:
             QMessageBox.warning(self,tr('Synchronisation'),localized_text(exc))

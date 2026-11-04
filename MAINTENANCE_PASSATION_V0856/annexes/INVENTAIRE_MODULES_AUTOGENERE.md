@@ -190,7 +190,7 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `physical_alignment`, `reading_stream`
 **Fonctions au premier niveau** : `_chars` (l.23), `_length` (l.28), `_weights` (l.48), `_cumulative` (l.107), `_partition` (l.116), `_method` (l.164), `_segments` (l.172), `suggest_textual_progress` (l.270)
 
-## `varians_synchro/ui_batch_binding.py` (211 lignes)
+## `varians_synchro/ui_batch_binding.py` (212 lignes)
 **Objet (docstring source)** : Fenêtre « Associer automatiquement les images et les ALTO/PAGE » : propositions par lot, que l’utilisateur peut modifier.
 **Dépendances internes observées** : `bulk_binding`, `errors`, `i18n`, `ui_widgets`
 **Classes déclarées au premier niveau** : `ProtectedBindingComboBox` (l.14), `BatchBindingDialog` (l.26)
@@ -201,7 +201,7 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Classes déclarées au premier niveau** : `HelpDialog` (l.41)
 **Fonctions au premier niveau** : `help_path` (l.31), `open_help` (l.265)
 
-## `varians_synchro/ui_main_window.py` (720 lignes)
+## `varians_synchro/ui_main_window.py` (729 lignes)
 **Objet (docstring source)** : Fenêtre principale de Varians-Synchro : projet et témoins, pages, synchronisation, avancement et exports.
 **Dépendances internes observées** : `core`, `errors`, `i18n`, `physical_alignment`, `project_state`, `resource_workflow`, `tei_binding`, `ui_batch_binding`, `ui_help`, `ui_pages`, `ui_pair`, `ui_resources`, `ui_scope`, `ui_tei_binding`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`
 **Classes déclarées au premier niveau** : `_PairList` (l.29), `GuidedWindow` (l.46)
@@ -227,9 +227,9 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `errors`, `i18n`, `imaging`, `page_order`, `reading_stream`, `ui_widgets`
 **Classes déclarées au premier niveau** : `ReadingOrderDialog` (l.15)
 
-## `varians_synchro/ui_resources.py` (417 lignes)
+## `varians_synchro/ui_resources.py` (473 lignes)
 **Objet (docstring source)** : Fenêtre « Ajouter un témoin… » / « Modifier le témoin et ses ressources » : sigle, images, XML, TEI et Manifests IIIF, appliqués d’un bloc.
-**Dépendances internes observées** : `errors`, `i18n`, `resource_removal`, `resource_workflow`, `ui_batch_binding`, `ui_widgets`
+**Dépendances internes observées** : `errors`, `i18n`, `reading_stream`, `resource_removal`, `resource_workflow`, `ui_batch_binding`, `ui_widgets`
 **Classes déclarées au premier niveau** : `_ManifestFetcher` (l.18), `WitnessResourceDialog` (l.35)
 
 ## `varians_synchro/ui_scope.py` (88 lignes)

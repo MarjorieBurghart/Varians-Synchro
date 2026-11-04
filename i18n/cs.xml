@@ -946,4 +946,5 @@ Varians-Synchro takové cesty nikdy nezapisuje: pocházejí z přijatého nebo r
   <string key="error.tei.no_physical_lines">Žádný aktivní řádek ALTO/PAGE.</string>
   <string key="error.binding.by_order">Shoda navržená podle pořadí, ověřte ji na obrázcích</string>
   <string key="error.binding.no_unique_match">Žádná jednoznačná shoda; je nutná ruční volba</string>
+  <string key="resources.witness.pivot_kept.tip">Tento svědek je pivotem projektu. Chcete-li pivot změnit, otevřete kartu jiného svědka a zaškrtněte toto políčko.</string>
 </translations>
