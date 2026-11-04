@@ -4,7 +4,7 @@ Génération reproductible : `python tools/generate_module_inventory.py` depuis 
 Inspection statique AST : **aucun module applicatif n’est importé ni exécuté**.
 Les numéros de ligne sont ceux de **cette livraison uniquement**.
 
-**39 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
+**41 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
 
 ## `varians_synchro/__init__.py` (1 lignes)
 **Dépendances internes observées** : `core`
@@ -54,9 +54,9 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `error_report`, `guided_ui`, `i18n`, `qt_lifecycle`
 **Fonctions au premier niveau** : `main` (l.17)
 
-## `varians_synchro/guided_ui.py` (3226 lignes)
+## `varians_synchro/guided_ui.py` (2985 lignes)
 **Objet (docstring source)** : Witness-centered PySide6 GUI; the V0.7 physical alignment engine is preserved.
-**Dépendances internes observées** : `bulk_binding`, `core`, `correspondence_navigation`, `exceptions`, `hd_registry`, `i18n`, `imaging`, `interpolation`, `line_scope`, `overlay_filters`, `page_management`, `page_order`, `physical_alignment`, `project_state`, `rapid_review`, `reading_stream`, `residual_alignment`, `resource_workflow`, `tei_binding`, `tei_visual`, `textual_progress`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`, `viewer`
+**Dépendances internes observées** : `bulk_binding`, `core`, `correspondence_navigation`, `exceptions`, `hd_registry`, `i18n`, `imaging`, `interpolation`, `line_scope`, `overlay_filters`, `page_management`, `page_order`, `physical_alignment`, `project_state`, `rapid_review`, `reading_stream`, `residual_alignment`, `resource_workflow`, `tei_binding`, `tei_visual`, `textual_progress`, `ui_reading_order`, `ui_scope`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`, `viewer`
 **Fonctions au premier niveau** : `make_guided_window` (l.30)
 
 ## `varians_synchro/hd_registry.py` (159 lignes)
@@ -168,6 +168,16 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : V0.7.1: linear, multi-folio text-quantity alignment between human anchors. The two streams are *declared homologous by the editor*: this module never tries to prove equivalence through geometry or OCR. Weight-based cuts are only *tentative* estimates of manuscript line segmentation. No source, existing link, line UID, or TEI is changed by previewing. Protected links (manual / validated / absence) form immutable obstacles. Automatic groups may be recalculated after explicit confirmation with the existing atomic writer.
 **Dépendances internes observées** : `physical_alignment`, `reading_stream`
 **Fonctions au premier niveau** : `_chars` (l.23), `_length` (l.28), `_weights` (l.48), `_cumulative` (l.107), `_partition` (l.116), `_method` (l.164), `_segments` (l.172), `suggest_textual_progress` (l.266)
+
+## `varians_synchro/ui_reading_order.py` (184 lignes)
+**Objet (docstring source)** : Fenêtre « Ordre de lecture » : pages, régions et lignes d’un témoin.
+**Dépendances internes observées** : `i18n`, `imaging`, `page_order`, `reading_stream`, `ui_widgets`
+**Classes déclarées au premier niveau** : `ReadingOrderDialog` (l.14)
+
+## `varians_synchro/ui_scope.py` (84 lignes)
+**Objet (docstring source)** : Fenêtre « Périmètre » : lignes d’un témoin exclues de l’étude.
+**Dépendances internes observées** : `i18n`, `line_scope`, `ui_widgets`, `viewer`
+**Classes déclarées au premier niveau** : `SingleWitnessScopeDialog` (l.13)
 
 ## `varians_synchro/ui_widgets.py` (114 lignes)
 **Objet (docstring source)** : Widgets Qt qui traduisent leurs textes, et ouverture modale d'une fenêtre. Les fenêtres de l'interface utilisent ces classes à la place de celles de PySide6 : un texte passé à ``QLabel``, ``setWindowTitle`` ou ``QMessageBox.warning`` est une clé de traduction (ou un texte français connu des catalogues) et s'affiche dans la langue choisie.
