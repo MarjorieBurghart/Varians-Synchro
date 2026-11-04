@@ -170,8 +170,10 @@ def open_window(monkeypatch, project, session, window, action, *, answer=NO):
 
 
 WINDOWS = {
+    # Rien n'est présélectionné : la HTR n'est qu'une aide, on choisit.
     'automatic': dict(build=htr_project, title='Propositions HTR–HTR (facultatives)',
-                      buttons=['Conserver la sélection', 'Annuler'], preselected=False,
+                      buttons=['common.select_all', 'common.select_none', 'progress.save',
+                               'common.cancel'], preselected=False,
                       saved='Propositions enregistrées'),
     'interpolate': dict(build=progress_project, title='progress.title',
                         buttons=['common.select_all', 'common.select_none', 'progress.save',
@@ -220,6 +222,7 @@ def test_cancel_changes_nothing(app, monkeypatch, window):
 
 
 @pytest.mark.parametrize('window, title', [
+    ('automatic', 'Propositions HTR–HTR (facultatives)'),
     ('interpolate', 'progress.title'),
     ('interpolate_geometry', 'Sélection vide'),
     ('residual', 'alignment.residual.title'),
@@ -233,16 +236,15 @@ def test_an_empty_selection_is_refused_and_the_window_stays_open(app, monkeypatc
     assert run.messages == [('information', tr(title), run.messages[0][2])]
 
 
-def test_the_htr_window_records_an_empty_selection_as_zero_groups(app, monkeypatch):
-    """Comportement actuel, conservé : rien n'est présélectionné, et
-    « Conserver la sélection » sans sélection ferme la fenêtre avec 0 groupe."""
+def test_the_htr_window_does_not_save_what_was_not_chosen(app, monkeypatch):
+    """Le bouton disait « Conserver la sélection » alors que rien n'était
+    sélectionné ; le cliquer enregistrait « 0 groupe » et fermait la fenêtre."""
     project, session = htr_project()
-    before = links(session)
+    before = copy.deepcopy(project)
     run = open_window(monkeypatch, project, session, 'automatic', 'keep')
-    assert links(session) == before
-    assert run.closed_by == 'accept'
-    kind, title, text = run.messages[-1]
-    assert (kind, title) == ('information', tr('Propositions enregistrées')) and text.startswith('0 ')
+    assert project == before and run.closed_by is None
+    assert run.messages == [('information', tr('Propositions HTR–HTR (facultatives)'),
+                             tr('progress.empty'))]
 
 
 @pytest.mark.parametrize('window, build, title', [
