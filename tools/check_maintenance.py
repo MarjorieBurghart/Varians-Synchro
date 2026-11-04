@@ -24,6 +24,11 @@ ESSENTIAL = [f'{n:02d}_{suffix}.md' for n,suffix in [
     (13,'REGISTRE_DECISIONS'), (14,'CHECKLIST_PASSATION')]]
 
 
+def DOCUMENTS() -> list[Path]:
+    """Les documents Markdown du dépôt : racine, docs/ et dossier de passation."""
+    return sorted([*ROOT.glob('*.md'), *(ROOT/'docs').rglob('*.md'), *DOC.rglob('*.md')])
+
+
 def check_links(markdown: Path) -> list[str]:
     errors = []
     data = markdown.read_text(encoding='utf-8')
@@ -41,9 +46,7 @@ def check() -> list[str]:
     for file in ESSENTIAL + ['annexes/INVENTAIRE_MODULES_AUTOGENERE.md',
                              'annexes/TRACABILITE_CODE_TESTS.md']:
         if not (DOC/file).is_file():errors.append(f'Dossier incomplet : {file}')
-    for file in (ROOT/'MAINTENANCE_PASSATION_V0856').rglob('*.md'):
-        errors.extend(check_links(file))
-    for file in [ROOT/'README.md',ROOT/'DOCS_INDEX.md']:
+    for file in DOCUMENTS():
         errors.extend(check_links(file))
     code = (ROOT/'varians_synchro'/'core.py').read_text(encoding='utf-8')
     if "VERSION = '0.8.5.6'" not in code:errors.append('Version Python non alignée')

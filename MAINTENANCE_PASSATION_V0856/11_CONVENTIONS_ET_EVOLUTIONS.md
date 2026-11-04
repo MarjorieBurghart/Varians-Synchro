@@ -32,7 +32,7 @@
 
 - Version applicative : `core.VERSION`; en v0.8.5.6, elle est seule modifiée dans les modules applicatifs.
 - Version du format : `core.SCHEMA` + projet `version:1`, inchangés ; toute nouvelle version du format nécessite une matrice de migration.
-- Historique : `CHANGELOG.md`, `CHANGELOG_V0856.md`, `TESTS_V0856.md`; ne jamais réécrire rétroactivement des rapports anciens comme s'ils appartenaient à la version présente.
+- Historique : `CHANGELOG.md` (un résumé par version) et l'historique Git ; les anciennes notes de livraison sont recensées dans [`docs/HISTORIQUE.md`](../docs/HISTORIQUE.md). Ne plus ajouter de fichier de notes à la racine ; ne jamais réécrire rétroactivement des rapports anciens comme s'ils appartenaient à la version présente.
 - Intégrité des fichiers : l'historique Git du dépôt (les anciennes listes `MANIFEST_SHA256.json` et `SHA256SUMS.txt` ont été retirées).
 - Distribution : fournir l'archive source **et** le dossier autonome ; l'archive ZIP n'est pas un installateur signé ni un exécutable autonome.
 

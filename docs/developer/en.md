@@ -193,4 +193,4 @@ Classes: FetchThread, ZoomableGraphicsView, ClickableLine, WitnessLineList, Line
 
 ## Human handover sequence
 
-Read `ARCHITECTURE.md`, `FORMAT_PROJET.md`, `PASSATION_DEV_V085.md`, `EXPORT_VARIANS.md` and TEI/HD guides; run headless Python tests; then perform Windows/PySide6 tests and open the exported project in the latest Varians editor.
+Read the [handover folder](../../MAINTENANCE_PASSATION_V0856/00_LIRE_EN_PREMIER.md), [`ARCHITECTURE.md`](ARCHITECTURE.md), [`FORMAT_PROJET.md`](FORMAT_PROJET.md), [`EXPORT_VARIANS.md`](EXPORT_VARIANS.md) (in French) and the user guide (`help/en.html`, F1 in the application); run headless Python tests; then perform Windows/PySide6 tests and open the exported project in the latest Varians editor.
