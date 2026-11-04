@@ -32,22 +32,23 @@ def _settle(app):
 
 class _Waiting(QThread):
     """Un téléchargement : il attend qu'on l'annule, ou qu'on le libère."""
-    def __init__(self, cancel, release):
+    def __init__(self, cancel, release, ended):
         super().__init__()
-        self.cancel, self.release = cancel, release
+        self.cancel, self.release, self.ended = cancel, release, ended
 
     def run(self):
         while not (self.cancel.is_set() or self.release.is_set()):
             self.cancel.wait(0.01)
+        self.ended.set()
 
 
 def test_a_finished_thread_leaves_nothing_tied_to_its_window(app):
-    owner, cancel, release = QObject(), threading.Event(), threading.Event()
+    owner, cancel, release, ended = QObject(), threading.Event(), threading.Event(), threading.Event()
     before = len(ui_widgets._DETACHED_THREADS)
-    thread = _Waiting(cancel, release)
+    thread = _Waiting(cancel, release, ended)
     ui_widgets.start_detached(thread, owner, cancel)
     release.set()
-    assert thread.wait(5000)
+    assert ended.wait(5) and thread.wait(5000)     # libéré seulement par _settle
     _settle(app)
     assert len(ui_widgets._DETACHED_THREADS) == before
     owner.deleteLater()
@@ -56,14 +57,13 @@ def test_a_finished_thread_leaves_nothing_tied_to_its_window(app):
 
 
 def test_closing_the_window_still_cancels_a_running_thread(app):
-    owner, cancel, release = QObject(), threading.Event(), threading.Event()
-    thread = _Waiting(cancel, release)
-    ui_widgets.start_detached(thread, owner, cancel)
+    owner, cancel, release, ended = QObject(), threading.Event(), threading.Event(), threading.Event()
+    ui_widgets.start_detached(_Waiting(cancel, release, ended), owner, cancel)
     try:
         owner.deleteLater()
         _settle(app)
         assert cancel.is_set()
-        assert thread.wait(5000)
+        assert ended.wait(5)                       # le fil, libéré à sa fin, n'est plus touché
     finally:
         release.set()
         _settle(app)
