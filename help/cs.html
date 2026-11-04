@@ -61,7 +61,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ol>
 <li>Zkopírujte složku <code>demo_local_ALTO</code> jinam: uložení mění soubor projektu.</li>
 <li>Klikněte na <b class="ui" data-tr="project.open">Otevřít .vsynch</b> a v kopii vyberte <code>exemple.vsynch</code>.</li>
-<li>V kroku <b class="ui" data-tr="navigation.project">1 · Přidání svědků</b> klikněte na svědka A, zaškrtněte <b class="ui" data-tr="resources.witness.pivot">Použít tohoto svědka jako pivot pro zarovnání svědků</b> a pak klikněte na <b class="ui" data-tr="resources.witness.confirm">Uložit svědka</b>.</li>
+<li>V kroku <b class="ui" data-tr="navigation.project">1 · Přidání svědků</b> seznam svědků ukazuje, že A je pivot („A — A · Pivot“): na něj bude zarovnán svědek B. Chcete-li zvolit jiný pivot, klikněte na svědka, zaškrtněte <b class="ui" data-tr="resources.witness.pivot">Použít tohoto svědka jako pivot pro zarovnání svědků</b> a pak klikněte na <b class="ui" data-tr="resources.witness.confirm">Uložit svědka</b>.</li>
 <li>V kroku <b class="ui" data-tr="navigation.alignment">3 · Zarovnání svědků</b> ponechte A v poli <b class="ui" data-tr="alignment.reference.label">Technický pivot</b> a B v poli <b class="ui" data-tr="alignment.target.label">Zarovnávaný svědek</b> a pak klikněte na <b class="ui" data-tr="ui.xml.open_alignment">Zarovnat svědky</b>.</li>
 <li>V okně zarovnání klikněte na první řádek A, pak na první řádek B a stiskněte <kbd>Ctrl+Enter</kbd> (<b class="ui" data-tr="alignment.action.link_lines">Propojit řádky</b>). Totéž udělejte pro třetí řádky. Tyto dvě korespondence, zobrazené zeleně, jsou vaše kotvy.</li>
 <li>Klikněte na <b class="ui" data-tr="progress.action">Zarovnat mezi kotvami (text)</b>: program navrhne propojit druhé řádky. Klikněte na <b class="ui" data-tr="progress.save">Uložit výběr</b>. Návrh se zobrazí modrým přerušovaným obrysem: je třeba jej zkontrolovat.</li>
@@ -137,7 +137,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Čtyři skupiny zdrojů, každá s tlačítkem <b class="ui" data-tr="resources.witness.add">Přidat…</b>:
 <ul>
 <li><b class="ui" data-tr="resources.witness.images">Místní obrázky</b>: obrázky se řadí podle názvu („2“ před „10“);</li>
-<li><b class="ui" data-tr="resources.witness.manifests">Manifest IIIF</b>: adresa manifestu; pokud neodpovídá, adresa se zachová a označí jako nedostupná;</li>
+<li><b class="ui" data-tr="resources.witness.manifests">Manifest IIIF</b>: adresa manifestu; pokud neodpovídá, adresa se zachová a označí jako nedostupná; <b class="ui" data-tr="resources.witness.retry">Zkusit znovu</b> se na něj dotáže znovu;</li>
 <li><b class="ui" data-tr="resources.witness.xml">Soubory ALTO/PAGE-XML</b>: formát se rozpozná podle obsahu;</li>
 <li><b class="ui" data-tr="resources.witness.tei">Edice TEI XML</b>: volitelná, užitečná pro pivot.</li>
 </ul></li>
@@ -309,7 +309,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Veškerá práce je v souboru <code>.vsynch</code>: svědkové, obsah importovaných souborů ALTO/PAGE, přiřazení, ignorované řádky, pořadí čtení, zarovnání. Zdrojové soubory se nikdy nemění.</li>
 <li>Ukládání je bezpečné: soubor se nahradí najednou a předchozí verze se uchová v <code>&lt;projekt&gt;.vsynch.bak</code>. Chcete-li se vrátit k předchozí verzi, zkopírujte tento <code>.bak</code> pod novým názvem s příponou <code>.vsynch</code> a otevřete jej.</li>
 <li>Příkaz „Uložit jako“ neexistuje: chcete-li si uchovat verzi, zkopírujte soubor <code>.vsynch</code>.</li>
-<li>Projekt s relativními cestami (jako dodaný příklad) lze otevřít z libovolné složky; při uložení se cesty zapíší v úplném tvaru.</li>
+<li>Obrázky, soubory ALTO/PAGE a TEI ukládejte do složky souboru <code>.vsynch</code> nebo do jejích podsložek: uloží se relativní cestou a projekt lze s touto složkou přesunout nebo zkopírovat (jako dodaný příklad). Soubor umístěný jinde se uloží úplnou cestou.</li>
 <li>Změna souboru ALTO/PAGE na disku po importu projekt nezmění; přehled na to upozorní. U opravené segmentace importujte nový soubor a přiřaďte jej ke stránce (dotčené skupiny se stanou zastaralými).</li>
 <li>Při zavření programu a při otevření nebo vytvoření projektu program nabídne uložení rozpracovaných změn.</li>
 </ul>
@@ -317,6 +317,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ul>
 <li><strong>„<b class="ui" data-tr="alignment.error.no_alto">Před zarovnáním přiřaďte oběma svědkům stránky ALTO</b>“</strong>: jeden z obou svědků zatím nemá žádnou stránku přiřazenou k souboru řádků (<a href="#etape2">Krok 2</a>).</li>
 <li><strong>Obrázek IIIF není dostupný</strong>: server neodpovídá; přiřazení se neztratí. Zkuste to později znovu, nebo stáhněte kopie v HD.</li>
+<li><strong>Manifest IIIF není dostupný</strong>: při přidání svědka neodpověděl; jeho adresa zůstává uložena a přehled to uvádí. V kroku <b class="ui" data-tr="navigation.project">1 · Přidání svědků</b> klikněte na svědka a pak na <b class="ui" data-tr="resources.witness.retry">Zkusit znovu</b>: program oznámí, zda manifest odpověděl a kolik má stran; <b class="ui" data-tr="resources.witness.confirm">Uložit svědka</b> výsledek zachová.</li>
 <li><strong>Obrysy posunuté vůči obrázku</strong>: obrázek a soubor ALTO/PAGE nemají stejné proporce (stavový řádek na to upozorní); ověřte, že soubor skutečně odpovídá tomuto obrázku.</li>
 <li><strong>Export odmítnut</strong>: zvolená složka není prázdná, nebo sigla obsahuje tečku, <code>/</code> nebo <code>\</code>.</li>
 <li><strong>Ve Varians řádky pivotu neodpovídají textu</strong>: počet <code>&lt;lb edRef="#PIVOT"/&gt;</code> se liší od počtu aktivních řádků pivotu (zapomenuté řádky k ignorování nebo chybějící <code>&lt;lb/&gt;</code>). Rozdíl pomohou najít <b class="varians" data-varians="diagnostics.menu">Diagnostika rukopisů…</b> ve Varians a <a href="#tei">propojení TEI</a> ve Varians-Synchro.</li>

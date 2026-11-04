@@ -61,7 +61,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ol>
 <li><code>demo_local_ALTO</code> フォルダーを別の場所にコピーしてください。保存するとプロジェクトファイルが変更されるためです。</li>
 <li><b class="ui" data-tr="project.open">.vsynch を開く</b>をクリックし、コピーしたフォルダーにある <code>exemple.vsynch</code> を選びます。</li>
-<li><b class="ui" data-tr="navigation.project">1 · 伝本の追加</b>で伝本 A をクリックし、<b class="ui" data-tr="resources.witness.pivot">この伝本を整列のピボット伝本にする</b>にチェックを入れてから、<b class="ui" data-tr="resources.witness.confirm">伝本を保存</b>をクリックします。</li>
+<li><b class="ui" data-tr="navigation.project">1 · 伝本の追加</b>の伝本一覧に、A がピボット伝本であることが表示されます（「A — A · 基準」）。B はこの伝本に整列されます。別のピボット伝本を選ぶには、伝本をクリックし、<b class="ui" data-tr="resources.witness.pivot">この伝本を整列のピボット伝本にする</b>にチェックを入れてから、<b class="ui" data-tr="resources.witness.confirm">伝本を保存</b>をクリックします。</li>
 <li><b class="ui" data-tr="navigation.alignment">3 · 伝本の整列</b>で、<b class="ui" data-tr="alignment.reference.label">技術的なピボット伝本</b>のメニューは A、<b class="ui" data-tr="alignment.target.label">比較する伝本</b>のメニューは B のままにして、<b class="ui" data-tr="ui.xml.open_alignment">伝本を整列</b>をクリックします。</li>
 <li>同期ウィンドウで、A の 1 行目、続いて B の 1 行目をクリックし、<kbd>Ctrl+Enter</kbd>（<b class="ui" data-tr="alignment.action.link_lines">行を関連付ける</b>）を押します。3 行目どうしについても同じ操作をします。緑で表示されるこの二つの対応が、アンカーになります。</li>
 <li><b class="ui" data-tr="progress.action">アンカー間を整列（テキスト）</b>をクリックすると、2 行目どうしを結び付ける提案が示されます。<b class="ui" data-tr="progress.save">選択内容を保存</b>をクリックします。提案は青の破線で表示されます。これは確認が必要な状態です。</li>
@@ -137,7 +137,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>4 種類の資料（それぞれに<b class="ui" data-tr="resources.witness.add">追加…</b>があります）：
 <ul>
 <li><b class="ui" data-tr="resources.witness.images">ローカル画像</b>：画像は名前順に並べられます（「2」は「10」より前）。</li>
-<li><b class="ui" data-tr="resources.witness.manifests">IIIF Manifest</b>：Manifest の URL を指定します。Manifest が応答しない場合も、URL は利用できない状態として保持されます。</li>
+<li><b class="ui" data-tr="resources.witness.manifests">IIIF Manifest</b>：Manifest の URL を指定します。Manifest が応答しない場合も、URL は利用できない状態として保持され、<b class="ui" data-tr="resources.witness.retry">再試行</b>で再度問い合わせられます。</li>
 <li><b class="ui" data-tr="resources.witness.xml">ALTO/PAGE-XML ファイル</b>：形式は内容から判別されます。</li>
 <li><b class="ui" data-tr="resources.witness.tei">TEI XML 校訂本文</b>：任意です。ピボット伝本の場合に役立ちます。</li>
 </ul></li>
@@ -309,7 +309,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>作業内容はすべて <code>.vsynch</code> ファイルに入っています：伝本、取り込んだ ALTO/PAGE ファイルの内容、関連付け、無視した行、読み順、同期。元のファイルが変更されることはありません。</li>
 <li>保存は安全に行われます。ファイルは一度に置き換えられ、以前の版は <code>&lt;プロジェクト&gt;.vsynch.bak</code> に残されます。元に戻すには、この <code>.bak</code> を拡張子 <code>.vsynch</code> の新しい名前でコピーし、それを開きます。</li>
 <li>「名前を付けて保存」コマンドはありません。ある時点の版を残しておくには、<code>.vsynch</code> ファイルをコピーしてください。</li>
-<li>パスが相対パスのプロジェクト（付属のサンプルなど）は、どのフォルダーからでも開けます。保存時には、パスは完全な形で書き込まれます。</li>
+<li>画像、ALTO/PAGE ファイル、TEI は <code>.vsynch</code> ファイルのフォルダーかそのサブフォルダーに置いてください。相対パスで保存されるので、そのフォルダーごとプロジェクトを移動・コピーできます（付属のサンプルと同じです）。ほかの場所にあるファイルは完全なパスで保存されます。</li>
 <li>取り込み後にディスク上の ALTO/PAGE ファイルを変更しても、プロジェクトは変わりません。そのことは概要で報告されます。修正した領域分割を使うには、新しいファイルを取り込んでページに関連付けます（影響を受けるグループは失効します）。</li>
 <li>ソフトウェアを閉じるとき、またプロジェクトを開くときや作成するときには、未保存の変更を保存するかどうか尋ねられます。</li>
 </ul>
@@ -317,6 +317,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ul>
 <li><strong>「<b class="ui" data-tr="alignment.error.no_alto">整列する前に、両方の伝本に ALTO ページを関連付けてください</b>」</strong>：二つの伝本のどちらかに、行ファイルに関連付けられたページがまだ一つもありません（<a href="#etape2">ステップ 2</a>）。</li>
 <li><strong>IIIF 画像を利用できない</strong>：サーバーが応答していません。関連付けは失われていません。後で再試行するか、HD コピーをダウンロードしてください。</li>
+<li><strong>IIIF Manifest を利用できない</strong>：伝本の追加時に Manifest が応答しませんでした。URL は保持され、概要に表示されます。<b class="ui" data-tr="navigation.project">1 · 伝本の追加</b>で伝本をクリックし、<b class="ui" data-tr="resources.witness.retry">再試行</b>を押してください。Manifest が応答したか、何ページあるかが表示されます。<b class="ui" data-tr="resources.witness.confirm">伝本を保存</b>で結果が保持されます。</li>
 <li><strong>画像上で輪郭がずれる</strong>：画像と ALTO/PAGE ファイルの縦横比が異なっています（ステータスバーに表示されます）。ファイルがその画像に確かに対応しているか確認してください。</li>
 <li><strong>書き出しが拒否される</strong>：選んだフォルダーが空でないか、シグラムにピリオド、<code>/</code>、<code>\</code> が含まれています。</li>
 <li><strong>Varians でピボット伝本の行が本文と対応しない</strong>：<code>&lt;lb edRef="#PIVOT"/&gt;</code> の数がピボット伝本の有効な行の数と異なっています（無視する行の指定漏れ、または <code>&lt;lb/&gt;</code> の不足）。Varians の<b class="varians" data-varians="diagnostics.menu">写本の状態を診断…</b>と、Varians-Synchro の<a href="#tei">TEI の対応付け</a>が、食い違いを見つける助けになります。</li>

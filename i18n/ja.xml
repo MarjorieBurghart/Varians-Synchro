@@ -518,7 +518,13 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="resources.binding.ordinal_confirm">自然順のみから提案された {count} 件の対応を確定しますか？画像と XML を確認してください。名前からは対応を証明できません。</string>
   <string key="resources.binding.missing">先に画像と ALTO/PAGE をそれぞれ 1 つ以上登録してください。</string>
   <string key="resources.witness.tei_note">TEI 校訂本を物理行に対応付けるには ALTO/PAGE と対象範囲の指定が必要です。「2 · 資料の関連付け」で設定してください。</string>
-  <string key="resources.project.manifest_unavailable">Manifest は保存されましたが現在アクセスできません（再試行してください）</string>
+  <string key="resources.project.manifest_unavailable">Manifest は保存されましたが現在アクセスできません：伝本の編集画面で「再試行」を押してください</string>
+  <string key="resources.witness.manifest_unavailable">利用不可</string>
+  <string key="resources.witness.retry">再試行</string>
+  <string key="resources.witness.retry.tip">応答しなかった IIIF Manifest を再度問い合わせます。プロジェクトは伝本を保存したときにのみ変更されます。</string>
+  <string key="resources.witness.retry_none">この伝本に利用不可の Manifest はありません。</string>
+  <string key="resources.witness.retry_loaded">{url}：Manifest を読み込みました（{pages} ページ）。保持するには伝本を保存してください。</string>
+  <string key="resources.witness.retry_failed">{url}：まだ利用できません（{error}）。</string>
   <string key="resources.project.manifest_loaded">Manifest 読込済み — Canvas 数: {pages}</string>
   <string key="resources.project.image_loaded">画像を取り込みました</string>
   <string key="resources.project.xml_loaded">物理行を {lines} 行取り込みました</string>

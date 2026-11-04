@@ -69,6 +69,13 @@ class WitnessResourceDialog(QDialog):
             remove.clicked.connect(lambda checked=False, cat=category: self.remove_pending(cat))
             remove.setToolTip(tr('ui.resources.remove_resource.tip'))
             actions.addWidget(remove)
+            if category == 'manifests':
+                self.retry_button = QPushButton(tr('resources.witness.retry'))
+                self.retry_button.setObjectName('retryManifestsButton')
+                self.retry_button.setToolTip(tr('resources.witness.retry.tip'))
+                self.retry_button.clicked.connect(self.retry_manifests)
+                self.retry_button.setEnabled(bool(self._unavailable()))
+                actions.addWidget(self.retry_button)
             actions.addStretch(1)
             group_layout.addLayout(actions)
             if category == 'tei_files':
@@ -109,17 +116,62 @@ class WitnessResourceDialog(QDialog):
         return [r['path'] for r in self.original_project.get('text_resources', [])
                 if r.get('kind') == 'tei' and r.get('witness_id') == witness['id']]
 
+    def _unavailable(self):
+        """Manifests IIIF enregistrés du témoin qui n'avaient pas répondu."""
+        from .resource_workflow import unavailable_manifests
+        return unavailable_manifests(self.original_witness) if self.original_witness else []
+
     def refresh_lists(self):
+        unavailable = self._unavailable()
         for category, lst in self.lists.items():
             lst.clear()
             for path in self._existing(category):
-                item = QListWidgetItem('✓  ' + str(path))
+                if path in self.pending[category]:
+                    continue                      # à réessayer : montré plus bas
+                if category == 'manifests' and path in unavailable:
+                    text = f"⚠  {path} — {tr('resources.witness.manifest_unavailable')}"
+                else:
+                    text = '✓  ' + str(path)
+                item = QListWidgetItem(text)
                 item.setData(Qt.ItemDataRole.UserRole, None)
                 lst.addItem(item)
             for path in self.pending[category]:
-                item = QListWidgetItem('+  ' + str(path))
+                item = QListWidgetItem(('↻  ' if path in unavailable else '+  ') + str(path))
                 item.setData(Qt.ItemDataRole.UserRole, str(path))
                 lst.addItem(item)
+
+    def retry_manifests(self):
+        """Interroge de nouveau les Manifests indisponibles, dans le brouillon
+        de la fiche : le projet ne change qu'à « Enregistrer le témoin »."""
+        urls = self._unavailable()
+        if not urls:
+            QMessageBox.information(self, tr('resources.witness.manifests'),
+                                    tr('resources.witness.retry_none'))
+            return
+        for url in urls:
+            if url not in self.pending['manifests']:
+                self.pending['manifests'].append(url)
+        self.staged_project = None
+        try:
+            staged = self.stage_current()
+        except Exception as exc:
+            QMessageBox.warning(self, tr('resources.witness.edit'), localized_text(exc))
+            return
+        witness = next(w for w in staged['witnesses'] if w['id'] == self.original_witness['id'])
+        sources = {s['reference']: s for s in witness['image_sources'] if s['kind'] == 'iiif'}
+        lines = []
+        for url in urls:
+            source = sources[url]
+            if source.get('status') == 'unavailable':
+                lines.append(tr('resources.witness.retry_failed', url=url, error=source.get('error', '')))
+                self.pending['manifests'].remove(url)
+            else:
+                lines.append(tr('resources.witness.retry_loaded', url=url,
+                                pages=len((source.get('manifest') or {}).get('canvases', []))))
+        if any(url not in self.pending['manifests'] for url in urls):
+            self.staged_project = None            # le brouillon ne garde que les réussites
+        self.refresh_lists()
+        QMessageBox.information(self, tr('resources.witness.manifests'), '\n'.join(lines))
 
     def add_images(self):
         paths, _ = QFileDialog.getOpenFileNames(self, tr('resources.witness.images'), '',
@@ -143,7 +195,8 @@ class WitnessResourceDialog(QDialog):
 
     def _add(self, category, paths):
         for path in paths:
-            if path not in self.pending[category] and path not in self._existing(category):
+            known = path in self._existing(category) and path not in self._unavailable()
+            if path not in self.pending[category] and not known:
                 self.pending[category].append(path)
         self.staged_project = None
         self.refresh_lists()

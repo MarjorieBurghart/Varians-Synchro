@@ -34,10 +34,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `errors`, `page_order`, `reading_stream`
 **Fonctions au premier niveau** : `_stem` (l.18), `_strong` (l.22), `_page_candidates` (l.26), `_xml_candidates` (l.36), `binding_fingerprint` (l.43), `propose_bindings` (l.61), `binding_selection_conflicts` (l.137), `apply_binding_choices` (l.171)
 
-## `varians_synchro/core.py` (327 lignes)
+## `varians_synchro/core.py` (355 lignes)
 **Objet (docstring source)** : Varians-Synchro: persistent inventory of documentary resources. No TEI, ALTO or remote source is ever modified by the application. Version 0.1 deliberately does not assert that page/image matches are verified.
 **Dépendances internes observées** : `alto_geometry`, `errors`, `imaging`, `page_xml`, `tei_binding`
-**Fonctions au premier niveau** : `new_project` (l.26), `_staged_file` (l.32), `save_project` (l.55), `_is_relative_file_path` (l.97), `_resolve_relative_paths` (l.106), `load_project` (l.133), `validate_project` (l.148), `create_witness` (l.179), `add_image_source` (l.188), `add_alto_source` (l.196), `lname` (l.204), `inspect_line_source` (l.208), `add_line_source` (l.222), `inspect_alto` (l.227), `import_tei` (l.269), `inspect_manifest` (l.291), `diagnostic` (l.297), `check_alto_files` (l.306)
+**Fonctions au premier niveau** : `new_project` (l.26), `_staged_file` (l.32), `save_project` (l.55), `_is_relative_file_path` (l.98), `_map_file_paths` (l.107), `_resolve_relative_paths` (l.127), `_with_relative_paths` (l.138), `load_project` (l.161), `validate_project` (l.176), `create_witness` (l.207), `add_image_source` (l.216), `add_alto_source` (l.224), `lname` (l.232), `inspect_line_source` (l.236), `add_line_source` (l.250), `inspect_alto` (l.255), `import_tei` (l.297), `inspect_manifest` (l.319), `diagnostic` (l.325), `check_alto_files` (l.334)
 
 ## `varians_synchro/correspondence_navigation.py` (62 lignes)
 **Objet (docstring source)** : Read-only reciprocal navigation over a physical ALTO pair session. This module never changes line selection or alignment data. Links with confirmed absences have no target lines, and can be reported to the researcher without manufacturing a fictitious counterpart. Direct links only: no transitive inference and no assumption that HTR is reliable.
@@ -151,10 +151,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `physical_alignment`
 **Fonctions au premier niveau** : `_box` (l.17), `_cy` (l.28), `_overlap` (l.32), `_same_column` (l.37), `_local_pitch` (l.41), `_linked_info` (l.55), `_nearest_group` (l.78), `suggest_residual_extensions` (l.113), `apply_residual_extensions` (l.218)
 
-## `varians_synchro/resource_workflow.py` (146 lignes)
+## `varians_synchro/resource_workflow.py` (157 lignes)
 **Objet (docstring source)** : Witness-centered project resources, with non-destructive staged import. The physical-line alignment model is deliberately not touched. Source files are only inspected, never rewritten. GUI dialogs collect selections first; ``apply_witness_draft`` commits them as one coherent project change.
 **Dépendances internes observées** : `core`, `errors`, `imaging`, `page_order`, `tei_binding`
-**Fonctions au premier niveau** : `_local_key` (l.22), `_manifest_key` (l.26), `_xml_kind` (l.31), `store_tei_reference` (l.38), `set_project_pivot` (l.63), `resource_summary` (l.69), `apply_witness_draft` (l.82)
+**Fonctions au premier niveau** : `_local_key` (l.22), `_manifest_key` (l.26), `_xml_kind` (l.31), `store_tei_reference` (l.38), `set_project_pivot` (l.63), `unavailable_manifests` (l.69), `resource_summary` (l.75), `apply_witness_draft` (l.88)
 
 ## `varians_synchro/review.py` (96 lignes)
 **Objet (docstring source)** : Review policy and batch operations for line alignment sessions (v0.5). Confidence is a heuristic matching score, NEVER a scholarly verification. All operations preserve immutable link identity and never modify source files.
@@ -221,7 +221,7 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `errors`, `i18n`, `imaging`, `page_order`, `reading_stream`, `ui_widgets`
 **Classes déclarées au premier niveau** : `ReadingOrderDialog` (l.15)
 
-## `varians_synchro/ui_resources.py` (202 lignes)
+## `varians_synchro/ui_resources.py` (255 lignes)
 **Objet (docstring source)** : Fenêtre « Ajouter un témoin… » / « Modifier le témoin et ses ressources » : sigle, images, XML, TEI et Manifests IIIF, appliqués d’un bloc.
 **Dépendances internes observées** : `errors`, `i18n`, `resource_workflow`, `ui_batch_binding`, `ui_widgets`
 **Classes déclarées au premier niveau** : `WitnessResourceDialog` (l.17)

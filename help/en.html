@@ -61,7 +61,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ol>
 <li>Copy the <code>demo_local_ALTO</code> folder elsewhere: saving modifies the project file.</li>
 <li>Click <b class="ui" data-tr="project.open">Open .vsynch</b> and choose <code>exemple.vsynch</code> in the copy.</li>
-<li>In <b class="ui" data-tr="navigation.project">1 · Add witnesses</b>, click witness A, check <b class="ui" data-tr="resources.witness.pivot">Use this witness as the pivot for aligning witnesses</b>, then click <b class="ui" data-tr="resources.witness.confirm">Save witness</b>.</li>
+<li>In <b class="ui" data-tr="navigation.project">1 · Add witnesses</b>, the witness list shows that A is the pivot (“A — A · pivot”): B will be aligned on it. To choose another pivot, click a witness, check <b class="ui" data-tr="resources.witness.pivot">Use this witness as the pivot for aligning witnesses</b>, then click <b class="ui" data-tr="resources.witness.confirm">Save witness</b>.</li>
 <li>In <b class="ui" data-tr="navigation.alignment">3 · Align witnesses</b>, keep A in <b class="ui" data-tr="alignment.reference.label">Technical reference</b> and B in <b class="ui" data-tr="alignment.target.label">Witness to align</b>, then click <b class="ui" data-tr="ui.xml.open_alignment">Align witnesses</b>.</li>
 <li>In the alignment window, click the first line of A, then the first line of B, and press <kbd>Ctrl+Enter</kbd> (<b class="ui" data-tr="alignment.action.link_lines">Link selected lines</b>). Do the same for the third lines. These two correspondences, in green, are your anchors.</li>
 <li>Click <b class="ui" data-tr="progress.action">Align between anchors (text quantity)</b>: the software suggests linking the second lines. Click <b class="ui" data-tr="progress.save">Save selection</b>. The suggestion appears in dashed blue: it needs review.</li>
@@ -137,7 +137,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Four groups of resources, each with <b class="ui" data-tr="resources.witness.add">Add…</b>:
 <ul>
 <li><b class="ui" data-tr="resources.witness.images">Local images</b>: images are sorted by name (“2” before “10”);</li>
-<li><b class="ui" data-tr="resources.witness.manifests">IIIF Manifest</b>: the URL of the Manifest; if it does not respond, the URL is kept, with the status “unavailable”;</li>
+<li><b class="ui" data-tr="resources.witness.manifests">IIIF Manifest</b>: the URL of the Manifest; if it does not respond, the URL is kept, with the status “unavailable”, and <b class="ui" data-tr="resources.witness.retry">Retry</b> queries it again;</li>
 <li><b class="ui" data-tr="resources.witness.xml">ALTO/PAGE XML files</b>: the format is recognized from the content;</li>
 <li><b class="ui" data-tr="resources.witness.tei">TEI XML edition</b>: optional, useful for the pivot.</li>
 </ul></li>
@@ -309,7 +309,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>All the work is in the <code>.vsynch</code> file: witnesses, content of the imported ALTO/PAGE files, associations, ignored lines, reading order, alignments. The source files are never modified.</li>
 <li>Saving is safe: the file is replaced in a single operation, and the previous version is kept in <code>&lt;project&gt;.vsynch.bak</code>. To go back, copy this <code>.bak</code> file under a new name ending in <code>.vsynch</code> and open it.</li>
 <li>There is no “Save As” command: to keep a version, copy the <code>.vsynch</code> file.</li>
-<li>A project with relative paths (such as the supplied sample) opens from any folder; on saving, the paths are written in full.</li>
+<li>Keep the images, ALTO/PAGE files and TEI files in the folder of the <code>.vsynch</code> file or in its subfolders: they are saved with a relative path, and the project can be moved or copied with that folder (like the supplied sample). A file located elsewhere is saved with its full path.</li>
 <li>Modifying an ALTO/PAGE file on disk after import does not change the project; the summary reports it. For a corrected segmentation, import the new file and associate it with the page (the affected groups become stale).</li>
 <li>Closing the software, or opening or creating a project, offers to save the current changes.</li>
 </ul>
@@ -317,6 +317,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ul>
 <li><strong>“<b class="ui" data-tr="alignment.error.no_alto">Link ALTO pages to both witnesses before aligning them</b>”</strong>: one of the two witnesses does not yet have any page associated with a line file (<a href="#etape2">Step 2</a>).</li>
 <li><strong>IIIF image unavailable</strong>: the server is not responding; the associations are not lost. Try again later, or download HD copies.</li>
+<li><strong>IIIF Manifest unavailable</strong>: it did not respond when the witness was added; its URL is kept and the summary says so. In <b class="ui" data-tr="navigation.project">1 · Add witnesses</b>, click the witness, then <b class="ui" data-tr="resources.witness.retry">Retry</b>: the software tells you whether the Manifest responded and how many pages it has; <b class="ui" data-tr="resources.witness.confirm">Save witness</b> keeps the result.</li>
 <li><strong>Line frames offset on the image</strong>: the image and the ALTO/PAGE file do not have the same proportions (the status bar reports it); check that the file really belongs to this image.</li>
 <li><strong>Export refused</strong>: the chosen folder is not empty, or a siglum contains a dot, <code>/</code> or <code>\</code>.</li>
 <li><strong>In Varians, the lines of the pivot do not match the text</strong>: the number of <code>&lt;lb edRef="#PIVOT"/&gt;</code> elements differs from the number of active lines of the pivot (lines to ignore that were not marked, or missing <code>&lt;lb/&gt;</code> elements). <b class="varians" data-varians="diagnostics.menu">Witness diagnostics…</b> in Varians and the <a href="#tei">TEI binding</a> in Varians-Synchro help to find the discrepancy.</li>

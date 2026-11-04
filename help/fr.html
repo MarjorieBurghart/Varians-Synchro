@@ -61,7 +61,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ol>
 <li>Copiez le dossier <code>demo_local_ALTO</code> ailleurs : l’enregistrement modifie le fichier de projet.</li>
 <li>Cliquez sur <b class="ui" data-tr="project.open">Ouvrir .vsynch</b> et choisissez <code>exemple.vsynch</code> dans la copie.</li>
-<li>Dans <b class="ui" data-tr="navigation.project">1 · Ajout des témoins</b>, cliquez sur le témoin A, cochez <b class="ui" data-tr="resources.witness.pivot">Définir ce témoin comme pivot pour l’alignement des témoins</b>, puis <b class="ui" data-tr="resources.witness.confirm">Enregistrer le témoin</b>.</li>
+<li>Dans <b class="ui" data-tr="navigation.project">1 · Ajout des témoins</b>, la liste des témoins indique que A est le pivot (« A — A · pivot ») : c’est sur lui que B sera aligné. Pour choisir un autre pivot, on clique sur un témoin, on coche <b class="ui" data-tr="resources.witness.pivot">Définir ce témoin comme pivot pour l’alignement des témoins</b>, puis <b class="ui" data-tr="resources.witness.confirm">Enregistrer le témoin</b>.</li>
 <li>Dans <b class="ui" data-tr="navigation.alignment">3 · Aligner les témoins</b>, gardez A dans <b class="ui" data-tr="alignment.reference.label">Pivot technique</b> et B dans <b class="ui" data-tr="alignment.target.label">Témoin à aligner</b>, puis cliquez sur <b class="ui" data-tr="ui.xml.open_alignment">Aligner les témoins</b>.</li>
 <li>Dans la fenêtre de synchronisation, cliquez sur la première ligne de A, puis sur la première ligne de B, et faites <kbd>Ctrl+Entrée</kbd> (<b class="ui" data-tr="alignment.action.link_lines">Associer les lignes</b>). Faites de même pour les troisièmes lignes. Ces deux correspondances, en vert, sont vos repères.</li>
 <li>Cliquez sur <b class="ui" data-tr="progress.action">Synchroniser entre repères (texte)</b> : le logiciel propose de relier les deuxièmes lignes. Cliquez sur <b class="ui" data-tr="progress.save">Enregistrer la sélection</b>. La proposition apparaît en bleu pointillé : elle est à vérifier.</li>
@@ -137,7 +137,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Quatre groupes de ressources, chacun avec <b class="ui" data-tr="resources.witness.add">Ajouter…</b> :
 <ul>
 <li><b class="ui" data-tr="resources.witness.images">Images locales</b> : les images sont triées par nom (« 2 » avant « 10 ») ;</li>
-<li><b class="ui" data-tr="resources.witness.manifests">Manifest IIIF</b> : l’adresse du Manifest ; s’il ne répond pas, l’adresse est gardée, avec l’état indisponible ;</li>
+<li><b class="ui" data-tr="resources.witness.manifests">Manifest IIIF</b> : l’adresse du Manifest ; s’il ne répond pas, l’adresse est gardée, avec l’état indisponible, et <b class="ui" data-tr="resources.witness.retry">Réessayer</b> l’interroge de nouveau ;</li>
 <li><b class="ui" data-tr="resources.witness.xml">Fichiers ALTO/PAGE-XML</b> : le format est reconnu d’après le contenu ;</li>
 <li><b class="ui" data-tr="resources.witness.tei">Édition TEI XML</b> : facultative, utile pour le pivot.</li>
 </ul></li>
@@ -309,7 +309,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Tout le travail est dans le fichier <code>.vsynch</code> : témoins, contenu des fichiers ALTO/PAGE importés, associations, lignes ignorées, ordre de lecture, synchronisations. Les fichiers sources ne sont jamais modifiés.</li>
 <li>L’enregistrement est sûr : le fichier est remplacé d’un seul coup, et la version précédente est gardée dans <code>&lt;projet&gt;.vsynch.bak</code>. Pour revenir en arrière, copiez ce <code>.bak</code> sous un nouveau nom en <code>.vsynch</code> et ouvrez-le.</li>
 <li>Il n’y a pas de commande « Enregistrer sous » : pour garder une version, copiez le fichier <code>.vsynch</code>.</li>
-<li>Un projet dont les chemins sont relatifs (comme l’exemple livré) s’ouvre depuis n’importe quel dossier ; à l’enregistrement, les chemins sont écrits en entier.</li>
+<li>Rangez les images, les fichiers ALTO/PAGE et les TEI dans le dossier du fichier <code>.vsynch</code> ou dans ses sous-dossiers : ils y sont enregistrés par un chemin relatif, et le projet peut être déplacé ou copié avec ce dossier (comme l’exemple livré). Un fichier situé ailleurs est enregistré par son chemin complet.</li>
 <li>Modifier un fichier ALTO/PAGE sur le disque après l’import ne change pas le projet ; le bilan le signale. Pour une segmentation corrigée, importez le nouveau fichier et associez-le à la page (les groupes touchés deviennent périmés).</li>
 <li>Fermer le logiciel, ouvrir ou créer un projet propose d’enregistrer les modifications en cours.</li>
 </ul>
@@ -317,6 +317,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ul>
 <li><strong>« <b class="ui" data-tr="alignment.error.no_alto">Associez des pages ALTO aux deux témoins avant de synchroniser</b> »</strong> : un des deux témoins n’a encore aucune page associée à un fichier de lignes (<a href="#etape2">Étape 2</a>).</li>
 <li><strong>Image IIIF indisponible</strong> : le serveur ne répond pas ; les associations ne sont pas perdues. Réessayez plus tard, ou téléchargez des copies HD.</li>
+<li><strong>Manifest IIIF indisponible</strong> : il n’a pas répondu quand le témoin a été ajouté ; son adresse est gardée et le bilan l’indique. Dans <b class="ui" data-tr="navigation.project">1 · Ajout des témoins</b>, cliquez sur le témoin, puis sur <b class="ui" data-tr="resources.witness.retry">Réessayer</b> : le logiciel dit si le Manifest a répondu, et combien de pages il contient ; <b class="ui" data-tr="resources.witness.confirm">Enregistrer le témoin</b> garde le résultat.</li>
 <li><strong>Cadres décalés sur l’image</strong> : l’image et le fichier ALTO/PAGE n’ont pas les mêmes proportions (la barre d’état le signale) ; vérifiez que le fichier correspond bien à cette image.</li>
 <li><strong>Export refusé</strong> : le dossier choisi n’est pas vide, ou un sigle contient un point, <code>/</code> ou <code>\</code>.</li>
 <li><strong>Dans Varians, les lignes du pivot ne correspondent pas au texte</strong> : le nombre de <code>&lt;lb edRef="#PIVOT"/&gt;</code> diffère du nombre de lignes retenues du pivot (lignes à ignorer oubliées, ou <code>&lt;lb/&gt;</code> manquants). <b class="varians" data-varians="diagnostics.menu">État des témoins…</b> dans Varians et la <a href="#tei">liaison TEI</a> de Varians-Synchro aident à trouver l’écart.</li>
