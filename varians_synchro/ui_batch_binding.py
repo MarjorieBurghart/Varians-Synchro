@@ -69,7 +69,7 @@ class BatchBindingDialog(QDialog):
             combo = ProtectedBindingComboBox()
             combo.addItem(tr('resources.binding.none'), None)
             for entry in self.plan['available']:
-                combo.addItem(f"{entry['name']} ({entry['lines']} lignes)",
+                combo.addItem(tr('resources.binding.entry', name=entry['name'], lines=entry['lines']),
                               f"{entry['source_id']}::{entry['page_index']}")
             target = tuple(row['target']) if row['target'] is not None else None
             if target is not None:

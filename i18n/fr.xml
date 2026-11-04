@@ -739,4 +739,24 @@ Les détails techniques sont dans la console ou le journal de démarrage.</strin
   <string key="alignment.error.recalculation_conflict">Recalcul interrompu : conflits entre les nouvelles correspondances.</string>
   <string key="alignment.error.invalid_state">Statut invalide</string>
   <string key="alignment.error.link_not_found_unchanged">Association introuvable : rien n’a été modifié</string>
+  <string key="alignment.state.proposed">proposé</string>
+  <string key="alignment.state.uncertain">incertain</string>
+  <string key="alignment.state.validated">validé</string>
+  <string key="alignment.kind.correspondence">correspondance</string>
+  <string key="alignment.htr.none">Aucun rapprochement textuel obtenu. La HTR est facultative : vous pouvez travailler directement sur les images.</string>
+  <string key="alignment.witness_choice">{witness} ({lines} lignes XML)</string>
+  <string key="progress.warning.counts">(pivot : {reference}, cible : {target})</string>
+  <string key="stream.warning.stale_anchor">Repère périmé : ses lignes ont changé depuis la validation</string>
+  <string key="ui.audit.issue.anchor_stale_anchor">Repère périmé : ses lignes ont changé depuis la validation</string>
+  <string key="ui.audit.issue.anchor_empty_anchor">Repère dépourvu de lignes d’un côté</string>
+  <string key="ui.audit.issue.anchor_stale_or_ignored_anchor">Repère contenant une ligne disparue ou ignorée</string>
+  <string key="ui.audit.issue.anchor_noncontiguous_anchor">Les lignes du repère ne se suivent pas dans l’ordre de lecture</string>
+  <string key="ui.audit.issue.anchor_crossing_or_overlapping_anchors">Repères qui se croisent ou se chevauchent</string>
+  <string key="ui.pages.hd.choose_empty">Choisissez un dossier vide pour les images HD : le téléchargement n’écrase aucun fichier.</string>
+  <string key="ui.xml.page_choice">{kind} — {name} (page {number})</string>
+  <string key="resources.binding.entry">{name} ({lines} lignes)</string>
+  <string key="resources.project.summary">{witness} : {pages} pages, {mapped} avec XML, {lines} lignes</string>
+  <string key="dialog.filter.project">Projet Varians-Synchro</string>
+  <string key="dialog.filter.images">Images</string>
+  <string key="viewer.status">{width} × {height} pixels · molette : zoom ; glisser : déplacer</string>
 </translations>
