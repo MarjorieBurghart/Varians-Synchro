@@ -141,7 +141,8 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li><b class="ui" data-tr="resources.witness.xml">ALTO/PAGE XML files</b>: the format is recognized from the content;</li>
 <li><b class="ui" data-tr="resources.witness.tei">TEI XML edition</b>: optional, useful for the pivot.</li>
 </ul></li>
-<li><b class="ui" data-tr="resources.witness.remove_pending">Remove</b> only removes a resource added since the record was opened: a resource that is already saved stays in the project, so as not to break its associations.</li>
+<li><b class="ui" data-tr="resources.witness.remove_pending">Remove</b> removes the selected resource. A resource added since the record was opened simply disappears from the list. For a resource that is already saved, the software first tells you what removing it entails (pages removed or freed, lines, groups affected); once confirmed, it is marked “−” and removed when you click <b class="ui" data-tr="resources.witness.confirm">Save witness</b>. The groups that touched its lines are kept and marked as stale: unlink them afterwards (see <a href="#perimes">Stale groups</a>). No file is deleted from disk.</li>
+<li><b class="ui" data-tr="resources.witness.remove_witness">Remove witness…</b> removes the witness from the project, with its synchronisations and TEI editions, after confirmation. The pivot witness cannot be removed: first choose another pivot.</li>
 <li><b class="ui" data-tr="resources.binding.title">Automatically link images and ALTO/PAGE</b> suggests page associations right away (see <a href="#association-auto">below</a>).</li>
 <li><b class="ui" data-tr="resources.witness.confirm">Save witness</b> applies everything at once; <b class="ui" data-tr="resources.cancel">Cancel</b> leaves the project unchanged.</li>
 </ul>

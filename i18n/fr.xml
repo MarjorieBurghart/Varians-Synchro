@@ -530,6 +530,20 @@ Le réordonnancement ne modifie pas les sources.</string>
   <string key="resources.witness.retry_none">Aucun Manifest indisponible pour ce témoin.</string>
   <string key="resources.witness.retry_loaded">{url} : Manifest chargé, {pages} page(s). Enregistrez le témoin pour le garder.</string>
   <string key="resources.witness.retry_failed">{url} : toujours indisponible ({error}).</string>
+  <string key="error.removal.unknown_witness">Témoin introuvable dans le projet.</string>
+  <string key="error.removal.unknown_resource">Ressource introuvable dans ce témoin.</string>
+  <string key="error.removal.pivot">Le témoin pivot ne peut pas être retiré : choisissez d’abord un autre témoin comme pivot.</string>
+  <string key="resources.witness.remove_confirm">Retirer « {name} » de ce témoin ?
+
+Pages retirées ou libérées : {pages} ; lignes : {lines}. Groupes touchés : {groups}, dont validés : {validated} ; ils sont gardés, marqués périmés, et vous pourrez les dissocier.
+
+Le fichier reste sur le disque. Le retrait est appliqué à « Enregistrer le témoin ».</string>
+  <string key="resources.witness.removal_tip">Sera retiré à « Enregistrer le témoin ». Cliquez de nouveau sur « Supprimer » pour le garder.</string>
+  <string key="resources.witness.remove_witness">Retirer le témoin…</string>
+  <string key="resources.witness.remove_witness.tip">Retire ce témoin du projet, avec ses synchronisations et ses éditions TEI. Aucun fichier n’est supprimé du disque.</string>
+  <string key="resources.witness.remove_witness_confirm">Retirer le témoin {witness} du projet ?
+
+Ses synchronisations ({sessions}) et leurs groupes ({groups}, dont validés : {validated}) seront supprimés, ainsi que ses éditions TEI. Les fichiers restent sur le disque. Enregistrez ensuite le projet pour garder ce retrait.</string>
   <string key="resources.project.manifest_loaded">Manifest lu — {pages} Canvas</string>
   <string key="resources.project.image_loaded">Image importée</string>
   <string key="resources.project.xml_loaded">{lines} lignes physiques importées</string>
@@ -640,7 +654,7 @@ Les copies sont répertoriées dans le projet. Pensez à enregistrer le .vsynch.
   <string key="ui.pages.hd.cancelled">Téléchargement annulé. Aucune image partielle n’a été publiée.</string>
   <string key="ui.resources.add.tip">Ajouter un témoin et ses ressources éventuelles (images, IIIF, ALTO/PAGE, TEI).</string>
   <string key="ui.resources.add_resource.tip">Sélectionner des ressources supplémentaires pour ce témoin. Aucun changement n’est enregistré avant validation.</string>
-  <string key="ui.resources.remove_resource.tip">Retirer de la liste les nouvelles ressources sélectionnées, sans supprimer de fichier du disque.</string>
+  <string key="ui.resources.remove_resource.tip">Retire la ressource sélectionnée : une ressource ajoutée disparaît de la liste ; une ressource déjà enregistrée est retirée, après confirmation, à « Enregistrer le témoin ». Aucun fichier n’est supprimé du disque.</string>
   <string key="ui.resources.auto.tip">Vérifier les associations proposées entre les images et leur segmentation ALTO/PAGE avant de les appliquer.</string>
   <string key="ui.resources.save.tip">Valider en une seule opération les modifications apportées au témoin.</string>
   <string key="ui.resources.cancel.tip">Fermer sans modifier les ressources du projet.</string>

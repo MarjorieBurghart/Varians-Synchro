@@ -530,6 +530,20 @@ Reordering does not change sources.</string>
   <string key="resources.witness.retry_none">This witness has no unavailable Manifest.</string>
   <string key="resources.witness.retry_loaded">{url}: Manifest loaded, {pages} page(s). Save the witness to keep it.</string>
   <string key="resources.witness.retry_failed">{url}: still unavailable ({error}).</string>
+  <string key="error.removal.unknown_witness">Witness not found in the project.</string>
+  <string key="error.removal.unknown_resource">Resource not found in this witness.</string>
+  <string key="error.removal.pivot">The pivot witness cannot be removed: first choose another witness as the pivot.</string>
+  <string key="resources.witness.remove_confirm">Remove “{name}” from this witness?
+
+Pages removed or freed: {pages}; lines: {lines}. Groups affected: {groups}, validated: {validated}; they are kept, marked as stale, and you can unlink them.
+
+The file stays on disk. The removal is applied when you click “Save witness”.</string>
+  <string key="resources.witness.removal_tip">Will be removed when you click “Save witness”. Click “Remove” again to keep it.</string>
+  <string key="resources.witness.remove_witness">Remove witness…</string>
+  <string key="resources.witness.remove_witness.tip">Removes this witness from the project, with its synchronisations and TEI editions. No file is deleted from disk.</string>
+  <string key="resources.witness.remove_witness_confirm">Remove witness {witness} from the project?
+
+Its synchronisations ({sessions}) and their groups ({groups}, validated: {validated}) will be deleted, as well as its TEI editions. The files stay on disk. Then save the project to keep this removal.</string>
   <string key="resources.project.manifest_loaded">Manifest loaded — {pages} Canvas items</string>
   <string key="resources.project.image_loaded">Image imported</string>
   <string key="resources.project.xml_loaded">{lines} physical lines imported</string>
@@ -640,7 +654,7 @@ The copies have been recorded in the project. Remember to save the .vsynch file.
   <string key="ui.pages.hd.cancelled">Download cancelled. No partial image set was published.</string>
   <string key="ui.resources.add.tip">Add a witness and any available images, IIIF Manifest, ALTO/PAGE and TEI resources.</string>
   <string key="ui.resources.add_resource.tip">Select additional resources for this witness. Nothing is saved until you confirm.</string>
-  <string key="ui.resources.remove_resource.tip">Remove the selected newly added resources from this list without deleting files on disk.</string>
+  <string key="ui.resources.remove_resource.tip">Removes the selected resource: a newly added one disappears from the list; one already saved is removed, after confirmation, when you click “Save witness”. No file is deleted from disk.</string>
   <string key="ui.resources.auto.tip">Review proposed image-to-ALTO/PAGE associations before applying them.</string>
   <string key="ui.resources.save.tip">Commit all changes to this witness in one operation.</string>
   <string key="ui.resources.cancel.tip">Close without changing project resources.</string>

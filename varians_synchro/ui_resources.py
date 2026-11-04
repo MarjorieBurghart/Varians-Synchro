@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import copy
+from pathlib import Path
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (QCheckBox, QFrame, QGroupBox, QHBoxLayout, QLineEdit,
@@ -21,6 +22,7 @@ class WitnessResourceDialog(QDialog):
         self.original_witness = witness
         self.staged_project = None
         self.pending = {'images': [], 'xml_files': [], 'tei_files': [], 'manifests': []}
+        self.removals = []        # (kind, id) des ressources enregistrées à retirer
         self.setWindowTitle(tr('resources.witness.edit' if witness else 'resources.witness.new'))
         self.resize(790, 690)
         layout = QVBoxLayout(self)
@@ -92,6 +94,12 @@ class WitnessResourceDialog(QDialog):
         auto.clicked.connect(self.preview_bindings)
         auto.setToolTip(tr('ui.resources.auto.tip'))
         footer.addWidget(auto)
+        if witness is not None:
+            remove_witness = QPushButton(tr('resources.witness.remove_witness'))
+            remove_witness.setObjectName('removeWitnessButton')
+            remove_witness.setToolTip(tr('resources.witness.remove_witness.tip'))
+            remove_witness.clicked.connect(self.remove_witness)
+            footer.addWidget(remove_witness)
         footer.addStretch(1)
         accept = QPushButton(tr('resources.witness.confirm'))
         accept.clicked.connect(self.commit)
@@ -115,6 +123,21 @@ class WitnessResourceDialog(QDialog):
         return [r['path'] for r in self.original_project.get('text_resources', [])
                 if r.get('kind') == 'tei' and r.get('witness_id') == witness['id']]
 
+    _KINDS = {'images': 'images', 'manifests': 'images', 'xml_files': 'xml', 'tei_files': 'tei'}
+
+    def _existing_ids(self, category):
+        """(chemin ou adresse, identifiant) des ressources enregistrées."""
+        if self.original_witness is None:
+            return []
+        witness = self.original_witness
+        if category in ('images', 'manifests'):
+            kind = 'local' if category == 'images' else 'iiif'
+            return [(s['reference'], s['id']) for s in witness['image_sources'] if s['kind'] == kind]
+        if category == 'xml_files':
+            return [(s['path'], s['id']) for s in witness['alto_sources']]
+        return [(r['path'], r['id']) for r in self.original_project.get('text_resources', [])
+                if r.get('kind') == 'tei' and r.get('witness_id') == witness['id']]
+
     def _unavailable(self):
         """Manifests IIIF enregistrés du témoin qui n'avaient pas répondu."""
         from .resource_workflow import unavailable_manifests
@@ -124,15 +147,22 @@ class WitnessResourceDialog(QDialog):
         unavailable = self._unavailable()
         for category, lst in self.lists.items():
             lst.clear()
-            for path in self._existing(category):
+            for path, source_id in self._existing_ids(category):
                 if path in self.pending[category]:
                     continue                      # à réessayer : montré plus bas
-                if category == 'manifests' and path in unavailable:
+                removal = (self._KINDS[category], source_id)
+                if removal in self.removals:
+                    text = '−  ' + str(path)
+                elif category == 'manifests' and path in unavailable:
                     text = f"⚠  {path} — {tr('resources.witness.manifest_unavailable')}"
                 else:
                     text = '✓  ' + str(path)
                 item = QListWidgetItem(text)
                 item.setData(Qt.ItemDataRole.UserRole, None)
+                item.setData(Qt.ItemDataRole.UserRole + 1, removal)
+                item.setData(Qt.ItemDataRole.UserRole + 2, str(path))
+                if removal in self.removals:
+                    item.setToolTip(tr('resources.witness.removal_tip'))
                 lst.addItem(item)
             for path in self.pending[category]:
                 item = QListWidgetItem(('↻  ' if path in unavailable else '+  ') + str(path))
@@ -209,9 +239,53 @@ class WitnessResourceDialog(QDialog):
             self.pending[category].remove(path)
             self.staged_project = None
             self.refresh_lists()
-        elif path is None:
-            QMessageBox.information(self, tr('resources.witness.edit'),
-                                    tr('resources.witness.existing_protected'))
+        elif path is None and item.data(Qt.ItemDataRole.UserRole + 1):
+            self._toggle_removal(item)
+
+    def _toggle_removal(self, item):
+        """Retire une ressource enregistrée à « Enregistrer le témoin », après
+        avoir dit ce que cela entraîne ; de nouveau « Supprimer » la garde."""
+        removal = tuple(item.data(Qt.ItemDataRole.UserRole + 1))
+        if removal in self.removals:
+            self.removals.remove(removal)
+        else:
+            from .resource_removal import removal_impact
+            try:
+                staged = self.stage_current()
+                impact = removal_impact(staged, self.original_witness['id'], *removal)
+            except Exception as exc:
+                QMessageBox.warning(self, tr('resources.witness.edit'), tr(str(exc)))
+                return
+            path = item.data(Qt.ItemDataRole.UserRole + 2)
+            answer = QMessageBox.question(
+                self, tr('resources.witness.edit'),
+                tr('resources.witness.remove_confirm', name=path if '://' in path else Path(path).name,
+                   pages=impact['pages'], lines=impact['lines'], groups=impact['groups'],
+                   validated=impact['validated']))
+            if answer != QMessageBox.StandardButton.Yes:
+                return
+            self.removals.append(removal)
+        self.staged_project = None
+        self.refresh_lists()
+
+    def remove_witness(self):
+        """Retire le témoin du projet, après avoir dit ce que cela entraîne ;
+        refusé pour le pivot."""
+        from .resource_removal import removal_impact, remove_witness
+        witness_id = self.original_witness['id']
+        try:
+            impact = removal_impact(self.original_project, witness_id)
+        except ValueError as exc:
+            QMessageBox.warning(self, tr('resources.witness.edit'), tr(str(exc)))
+            return
+        answer = QMessageBox.question(
+            self, tr('resources.witness.edit'),
+            tr('resources.witness.remove_witness_confirm', witness=witness_id, sessions=impact['sessions'],
+               groups=impact['groups'], validated=impact['validated']))
+        if answer != QMessageBox.StandardButton.Yes:
+            return
+        remove_witness(self.original_project, witness_id)
+        self.accept()
 
     def build_stage(self):
         from .resource_workflow import apply_witness_draft
@@ -220,14 +294,18 @@ class WitnessResourceDialog(QDialog):
         apply_witness_draft(draft, identifier=self.sigil.text(),
                             label=self.label_edit.text(), is_pivot=self.pivot.isChecked(),
                             **self.pending)
+        if self.removals:
+            from .resource_removal import remove_resource
+            for kind, source_id in self.removals:
+                remove_resource(draft, self.sigil.text().strip(), kind, source_id)
         self.staged_project = draft
         self._staged_identity = (self.sigil.text(), self.label_edit.text(),
-                                 self.pivot.isChecked(), repr(self.pending))
+                                 self.pivot.isChecked(), repr(self.pending), repr(self.removals))
         return draft
 
     def stage_current(self):
         identity = (self.sigil.text(), self.label_edit.text(),
-                    self.pivot.isChecked(), repr(self.pending))
+                    self.pivot.isChecked(), repr(self.pending), repr(self.removals))
         return self.staged_project if self.staged_project is not None and self._staged_identity == identity else self.build_stage()
 
     def preview_bindings(self):
