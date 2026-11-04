@@ -397,7 +397,8 @@ class PagesDialog(QDialog):
         candidates = [(src,i) for src in self.witness['alto_sources'] for i in range(len(src['pages']))]
         if not candidates:
             QMessageBox.information(self, tr('ui.xml.source'), tr('ui.xml.import_first'));return
-        labels = [f"{src.get('kind','alto').upper()} — {Path(src['path']).name} (page {i+1})" for src,i in candidates]
+        labels = [tr('ui.xml.page_choice', kind=src.get('kind', 'alto').upper(),
+                     name=Path(src['path']).name, number=i + 1) for src, i in candidates]
         chosen,ok = QInputDialog.getItem(self,tr('ui.xml.source'),tr('ui.xml.select_page'),labels,0,False)
         if ok:
             src,i = candidates[labels.index(chosen)]
@@ -494,7 +495,7 @@ class PagesDialog(QDialog):
         target = Path(folder)
         if any(target.iterdir()):
             QMessageBox.warning(self, tr('ui.pages.hd.title'),
-                                tr('export.varians.choose_empty'))
+                                tr('ui.pages.hd.choose_empty'))
             return
         import threading
         cancel = threading.Event()

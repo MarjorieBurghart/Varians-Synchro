@@ -12,7 +12,7 @@ Un fichier XML par langue, `i18n/<langue>.xml`, de même schéma que ceux de Var
 </translations>
 ```
 
-`varians_synchro/i18n.py` les charge au démarrage et refuse un catalogue où il manque une clé, où une clé est répétée ou vide, ou dont les paramètres `{nom}` diffèrent de ceux du français. Les sept catalogues ont donc exactement les mêmes clés (693 à ce jour ; `docs/i18n_coverage.json`, contrôlé par `tools/check_maintenance.py`).
+`varians_synchro/i18n.py` les charge au démarrage et refuse un catalogue où il manque une clé, où une clé est répétée ou vide, ou dont les paramètres `{nom}` diffèrent de ceux du français. Les sept catalogues ont donc exactement les mêmes clés ; leur nombre est tenu dans `docs/i18n_coverage.json`, que `tests/test_i18n_full_0855.py` compare aux catalogues.
 
 Une valeur peut s'étendre sur plusieurs lignes : pour ajouter une clé, l'insérer juste avant `</translations>` dans les sept fichiers, jamais au milieu d'une autre entrée.
 
@@ -29,7 +29,7 @@ Le guide utilisateur, `help/<langue>.html`, existe dans les mêmes sept langues.
 
 ## Tests
 
-`test_i18n.py`, `test_i18n_xml_catalogs.py` et `test_i18n_full_0855.py` (catalogues, clés, paramètres), `test_i18n_fragment_spacing.py` (espaces des fragments mis bout à bout), `test_terminology.py` (termes alignés sur Varians), `test_alignment_errors_i18n.py`.
+`test_i18n.py`, `test_i18n_xml_catalogs.py` et `test_i18n_full_0855.py` (catalogues, clés, paramètres), `test_i18n_fragment_spacing.py` (espaces des fragments mis bout à bout), `test_terminology.py` (termes alignés sur Varians), `test_alignment_errors_i18n.py`, `test_ui_texts_i18n.py` (aucune phrase en dur dans les fenêtres, chaque code d'avertissement a son message).
 
 ## Relecture
 

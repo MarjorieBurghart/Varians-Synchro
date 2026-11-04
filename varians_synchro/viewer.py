@@ -539,7 +539,7 @@ class LineImagePanel(QWidget):
         else:
             warning += tr('viewer.no_polygon')
         self._set_default_overlay_mode(polygon_count > 0)
-        self.status.setText(f'{pix.width()} × {pix.height()} pixels · molette : zoom ; glisser : déplacer{warning}')
+        self.status.setText(tr('viewer.status', width=pix.width(), height=pix.height()) + warning)
         self.refresh_overlay()
         self.fit_page()
         self._focus_counterparts()

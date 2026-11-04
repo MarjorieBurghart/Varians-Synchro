@@ -123,7 +123,7 @@ class WitnessResourceDialog(QDialog):
 
     def add_images(self):
         paths, _ = QFileDialog.getOpenFileNames(self, tr('resources.witness.images'), '',
-                               'Images (*.jpg *.jpeg *.png *.tif *.tiff *.webp)')
+                               tr('dialog.filter.images') + ' (*.jpg *.jpeg *.png *.tif *.tiff *.webp)')
         self._add('images', paths)
 
     def add_xml(self):
