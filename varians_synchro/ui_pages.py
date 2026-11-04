@@ -15,8 +15,9 @@ from .imaging import create_pages, import_htr_results, mapped_alto_page
 from .physical_alignment import page_links_impact
 from .reading_stream import rebind_page
 from .ui_batch_binding import BatchBindingDialog
-from .ui_widgets import (_run_modal, call_soon, QDialog, QFileDialog, QInputDialog, QLabel, QListWidget,
-                         QMessageBox, QPushButton)
+from .ui_widgets import (_run_modal, call_soon, start_detached, QDialog, QFileDialog, QInputDialog,
+                         QLabel, QListWidget, QMessageBox, QPushButton)
+from shiboken6 import isValid
 
 
 class DraggablePagesList(QListWidget):
@@ -439,7 +440,7 @@ class PagesDialog(QDialog):
         progress.setWindowModality(Qt.WindowModality.WindowModal)
         progress.setAutoClose(False)
         progress.setAutoReset(False)
-        thread = HTRExportThread(self.witness, selected, path, cancel, self)
+        thread = HTRExportThread(self.witness, selected, path, cancel)
         self._htr_export_thread = thread
         self._htr_export_progress = progress
         progress.canceled.connect(cancel.set)
@@ -448,6 +449,8 @@ class PagesDialog(QDialog):
                 progress.setValue(done)
                 progress.setLabelText(tr('ui.pages.htr.wait', current=done, total=total))
         def complete(status, count, error):
+            if not isValid(self) or not isValid(progress):
+                return                  # window closed meanwhile
             try:
                 progress.canceled.disconnect(cancel.set)
             except (RuntimeError, TypeError):
@@ -464,11 +467,11 @@ class PagesDialog(QDialog):
         thread.progressed.connect(updated)
         thread.done.connect(complete)
         def released():
-            thread.deleteLater()
-            self._htr_export_thread = None
-            self._htr_export_progress = None
+            if isValid(self):
+                self._htr_export_thread = None
+                self._htr_export_progress = None
         thread.finished.connect(released)
-        thread.start()
+        start_detached(thread, self, cancel)
         progress.show()
 
     def download_hd(self):
@@ -508,7 +511,7 @@ class PagesDialog(QDialog):
         # Qt/platform, that can emit canceled() despite a successful export.
         progress.setAutoClose(False)
         progress.setAutoReset(False)
-        thread = HDDownloadThread(self.witness, selected, folder, cancel, self)
+        thread = HDDownloadThread(self.witness, selected, folder, cancel)
         self._hd_download_thread = thread
         self._hd_download_progress = progress
         progress.canceled.connect(cancel.set)
@@ -520,6 +523,8 @@ class PagesDialog(QDialog):
             # Closing a Qt progress dialog can emit canceled(): disconnect
             # before programmatic closure. Never infer a cancelled export
             # from an event set by the progress window *after* publication.
+            if not isValid(self) or not isValid(progress):
+                return                  # window closed meanwhile
             try:
                 progress.canceled.disconnect(cancel.set)
             except (RuntimeError, TypeError):
@@ -546,11 +551,11 @@ class PagesDialog(QDialog):
         thread.progressed.connect(updated)
         thread.done.connect(complete)
         def released():
-            thread.deleteLater()
-            self._hd_download_thread = None
-            self._hd_download_progress = None
+            if isValid(self):
+                self._hd_download_thread = None
+                self._hd_download_progress = None
         thread.finished.connect(released)
-        thread.start()
+        start_detached(thread, self, cancel)
         progress.show()
 
     def attach_hd_folder(self):

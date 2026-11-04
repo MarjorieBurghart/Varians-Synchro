@@ -205,10 +205,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `core`, `errors`, `i18n`, `physical_alignment`, `project_state`, `resource_workflow`, `tei_binding`, `ui_batch_binding`, `ui_help`, `ui_pages`, `ui_pair`, `ui_resources`, `ui_scope`, `ui_tei_binding`, `ui_widgets`, `validation`, `varians_export`, `varians_project_export`
 **Classes déclarées au premier niveau** : `_PairList` (l.27), `GuidedWindow` (l.44)
 
-## `varians_synchro/ui_pages.py` (582 lignes)
+## `varians_synchro/ui_pages.py` (587 lignes)
 **Objet (docstring source)** : Fenêtre « Images et associations ALTO/PAGE » d’un témoin : ordre des pages, association des XML, copies HD et export pour une HTR.
 **Dépendances internes observées** : `errors`, `hd_registry`, `i18n`, `imaging`, `page_management`, `page_order`, `physical_alignment`, `reading_stream`, `ui_batch_binding`, `ui_widgets`, `viewer`
-**Classes déclarées au premier niveau** : `DraggablePagesList` (l.22), `HDDownloadThread` (l.35), `HTRExportThread` (l.72), `PagesDialog` (l.97)
+**Classes déclarées au premier niveau** : `DraggablePagesList` (l.23), `HDDownloadThread` (l.36), `HTRExportThread` (l.73), `PagesDialog` (l.98)
 
 ## `varians_synchro/ui_pair.py` (960 lignes)
 **Objet (docstring source)** : Fenêtre « Synchronisation visuelle entre témoins » : groupes de lignes de deux témoins, propositions, révision rapide et revalidation.
@@ -241,11 +241,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `errors`, `i18n`, `tei_binding`, `tei_visual`, `ui_widgets`, `viewer`
 **Classes déclarées au premier niveau** : `TEILineFetchThread` (l.23), `TEIReviewCard` (l.39), `TEIPhysicalBindingDialog` (l.164)
 
-## `varians_synchro/ui_widgets.py` (132 lignes)
+## `varians_synchro/ui_widgets.py` (167 lignes)
 **Objet (docstring source)** : Widgets Qt qui traduisent leurs textes, ouverture modale d'une fenêtre et appels différés liés à une fenêtre. Les fenêtres de l'interface utilisent ces classes à la place de celles de PySide6 : un texte passé à ``QLabel``, ``setWindowTitle`` ou ``QMessageBox.warning`` est une clé de traduction (ou un texte français connu des catalogues) et s'affiche dans la langue choisie.
 **Dépendances internes observées** : `i18n`
-**Classes déclarées au premier niveau** : `QLabel` (l.49), `QPushButton` (l.58), `QListWidget` (l.67), `QComboBox` (l.72), `QTabWidget` (l.79), `QTreeWidget` (l.84), `QDialog` (l.89), `QMainWindow` (l.94), `QMessageBox` (l.99), `QInputDialog` (l.114), `QFileDialog` (l.123)
-**Fonctions au premier niveau** : `_run_modal` (l.21), `call_soon` (l.33)
+**Classes déclarées au premier niveau** : `QLabel` (l.84), `QPushButton` (l.93), `QListWidget` (l.102), `QComboBox` (l.107), `QTabWidget` (l.114), `QTreeWidget` (l.119), `QDialog` (l.124), `QMainWindow` (l.129), `QMessageBox` (l.134), `QInputDialog` (l.149), `QFileDialog` (l.158)
+**Fonctions au premier niveau** : `_run_modal` (l.21), `call_soon` (l.33), `start_detached` (l.52), `_stop_detached_threads` (l.78)
 
 ## `varians_synchro/validation.py` (163 lignes)
 **Objet (docstring source)** : Read-only V0.7.4 preflight for documentary streams and physical pairs. The audit NEVER repairs historical links, guesses an omission, or modifies data. Warnings may reflect unavailable external resources on a different workstation. Hard errors mark contradictions that must not be silently treated as reliable.

@@ -46,6 +46,41 @@ def call_soon(owner, callback):
     timer.start(0)
 
 
+_DETACHED_THREADS = {}
+
+
+def start_detached(thread, owner, cancel):
+    """Start ``thread`` (a QThread without parent) so that it outlives
+    ``owner``, its window. A worker that was a child of its window was
+    destroyed with it while still running (a download waiting for a slow
+    server): « QThread: Destroyed while thread is still running », then the
+    whole program stopped and unsaved work was lost.
+
+    Closing ``owner`` sets ``cancel`` (a threading.Event); the thread ends at
+    its next check and is freed then. When the application quits, every
+    such thread is cancelled and waited for briefly. Callbacks connected to
+    the thread must check that their window still exists (``isValid``)."""
+    from PySide6.QtCore import QCoreApplication
+    _DETACHED_THREADS[thread] = cancel
+    owner.destroyed.connect(lambda *_: cancel.set())
+
+    def finished():
+        _DETACHED_THREADS.pop(thread, None)
+        thread.deleteLater()
+    thread.finished.connect(finished)
+    app = QCoreApplication.instance()
+    if app is not None and not getattr(app, '_vsynch_waits_threads', False):
+        app._vsynch_waits_threads = True
+        app.aboutToQuit.connect(_stop_detached_threads)
+    thread.start()
+
+
+def _stop_detached_threads():
+    for thread, cancel in list(_DETACHED_THREADS.items()):
+        cancel.set()
+        thread.wait(5000)
+
+
 class QLabel(QtLabel):
     def __init__(self, *args, **kwargs):
         if args and isinstance(args[0], str):
