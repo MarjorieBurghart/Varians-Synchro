@@ -916,4 +916,5 @@ I dettagli tecnici sono nella console o nel registro di avvio.</string>
   <string key="error.export.no_direct_session">{witness}: nessuna sessione diretta con {reference}.</string>
   <string key="ui.xml.replace_ignored">{count} riga/righe ignorata/e non si ritrovano identiche nel nuovo file: perderanno il loro contrassegno. Da rivedere in «Ambito».</string>
   <string key="resources.witness.remove_ignored">{count} riga/righe ignorata/e di queste pagine perderanno il loro contrassegno.</string>
+  <string key="error.project_export.tei_binding_stale">Il collegamento TEI del pivot {witness} non è più valido: la TEI, l’ambito o l’ordine di lettura sono cambiati nel frattempo. Rifatelo in «2 · Associare le risorse» prima di esportare.</string>
 </translations>

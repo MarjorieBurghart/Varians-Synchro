@@ -916,4 +916,5 @@ Technické podrobnosti najdete v konzoli nebo ve spouštěcím protokolu.</strin
   <string key="error.export.no_direct_session">{witness}: žádná přímá relace s {reference}.</string>
   <string key="ui.xml.replace_ignored">{count} ignorovaných řádků se v novém souboru nenachází beze změny: ztratí své označení. Zkontrolujte je v „Rozsahu“.</string>
   <string key="resources.witness.remove_ignored">{count} ignorovaných řádků na těchto stránkách ztratí své označení.</string>
+  <string key="error.project_export.tei_binding_stale">Propojení TEI pivotu {witness} již neplatí: TEI, rozsah nebo pořadí čtení se mezitím změnily. Před exportem je vytvořte znovu v „2 · Přiřazení zdrojů“.</string>
 </translations>

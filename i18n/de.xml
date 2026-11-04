@@ -916,4 +916,5 @@ Technische Details stehen in der Konsole oder im Startprotokoll.</string>
   <string key="error.export.no_direct_session">{witness}: keine direkte Sitzung mit {reference}.</string>
   <string key="ui.xml.replace_ignored">{count} ignorierte Zeile(n) finden sich in der neuen Datei nicht unverändert wieder: Sie verlieren ihre Markierung. Bitte unter „Textumfang“ prüfen.</string>
   <string key="resources.witness.remove_ignored">{count} ignorierte Zeile(n) dieser Seiten verlieren ihre Markierung.</string>
+  <string key="error.project_export.tei_binding_stale">Die TEI-Verknüpfung des Pivots {witness} ist nicht mehr gültig: TEI, Textumfang oder Lesereihenfolge haben sich seitdem geändert. Erstellen Sie sie unter „2 · Ressourcen zuordnen“ neu, bevor Sie exportieren.</string>
 </translations>

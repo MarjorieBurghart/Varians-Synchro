@@ -923,4 +923,5 @@ Les détails techniques sont dans la console ou le journal de démarrage.</strin
   <string key="error.export.no_direct_session">{witness} : aucune session directe avec {reference}.</string>
   <string key="ui.xml.replace_ignored">{count} ligne(s) ignorée(s) ne se retrouvent pas à l’identique dans le nouveau fichier : elles perdront leur marque. À revoir dans « Périmètre ».</string>
   <string key="resources.witness.remove_ignored">{count} ligne(s) ignorée(s) de ces pages perdront leur marque.</string>
+  <string key="error.project_export.tei_binding_stale">La liaison TEI du pivot {witness} n’est plus valide : la TEI, le périmètre ou l’ordre de lecture ont changé depuis. Refaites-la dans « 2 · Associer les ressources » avant d’exporter.</string>
 </translations>

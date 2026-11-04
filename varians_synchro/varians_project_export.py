@@ -149,6 +149,12 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
     if len(tei) > 1:
         raise ValueError('Le pivot doit posséder au plus une édition TEI pour cet export ; '
                          'sélectionnez une édition de référence.')
+    if tei and tei[0].get('tei_binding'):
+        # A stale binding would put the TEI's <lb/> in front of the wrong
+        # lines, unseen by Varians (same number of lines): refuse.
+        from .tei_binding import tei_binding_status
+        if tei_binding_status(project, pivot_id, tei[0]['id'])['status'] != 'valid':
+            raise localized(ValueError, 'error.project_export.tei_binding_stale', witness=pivot_id)
     tei_path = _source_path(tei[0]['path']) if tei else None
     if tei_path is not None:
         tree = ET.parse(tei_path)

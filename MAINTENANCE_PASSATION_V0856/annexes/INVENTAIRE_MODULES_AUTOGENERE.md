@@ -257,9 +257,9 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `errors`, `imaging`, `page_order`, `physical_alignment`, `reading_stream`
 **Fonctions au premier niveau** : `_get_witness` (l.33), `_image_block` (l.37), `_build_witness_cache` (l.54), `_line_fingerprint` (l.108), `_shared_pero_uuid` (l.115), `_safe_same_segmentation_after_format_change` (l.128), `_reference_health` (l.158), `links_kept_by_uuid_continuity` (l.170), `_pair_for_base` (l.196), `make_varians_alignments` (l.204), `inspect_varians_export` (l.300), `verify_export_payloads` (l.347), `export_varians_alignments` (l.391)
 
-## `varians_synchro/varians_project_export.py` (341 lignes)
+## `varians_synchro/varians_project_export.py` (347 lignes)
 **Objet (docstring source)** : Build a directly openable Varians project.xml bundle from Synchro resources. Target syntax: Varians's documented teiManuscriptProject format with one TEI edition. This is a physical mapping export; it does NOT assert that line links have been reconciled with TEI <lb/> unless the editor independently confirms it. The caller must run a final integration test against their installed Varians.
-**Dépendances internes observées** : `core`, `errors`, `hd_registry`, `varians_export`
+**Dépendances internes observées** : `core`, `errors`, `hd_registry`, `tei_binding`, `varians_export`
 **Fonctions au premier niveau** : `_varians_safe_id` (l.24), `_source_path` (l.29), `_relative_or_absolute` (l.36), `_cache_varians_manifest` (l.42), `blank_tei_edition` (l.91), `export_varians_project` (l.122)
 
 ## `varians_synchro/viewer.py` (744 lignes)
