@@ -10,12 +10,14 @@ et le périmètre sont bornés à l'écran.
 
 Les polices de Windows sont environ 2,2 fois plus larges que celles du
 serveur de test Linux (mesuré sur la CI : 1 640 px en français sous Windows
-pour 745 ici). La largeur est donc aussi mesurée avec une police agrandie
-2,2 fois, et avec la recherche dans le texte TEI (pivot lié) : sous Windows,
+pour 745 ici). Sous Linux, la largeur est donc aussi mesurée avec une police
+agrandie 2,2 fois (sous Windows, la police native suffit : l'agrandir la
+doublerait), et avec la recherche dans le texte TEI (pivot lié) : sous Windows,
 la consigne de l'onglet texte, non coupée, et la rangée d'actions du haut
 dépassaient 1 280 px.
 """
 import os
+import sys
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 import pytest
 pytest.importorskip('PySide6')
@@ -26,6 +28,9 @@ from varians_synchro.core import create_witness, new_project
 from varians_synchro.i18n import get_language, set_language
 
 LANGUAGES = ['fr', 'en', 'de', 'cs', 'it', 'ru', 'ja']
+# Polices de la taille de celles de Windows : le serveur de test Linux les a
+# 2,2 fois plus étroites ; sous Windows (et macOS), ce sont les siennes.
+WINDOWS_FONTS = 2.2 if sys.platform.startswith('linux') else 1.0
 
 
 @pytest.fixture(scope='module')
@@ -72,7 +77,7 @@ def font_scale(app):
 
 
 @pytest.mark.parametrize('tei', [False, True], ids=['htr', 'tei'])
-@pytest.mark.parametrize('scale', [1.0, 2.2], ids=['linux', 'windows'])
+@pytest.mark.parametrize('scale', [1.0, WINDOWS_FONTS], ids=['native', 'windows-fonts'])
 @pytest.mark.parametrize('lang', LANGUAGES)
 def test_the_pair_window_fits_a_laptop_screen(app, language, font_scale, monkeypatch, lang, scale, tei):
     from varians_synchro import tei_binding, ui_pair
