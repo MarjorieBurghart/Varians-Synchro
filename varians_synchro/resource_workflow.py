@@ -87,7 +87,7 @@ def resource_summary(project: dict, witness_id: str) -> dict:
 
 def apply_witness_draft(project: dict, *, identifier: str, label: str = '',
                         images=(), manifests=(), xml_files=(), tei_files=(),
-                        is_pivot=False, manifest_loader=None) -> dict:
+                        is_pivot=False, manifest_loader=None, new_witness=False) -> dict:
     """Stage and validate all resources, then atomically replace project content.
 
     Existing page UIDs, manual order, XML bindings, link sessions, TEI documents,
@@ -100,6 +100,10 @@ def apply_witness_draft(project: dict, *, identifier: str, label: str = '',
         raise ValueError('Le sigle du témoin est obligatoire')
     staged = copy.deepcopy(project)
     w = next((x for x in staged['witnesses'] if x['id'] == identifier), None)
+    if w is not None and new_witness:
+        # « Ajouter un témoin » with a siglum already used completed the
+        # existing witness without a word (renamed it, added its pages).
+        raise localized(ValueError, 'error.witness.siglum_taken', witness=identifier)
     if w is None:
         w = create_witness(staged, identifier, label.strip() or identifier)
     elif label.strip():

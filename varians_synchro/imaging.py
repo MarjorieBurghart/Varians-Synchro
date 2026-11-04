@@ -11,6 +11,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 from .errors import Localized, localized
+from .witness_ids import witness_id_for_siglum
 
 MAX_MANIFEST_BYTES = 20_000_000
 MAX_IMAGE_BYTES = 80_000_000
@@ -220,7 +221,9 @@ def export_iiif_htr_zip(witness, page_ids, output_path, max_width=2500, *,
                     raise InterruptedError('Export annulé')
                 p=pages[pid]
                 if p['image_kind']!='iiif':raise ValueError('Export IIIF : sélection contenant une image locale')
-                fname=f'{witness["id"]}_{num:04d}.jpg'
+                # The siglum is free text: name the images by the XML
+                # identifier derived from it, a safe file name (no « / »).
+                fname=f'{witness_id_for_siglum(witness["id"])}_{num:04d}.jpg'
                 body=image_bytes(p,max_width)
                 if not body.startswith(b'\xff\xd8'):
                     raise localized(ValueError, 'error.imaging.export_not_jpeg', page=p['label'])

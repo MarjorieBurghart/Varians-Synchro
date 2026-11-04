@@ -917,4 +917,7 @@
   <string key="ui.xml.replace_ignored">{count} игнорируемых строк не найдены в новом файле без изменений: они потеряют отметку. Проверьте их в «Объёме».</string>
   <string key="resources.witness.remove_ignored">{count} игнорируемых строк на этих страницах потеряют отметку.</string>
   <string key="error.project_export.tei_binding_stale">Связь TEI опорного свидетеля {witness} больше недействительна: TEI, объём или порядок чтения с тех пор изменились. Восстановите её в «2 · Связывание ресурсов» перед экспортом.</string>
+  <string key="error.witness.siglum_conflict">Сигла «{witness}» дала бы при экспорте те же имена файлов, что и свидетель «{other}». Выберите другую сиглу.</string>
+  <string key="error.witness.siglum_reserved">Сиглу «{witness}» нельзя использовать как имя файла в Windows (зарезервированное имя). Выберите другую сиглу.</string>
+  <string key="error.witness.siglum_taken">Сигла «{witness}» уже принадлежит свидетелю проекта: откройте его карточку, чтобы дополнить её, или выберите другую сиглу.</string>
 </translations>

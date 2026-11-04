@@ -205,9 +205,20 @@ def validate_project(project):
 
 
 def create_witness(project, identifier, label=''):
+    """New witness of siglum ``identifier``. Any siglum is accepted, as in
+    Varians; but two sigla which would give the same identifier or file
+    name in the exports, or a name Windows reserves, are refused."""
+    from .witness_ids import file_key, is_reserved_on_windows, witness_id_for_siglum
     identifier = identifier.strip()
     if not identifier or any(w['id'] == identifier for w in project['witnesses']):
         raise ValueError('Identifiant de témoin vide ou déjà utilisé')
+    if not witness_id_for_siglum(identifier):
+        raise ValueError('Identifiant de témoin vide ou déjà utilisé')
+    other = next((w['id'] for w in project['witnesses'] if file_key(w['id']) == file_key(identifier)), None)
+    if other is not None:
+        raise localized(ValueError, 'error.witness.siglum_conflict', witness=identifier, other=other)
+    if is_reserved_on_windows(identifier):
+        raise localized(ValueError, 'error.witness.siglum_reserved', witness=identifier)
     w = {'id': identifier, 'label': label or identifier, 'image_sources': [], 'alto_sources': [], 'pages': [], 'ignored_line_ids': []}
     project['witnesses'].append(w)
     return w

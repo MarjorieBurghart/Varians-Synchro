@@ -917,4 +917,7 @@ Technické podrobnosti najdete v konzoli nebo ve spouštěcím protokolu.</strin
   <string key="ui.xml.replace_ignored">{count} ignorovaných řádků se v novém souboru nenachází beze změny: ztratí své označení. Zkontrolujte je v „Rozsahu“.</string>
   <string key="resources.witness.remove_ignored">{count} ignorovaných řádků na těchto stránkách ztratí své označení.</string>
   <string key="error.project_export.tei_binding_stale">Propojení TEI pivotu {witness} již neplatí: TEI, rozsah nebo pořadí čtení se mezitím změnily. Před exportem je vytvořte znovu v „2 · Přiřazení zdrojů“.</string>
+  <string key="error.witness.siglum_conflict">Sigla „{witness}“ by v exportech dala stejné názvy souborů jako svědek „{other}“. Zvolte jinou siglu.</string>
+  <string key="error.witness.siglum_reserved">Siglu „{witness}“ nelze ve Windows použít jako název souboru (vyhrazený název). Zvolte jinou siglu.</string>
+  <string key="error.witness.siglum_taken">Sigla „{witness}“ už patří svědkovi projektu: otevřete jeho kartu a doplňte ji, nebo zvolte jinou siglu.</string>
 </translations>

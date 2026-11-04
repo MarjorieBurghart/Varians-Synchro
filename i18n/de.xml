@@ -917,4 +917,7 @@ Technische Details stehen in der Konsole oder im Startprotokoll.</string>
   <string key="ui.xml.replace_ignored">{count} ignorierte Zeile(n) finden sich in der neuen Datei nicht unverändert wieder: Sie verlieren ihre Markierung. Bitte unter „Textumfang“ prüfen.</string>
   <string key="resources.witness.remove_ignored">{count} ignorierte Zeile(n) dieser Seiten verlieren ihre Markierung.</string>
   <string key="error.project_export.tei_binding_stale">Die TEI-Verknüpfung des Pivots {witness} ist nicht mehr gültig: TEI, Textumfang oder Lesereihenfolge haben sich seitdem geändert. Erstellen Sie sie unter „2 · Ressourcen zuordnen“ neu, bevor Sie exportieren.</string>
+  <string key="error.witness.siglum_conflict">Die Sigle „{witness}“ ergäbe in den Exporten dieselben Dateinamen wie der Textzeuge „{other}“. Wählen Sie eine andere Sigle.</string>
+  <string key="error.witness.siglum_reserved">Die Sigle „{witness}“ kann unter Windows nicht als Dateiname dienen (reservierter Name). Wählen Sie eine andere Sigle.</string>
+  <string key="error.witness.siglum_taken">Die Sigle „{witness}“ gehört bereits zu einem Textzeugen des Projekts: Öffnen Sie dessen Karte, um ihn zu ergänzen, oder wählen Sie eine andere Sigle.</string>
 </translations>

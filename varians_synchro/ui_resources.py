@@ -297,7 +297,7 @@ class WitnessResourceDialog(QDialog):
         draft = copy.deepcopy(self.original_project)
         apply_witness_draft(draft, identifier=self.sigil.text(),
                             label=self.label_edit.text(), is_pivot=self.pivot.isChecked(),
-                            **self.pending)
+                            new_witness=self.original_witness is None, **self.pending)
         if self.removals:
             from .resource_removal import remove_resource
             for kind, source_id in self.removals:

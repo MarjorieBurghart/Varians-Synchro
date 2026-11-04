@@ -924,4 +924,7 @@ Technical details are in the console or the startup log.</string>
   <string key="ui.xml.replace_ignored">{count} ignored line(s) are not found unchanged in the new file: they will lose their mark. Review them in “Scope”.</string>
   <string key="resources.witness.remove_ignored">{count} ignored line(s) on these pages will lose their mark.</string>
   <string key="error.project_export.tei_binding_stale">The TEI binding of the pivot {witness} is no longer valid: the TEI, the scope or the reading order has changed since. Redo it in “2 · Associate resources” before exporting.</string>
+  <string key="error.witness.siglum_conflict">The siglum “{witness}” would give the same file names as the witness “{other}” in exports. Choose another siglum.</string>
+  <string key="error.witness.siglum_reserved">The siglum “{witness}” cannot be used as a file name on Windows (reserved name). Choose another siglum.</string>
+  <string key="error.witness.siglum_taken">The siglum “{witness}” already belongs to a witness of the project: open its card to complete it, or choose another siglum.</string>
 </translations>

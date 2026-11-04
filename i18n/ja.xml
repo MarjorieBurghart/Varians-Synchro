@@ -917,4 +917,7 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="ui.xml.replace_ignored">無視する行のうち {count} 行は新しいファイルに同一のまま見つかりません。印は外れます。「対象範囲」で確認してください。</string>
   <string key="resources.witness.remove_ignored">これらのページの無視する行 {count} 行の印が外れます。</string>
   <string key="error.project_export.tei_binding_stale">ピボット {witness} の TEI 連携はもう有効ではありません。その後 TEI、対象範囲、または読み順が変更されました。書き出す前に「2 · 資料の関連付け」でやり直してください。</string>
+  <string key="error.witness.siglum_conflict">シグラム「{witness}」は、書き出し時に伝本「{other}」と同じファイル名になります。別のシグラムを選んでください。</string>
+  <string key="error.witness.siglum_reserved">シグラム「{witness}」は Windows ではファイル名に使えません（予約名）。別のシグラムを選んでください。</string>
+  <string key="error.witness.siglum_taken">シグラム「{witness}」はすでにプロジェクトの伝本のものです。補うにはそのカードを開くか、別のシグラムを選んでください。</string>
 </translations>

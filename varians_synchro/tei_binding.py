@@ -13,6 +13,7 @@ import uuid
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+from .witness_ids import witness_id_for_siglum
 from .reading_stream import reading_stream
 
 XML_ID = '{http://www.w3.org/XML/1998/namespace}id'
@@ -46,6 +47,9 @@ def extract_witness_tei(path, witness_id):
     """
     if not witness_id or not isinstance(witness_id, str):
         raise ValueError('Un sigle de témoin est indispensable pour lire une TEI.')
+    # A siglum that is not an XML name (« BnF lat. 123 ») is named in the
+    # TEI by the identifier Varians derives from it (« BnF_lat._123 »).
+    names = {witness_id, witness_id_for_siglum(witness_id)}
     path = Path(path)
     root = ET.parse(path).getroot()
     if _local(root.tag) not in ('TEI', 'teiCorpus'):
@@ -78,7 +82,7 @@ def extract_witness_tei(path, witness_id):
             return
         if tag == 'app':
             readings = [child for child in element if _local(child.tag) in ('lem', 'rdg')]
-            matching = [child for child in readings if witness_id in _refs(child.get('wit'))]
+            matching = [child for child in readings if names & _refs(child.get('wit'))]
             # Explicit witnesses in variant branches take precedence.  A lone
             # unqualified reading is unambiguous; multiple branches without
             # matching @wit must not be mixed or guessed.
@@ -99,16 +103,16 @@ def extract_witness_tei(path, witness_id):
                     return
             issue('choice_unresolved', 'Élément <choice> sans branche exploitable.')
             return
-        if tag in ('lem', 'rdg') and element.get('wit') and witness_id not in _refs(element.get('wit')):
+        if tag in ('lem', 'rdg') and element.get('wit') and not names & _refs(element.get('wit')):
             return
         if tag == 'pb':
             ref = element.get('edRef')
-            if not ref or witness_id in _refs(ref):
+            if not ref or names & _refs(ref):
                 current_page = {'n': element.get('n'), 'facs': element.get('facs'),
                                 'xml_id': element.get(XML_ID)}
         if tag == 'lb':
             ref = element.get('edRef')
-            if ref and witness_id in _refs(ref):
+            if ref and names & _refs(ref):
                 identifier = element.get(XML_ID)
                 if identifier:
                     if identifier in identifiers:

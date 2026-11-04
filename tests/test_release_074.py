@@ -118,7 +118,10 @@ def test_preflight_export_working_only_is_warning_not_error():
 def test_atomic_export_preparation_failure_leaves_existing_empty_dir(tmp_path):
     p = new_project(); m=create_witness(p,'Mu'); f=create_witness(p,'F')
     _page(m); _page(f)
-    f['id'] = '../bad'  # Invalid output filename; must reject BEFORE writing.
+    # Same output file as 'Mu' (case ignored): must reject BEFORE writing.
+    # (« ../bad » was the example until sigla became free text, named in the
+    # exports by the identifier Varians derives from them: « _.._bad ».)
+    f['id'] = 'mu'
     dest=tmp_path/'export'; dest.mkdir()
     with pytest.raises(ValueError):
         export_varians_alignments(p,'Mu',dest)
