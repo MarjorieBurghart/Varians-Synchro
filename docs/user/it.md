@@ -28,6 +28,8 @@ La TEI deve contenere <lb edRef="#SIGLA"/> attribuiti al testimone. Confrontare 
 
 Nella terza fase scegliere una coppia, porre ancore corrispondenti e verificare le proposte. Il clic semplice sostituisce la selezione, Ctrl+clic aggiunge/rimuove, Maiusc+clic seleziona un intervallo.
 
+Le coppie già allineate sono elencate, con il loro avanzamento, sotto il pulsante «Allinea i testimoni»: un doppio clic su una coppia, o il tasto Invio, ne riapre l’allineamento; un clic singolo la seleziona nei due menu.
+
 ## Convalidare e correggere
 
 Convalidare i gruppi corretti e rivedere quelli incerti. Le assenze confermate riguardano solo la coppia. I legami manuali e convalidati restano protetti.

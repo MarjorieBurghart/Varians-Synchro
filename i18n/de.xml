@@ -606,6 +606,8 @@ Das Umordnen ändert keine Quellen.</string>
   <string key="ui.pages.scope.tip">Zeugen auswählen und ALTO/PAGE-Zeilen außerhalb des bearbeiteten Textes markieren.</string>
   <string key="ui.pages.tei.tip">TEI-Zeilen und gewählten physischen Umfang vergleichen; Bilder vor der Bestätigung prüfen.</string>
   <string key="ui.alignment.open.tip">Visuellen Zeilenvergleich zwischen Pivot und weiterem Zeugen öffnen.</string>
+  <string key="ui.alignment.pair_status">{reference} ↔ {target}: {groups} Gruppe(n), {reference_covered}/{reference_total} und {target_covered}/{target_total} Zeilen</string>
+  <string key="ui.alignment.list.tip">Doppelklicken Sie auf ein Paar oder drücken Sie die Eingabetaste, um seinen Abgleich zu öffnen. Ein einfacher Klick wählt es in den beiden Menüs aus.</string>
   <string key="ui.final.export_project.action">Vorausgefülltes Varians-Projekt erstellen…</string>
   <string key="ui.final.export_project.tip">Projektordner mit project.xml, Kopie der Referenz-TEI, Textzeugen und Synchronisierungs-JSON-Dateien vorbereiten. Prüfen Sie die Kompatibilität mit Ihrer installierten Varians-Version.</string>
   <string key="ui.final.export_project.no_tei">Dem Pivot ist keine TEI-Edition zugeordnet: Das Varians-Projekt erhält eine leere TEI-Edition, wie mit „Neue Transkription beginnen“ in Varians.</string>

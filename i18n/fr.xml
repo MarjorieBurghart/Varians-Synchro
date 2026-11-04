@@ -611,6 +611,8 @@ Le réordonnancement ne modifie pas les sources.</string>
   <string key="ui.pages.scope.tip">Sélectionner un témoin et marquer les lignes ALTO/PAGE situées hors du passage étudié.</string>
   <string key="ui.pages.tei.tip">Comparer les lignes de l’édition TEI au périmètre retenu et vérifier leurs images avant de confirmer le rattachement.</string>
   <string key="ui.alignment.open.tip">Ouvrir le contrôle visuel des lignes entre le pivot et le témoin secondaire.</string>
+  <string key="ui.alignment.pair_status">{reference} ↔ {target} : {groups} groupe(s), {reference_covered}/{reference_total} et {target_covered}/{target_total} lignes</string>
+  <string key="ui.alignment.list.tip">Double-cliquez sur une paire, ou appuyez sur Entrée, pour ouvrir sa synchronisation. Un simple clic la choisit dans les deux menus.</string>
   <string key="ui.final.export_project.action">Créer un projet Varians pré-renseigné…</string>
   <string key="ui.final.export_project.tip">Préparer un dossier avec project.xml, une copie de la TEI du pivot, les témoins et leurs JSON. Compatibilité à vérifier dans votre version de Varians.</string>
   <string key="ui.final.export_project.no_tei">Aucune édition TEI n’est associée au témoin pivot : le projet Varians recevra une édition TEI vide, comme avec « Commencer une nouvelle transcription » dans Varians.</string>

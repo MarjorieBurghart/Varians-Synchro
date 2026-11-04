@@ -28,6 +28,8 @@ TEI benötigt zeugenspezifische <lb edRef="#SIGLE"/>-Elemente. Anzahl der TEI-Ze
 
 Im dritten Schritt ein Zeugenpaar auswählen, gemeinsame Anker setzen und Vorschläge des Textfortschritts prüfen. Einfacher Klick ersetzt die Auswahl; Strg-Klick fügt hinzu oder entfernt; Umschalt-Klick wählt einen Bereich.
 
+Bereits abgeglichene Paare stehen mit ihrem Fortschritt unter der Schaltfläche „Zeugen abgleichen“: Ein Doppelklick auf ein Paar oder die Eingabetaste öffnet seinen Abgleich erneut; ein einfacher Klick wählt es in den beiden Menüs aus.
+
 ## Prüfen und bestätigen
 
 Richtige Gruppen bestätigen und unsichere korrigieren. Bestätigte Auslassungen gelten nur für das jeweilige Zeugenpaar. Manuelle und bestätigte Zuordnungen bleiben vor automatischer Neuberechnung geschützt.

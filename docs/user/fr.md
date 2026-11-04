@@ -28,6 +28,8 @@ La TEI doit comprendre des <lb edRef="#SIGLE"/> attribués au témoin. Vérifier
 
 Dans 3 · Aligner les témoins, choisir une paire de témoins, établir des repères homologues, demander des propositions de progression textuelle, puis les revoir. Clic simple = remplacer la sélection du témoin entier ; Ctrl+clic = ajouter/retirer ; Maj+clic = plage. Les correspondances consultées sur l’autre témoin ne sont pas des sélections.
 
+Les paires déjà alignées sont listées sous le bouton « Aligner les témoins », avec leur avancement : un double-clic sur une paire, ou la touche Entrée, rouvre sa synchronisation ; un simple clic la choisit dans les deux menus.
+
 ## Valider et traiter les absences
 
 Valider les groupes corrects ; corriger les groupes incertains. Les absences confirmées sont propres à la paire, alors que les lignes ignorées sont hors périmètre du témoin. Les groupes manuels ou validés sont protégés des recalculs automatiques.
