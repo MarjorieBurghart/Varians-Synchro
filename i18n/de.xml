@@ -914,4 +914,6 @@ Technische Details stehen in der Konsole oder im Startprotokoll.</string>
   <string key="error.pairs.stale_lines">{reference} ↔ {target}: {count} Zeile(n) geändert oder fehlend</string>
   <string key="error.pairs.session_error">Sitzung {session}: {error}</string>
   <string key="error.export.no_direct_session">{witness}: keine direkte Sitzung mit {reference}.</string>
+  <string key="ui.xml.replace_ignored">{count} ignorierte Zeile(n) finden sich in der neuen Datei nicht unverändert wieder: Sie verlieren ihre Markierung. Bitte unter „Textumfang“ prüfen.</string>
+  <string key="resources.witness.remove_ignored">{count} ignorierte Zeile(n) dieser Seiten verlieren ihre Markierung.</string>
 </translations>

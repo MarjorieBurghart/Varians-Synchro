@@ -921,4 +921,6 @@ Les détails techniques sont dans la console ou le journal de démarrage.</strin
   <string key="error.pairs.stale_lines">{reference} ↔ {target} : {count} ligne(s) modifiée(s) ou absente(s)</string>
   <string key="error.pairs.session_error">Session {session} : {error}</string>
   <string key="error.export.no_direct_session">{witness} : aucune session directe avec {reference}.</string>
+  <string key="ui.xml.replace_ignored">{count} ligne(s) ignorée(s) ne se retrouvent pas à l’identique dans le nouveau fichier : elles perdront leur marque. À revoir dans « Périmètre ».</string>
+  <string key="resources.witness.remove_ignored">{count} ligne(s) ignorée(s) de ces pages perdront leur marque.</string>
 </translations>

@@ -407,12 +407,14 @@ class PagesDialog(QDialog):
             if binding and (binding.get('source_id'), binding.get('page_index')) != (src['id'], i):
                 # Say beforehand what a new segmentation affects: groups citing
                 # the page's lines become stale if those lines change.
-                impact = page_links_impact(self.project, self.witness['id'], sel[0]['id'])
+                impact = page_links_impact(self.project, self.witness['id'], sel[0]['id'], src['id'], i)
                 text = (tr('ui.xml.replace_impact', links=impact['links'],
                            validated=impact['validated'])
                         if impact['links'] else tr('ui.xml.replace_question'))
                 if impact['reading_order']:
                     text += '\n\n' + tr('ui.xml.replace_order')
+                if impact['ignored_lost']:
+                    text += '\n\n' + tr('ui.xml.replace_ignored', count=impact['ignored_lost'])
                 answer = QMessageBox.question(self,tr('ui.xml.replace_title'),text)
                 if answer != QMessageBox.StandardButton.Yes:return
             rebind_page(self.witness,sel[0]['id'],src['id'],i)

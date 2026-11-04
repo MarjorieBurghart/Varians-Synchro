@@ -914,4 +914,6 @@ rapport_export.json とガイドを参照してください。TEI 校訂版の�
   <string key="error.pairs.stale_lines">{reference} ↔ {target}：{count} 行が変更されたか、存在しません</string>
   <string key="error.pairs.session_error">セッション {session}：{error}</string>
   <string key="error.export.no_direct_session">{witness}：{reference} との直接のセッションがありません。</string>
+  <string key="ui.xml.replace_ignored">無視する行のうち {count} 行は新しいファイルに同一のまま見つかりません。印は外れます。「対象範囲」で確認してください。</string>
+  <string key="resources.witness.remove_ignored">これらのページの無視する行 {count} 行の印が外れます。</string>
 </translations>

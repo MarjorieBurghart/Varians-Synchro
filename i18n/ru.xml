@@ -914,4 +914,6 @@
   <string key="error.pairs.stale_lines">{reference} ↔ {target}: изменённых или отсутствующих строк: {count}</string>
   <string key="error.pairs.session_error">Сеанс {session}: {error}</string>
   <string key="error.export.no_direct_session">{witness}: нет сеанса прямого выравнивания с {reference}.</string>
+  <string key="ui.xml.replace_ignored">{count} игнорируемых строк не найдены в новом файле без изменений: они потеряют отметку. Проверьте их в «Объёме».</string>
+  <string key="resources.witness.remove_ignored">{count} игнорируемых строк на этих страницах потеряют отметку.</string>
 </translations>

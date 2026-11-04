@@ -914,4 +914,6 @@ I dettagli tecnici sono nella console o nel registro di avvio.</string>
   <string key="error.pairs.stale_lines">{reference} ↔ {target}: {count} righe modificate o mancanti</string>
   <string key="error.pairs.session_error">Sessione {session}: {error}</string>
   <string key="error.export.no_direct_session">{witness}: nessuna sessione diretta con {reference}.</string>
+  <string key="ui.xml.replace_ignored">{count} riga/righe ignorata/e non si ritrovano identiche nel nuovo file: perderanno il loro contrassegno. Da rivedere in «Ambito».</string>
+  <string key="resources.witness.remove_ignored">{count} riga/righe ignorata/e di queste pagine perderanno il loro contrassegno.</string>
 </translations>

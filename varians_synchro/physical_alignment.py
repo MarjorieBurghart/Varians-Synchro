@@ -174,11 +174,14 @@ def revalidate_pair_link(project, session, link_id):
     return next(item for item in session['links'] if item['id'] == link_id)
 
 
-def page_links_impact(project, witness_id, page_id):
+def page_links_impact(project, witness_id, page_id, source_id=None, page_index=0):
     """What a new segmentation of a page (another XML) would affect, to say
     it beforehand: links citing its current lines, in every pair session
-    (``links``, ``validated``, ``by_state``), and whether the page has a
-    corrected reading order (``reading_order``), which would be dropped."""
+    (``links``, ``validated``, ``by_state``), whether the page has a
+    corrected reading order (``reading_order``), which would be dropped,
+    and, given the new file (``source_id``, ``page_index``), how many of its
+    ignored lines are not found in it and would be released
+    (``ignored_lost``)."""
     witness = _witness(project, witness_id)
     if witness is None:
         raise ValueError('Témoin inconnu')
@@ -192,9 +195,17 @@ def page_links_impact(project, witness_id, page_id):
             if uids & (set(link.get('reference_ids', [])) | set(link.get('target_ids', []))):
                 state = link.get('state', 'uncertain')
                 by_state[state] = by_state.get(state, 0) + 1
+    ignored_lost = 0
+    source = next((s for s in witness.get('alto_sources', []) if s['id'] == source_id), None)
+    if source is not None and 0 <= page_index < len(source.get('pages', [])):
+        from .line_scope import carried_ignored_lines
+        before = (mapped_alto_page(witness, page) or {}).get('lines', [])
+        ignored_lost = carried_ignored_lines(witness, page_id, before,
+                                             source['pages'][page_index].get('lines', []))[1]
     return {'links': sum(by_state.values()), 'validated': by_state.get('validated', 0),
             'by_state': by_state,
-            'reading_order': bool(page.get('reading_line_order') or page.get('reading_region_order'))}
+            'reading_order': bool(page.get('reading_line_order') or page.get('reading_region_order')),
+            'ignored_lost': ignored_lost}
 
 
 def _link_context(project, session):

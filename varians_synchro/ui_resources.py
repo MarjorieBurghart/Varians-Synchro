@@ -260,11 +260,12 @@ class WitnessResourceDialog(QDialog):
                 QMessageBox.warning(self, tr('resources.witness.edit'), localized_text(exc))
                 return
             path = item.data(Qt.ItemDataRole.UserRole + 2)
-            answer = QMessageBox.question(
-                self, tr('resources.witness.edit'),
-                tr('resources.witness.remove_confirm', name=path if '://' in path else Path(path).name,
-                   pages=impact['pages'], lines=impact['lines'], groups=impact['groups'],
-                   validated=impact['validated']))
+            text = tr('resources.witness.remove_confirm', name=path if '://' in path else Path(path).name,
+                      pages=impact['pages'], lines=impact['lines'], groups=impact['groups'],
+                      validated=impact['validated'])
+            if impact.get('ignored'):
+                text += '\n\n' + tr('resources.witness.remove_ignored', count=impact['ignored'])
+            answer = QMessageBox.question(self, tr('resources.witness.edit'), text)
             if answer != QMessageBox.StandardButton.Yes:
                 return
             self.removals.append(removal)

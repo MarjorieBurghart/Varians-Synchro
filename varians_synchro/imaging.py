@@ -136,7 +136,12 @@ def bind_alto(witness,page_id,alto_source_id,alto_page_index=0):
     src=next((a for a in witness.get('alto_sources',[]) if a['id']==alto_source_id),None)
     if page is None or src is None:raise ValueError('Page ou source ALTO/PAGE introuvable')
     if not 0<=alto_page_index<len(src['pages']): raise ValueError('Index de page XML invalide')
+    before=(mapped_alto_page(witness,page) or {}).get('lines',[])
     page['alto_binding']={'source_id':alto_source_id,'page_index':alto_page_index,'verified':False}
+    # Ignored lines are known by page and rank: carry each mark to the same
+    # line in the new file, or release it (never leave it on another line).
+    from .line_scope import carry_ignored_lines
+    return carry_ignored_lines(witness,page_id,before,src['pages'][alto_page_index].get('lines',[]))
 
 
 def mapped_alto_page(witness,page):

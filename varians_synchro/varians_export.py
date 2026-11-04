@@ -167,6 +167,32 @@ def _reference_health(witness, uid, known, lookup, fp):
     return 'stale'
 
 
+def links_kept_by_uuid_continuity(project):
+    """IDs of the correspondence groups the export keeps only through the
+    PERO identifier continuity (an ALTO file replaced by the PAGE file of the
+    same segmentation): they need the old file to prove it, and are lost
+    from the export when it is removed."""
+    known, lookups = {}, {}
+    for witness in project.get('witnesses', []):
+        lookups[witness['id']] = _build_witness_cache(witness, base_id=witness['id'])[1]
+        known[witness['id']] = {row['id']: row for row in physical_lines(witness)}
+    kept = set()
+    for session in project.get('pair_sessions', []):
+        sides = [(session.get('reference_witness_id'), 'reference_ids'),
+                 (session.get('target_witness_id'), 'target_ids')]
+        if any(wid not in known for wid, _ in sides):
+            continue
+        for link in session.get('links', []):
+            if link.get('kind') != 'correspondence':
+                continue
+            fp = link.get('fingerprints') or {}
+            health = [_reference_health(_get_witness(project, wid), uid, known[wid], lookups[wid], fp)
+                      for wid, field in sides for uid in link.get(field, [])]
+            if 'per_uuid' in health and 'stale' not in health:
+                kept.add(link['id'])
+    return kept
+
+
 def _pair_for_base(project, base_id, target_id):
     candidates = [s for s in project.get('pair_sessions', [])
                   if {s.get('reference_witness_id'), s.get('target_witness_id')} == {base_id, target_id}]
