@@ -24,7 +24,7 @@ Ce format n'est pas celui que lit Varians : l'export le convertit en fichiers de
 
 Chaque entrée de `witnesses[]` a pour `id` le sigle du témoin (unique) et un `label`.
 
-- `image_sources[]` : Manifests IIIF ou dossiers d'images locales (`kind` : `iiif` ou `local`, `reference`).
+- `image_sources[]` : Manifests IIIF ou dossiers d'images locales (`kind` : `iiif` ou `local`, `reference`). Un Manifest qui n'a pas répondu est gardé avec `status: "unavailable"` et `error` ; donner de nouveau son adresse (bouton « Réessayer » de la fiche du témoin) l'interroge une nouvelle fois (`resource_workflow.apply_witness_draft`).
 - `alto_sources[]` : fichiers ALTO ou PAGE importés, avec leur empreinte SHA-256 et un instantané de leurs pages et lignes (`pages[].lines[]` : `alto_id`, `text`, `bbox`, et `polygon` si le fichier donne un contour). `kind: "page"` désigne un fichier PAGE ; sans `kind`, c'est un ALTO. Les coordonnées sont celles du fichier, non réécrites.
 - `pages[]` : les pages du témoin. Chacune a un `id` stable, son image (`image_kind`, Canvas IIIF ou `image_path`) et, si elle est associée à un fichier, `alto_binding` (`source_id`, `page_index`) — ce nom vaut aussi pour PAGE et ne doit pas être renommé. L'ordre de lecture corrigé est dans `reading_order` (rang de la page), `reading_region_order` et `reading_line_order` (ordre des régions ou des lignes de la page).
 - `ignored_line_ids[]` : les lignes hors du périmètre d'étude (marges, titres courants…). Ce n'est ni une omission ni une absence attestée ; une ligne ignorée ne peut pas être associée, et les lignes déjà liées sont dissociées, après confirmation, avant d'être ignorées.

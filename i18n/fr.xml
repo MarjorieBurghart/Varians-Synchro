@@ -523,7 +523,13 @@ Le réordonnancement ne modifie pas les sources.</string>
   <string key="resources.binding.ordinal_confirm">Confirmer {count} association(s) proposées par le seul ordre naturel ? Vérifiez les images et les XML : ces paires ne sont pas prouvées par les noms.</string>
   <string key="resources.binding.missing">Importer au préalable au moins une image et un fichier ALTO/PAGE.</string>
   <string key="resources.witness.tei_note">Le rattachement de cette édition TEI aux lignes physiques nécessite des ALTO/PAGE et la définition du périmètre éditorial. Il se réalise dans « 2 · Associer les ressources ».</string>
-  <string key="resources.project.manifest_unavailable">Manifest conservé, accès indisponible (à réessayer)</string>
+  <string key="resources.project.manifest_unavailable">Manifest conservé, accès indisponible : « Réessayer » dans la fiche du témoin</string>
+  <string key="resources.witness.manifest_unavailable">indisponible</string>
+  <string key="resources.witness.retry">Réessayer</string>
+  <string key="resources.witness.retry.tip">Interroge de nouveau les Manifests IIIF qui n’avaient pas répondu. Le projet ne change qu’à « Enregistrer le témoin ».</string>
+  <string key="resources.witness.retry_none">Aucun Manifest indisponible pour ce témoin.</string>
+  <string key="resources.witness.retry_loaded">{url} : Manifest chargé, {pages} page(s). Enregistrez le témoin pour le garder.</string>
+  <string key="resources.witness.retry_failed">{url} : toujours indisponible ({error}).</string>
   <string key="resources.project.manifest_loaded">Manifest lu — {pages} Canvas</string>
   <string key="resources.project.image_loaded">Image importée</string>
   <string key="resources.project.xml_loaded">{lines} lignes physiques importées</string>

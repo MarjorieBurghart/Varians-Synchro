@@ -12,6 +12,7 @@
 - Icône : le logo de Varians-Synchro (sur une pastille blanche, lisible sur fond sombre) est l'icône des fenêtres, de la barre des tâches et du Dock ; sous Windows, la fenêtre a sa propre entrée dans la barre des tâches au lieu de celle de Python. `icons/varians_synchro.ico` pour un raccourci ; icônes produites à partir de `logo/` par `tools/generate_icons.py`.
 - Projet : un chemin de fichier relatif est lu par rapport au dossier du `.vsynch` ; l'exemple livré (`demo_local_ALTO/`) n'a plus que des chemins relatifs et s'ouvre tel quel (il pointait vers des chemins de l'environnement où il avait été créé).
 - Documentation du dépôt : les 57 anciennes notes de la racine (journaux de version détaillés, recettes, anciens guides) sont retirées ; elles restent dans l'historique Git, recensées avec un lien dans `docs/HISTORIQUE.md`. Les références techniques encore valables (architecture, format `.vsynch`, export vers Varians, internationalisation, portabilité) sont mises à jour dans `docs/developer/`, et le README est réduit à l'essentiel.
+- Manifest IIIF qui n'a pas répondu à l'ajout du témoin : il est signalé « indisponible » dans la fiche du témoin, et « Réessayer » l'interroge de nouveau (ressaisir son adresse aussi) ; le logiciel dit s'il a répondu et combien de pages il contient. Auparavant, l'adresse déjà connue était ignorée et le Manifest restait indisponible pour de bon.
 
 ## V0.8.5.6 — dossier autonome de maintenance et passation (19/10/2026)
 

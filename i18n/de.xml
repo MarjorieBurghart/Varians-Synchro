@@ -518,7 +518,13 @@ Das Umordnen ändert keine Quellen.</string>
   <string key="resources.binding.ordinal_confirm">{count} Zuordnungen bestätigen, die nur aus der natürlichen Reihenfolge abgeleitet wurden? Prüfen Sie Bilder und XML-Dateien: diese Paare sind nicht durch Namen belegt.</string>
   <string key="resources.binding.missing">Importieren Sie zuerst mindestens ein Bild und eine ALTO/PAGE-Datei.</string>
   <string key="resources.witness.tei_note">Für die Zuordnung der TEI-Edition zu physischen Zeilen benötigen Sie ALTO/PAGE und einen festgelegten Editionsbereich. Verwenden Sie „2 · Ressourcen zuordnen“.</string>
-  <string key="resources.project.manifest_unavailable">Manifest gespeichert, derzeit nicht erreichbar (erneut versuchen)</string>
+  <string key="resources.project.manifest_unavailable">Manifest gespeichert, derzeit nicht erreichbar: „Erneut versuchen“ im Formular des Textzeugen</string>
+  <string key="resources.witness.manifest_unavailable">nicht erreichbar</string>
+  <string key="resources.witness.retry">Erneut versuchen</string>
+  <string key="resources.witness.retry.tip">Fragt die IIIF-Manifeste, die nicht geantwortet hatten, erneut ab. Das Projekt ändert sich erst beim Speichern des Textzeugen.</string>
+  <string key="resources.witness.retry_none">Dieser Textzeuge hat kein nicht erreichbares Manifest.</string>
+  <string key="resources.witness.retry_loaded">{url}: Manifest geladen, {pages} Seite(n). Speichern Sie den Textzeugen, um es zu behalten.</string>
+  <string key="resources.witness.retry_failed">{url}: weiterhin nicht erreichbar ({error}).</string>
   <string key="resources.project.manifest_loaded">Manifest geladen — {pages} Canvases</string>
   <string key="resources.project.image_loaded">Bild importiert</string>
   <string key="resources.project.xml_loaded">{lines} physische Zeilen importiert</string>

@@ -137,7 +137,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Quattro gruppi di risorse, ciascuno con <b class="ui" data-tr="resources.witness.add">Aggiungi…</b>:
 <ul>
 <li><b class="ui" data-tr="resources.witness.images">Immagini locali</b>: le immagini sono ordinate per nome («2» prima di «10»);</li>
-<li><b class="ui" data-tr="resources.witness.manifests">Manifest IIIF</b>: l’URL del Manifest; se non risponde, l’URL viene conservato, con lo stato non disponibile;</li>
+<li><b class="ui" data-tr="resources.witness.manifests">Manifest IIIF</b>: l’URL del Manifest; se non risponde, l’URL viene conservato, con lo stato non disponibile, e <b class="ui" data-tr="resources.witness.retry">Riprova</b> lo interroga di nuovo;</li>
 <li><b class="ui" data-tr="resources.witness.xml">File ALTO/PAGE-XML</b>: il formato è riconosciuto in base al contenuto;</li>
 <li><b class="ui" data-tr="resources.witness.tei">Edizione TEI XML</b>: facoltativa, utile per il pivot.</li>
 </ul></li>
@@ -317,6 +317,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ul>
 <li><strong>«<b class="ui" data-tr="alignment.error.no_alto">Associare pagine ALTO a entrambi i testimoni prima di allinearli</b>»</strong>: uno dei due testimoni non ha ancora alcuna pagina associata a un file di righe (<a href="#etape2">Fase 2</a>).</li>
 <li><strong>Immagine IIIF non disponibile</strong>: il server non risponde; le associazioni non vanno perse. Riprovate più tardi, oppure scaricate delle copie HD.</li>
+<li><strong>Manifest IIIF non disponibile</strong>: non ha risposto quando il testimone è stato aggiunto; il suo URL è conservato e il riepilogo lo segnala. In <b class="ui" data-tr="navigation.project">1 · Aggiungere i testimoni</b>, fate clic sul testimone, poi su <b class="ui" data-tr="resources.witness.retry">Riprova</b>: il programma dice se il Manifest ha risposto e quante pagine contiene; <b class="ui" data-tr="resources.witness.confirm">Salva testimone</b> conserva il risultato.</li>
 <li><strong>Contorni sfalsati sull’immagine</strong>: l’immagine e il file ALTO/PAGE non hanno le stesse proporzioni (la barra di stato lo segnala); verificate che il file corrisponda davvero a questa immagine.</li>
 <li><strong>Esportazione rifiutata</strong>: la cartella scelta non è vuota, oppure una sigla contiene un punto, <code>/</code> o <code>\</code>.</li>
 <li><strong>In Varians, le righe del pivot non corrispondono al testo</strong>: il numero di <code>&lt;lb edRef="#PIVOT"/&gt;</code> è diverso dal numero di righe attive del pivot (righe da ignorare dimenticate, o <code>&lt;lb/&gt;</code> mancanti). <b class="varians" data-varians="diagnostics.menu">Diagnostica dei testimoni…</b> in Varians e il <a href="#tei">collegamento TEI</a> di Varians-Synchro aiutano a trovare la differenza.</li>

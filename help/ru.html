@@ -137,7 +137,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Четыре группы ресурсов, у каждой кнопка <b class="ui" data-tr="resources.witness.add">Добавить…</b>:
 <ul>
 <li><b class="ui" data-tr="resources.witness.images">Локальные изображения</b>: изображения сортируются по имени («2» перед «10»);</li>
-<li><b class="ui" data-tr="resources.witness.manifests">Манифест IIIF</b>: адрес манифеста; если он не отвечает, адрес сохраняется с пометкой «недоступен»;</li>
+<li><b class="ui" data-tr="resources.witness.manifests">Манифест IIIF</b>: адрес манифеста; если он не отвечает, адрес сохраняется с пометкой «недоступен», а <b class="ui" data-tr="resources.witness.retry">Повторить</b> запрашивает его снова;</li>
 <li><b class="ui" data-tr="resources.witness.xml">Файлы ALTO/PAGE-XML</b>: формат определяется по содержимому;</li>
 <li><b class="ui" data-tr="resources.witness.tei">Издание TEI XML</b>: необязательно, полезно для опорного свидетеля.</li>
 </ul></li>
@@ -317,6 +317,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <ul>
 <li><strong>«<b class="ui" data-tr="alignment.error.no_alto">Перед выравниванием привяжите страницы ALTO к обоим свидетелям</b>»</strong>: у одного из двух свидетелей ещё нет ни одной страницы, связанной с файлом строк (<a href="#etape2">Шаг 2</a>).</li>
 <li><strong>Изображение IIIF недоступно</strong>: сервер не отвечает; связи при этом не теряются. Повторите попытку позже или скачайте HD-копии.</li>
+<li><strong>Манифест IIIF недоступен</strong>: он не ответил при добавлении свидетеля; его адрес сохранён, и сводка об этом сообщает. В разделе <b class="ui" data-tr="navigation.project">1 · Добавление свидетелей</b> щёлкните свидетеля, затем <b class="ui" data-tr="resources.witness.retry">Повторить</b>: программа сообщит, ответил ли манифест и сколько в нём страниц; <b class="ui" data-tr="resources.witness.confirm">Сохранить свидетеля</b> сохраняет результат.</li>
 <li><strong>Контуры смещены относительно изображения</strong>: у изображения и файла ALTO/PAGE разные пропорции (об этом сообщает строка состояния); проверьте, что файл действительно относится к этому изображению.</li>
 <li><strong>Экспорт отклонён</strong>: выбранная папка не пуста или сигла содержит точку, <code>/</code> или <code>\</code>.</li>
 <li><strong>В Varians строки опорного свидетеля не соответствуют тексту</strong>: число <code>&lt;lb edRef="#PIVOT"/&gt;</code> отличается от числа активных строк опорного свидетеля (забытые игнорируемые строки или недостающие <code>&lt;lb/&gt;</code>). Найти расхождение помогают <b class="varians" data-varians="diagnostics.menu">Диагностика рукописей…</b> в Varians и <a href="#tei">привязка TEI</a> в Varians-Synchro.</li>
