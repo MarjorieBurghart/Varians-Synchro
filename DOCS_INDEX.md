@@ -13,6 +13,7 @@
 - [Export vers Varians](docs/developer/EXPORT_VARIANS.md) : projet pré-renseigné et fichiers de synchronisation.
 - [Internationalisation](docs/developer/INTERNATIONALISATION.md) : catalogues, `tr`, aide en sept langues.
 - [Portabilité](docs/developer/PORTABILITE.md) : installation sous Windows, macOS, Linux.
+- [Version prête à l'emploi](packaging/LISEZMOI.md) : construction par PyInstaller, vérification `--self-test`, publication avec chaque release.
 - [Red team](docs/RED_TEAM.md) : faiblesses trouvées avant publication, décisions, corrections et limites connues.
 
 **Historique** : [`CHANGELOG.md`](CHANGELOG.md) résume chaque version ; les anciennes notes de livraison (journaux, recettes, anciens guides) sont dans l'historique Git, recensées dans [`docs/HISTORIQUE.md`](docs/HISTORIQUE.md).

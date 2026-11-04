@@ -46,6 +46,12 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>各伝本について：その画像（ローカルファイル、または IIIF Manifest）と、整列する各ページについて、その行を記述した ALTO または PAGE XML ファイル。</li>
 <li>任意で、ピボット伝本の TEI 校訂本文（すでにある場合）。</li>
 </ul>
+<h3 id="installation">インストールと起動</h3>
+<ul>
+<li><strong>すぐに使える版。</strong> いちばん簡単な方法です。Python も含めて何もインストールする必要がなく、Windows、macOS（Apple シリコンまたは Intel）、Linux 用があります。リリースのページ（<a href="https://github.com/MarjorieBurghart/Varians-Synchro/releases">https://github.com/MarjorieBurghart/Varians-Synchro/releases</a>）から入手してください。アーカイブを展開して Varians-Synchro を起動します。初回起動時のシステムの警告を通過する方法は、<code>README-ja.txt</code> ファイルに書かれています（このソフトウェアには署名がありません）。サンプルプロジェクト <code>demo_local_ALTO</code> はプログラムの隣にあります。更新するには、フォルダーを新しい版のものと置き換えます。プロジェクトと設定は別の場所にあります。</li>
+<li><strong>Python で使う。</strong> Python 3.10 以降と PySide6 が必要です：<code>pip install -r requirements.txt</code> のあと <code>python run.py</code>（Windows では <code>start_windows.bat</code>、macOS と Linux では <code>start_unix.sh</code>）。</li>
+<li><strong>インストールの確認。</strong> <code>Varians-Synchro --self-test report.json</code>（Python では <code>python run.py --self-test report.json</code>）は、翻訳、ヘルプ、リソース、サンプルプロジェクト、Varians への書き出しを含む同期 1 件、ウィンドウを数秒で確認し、報告を書き出します。各システムでの正確なコマンドは <code>README-ja.txt</code> にあります。この報告を問題の報告に添付してください：<a href="https://github.com/MarjorieBurghart/Varians-Synchro/issues">https://github.com/MarjorieBurghart/Varians-Synchro/issues</a>。</li>
+</ul>
 <h3>4 つのステップ</h3>
 <p>メインウィンドウでは、左側に示された 4 つのステップに沿って作業します。</p>
 <ol>

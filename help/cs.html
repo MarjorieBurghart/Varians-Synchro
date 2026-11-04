@@ -46,6 +46,12 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Pro každého svědka: jeho obrázky (místní soubory nebo Manifest IIIF) a pro každou stránku, kterou chcete zarovnat, soubor ALTO nebo PAGE XML, který popisuje její řádky.</li>
 <li>Volitelně edice TEI pivotního svědka, pokud již existuje.</li>
 </ul>
+<h3 id="installation">Instalace a spuštění</h3>
+<ul>
+<li><strong>Verze připravená k použití.</strong> Nejjednodušší: nic se neinstaluje, ani Python, pro Windows, macOS (Apple Silicon nebo Intel) či Linux, na stránce verzí (<a href="https://github.com/MarjorieBurghart/Varians-Synchro/releases">https://github.com/MarjorieBurghart/Varians-Synchro/releases</a>). Rozbalte archiv a spusťte Varians-Synchro; soubor <code>README-cs.txt</code> vysvětluje, jak při prvním spuštění projít varováním systému (program není podepsaný). Ukázkový projekt, <code>demo_local_ALTO</code>, je vedle programu. Při aktualizaci nahraďte složku složkou nové verze: vaše projekty a nastavení jsou jinde.</li>
+<li><strong>S Pythonem.</strong> Python 3.10 nebo novější a PySide6: <code>pip install -r requirements.txt</code>, potom <code>python run.py</code> (ve Windows <code>start_windows.bat</code>, v macOS a Linuxu <code>start_unix.sh</code>).</li>
+<li><strong>Kontrola instalace.</strong> <code>Varians-Synchro --self-test zprava.json</code> (s Pythonem: <code>python run.py --self-test zprava.json</code>) během několika sekund zkontroluje překlady, nápovědu, zdroje, ukázkový projekt, jednu synchronizaci s jejími exporty do Varians a okno a zapíše zprávu; <code>README-cs.txt</code> uvádí přesný příkaz pro každý systém. Připojte tuto zprávu k hlášení problému: <a href="https://github.com/MarjorieBurghart/Varians-Synchro/issues">https://github.com/MarjorieBurghart/Varians-Synchro/issues</a>.</li>
+</ul>
 <h3>Práce ve čtyřech krocích</h3>
 <p>Hlavní okno vede čtyřmi kroky, uvedenými vlevo:</p>
 <ol>

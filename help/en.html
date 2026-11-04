@@ -46,6 +46,12 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>For each witness: its images (local files, or a IIIF Manifest) and, for each page to align, an ALTO or PAGE XML file describing its lines.</li>
 <li>Optionally, the TEI edition of the pivot witness, if it already exists.</li>
 </ul>
+<h3 id="installation">Installing and starting</h3>
+<ul>
+<li><strong>Ready-to-use version.</strong> The simplest: nothing to install, not even Python, for Windows, macOS (Apple Silicon or Intel) or Linux, on the releases page (<a href="https://github.com/MarjorieBurghart/Varians-Synchro/releases">https://github.com/MarjorieBurghart/Varians-Synchro/releases</a>). Extract the archive and start Varians-Synchro; its <code>README.txt</code> file explains how to get past the system’s warning at the first start (the software is not signed). The sample project, <code>demo_local_ALTO</code>, is next to the program. To update, replace the folder with the one of the new version: your projects and settings are elsewhere.</li>
+<li><strong>With Python.</strong> Python 3.10 or later and PySide6: <code>pip install -r requirements.txt</code>, then <code>python run.py</code> (on Windows, <code>start_windows.bat</code>; on macOS and Linux, <code>start_unix.sh</code>).</li>
+<li><strong>Checking the installation.</strong> <code>Varians-Synchro --self-test report.json</code> (with Python: <code>python run.py --self-test report.json</code>) checks in a few seconds the translations, the help, the resources, the sample project, a synchronization with its exports to Varians and the window, then writes a report; the <code>README.txt</code> gives the exact command for each system. Attach this report to your issue: <a href="https://github.com/MarjorieBurghart/Varians-Synchro/issues">https://github.com/MarjorieBurghart/Varians-Synchro/issues</a>.</li>
+</ul>
 <h3>The four-step process</h3>
 <p>The main window follows four steps, listed on the left:</p>
 <ol>

@@ -18,7 +18,7 @@ class MaintenanceDocumentationTests(unittest.TestCase):
         self.assertEqual(check(), [])
     def test_release_version_distinct_from_schema(self):
         from varians_synchro.core import VERSION, new_project
-        self.assertEqual(VERSION,'0.8.5.6')
+        self.assertEqual(VERSION,'0.8.6.0')
         pr=new_project()
         self.assertEqual((pr['format'],pr['version']),('varians-synchro-project',1))
     def test_docs_are_substantial(self):

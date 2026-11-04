@@ -13,8 +13,11 @@ OUTPUT = ROOT/'MAINTENANCE_PASSATION_V0856'/'annexes'/'INVENTAIRE_MODULES_AUTOGE
 
 
 def inventory_text() -> str:
+    import re
+    version = re.search(r"^VERSION = '([^']+)'", (ROOT/'varians_synchro'/'core.py').read_text(encoding='utf-8'),
+                        re.MULTILINE).group(1)
     rows = [
-        '# Inventaire technique généré automatiquement (code v0.8.5.6)',
+        f'# Inventaire technique généré automatiquement (code v{version})',
         '',
         'Génération reproductible : `python tools/generate_module_inventory.py` depuis la racine.',
         'Inspection statique AST : **aucun module applicatif n’est importé ni exécuté**.',

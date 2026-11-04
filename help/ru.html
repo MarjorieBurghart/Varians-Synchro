@@ -46,6 +46,12 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Для каждого свидетеля: его изображения (локальные файлы или манифест IIIF) и для каждой выравниваемой страницы файл ALTO или PAGE XML с описанием её строк.</li>
 <li>По желанию — издание TEI опорного свидетеля, если оно уже существует.</li>
 </ul>
+<h3 id="installation">Установка и запуск</h3>
+<ul>
+<li><strong>Готовая к использованию версия.</strong> Проще всего: ничего не нужно устанавливать, даже Python; для Windows, macOS (Apple Silicon или Intel) и Linux, на странице версий (<a href="https://github.com/MarjorieBurghart/Varians-Synchro/releases">https://github.com/MarjorieBurghart/Varians-Synchro/releases</a>). Распакуйте архив и запустите Varians-Synchro; файл <code>README-ru.txt</code> объясняет, как обойти предупреждение системы при первом запуске (программа не подписана). Пример проекта, <code>demo_local_ALTO</code>, находится рядом с программой. Чтобы обновить программу, замените папку папкой новой версии: ваши проекты и настройки хранятся в другом месте.</li>
+<li><strong>С Python.</strong> Python 3.10 или новее и PySide6: <code>pip install -r requirements.txt</code>, затем <code>python run.py</code> (в Windows — <code>start_windows.bat</code>, в macOS и Linux — <code>start_unix.sh</code>).</li>
+<li><strong>Проверка установки.</strong> <code>Varians-Synchro --self-test otchet.json</code> (с Python: <code>python run.py --self-test otchet.json</code>) за несколько секунд проверяет переводы, справку, ресурсы, пример проекта, одну синхронизацию с её экспортом в Varians и окно, затем записывает отчёт; в <code>README-ru.txt</code> приведена точная команда для каждой системы. Приложите этот отчёт к сообщению о проблеме: <a href="https://github.com/MarjorieBurghart/Varians-Synchro/issues">https://github.com/MarjorieBurghart/Varians-Synchro/issues</a>.</li>
+</ul>
 <h3>Работа в четыре шага</h3>
 <p>Главное окно ведёт через четыре шага, перечисленных слева:</p>
 <ol>
