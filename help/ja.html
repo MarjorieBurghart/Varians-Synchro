@@ -115,10 +115,10 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h2 id="notions">5. 基本概念</h2>
 <table>
 <tr><th>用語</th><th>意味</th></tr>
-<tr><td>伝本、シグラム</td><td>写本（または古い刊本）。シグラムはその識別子です。伝本を保存した後は変更できません。また、書き出しができるように、ピリオド、<code>/</code>、<code>\</code> を含めてはいけません。Varians プロジェクトのシグラムをそのまま使ってください。</td></tr>
+<tr><td>伝本、シグラム</td><td>写本（または古い刊本）。シグラムはその識別子です。伝本を保存した後は変更できません。Varians と同じく、空白やピリオドを含めることができます（「BnF lat. 123」）。書き出しでは、そこから XML 識別子（「BnF_lat._123」）を作り、書き出すファイルの名前にも使います。シグラムそのものは表示用に保持されます。同じ識別子になる二つのシグラム（「a」と「A」、「T 2」と「T_2」）や、Windows の予約名（CON、NUL など）は、伝本の作成時に拒否されます。Varians プロジェクトのシグラムをそのまま使ってください。</td></tr>
 <tr><td>ピボット伝本</td><td>プロジェクトの基準となる伝本です。ほかの伝本はこれに対して整列され、Varians はその <code>&lt;lb/&gt;</code> によってこの伝本をたどります。この選択は技術的なもので、ステンマについても、校訂版の底本についても、何ら前提とするものではありません。既定では最初に追加した伝本がピボット伝本です。変更するには、別の伝本の編集画面でピボット伝本のチェックボックスにチェックを入れます。ステップ 3 の<b class="ui" data-tr="alignment.reference.label">技術的なピボット伝本</b>のメニューは、整列する左側の伝本を選ぶだけで、プロジェクトのピボット伝本は変わりません。</td></tr>
 <tr><td>物理行</td><td>ページの ALTO/PAGE ファイルに記述された行です。ページと、そのファイル内での番号によって識別されます。ファイルの内容は、取り込み時にプロジェクトにコピーされます。</td></tr>
-<tr><td>無視した行（対象範囲）</td><td>研究対象の本文の範囲外にある行です。その伝本についてプロジェクト全体で有効で、計算、TEI の対応付け、書き出しから除外されます。すでに関連付けられた行を無視すると、確認の後、すべてのペアでその関連付けが解除されます。</td></tr>
+<tr><td>無視した行（対象範囲）</td><td>研究対象の本文の範囲外にある行です。その伝本についてプロジェクト全体で有効で、計算、TEI の対応付け、書き出しから除外されます。すでに関連付けられた行を無視すると、確認の後、すべてのペアでその関連付けが解除されます。ページに別の ALTO/PAGE ファイルを割り当てると、無視の印は、そのファイルの中で同一と確認できた行（同じ識別子、同じ本文）に引き継がれます。ページのその他の印は解除され、確認画面にその数が表示されます。ALTO/PAGE ファイルを取り除くと、そのページの印は解除されます。</td></tr>
 <tr><td>グループ（対応）</td><td>左側の伝本の行と、右側の伝本の行とを結び付けたものです：1↔1、1↔n、n↔m。一つの行は、ペアごとに最大一つのグループにしか属しません。</td></tr>
 <tr><td>グループの状態</td><td><code>validated</code>（承認済み）、<code>uncertain</code>（未確定）、<code>proposed</code>（提案）のいずれかです。グループの一覧にはこれらがそのまま表示されます。<b class="ui" data-tr="review.filter.pending">要確認</b>フィルターは、未承認のグループをまとめて表示します。</td></tr>
 <tr><td>アンカー</td><td>提案の拠り所となる承認済みの対応です。アンカーは両方の伝本で同じ順序に並んでいなければならず、少なくとも二つ必要です。</td></tr>
@@ -129,22 +129,22 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 </table>
 
 <h2 id="etape1">6. ステップ 1：伝本の追加</h2>
-<p><b class="ui" data-tr="resources.witness.new">伝本を追加…</b>は新しい伝本の編集画面を開きます。一覧の伝本（またはその資料の一つ）をクリックすると、その伝本の編集画面が開き、情報を補えます。一覧には、伝本ごとに資料とその状態（関連付け済みのページ、取り込んだ行、TEI の対応付け）が表示されます。</p>
+<p><b class="ui" data-tr="resources.witness.new">伝本を追加…</b>は新しい伝本の編集画面を開きます。一覧の伝本（またはその資料の一つ）をクリックすると、その伝本の編集画面が開き、情報を補えます。一覧には、伝本ごとに資料とその状態（関連付け済みのページ、取り込んだ行、TEI の対応付け）が表示されます。キーボードでは、一覧の伝本で <kbd>Enter</kbd> または <kbd>Space</kbd> を押しても編集画面が開きます。</p>
 <h3 id="fiche-temoin">伝本の編集画面</h3>
 <ul>
 <li><b class="ui" data-tr="resources.witness.sigil">シグラム</b>と<b class="ui" data-tr="resources.witness.label">説明</b>。シグラムは、伝本を保存した後は変更できません。</li>
-<li><b class="ui" data-tr="resources.witness.pivot">この伝本を整列のピボット伝本にする</b>。</li>
+<li><b class="ui" data-tr="resources.witness.pivot">この伝本を整列のピボット伝本にする</b>。ピボット伝本の編集画面では、このチェックボックスはオンのまま灰色表示になります。ピボットを変えるには、別の伝本の編集画面でオンにしてください。</li>
 <li>4 種類の資料（それぞれに<b class="ui" data-tr="resources.witness.add">追加…</b>があります）：
 <ul>
-<li><b class="ui" data-tr="resources.witness.images">ローカル画像</b>：画像は名前順に並べられます（「2」は「10」より前）。</li>
-<li><b class="ui" data-tr="resources.witness.manifests">IIIF Manifest</b>：Manifest の URL を指定します。Manifest が応答しない場合も、URL は利用できない状態として保持され、<b class="ui" data-tr="resources.witness.retry">再試行</b>で再度問い合わせられます。</li>
+<li><b class="ui" data-tr="resources.witness.images">ローカル画像</b>：JPEG、PNG、TIFF、WebP、JPEG 2000 に対応します。画像は名前順に並べられます（「2」は「10」より前）。</li>
+<li><b class="ui" data-tr="resources.witness.manifests">IIIF Manifest</b>：Manifest の URL を指定します。Manifest が応答しない場合も、URL は利用できない状態として保持され、<b class="ui" data-tr="resources.witness.retry">再試行</b>で再度問い合わせられます。読み込み中は、待機ウィンドウで中止できます。</li>
 <li><b class="ui" data-tr="resources.witness.xml">ALTO/PAGE-XML ファイル</b>：形式は内容から判別されます。</li>
 <li><b class="ui" data-tr="resources.witness.tei">TEI XML 校訂本文</b>：任意です。ピボット伝本の場合に役立ちます。</li>
 </ul></li>
 <li><b class="ui" data-tr="resources.witness.remove_pending">削除</b>で選択した資料を削除します。編集画面を今回開いている間に追加した資料は、一覧から消えるだけです。保存済みの資料では、まず削除の影響（削除または解放されるページ、行、影響を受けるグループ）が表示され、確認すると「−」が付き、<b class="ui" data-tr="resources.witness.confirm">伝本を保存</b>で削除されます。その行に関わっていたグループは失効として残るので、後で関連付けを解除してください（<a href="#perimes">失効したグループ</a>を参照）。ディスク上のファイルは削除しません。</li>
 <li><b class="ui" data-tr="resources.witness.remove_witness">伝本を削除…</b>で、確認後に伝本をその同期と TEI 版とともにプロジェクトから削除します。ピボット伝本は削除できません。先に別のピボット伝本を選んでください。</li>
 <li><b class="ui" data-tr="resources.binding.title">画像と ALTO/PAGE を自動で関連付ける</b>は、その場でページの関連付けを提案します（<a href="#association-auto">後述</a>を参照）。</li>
-<li><b class="ui" data-tr="resources.witness.confirm">伝本を保存</b>はすべてを一括して適用します。<b class="ui" data-tr="resources.cancel">キャンセル</b>では、プロジェクトは何も変更されません。</li>
+<li><b class="ui" data-tr="resources.witness.confirm">伝本を保存</b>はすべてを一括して適用します。<b class="ui" data-tr="resources.cancel">キャンセル</b>では、プロジェクトは何も変更されません。編集画面に変更がある場合、<kbd>Esc</kbd>、ウィンドウの閉じるボタン、<b class="ui" data-tr="resources.cancel">キャンセル</b>のいずれでも、まず変更を破棄するかどうかを尋ねます。</li>
 </ul>
 
 <h2 id="etape2">7. ステップ 2：資料の関連付け</h2>
@@ -153,7 +153,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <p><b class="ui" data-tr="pages.order.open">画像・順序・ALTO/PAGE の関連付けを管理…</b>は、伝本のページを、サムネイルと行ファイルとともに表示します。</p>
 <ul>
 <li><strong>読み順</strong>：ページをドラッグするか、<b class="ui" data-tr="pages.order.up">上へ</b>、<b class="ui" data-tr="pages.order.down">下へ</b>、<b class="ui" data-tr="pages.order.reverse">順序を反転</b>を使います。</li>
-<li><b class="ui" data-tr="ui.xml.link_source">ALTO/PAGE を関連付ける</b>は、選んだページに行ファイルを割り当てます。すでに割り当てられていた場合は、影響を受けるグループの数が表示されます。それらのグループは失効します（<a href="#perimes">失効したグループ</a>を参照）。</li>
+<li><b class="ui" data-tr="ui.xml.link_source">ALTO/PAGE を関連付ける</b>は、選んだページに行ファイルを割り当てます。すでに割り当てられていた場合は、影響を受けるグループの数が表示されます。それらのグループは失効します（<a href="#perimes">失効したグループ</a>を参照）。無視の印を失う行の数も表示されます。すでに別の画像に関連付けられている ALTO/PAGE のページは拒否されます（その行が二重に数えられるため）。</li>
 <li><b class="ui" data-tr="ui.afficher.page">ページを表示</b>（またはダブルクリック）で、ページとその行が表示されます。</li>
 <li><strong>IIIF 画像の HD コピー</strong>：<b class="ui" data-tr="ui.pages.hd.action">選択した IIIF 画像を HD でダウンロード…</b>は、選んだ画像を空のフォルダーに保存します。<b class="ui" data-tr="ui.pages.hd.attach">ダウンロード済み HD セットを登録…</b>は、以前にダウンロードしたセットを再び登録します。必要なページすべてにコピーがある場合、Varians プロジェクトはこれらのコピーを使用します。</li>
 <li><strong>外部 HTR（任意）</strong>：<b class="ui" data-tr="ui.exporter.pour.htr">HTR 用に書き出す</b>は、選んだ IIIF 画像を認識ソフトウェア用の ZIP に保存します。<b class="ui" data-tr="ui.reimporter.htr">HTR を再取り込み</b>は、その後に得られた ALTO/PAGE ファイルを、名前に基づいて関連付けます。</li>
@@ -162,7 +162,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h3 id="association-auto">自動で関連付ける</h3>
 <p><b class="ui" data-tr="resources.binding.title">画像と ALTO/PAGE を自動で関連付ける</b>は、まだ行ファイルのない各ページに行ファイルを提案します。まず名前と画像の参照情報から（<b class="ui" data-tr="resources.binding.name">一意の名前</b>）、次に、残りのページがすべてローカル画像で、関連付けられていない ALTO/PAGE ページがちょうど同じ数だけ残っている場合には、ファイル名の自然順に対応させて提案します。特に後者を確認してください。一つずれると、以降のすべてのページに及びます。同じファイルが二つのページに提案された場合は赤で示されます。<b class="ui" data-tr="resources.binding.apply">関連付けを適用</b>は、既存の関連付けを上書きしません。</p>
 <h3 id="perimetre">無視する行（対象範囲）</h3>
-<p><b class="ui" data-tr="tei.scope.action">伝本の画像で無視する行を指定…</b>：研究対象の本文の範囲外にある行を、複数のページにまたがっていても画像上で選択し、<b class="ui" data-tr="tei.scope.ignore">選択行を無視する</b>（または<b class="ui" data-tr="tei.scope.restore">選択行を対象に戻す</b>）をクリックします。<b class="ui" data-tr="tei.scope.save">対象範囲を保存</b>で適用され、<b class="ui" data-tr="resources.cancel">キャンセル</b>では何も変更されません。同じ設定は同期ウィンドウ（<b class="ui" data-tr="scope.menu">対象範囲 ▾</b>）にもあります。</p>
+<p><b class="ui" data-tr="tei.scope.action">伝本の画像で無視する行を指定…</b>：研究対象の本文の範囲外にある行を、複数のページにまたがっていても画像上で選択し、<b class="ui" data-tr="tei.scope.ignore">選択行を無視する</b>（または<b class="ui" data-tr="tei.scope.restore">選択行を対象に戻す</b>）をクリックします。<b class="ui" data-tr="tei.scope.save">対象範囲を保存</b>で適用され、<b class="ui" data-tr="resources.cancel">キャンセル</b>では何も変更されません。同じ設定は同期ウィンドウ（<b class="ui" data-tr="scope.menu">対象範囲 ▾</b>）にもあります。行を変更した場合、<kbd>Esc</kbd>、閉じるボタン、<b class="ui" data-tr="resources.cancel">キャンセル</b>のいずれでも、まずその変更を破棄するかどうかを尋ねます。</p>
 <h3 id="tei">TEI 校訂本文の対応付け（任意）</h3>
 <p><b class="ui" data-tr="tei.binding.action">TEI 校訂本文と ALTO/PAGE 行を対応付ける…</b>は、TEI 校訂本文の <code>&lt;lb edRef="#シグラム"/&gt;</code> を、伝本の有効な行と読み順に照合します。両者の数は等しくなければなりません。ウィンドウはそれらを比較し、妨げとなっている原因（無視する行の指定漏れ、校異中の曖昧な読み）を示します。特に<b class="ui" data-tr="tei.visual.begin">先頭</b>と<b class="ui" data-tr="tei.visual.end">末尾</b>を使って、いくつかの行をテキストと切り出した画像で確認し、<b class="ui" data-tr="tei.binding.apply">対応付けを確定</b>をクリックします。</p>
 <p>この対応付けは書き出しには必要ありません。ピボット伝本の行数がその <code>&lt;lb/&gt;</code> の数と確かに一致することを確認するためのもので、同期ウィンドウでは HTR テキストの代わりに TEI テキストが表示されるようになります。校訂本文、対象範囲、順序、領域分割のいずれかが変わると、状態は<b class="ui" data-tr="tei.binding.status.stale">要再確認（資料が変更されています）</b>になります。</p>
@@ -221,7 +221,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h2 id="etape4">10. ステップ 4：完了と書き出し</h2>
 <p><b class="ui" data-tr="ui.final.refresh">概要を更新</b>は、伝本と同期の概要を示し、変更された行や見つからないファイルを報告します。</p>
 <h3 id="controle">整合性の検査</h3>
-<p><b class="ui" data-tr="audit.action">プロジェクトの整合性を検査…</b>は、何も変更せずにプロジェクトを検査します：各伝本の有効な行と関連付け済みのページ、各ペアの承認済みグループと欠落、欠けている参照や失効した参照、見つからないファイル。書き出しの前には毎回実行してください。</p>
+<p><b class="ui" data-tr="audit.action">プロジェクトの整合性を検査…</b>は、何も変更せずにプロジェクトを検査します：各伝本の有効な行と関連付け済みのページ、各ペアの承認済みグループと欠落、欠けている参照や失効した参照、見つからないファイル。二つの画像に関連付けられた ALTO/PAGE のページや、本バージョンが取り込み時とは異なる方法で読む PAGE ファイル（入れ子のグループや領域）も報告します。そのファイルを関連付け直すと、その行に関わるグループは失効します。書き出しの前には毎回実行してください。</p>
 <h3 id="export-projet">入力済み Varians プロジェクト</h3>
 <p><b class="ui" data-tr="ui.final.export_project.action">入力済み Varians プロジェクトを作成…</b>は、Varians がそのまま開けるプロジェクトを空のフォルダーに書き出します：</p>
 <ul>
@@ -232,7 +232,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li><code>RAPPORT_EXPORT_VARIANS.txt</code>：書き出しの報告書。</li>
 <li>場合により <code>iiif/</code>：IIIF 画像の HD コピー（必要なページすべてにコピーがある場合）。</li>
 </ul>
-<p>画像は元の場所に置かれたままで、プロジェクトはそれを参照します（行は同期ファイルに含まれています）。フォルダーが空でない場合、シグラムにピリオド、<code>/</code>、<code>\</code> が含まれる場合、ピボット伝本に複数の TEI 校訂本文がある場合、一つの伝本に IIIF 画像とローカル画像が混在している場合、またはファイルが見つからない場合は、書き出しは行われません。</p>
+<p>画像は元の場所に置かれたままで、プロジェクトはそれを参照します（行は同期ファイルに含まれています）。フォルダーが空でない場合、ピボット伝本に複数の TEI 校訂本文がある場合、その <a href="#tei">TEI の対応付け</a>が<b class="ui" data-tr="tei.binding.status.stale">要再確認（資料が変更されています）</b>の状態にある場合（対応付けをやり直してください。そのままでは <code>&lt;lb/&gt;</code> が別の行と対応してしまいます）、一つの伝本に IIIF 画像とローカル画像が混在している場合、またはファイルが見つからない場合は、書き出しは行われません。</p>
 <h3 id="export-json">Varians 用 JSON の書き出し</h3>
 <p><b class="ui" data-tr="export.varians.action">Varians 用 JSON を書き出す…</b>は、既存の Varians プロジェクトに伝本を追加したり、伝本を更新したりするためのものです（<a href="#ajout-temoin">ワークフロー B</a>）。参照伝本（Varians プロジェクトのピボット伝本）を選んで確定し、空のフォルダーを選びます。そこに次のものが書き出されます：</p>
 <ul>
@@ -311,6 +311,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>保存は安全に行われます。ファイルは一度に置き換えられ、以前の版は <code>&lt;プロジェクト&gt;.vsynch.bak</code> に残されます。元に戻すには、この <code>.bak</code> を拡張子 <code>.vsynch</code> の新しい名前でコピーし、それを開きます。</li>
 <li>「名前を付けて保存」コマンドはありません。ある時点の版を残しておくには、<code>.vsynch</code> ファイルをコピーしてください。</li>
 <li>画像、ALTO/PAGE ファイル、TEI は <code>.vsynch</code> ファイルのフォルダーかそのサブフォルダーに置いてください。相対パスで保存されるので、そのフォルダーごとプロジェクトを移動・コピーできます（付属のサンプルと同じです）。ほかの場所にあるファイルは完全なパスで保存されます。</li>
+<li><strong>他の人から受け取ったプロジェクト</strong>：<code>.vsynch</code> ファイルがそのフォルダーの外（<code>..</code> を含むパス）やネットワーク共有上のファイルを指している場合、開くときにその一覧が表示され、読み込むかどうかを尋ねられます（既定は「いいえ」）。拒否すると、それらのファイルは見つからないものとして扱われ、保存時にはパスがそのまま残ります。許可すると、その答えはこのプロジェクトについて記憶されます。</li>
 <li>取り込み後にディスク上の ALTO/PAGE ファイルを変更しても、プロジェクトは変わりません。そのことは概要で報告されます。修正した領域分割を使うには、新しいファイルを取り込んでページに関連付けます（影響を受けるグループは失効します）。</li>
 <li>ソフトウェアを閉じるとき、またプロジェクトを開くときや作成するときには、未保存の変更を保存するかどうか尋ねられます。</li>
 </ul>
@@ -320,7 +321,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li><strong>IIIF 画像を利用できない</strong>：サーバーが応答していません。関連付けは失われていません。後で再試行するか、HD コピーをダウンロードしてください。</li>
 <li><strong>IIIF Manifest を利用できない</strong>：伝本の追加時に Manifest が応答しませんでした。URL は保持され、概要に表示されます。<b class="ui" data-tr="navigation.project">1 · 伝本の追加</b>で伝本をクリックし、<b class="ui" data-tr="resources.witness.retry">再試行</b>を押してください。Manifest が応答したか、何ページあるかが表示されます。<b class="ui" data-tr="resources.witness.confirm">伝本を保存</b>で結果が保持されます。</li>
 <li><strong>画像上で輪郭がずれる</strong>：画像と ALTO/PAGE ファイルの縦横比が異なっています（ステータスバーに表示されます）。ファイルがその画像に確かに対応しているか確認してください。</li>
-<li><strong>書き出しが拒否される</strong>：選んだフォルダーが空でないか、シグラムにピリオド、<code>/</code>、<code>\</code> が含まれています。</li>
+<li><strong>書き出しが拒否される</strong>：選んだフォルダーが空でないか、ピボット伝本の TEI の対応付けが要再確認の状態か、二つのシグラムが同じファイル名になります（古いプロジェクトの場合。<a href="#notions">基本概念</a>を参照）。</li>
 <li><strong>Varians でピボット伝本の行が本文と対応しない</strong>：<code>&lt;lb edRef="#PIVOT"/&gt;</code> の数がピボット伝本の有効な行の数と異なっています（無視する行の指定漏れ、または <code>&lt;lb/&gt;</code> の不足）。Varians の<b class="varians" data-varians="diagnostics.menu">写本の状態を診断…</b>と、Varians-Synchro の<a href="#tei">TEI の対応付け</a>が、食い違いを見つける助けになります。</li>
 <li><strong>Varians で、ファイルのリンクがピボット伝本のどの行にも対応しない</strong>：ピボット伝本の同期が同じ <code>.vsynch</code> プロジェクトに由来していません（<a href="#ajout-temoin">ワークフロー B</a>を参照）。</li>
 <li><strong>Spyder を使う場合</strong>：<code>run.py</code> を実行してください。Spyder のコンソールを乱さないよう、ソフトウェアは別のプロセスで起動します。起動ログは <code>~/.varians_synchro/logs</code> にあります。</li>
@@ -329,7 +330,10 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <h2 id="raccourcis">13. ショートカット</h2>
 <table>
 <tr><th>キー</th><th>動作</th></tr>
-<tr><td><kbd>F1</kbd></td><td>ヘルプを開く（同期ウィンドウでは、その節を開く）。</td></tr>
+<tr><td><kbd>F1</kbd></td><td>どのウィンドウからでもヘルプを開く（同期ウィンドウでは、その節を開く）。</td></tr>
+<tr><td><kbd>Ctrl+S</kbd> / <kbd>Ctrl+O</kbd> / <kbd>Ctrl+N</kbd></td><td>メインウィンドウで：保存、開く、新規プロジェクト。</td></tr>
+<tr><td><kbd>Enter</kbd></td><td>一覧では、ダブルクリックと同じ（編集画面を開く、ページを表示する、グループに移動する）。フォーカスのないボタンを Enter で押すことはありません。確認の問いでは「いいえ」が既定です。</td></tr>
+<tr><td><kbd>Esc</kbd></td><td>何も適用せずにウィンドウを閉じる。伝本の編集画面や対象範囲に変更がある場合は、まず破棄するかどうかを尋ねます。</td></tr>
 <tr><td><kbd>Ctrl+Enter</kbd></td><td><b class="ui" data-tr="alignment.action.link_lines">行を関連付ける</b>（選択した行）。</td></tr>
 <tr><td><kbd>Ctrl+Shift+A</kbd></td><td>選択した行の欠落を確定。</td></tr>
 <tr><td><kbd>F8</kbd> / <kbd>Shift+F8</kbd></td><td>一覧の次 / 前のグループ。</td></tr>
