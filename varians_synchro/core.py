@@ -62,7 +62,8 @@ def save_project(project, path):
     """
     path = Path(path)
     validate_project(project)
-    payload = (json.dumps(project, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
+    payload = (json.dumps(_with_relative_paths(project, path.parent), ensure_ascii=False, indent=2)
+               + '\n').encode('utf-8')
     path.parent.mkdir(parents=True, exist_ok=True)
     stage = None
     backup_stage = None
@@ -102,31 +103,58 @@ def _is_relative_file_path(value):
                 or PureWindowsPath(value).drive)
 
 
+def _map_file_paths(project, change):
+    """Applique ``change`` à chaque chemin de fichier du projet : images
+    locales, fichiers ALTO/PAGE, images des pages, dossiers HD, TEI."""
+    for witness in project.get('witnesses', []):
+        for source in witness.get('image_sources', []):
+            if source.get('kind') == 'local':
+                source['reference'] = change(source.get('reference'))
+        for source in witness.get('alto_sources', []):
+            if 'path' in source:
+                source['path'] = change(source['path'])
+        for page in witness.get('pages', []):
+            if page.get('image_path'):
+                page['image_path'] = change(page['image_path'])
+        for batch in witness.get('hd_downloads', []):
+            batch['directory'] = change(batch['directory'])
+    for resource in project.get('text_resources', []):
+        if 'path' in resource:
+            resource['path'] = change(resource['path'])
+
+
 def _resolve_relative_paths(project, base):
     """Chemins relatifs du projet lus par rapport au dossier ``base`` du
     fichier .vsynch (séparateurs « / » ou « \\ »). Les chemins absolus et les
-    URL ne changent pas. Un projet peut ainsi voyager avec ses fichiers
-    (l'exemple livré dans demo_local_ALTO/, par exemple) ; enregistré, il
-    garde des chemins absolus."""
+    URL ne changent pas. En mémoire, tous les chemins sont donc absolus."""
     def absolute(value):
         if not _is_relative_file_path(value):
             return value
         return str((base / PureWindowsPath(value).as_posix()).resolve())
-    for witness in project.get('witnesses', []):
-        for source in witness.get('image_sources', []):
-            if source.get('kind') == 'local':
-                source['reference'] = absolute(source.get('reference'))
-        for source in witness.get('alto_sources', []):
-            if 'path' in source:
-                source['path'] = absolute(source['path'])
-        for page in witness.get('pages', []):
-            if page.get('image_path'):
-                page['image_path'] = absolute(page['image_path'])
-        for batch in witness.get('hd_downloads', []):
-            batch['directory'] = absolute(batch['directory'])
-    for resource in project.get('text_resources', []):
-        if 'path' in resource:
-            resource['path'] = absolute(resource['path'])
+    _map_file_paths(project, absolute)
+
+
+def _with_relative_paths(project, folder):
+    """Copie du projet à enregistrer dans ``folder`` : un fichier situé dans ce
+    dossier ou en dessous y est désigné par un chemin relatif à séparateurs
+    « / », pour que le projet voyage avec ses fichiers ; un fichier ailleurs
+    (autre dossier, autre disque) garde son chemin absolu."""
+    bases = [Path(folder).absolute(), Path(folder).resolve()]
+
+    def relative(value):
+        if not isinstance(value, str) or _is_relative_file_path(value) or not Path(value).is_absolute():
+            return value
+        for candidate in (Path(value), Path(value).resolve()):
+            for base in bases:
+                try:
+                    inside = candidate.relative_to(base)
+                except ValueError:
+                    continue
+                return inside.as_posix() if inside.parts else value
+        return value
+    copy = json.loads(json.dumps(project))
+    _map_file_paths(copy, relative)
+    return copy
 
 
 def load_project(path):

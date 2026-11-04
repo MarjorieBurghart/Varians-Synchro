@@ -309,7 +309,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>All the work is in the <code>.vsynch</code> file: witnesses, content of the imported ALTO/PAGE files, associations, ignored lines, reading order, alignments. The source files are never modified.</li>
 <li>Saving is safe: the file is replaced in a single operation, and the previous version is kept in <code>&lt;project&gt;.vsynch.bak</code>. To go back, copy this <code>.bak</code> file under a new name ending in <code>.vsynch</code> and open it.</li>
 <li>There is no “Save As” command: to keep a version, copy the <code>.vsynch</code> file.</li>
-<li>A project with relative paths (such as the supplied sample) opens from any folder; on saving, the paths are written in full.</li>
+<li>Keep the images, ALTO/PAGE files and TEI files in the folder of the <code>.vsynch</code> file or in its subfolders: they are saved with a relative path, and the project can be moved or copied with that folder (like the supplied sample). A file located elsewhere is saved with its full path.</li>
 <li>Modifying an ALTO/PAGE file on disk after import does not change the project; the summary reports it. For a corrected segmentation, import the new file and associate it with the page (the affected groups become stale).</li>
 <li>Closing the software, or opening or creating a project, offers to save the current changes.</li>
 </ul>

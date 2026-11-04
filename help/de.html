@@ -309,7 +309,7 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li>Die gesamte Arbeit steht in der Datei <code>.vsynch</code>: Textzeugen, Inhalt der importierten ALTO/PAGE-Dateien, Zuordnungen, ignorierte Zeilen, Lesereihenfolge, Synchronisierungen. Die Quelldateien werden nie verändert.</li>
 <li>Das Speichern ist sicher: Die Datei wird in einem Schritt ersetzt, und die vorherige Version bleibt in <code>&lt;Projekt&gt;.vsynch.bak</code> erhalten. Um zu ihr zurückzukehren, kopieren Sie diese <code>.bak</code>-Datei unter einem neuen Namen mit der Endung <code>.vsynch</code> und öffnen Sie die Kopie.</li>
 <li>Es gibt keinen Befehl „Speichern unter“: Um eine Version aufzubewahren, kopieren Sie die Datei <code>.vsynch</code>.</li>
-<li>Ein Projekt mit relativen Pfaden (wie das mitgelieferte Beispiel) lässt sich aus jedem Ordner öffnen; beim Speichern werden die Pfade vollständig geschrieben.</li>
+<li>Legen Sie Bilder, ALTO/PAGE-Dateien und TEI-Dateien im Ordner der <code>.vsynch</code>-Datei oder in dessen Unterordnern ab: Sie werden dann mit einem relativen Pfad gespeichert, und das Projekt lässt sich mit diesem Ordner verschieben oder kopieren (wie das mitgelieferte Beispiel). Eine Datei an einem anderen Ort wird mit ihrem vollständigen Pfad gespeichert.</li>
 <li>Wird eine ALTO/PAGE-Datei nach dem Import auf dem Datenträger geändert, ändert das nichts am Projekt; die Zusammenfassung meldet es. Für eine korrigierte Segmentierung importieren Sie die neue Datei und ordnen sie der Seite zu (die betroffenen Gruppen werden veraltet).</li>
 <li>Beim Beenden der Software und beim Öffnen oder Anlegen eines Projekts wird angeboten, die laufenden Änderungen zu speichern.</li>
 </ul>

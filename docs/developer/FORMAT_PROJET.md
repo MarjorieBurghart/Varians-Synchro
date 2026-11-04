@@ -18,7 +18,7 @@ Ce format n'est pas celui que lit Varians : l'export le convertit en fichiers de
 
 `load_project` complète en mémoire les champs absents d'un projet ancien, sans réécrire le fichier ; `save_project` écrit d'abord un fichier temporaire, garde l'état précédent dans `.vsynch.bak`, puis le remplace.
 
-**Chemins.** Un chemin relatif (image locale, fichier ALTO/PAGE, TEI, dossier HD) est lu par rapport au dossier du `.vsynch`, avec « / » ou « \ » comme séparateur ; à l'enregistrement, les chemins sont écrits absolus.
+**Chemins.** Un chemin relatif (image locale, fichier ALTO/PAGE, TEI, dossier HD) est lu par rapport au dossier du `.vsynch`, avec « / » ou « \ » comme séparateur ; en mémoire, tous les chemins sont absolus. À l'enregistrement, un fichier situé dans le dossier du `.vsynch` ou en dessous est écrit en chemin relatif à séparateurs « / » (`core._with_relative_paths`) ; un fichier ailleurs garde son chemin absolu. Un projet rangé avec ses fichiers peut donc être déplacé ou copié.
 
 ## Témoins
 
