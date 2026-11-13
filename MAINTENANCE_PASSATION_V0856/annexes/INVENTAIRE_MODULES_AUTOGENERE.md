@@ -263,10 +263,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `core`, `errors`, `imaging`, `page_order`, `physical_alignment`, `reading_stream`, `witness_ids`
 **Fonctions au premier niveau** : `_get_witness` (l.33), `_image_block` (l.37), `_build_witness_cache` (l.54), `_line_fingerprint` (l.108), `_shared_pero_uuid` (l.115), `_safe_same_segmentation_after_format_change` (l.128), `_reference_health` (l.158), `witness_file_names` (l.170), `links_kept_by_uuid_continuity` (l.188), `_pair_for_base` (l.214), `make_varians_alignments` (l.222), `inspect_varians_export` (l.318), `verify_export_payloads` (l.365), `export_varians_alignments` (l.409)
 
-## `varians_synchro/varians_project_export.py` (367 lignes)
+## `varians_synchro/varians_project_export.py` (373 lignes)
 **Objet (docstring source)** : Build a directly openable Varians project.xml bundle from Synchro resources. Target syntax: Varians's documented teiManuscriptProject format with one TEI edition. This is a physical mapping export; it does NOT assert that line links have been reconciled with TEI <lb/> unless the editor independently confirms it. The caller must run a final integration test against their installed Varians.
 **Dépendances internes observées** : `core`, `errors`, `hd_registry`, `tei_binding`, `varians_export`, `witness_ids`
-**Fonctions au premier niveau** : `_varians_safe_id` (l.25), `_source_path` (l.30), `_relative_or_absolute` (l.37), `_cache_varians_manifest` (l.43), `blank_tei_edition` (l.92), `export_varians_project` (l.137)
+**Fonctions au premier niveau** : `_varians_safe_id` (l.30), `_source_path` (l.35), `_relative_or_absolute` (l.42), `_cache_varians_manifest` (l.48), `blank_tei_edition` (l.97), `export_varians_project` (l.142)
 
 ## `varians_synchro/viewer.py` (763 lignes)
 **Objet (docstring source)** : Reusable manuscript page viewer with clickable ALTO overlay. Images can be IIIF or local. Full physical lines are the interaction unit; HTR is supplementary and never needed for visual selection. A 4200px-wide IIIF request provides useful magnification without downloading all canvases.

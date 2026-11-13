@@ -20,7 +20,8 @@ jobs:
       PYTHONUTF8: "1"
       # Version de Varians avec laquelle les projets exportés doivent s'ouvrir
       # (tests/test_varians_094_compat.py) : sans elle, ces tests échouent.
-      VARIANS_REF: v0.9.4.0
+      # La même que VARIANS_VERIFIED_VERSION (varians_project_export.py).
+      VARIANS_REF: v0.9.4.6
       VARIANS_REQUIRED: "1"
     steps:
       - uses: actions/checkout@v5
