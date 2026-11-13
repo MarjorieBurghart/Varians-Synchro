@@ -21,6 +21,11 @@ from .hd_registry import local_copy_plan, varians_offline_index
 from .errors import Localized, localized
 from .witness_ids import witness_id_for_siglum
 
+# Version de Varians avec laquelle l'ouverture d'un projet exporté est vérifiée :
+# la CI récupère celle-ci (VARIANS_REF) et l'ouvre avec le vrai code de Varians,
+# fenêtre comprise (tests/test_varians_094_compat.py). Le rapport d'export la cite.
+VARIANS_VERIFIED_VERSION = '0.9.4.6'
+
 
 def _varians_safe_id(witness_id):
     """Mirror Varians 0.8.x iiif_local.store_dir witness sanitization."""
@@ -319,7 +324,8 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
                                    xml_declaration=True)
         (stage / 'RAPPORT_EXPORT_VARIANS.txt').write_text(
             'Projet généré par Varians-Synchro.\n'
-            'Format du fichier project.xml : teiManuscriptProject (vérifié avec Varians 0.9.4.0).\n'
+            'Format du fichier project.xml : teiManuscriptProject (vérifié avec Varians '
+            + VARIANS_VERIFIED_VERSION + ').\n'
             'Vérifiez la compatibilité avec votre version courante de Varians.\n'
             'Les images locales restent à leur emplacement original. Les lignes (géométrie,\n'
             'texte HTR, ordre de lecture) sont dans les JSON d\u2019alignement ; les fichiers\n'

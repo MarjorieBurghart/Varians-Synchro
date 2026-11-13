@@ -1,5 +1,6 @@
-"""Projet exporté pour Varians : il s'ouvre dans Varians 0.9.4.0, et Varians y
-lit exactement les lignes que Varians-Synchro a préparées.
+"""Projet exporté pour Varians : il s'ouvre dans Varians (version
+``VARIANS_VERIFIED_VERSION``, celle que la CI récupère), dans sa vraie fenêtre
+aussi, et Varians y lit exactement les lignes que Varians-Synchro a préparées.
 
 Le projet d'essai est réaliste :
 - le pivot Mu (images locales, PAGE XML) a une ligne hors périmètre et une
@@ -11,6 +12,10 @@ Le projet est ouvert avec le vrai code de Varians (``varians_runtime``).
 """
 from __future__ import annotations
 
+import os
+import re
+from pathlib import Path
+
 import pytest
 
 from varians_synchro.core import new_project, create_witness, add_image_source, add_alto_source
@@ -19,8 +24,11 @@ from varians_synchro.line_scope import update_ignored_lines
 from varians_synchro.physical_alignment import create_pair_session, add_pair_link, physical_lines
 from varians_synchro.reading_stream import reading_stream, set_line_order
 from varians_synchro.resource_workflow import store_tei_reference
-from varians_synchro.varians_project_export import export_varians_project, _cache_varians_manifest
-from varians_runtime import open_in_varians
+from varians_synchro.varians_project_export import (VARIANS_VERIFIED_VERSION, export_varians_project,
+                                                    _cache_varians_manifest)
+from varians_runtime import open_in_varians, open_in_varians_window
+
+ROOT = Path(__file__).resolve().parents[1]
 
 PAGE = '''<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15">
 <Page imageFilename="{image}" imageWidth="500" imageHeight="800">
@@ -125,3 +133,36 @@ def test_the_links_of_the_other_witnesses_point_to_lines_of_the_pivot(exported):
     by_key = dict(zip(pivot['keys'], pivot['texts']))
     assert sorted(by_key[key] for key in opened['witnesses']['F']['base_keys']) == \
         ['Mu a1', 'Mu a3', 'Mu b1', 'Mu b2']
+
+
+def test_the_project_opens_in_the_varians_window(exported):
+    project, destination = exported
+    f = next(w for w in project['witnesses'] if w['id'] == 'F')
+    _cache_varians_manifest(f['image_sources'][0], destination, 'F')
+    opened = open_in_varians_window(destination / 'project.xml')
+    assert 'error' not in opened, opened.get('trace')
+    if os.environ.get('VARIANS_REF'):                    # la CI : la version récupérée
+        assert 'v' + opened['version'] == os.environ['VARIANS_REF']
+    assert 'Essai' in opened['title'] and 'edition.xml' in opened['title']
+    assert opened['panels'] == ['F', 'Mu']
+    assert opened['edition'].count('<lb edRef="#Mu"/>') == 4      # l'édition est dans l'éditeur
+    assert opened['dialogs'] == []                       # aucune boîte à l'ouverture
+
+
+def test_the_ci_opens_the_exports_with_the_version_the_report_names(exported):
+    _project_, destination = exported
+    workflow = (ROOT / '.github' / 'workflows' / 'tests.yml').read_text(encoding='utf-8')
+    ref = re.search(r'^ +VARIANS_REF: v(\S+)$', workflow, re.MULTILINE).group(1)
+    assert ref == VARIANS_VERIFIED_VERSION == '0.9.4.6'
+    report = (destination / 'RAPPORT_EXPORT_VARIANS.txt').read_text(encoding='utf-8')
+    assert f'vérifié avec Varians {VARIANS_VERIFIED_VERSION}' in report
+
+
+@pytest.mark.parametrize('document', [
+    'README.md', 'docs/developer/EXPORT_VARIANS.md', 'docs/developer/ARCHITECTURE.md',
+    'MAINTENANCE_PASSATION_V0856/08_EXPORT_VERS_VARIANS.md',
+    'MAINTENANCE_PASSATION_V0856/12_RISQUES_ET_LIMITES.md', 'varians_synchro/varians_export.py'])
+def test_the_documentation_names_the_verified_version(document):
+    text = (ROOT / document).read_text(encoding='utf-8').replace('**', '')
+    assert f'Varians {VARIANS_VERIFIED_VERSION}' in text
+    assert 'Varians 0.9.4.0' not in text

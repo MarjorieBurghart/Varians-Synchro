@@ -10,6 +10,8 @@ Elle reprend les étapes de la fenêtre de Varians à l'ouverture d'un projet
 chaque témoin, règles des fichiers ALTO/PAGE puis des images (IIIF compris),
 copie de travail IIIF, lignes du pivot et des autres témoins ; enfin, le
 rattachement des ``<lb edRef="#pivot"/>`` de l'édition aux lignes du pivot.
+``open_in_varians_window`` ouvre aussi le projet dans la vraie fenêtre de
+Varians (sans écran), comme le ferait l'utilisateur.
 
 Sans Varians : le test est ignoré, sauf si ``VARIANS_REQUIRED`` est défini
 (c'est le cas dans la CI, qui récupère Varians) ; il échoue alors.
@@ -20,6 +22,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 import pytest
@@ -114,6 +117,51 @@ except Exception as exc:
 """
 
 
+_WINDOW = r"""
+import json, os, sys, traceback, urllib.request
+root, project_path = sys.argv[1], sys.argv[2]
+sys.path.insert(0, root)
+try:
+    # Sans réseau (avant d'importer Varians, dont les modules gardent urlopen).
+    def _no_network(*args, **kwargs):
+        raise OSError('réseau coupé pendant l’essai de compatibilité')
+    urllib.request.urlopen = _no_network
+    from pathlib import Path
+    from PySide6.QtCore import QTimer
+    from PySide6.QtWidgets import QApplication, QDialog, QMessageBox
+    app = QApplication([])
+    # Toute boîte modale est notée, jamais affichée (elle bloquerait l'essai).
+    dialogs = []
+    def _box(kind):
+        def show(parent, title, text, *args, **kwargs):
+            dialogs.append([kind, title, text])
+            return QMessageBox.StandardButton.No if kind == 'question' else QMessageBox.StandardButton.Ok
+        return staticmethod(show)
+    for kind in ('question', 'warning', 'critical', 'information'):
+        setattr(QMessageBox, kind, _box(kind))
+    QMessageBox.exec = lambda box: dialogs.append(['box', box.windowTitle(), box.text()]) or 0
+    QDialog.exec = lambda dialog: dialogs.append(['dialog', dialog.windowTitle(), '']) or 0
+    import app_context
+    # Réglages de Varians dans le dossier personnel prêté, jamais dans ceux
+    # de l'utilisateur (ni dans le registre Windows).
+    app_context.SETTINGS_FILE_OVERRIDE = Path(os.environ['HOME']) / 'varians.ini'
+    import editeur_tei
+    window = editeur_tei.MainWindow(Path(project_path))
+    window.show()
+    QTimer.singleShot(1500, app.quit)
+    app.exec()
+    print(json.dumps({
+        'version': app_context.APP_VERSION, 'title': window.windowTitle(),
+        'panels': sorted(window.panels), 'edition': window.editor.toPlainText(),
+        'dialogs': dialogs}))
+    window.close()
+except Exception as exc:
+    print(json.dumps({"error": f"{type(exc).__name__}: {exc}",
+                      "trace": traceback.format_exc()}))
+    sys.exit(1)
+"""
+
+
 def varians_source():
     """Dossier du code source de Varians, ou None."""
     candidates = [os.environ.get('VARIANS_SOURCE'), ROOT.parent / 'Varians', ROOT.parent / 'varians']
@@ -135,21 +183,44 @@ def require_varians():
     return found
 
 
-def open_in_varians(project_xml):
-    """Ce que Varians lit en ouvrant ``project_xml`` : pour chaque témoin, ses
-    pages, ses clés de lignes (``page::ligne``) dans l'ordre où Varians les
-    parcourt, le texte de ces lignes et, hors pivot, les clés du pivot citées ;
-    puis le bilan des ``<lb/>`` du pivot (``pivot_lb_index``). En cas d'échec
-    d'ouverture : ``{"error": …}``."""
+def _run(script, *args, home=None):
+    """Lance ``script`` avec le vrai code de Varians, dans un processus à part
+    (depuis le dossier de Varians), et rend le JSON qu'il écrit. ``home`` :
+    dossier personnel prêté à Varians (ses réglages et caches), à la place de
+    celui de l'utilisateur."""
     root = require_varians()
     env = dict(os.environ, QT_QPA_PLATFORM='offscreen', PYTHONUTF8='1')
-    completed = subprocess.run([sys.executable, '-c', _OPEN, str(root), str(project_xml)],
+    if home is not None:
+        for name in ('HOME', 'USERPROFILE', 'LOCALAPPDATA', 'APPDATA', 'XDG_CONFIG_HOME',
+                     'XDG_CACHE_HOME', 'XDG_DATA_HOME', 'XDG_STATE_HOME'):
+            env[name] = str(home)
+    completed = subprocess.run([sys.executable, '-c', script, str(root), *map(str, args)],
                                cwd=str(root), env=env, capture_output=True, text=True,
                                encoding='utf-8', timeout=300)
     lines = [line for line in completed.stdout.splitlines() if line.startswith('{')]
     if not lines:
         raise AssertionError('Varians n’a rien rendu :\n' + completed.stdout + completed.stderr)
     return json.loads(lines[-1])
+
+
+def open_in_varians(project_xml):
+    """Ce que Varians lit en ouvrant ``project_xml`` : pour chaque témoin, ses
+    pages, ses clés de lignes (``page::ligne``) dans l'ordre où Varians les
+    parcourt, le texte de ces lignes et, hors pivot, les clés du pivot citées ;
+    puis le bilan des ``<lb/>`` du pivot (``pivot_lb_index``). En cas d'échec
+    d'ouverture : ``{"error": …}``."""
+    return _run(_OPEN, project_xml)
+
+
+def open_in_varians_window(project_xml):
+    """Ouvre ``project_xml`` dans la vraie fenêtre de Varians (sans écran ni
+    réseau, réglages et dossier personnel temporaires) et rend ce qu'elle
+    montre : ``version`` de Varians, ``title`` de la fenêtre, ``panels``
+    (sigles des témoins affichés), ``edition`` (le texte de l'édition dans
+    l'éditeur) et ``dialogs`` (boîtes ouvertes, notées sans être
+    affichées). En cas d'échec d'ouverture : ``{"error": …}``."""
+    with tempfile.TemporaryDirectory() as home:
+        return _run(_WINDOW, project_xml, home=home)
 
 
 def prepare_pivot_in_varians(project_xml, *, include_lb=True):
@@ -160,13 +231,4 @@ def prepare_pivot_in_varians(project_xml, *, include_lb=True):
     ``same_as_varians_blank`` (est-elle identique à celle d'une « transcription
     vierge » de Varians ?), ``pages`` ([libellé, nombre de <lb/>]) et
     ``prepared`` (le texte de l'édition préparée, sans l'écrire)."""
-    root = require_varians()
-    env = dict(os.environ, QT_QPA_PLATFORM='offscreen', PYTHONUTF8='1')
-    completed = subprocess.run([sys.executable, '-c', _PREPARE, str(root), str(project_xml),
-                                '1' if include_lb else '0'],
-                               cwd=str(root), env=env, capture_output=True, text=True,
-                               encoding='utf-8', timeout=300)
-    lines = [line for line in completed.stdout.splitlines() if line.startswith('{')]
-    if not lines:
-        raise AssertionError('Varians n’a rien rendu :\n' + completed.stdout + completed.stderr)
-    return json.loads(lines[-1])
+    return _run(_PREPARE, project_xml, '1' if include_lb else '0')

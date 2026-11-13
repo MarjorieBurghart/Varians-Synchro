@@ -4,7 +4,7 @@
 |---|---|---|---|
 | Haute | `.vsynch` dépend d'UID basés sur page + ordinal | Nouvelle segmentation peut laisser des liens trompeurs ou périmés | Avertissement avant réassociation ; groupes périmés exclus des ancres, calculs et export, à revalider ou dissocier (chapitre 05) |
 | Haute | `base_keys` du JSON d'alignement sont physiques | Le navigateur de Varians peut ouvrir un JSON pourtant décalé de la TEI | Vérifier `<lb/>`, documenter « NOT_ESTABLISHED », recette d'import réelle |
-| Haute | Compatibilité export projet vérifiée avec Varians 0.9.4.0 seulement (`tests/test_varians_094_compat.py`) | Une nouvelle version de Varians peut changer ses attentes | Changer `VARIANS_REF` dans la CI et faire passer ces tests |
+| Haute | Compatibilité export projet vérifiée avec Varians 0.9.4.6 seulement (`tests/test_varians_094_compat.py`, fenêtre comprise) | Une nouvelle version de Varians peut changer ses attentes | Changer `VARIANS_REF` dans la CI et `VARIANS_VERIFIED_VERSION` (`varians_project_export.py`), puis faire passer ces tests |
 | Haute | Origine scientifique des absences et validations | Faux positifs philologiques irréversibles si acceptés en bloc | Prévisualisation, provenance et contrôle humain |
 | Haute | Copies HD partielles ou modifiées | Canvas manquants, ressources cassées | Contrôle SHA-256 et couverture complète **par témoin** |
 | Moyenne | `ui_pair.py` encore dense (environ 950 lignes, une seule classe) | Refactoring délicat et tests GUI coûteux | Fenêtres de propositions communes et testées (`ui_proposals.py`, `tests/test_pair_proposals_qt.py`) ; toute autre modification sous tests de régression |

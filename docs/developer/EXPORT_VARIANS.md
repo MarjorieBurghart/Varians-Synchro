@@ -2,7 +2,7 @@
 
 Varians-Synchro donne à Varians ce qu'il lui faut pour synchroniser une édition TEI avec les images des manuscrits : un fichier de synchronisation JSON par témoin, ou un projet Varians complet. Ce document en résume le fonctionnement pour qui maintient le code ; le détail des contrats est au chapitre [08 du dossier de passation](../../MAINTENANCE_PASSATION_V0856/08_EXPORT_VERS_VARIANS.md), le mode d'emploi et la description champ par champ du JSON dans l'aide (`help/<langue>.html`, sections « Étape 4 » et « Format des fichiers de synchronisation »).
 
-Compatibilité vérifiée : **Varians 0.9.4.0** (`tests/test_varians_094_compat.py` et `tests/test_varians_blank_edition.py` ouvrent l'export avec le vrai code de Varians ; la CI le récupère à la version `VARIANS_REF`).
+Compatibilité vérifiée : **Varians 0.9.4.6** (`tests/test_varians_094_compat.py` et `tests/test_varians_blank_edition.py` ouvrent l'export avec le vrai code de Varians, et dans sa vraie fenêtre, sans écran ; la CI le récupère à la version `VARIANS_REF`). Cette version est `VARIANS_VERIFIED_VERSION` (`varians_project_export.py`), que cite `RAPPORT_EXPORT_VARIANS.txt` ; un test vérifie qu'elle est celle de `VARIANS_REF`. Pour suivre une nouvelle version de Varians : changer les deux, puis faire passer ces tests.
 
 ## Les deux exports
 
