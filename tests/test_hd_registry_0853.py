@@ -1,18 +1,15 @@
 """HD download receipts, full editorial coverage and Varians offline cache."""
 from __future__ import annotations
 
-import copy
 import io
 import json
-import os
 import xml.etree.ElementTree as ET
-from pathlib import Path
 
 import pytest
 
 from varians_synchro.core import create_witness, load_project, new_project, save_project
 from varians_synchro.hd_registry import (inspect_hd_folder, local_copy_plan,
-    register_hd_folder, varians_offline_index)
+    register_hd_folder)
 from varians_synchro.imaging import export_iiif_hd_images
 from varians_synchro.resource_workflow import store_tei_reference
 from varians_synchro.varians_project_export import export_varians_project

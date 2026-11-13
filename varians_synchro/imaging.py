@@ -4,7 +4,6 @@ Images and ALTO are immutable external inputs. An export is a temporary working 
 """
 from __future__ import annotations
 import copy
-import io
 import json
 import re
 import zipfile
@@ -12,7 +11,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 import time
-from .errors import Localized, localized
+from .errors import localized
 from .witness_ids import witness_id_for_siglum
 
 MAX_MANIFEST_BYTES = 20_000_000

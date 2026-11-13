@@ -3,13 +3,13 @@ import os
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 import pytest
 pytest.importorskip('PySide6')
-from PySide6.QtCore import QPointF, QRectF, Qt
+from PySide6.QtCore import QPointF, QRectF
 from PySide6.QtWidgets import QApplication
 from varians_synchro.viewer import LineImagePanel, ClickableLine
 
 
 def test_compact_view_keeps_hit_rectangles_and_can_switch_to_full():
-    app = QApplication.instance() or QApplication([])
+    _app = QApplication.instance() or QApplication([])      # gardée en vie pendant le test
     panel = LineImagePanel({'id':'A','pages':[]})
     panel._current_page={'id':'p1'}
     panel._page_lines=[{},{}]

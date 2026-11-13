@@ -2,17 +2,14 @@
 from __future__ import annotations
 
 import copy
-import json
 from pathlib import Path
 
 import pytest
 
-from varians_synchro.core import (new_project, create_witness, add_image_source,
-                                 save_project, load_project)
-from varians_synchro.resource_workflow import (apply_witness_draft, resource_summary,
-                                               set_project_pivot)
+from varians_synchro.core import (new_project, create_witness, save_project, load_project)
+from varians_synchro.resource_workflow import (apply_witness_draft, resource_summary)
 from varians_synchro.bulk_binding import (propose_bindings, apply_binding_choices)
-from varians_synchro.project_state import project_fingerprint, ProjectChangeTracker
+from varians_synchro.project_state import project_fingerprint
 from varians_synchro.page_order import ordered_pages
 from varians_synchro.i18n import set_language, tr
 

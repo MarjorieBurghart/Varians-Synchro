@@ -1,5 +1,5 @@
 import unittest
-from varians_synchro.i18n import get_language,set_language,tr,EN
+from varians_synchro.i18n import set_language,tr,EN
 
 
 class InternationalizationTests(unittest.TestCase):

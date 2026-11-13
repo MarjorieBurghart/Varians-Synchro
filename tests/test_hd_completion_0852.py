@@ -48,11 +48,11 @@ def test_worker_reports_distinct_success_cancel_failure_with_qt(monkeypatch, tmp
     for expected, action in (('success', lambda: 2),
                              ('cancelled', lambda: (_ for _ in ()).throw(InterruptedError('cancel'))),
                              ('failed', lambda: (_ for _ in ()).throw(ValueError('network')))):
-        monkeypatch.setattr(imaging, 'export_iiif_hd_images', lambda *args, **kwargs: action())
+        monkeypatch.setattr(imaging, 'export_iiif_hd_images', lambda *args, _action=action, **kwargs: _action())
         thread = thread_type({'id':'F','pages':[]}, ['c'], str(tmp_path), threading.Event())
         results = []
         loop = QEventLoop()
-        thread.done.connect(lambda status, count, error: results.append((status, count, error)))
+        thread.done.connect(lambda status, count, error, _results=results: _results.append((status, count, error)))
         thread.finished.connect(loop.quit)
         thread.start()
         QTimer.singleShot(3000, loop.quit)

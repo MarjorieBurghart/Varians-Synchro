@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 
 from .imaging import iiif_hd_url
-from .errors import Localized, localized
+from .errors import localized
 
 REGISTRY_FORMAT = 'varians-synchro-iiif-hd'
 

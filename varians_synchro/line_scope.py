@@ -7,7 +7,7 @@ setting is altered.  Existing projects need no migration.
 from __future__ import annotations
 import copy
 from .physical_alignment import physical_lines, _witness, detach_pair_lines
-from .errors import Localized, localized
+from .errors import localized
 
 
 def ignored_ids(witness):

@@ -10,13 +10,10 @@ import os
 import shutil
 import stat
 import tempfile
-import re
 import uuid
 import xml.etree.ElementTree as ET
 from pathlib import Path, PurePosixPath, PureWindowsPath
 from datetime import datetime, timezone
-from urllib.parse import urlparse
-from urllib.request import Request, urlopen
 from .errors import Localized, localized
 
 VERSION = '0.8.6.0'

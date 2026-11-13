@@ -49,7 +49,7 @@ def target_lines(witness):
 
 
 def create_session(project, base_resource_id, target_witness_id):
-    lines = get_base_lines(project, base_resource_id)
+    get_base_lines(project, base_resource_id)          # vérifie la référence (TEI importée, lignes uniques)
     witness = next((w for w in project['witnesses'] if w['id'] == target_witness_id), None)
     if witness is None: raise ValueError('Témoin cible inconnu')
     if not target_lines(witness): raise ValueError('Associez au moins un ALTO aux pages de ce témoin')

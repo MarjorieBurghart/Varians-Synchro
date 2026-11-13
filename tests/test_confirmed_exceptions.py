@@ -106,7 +106,7 @@ class ExceptionTests(unittest.TestCase):
         self.assertEqual(pair_progress(self.p,self.s)['target_unresolved'],6)
 
     def test_manual_and_validated_protected_atomic(self):
-        old=add_pair_link(self.p,self.s,[self.al[0]],[self.bl[0]])
+        add_pair_link(self.p,self.s,[self.al[0]],[self.bl[0]])
         before=copy.deepcopy(self.s)
         with self.assertRaisesRegex(ValueError,'Dissociez'):
             preview_confirmed_absence(self.p,self.s,'reference',[self.al[0]])

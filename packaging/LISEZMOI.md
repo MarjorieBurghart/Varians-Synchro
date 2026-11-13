@@ -45,7 +45,7 @@ Le rapport de vérification est gardé dans le résumé du workflow
 ## Construire sur sa machine
 
 ```
-pip install -r requirements.txt -r packaging/requirements.txt
+pip install -r requirements.txt -r packaging/requirements.txt -c constraints.txt
 python packaging/build.py            # archive dans build/binaries/
 ```
 

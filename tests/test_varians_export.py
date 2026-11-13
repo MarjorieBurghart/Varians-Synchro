@@ -1,7 +1,6 @@
 """Tests of the v0.8.5.2 Varians export contract, without requiring Qt."""
 import json
 import uuid
-from pathlib import Path
 
 import pytest
 
@@ -109,7 +108,7 @@ def test_study_scope_filters_phantom_lb_but_preserves_original_base_keys():
 def test_iiif_source_keeps_canvas_identity_for_download_cache():
     p = new_project()
     a = create_witness(p, 'A')
-    uid = _page(a)[0]
+    _page(a)
     pg = a['pages'][0]
     pg['image_kind'] = 'iiif'
     pg['canvas'] = {

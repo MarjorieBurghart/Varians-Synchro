@@ -95,7 +95,7 @@ def test_preflight_detects_overlap_without_touching_links():
     m = create_witness(p, 'Mu'); f = create_witness(p, 'F')
     ma = _page(m); fa = _page(f)
     s = create_pair_session(p, 'Mu', 'F')
-    a = add_pair_link(p, s, [ma[0]], [fa[0]])
+    add_pair_link(p, s, [ma[0]], [fa[0]])
     b = add_pair_link(p, s, [ma[1]], [fa[1]])
     b['reference_ids'] = [ma[0]]
     before = copy.deepcopy(s)

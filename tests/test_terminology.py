@@ -6,7 +6,6 @@ au lieu de ピボット伝本 et シグラム ; en allemand, « Zeuge » au lieu
 import os
 import re
 import sys
-import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import pytest

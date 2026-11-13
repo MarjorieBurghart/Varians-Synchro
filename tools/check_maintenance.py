@@ -61,6 +61,7 @@ def check() -> list[str]:
         errors.append(f'Version Python non alignée : {version} absente de 00_LIRE_EN_PREMIER.md')
     if "SCHEMA = 'varians-synchro-project'" not in code:errors.append('Nom du format modifié')
     catalog={}
+    expected=None
     for lang in 'fr en de cs it ru ja'.split():
         p=ROOT/'i18n'/f'{lang}.xml'
         if not p.exists():errors.append(f'Catalogue absent : {lang}');continue
@@ -69,8 +70,10 @@ def check() -> list[str]:
             key=entry.get('key')
             if not key or key in vals:errors.append(f'Clé invalide/dupliquée : {lang}: {key}')
             vals[key]=entry.text
-        # Même nombre de clés que le catalogue français (le premier lu).
-        expected = len(vals) if lang == 'fr' else expected
+        # Même nombre de clés que le catalogue français, ou, s'il manque, que
+        # le premier catalogue lu.
+        if expected is None:
+            expected = len(vals)
         if len(vals)!=expected:errors.append(f'Couverture {lang}: {len(vals)} au lieu de {expected}')
         catalog[lang]=set(vals)
     if catalog and len(set(map(frozenset,catalog.values())))!=1:

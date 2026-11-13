@@ -18,7 +18,7 @@ from pathlib import Path
 from .varians_export import make_varians_alignments, verify_export_payloads, witness_file_names
 from .core import validate_project
 from .hd_registry import local_copy_plan, varians_offline_index
-from .errors import Localized, localized
+from .errors import localized
 from .witness_ids import witness_id_for_siglum
 
 # Version de Varians avec laquelle l'ouverture d'un projet exporté est vérifiée :

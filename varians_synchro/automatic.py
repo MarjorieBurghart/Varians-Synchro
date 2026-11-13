@@ -13,7 +13,7 @@ import re
 import unicodedata
 import uuid
 from .alignment import base_key, get_base_lines, target_lines, _indices
-from .errors import Localized, localized
+from .errors import Localized
 
 
 def normalize(text, uv=True, ij=True):

@@ -1,8 +1,6 @@
-import io
 import json
 import zipfile
-from pathlib import Path
-from varians_synchro.core import new_project,create_witness,add_image_source,inspect_alto,add_alto_source,save_project,load_project
+from varians_synchro.core import new_project,create_witness,add_image_source,add_alto_source,save_project,load_project
 from varians_synchro.imaging import parse_manifest,create_pages,bind_alto,mapped_alto_page,export_iiif_htr_zip,image_request_url
 
 V2={'label':'Example','sequences':[{'canvases':[{'@id':'https://example.org/c1','label':'f. 14v','width':4000,'height':6000,'images':[{'resource':{'@id':'https://example.org/a.jpg','service':{'@id':'https://example.org/iiif/a'}}}]}]}]}

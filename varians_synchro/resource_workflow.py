@@ -7,7 +7,6 @@ are only inspected, never rewritten.  GUI dialogs collect selections first;
 from __future__ import annotations
 
 import copy
-import hashlib
 from pathlib import Path
 from urllib.parse import urlsplit, urlunsplit
 import xml.etree.ElementTree as ET
@@ -16,7 +15,7 @@ from .core import (create_witness, add_image_source, add_line_source,
                    inspect_manifest, validate_project)
 from .imaging import create_pages
 from .page_order import _natural
-from .errors import Localized, localized
+from .errors import localized
 
 
 def _local_key(path: str) -> str:

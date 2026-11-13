@@ -6,7 +6,7 @@ Les numéros de ligne sont ceux de **cette livraison uniquement**.
 
 **55 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
 
-## `varians_synchro/__init__.py` (1 lignes)
+## `varians_synchro/__init__.py` (3 lignes)
 **Dépendances internes observées** : `core`
 Pas de fonction ou classe déclarée au premier niveau.
 
@@ -34,10 +34,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `errors`, `page_order`, `reading_stream`
 **Fonctions au premier niveau** : `_stem` (l.18), `_strong` (l.22), `_page_candidates` (l.26), `_xml_candidates` (l.36), `binding_fingerprint` (l.43), `propose_bindings` (l.61), `binding_selection_conflicts` (l.137), `apply_binding_choices` (l.171)
 
-## `varians_synchro/core.py` (438 lignes)
+## `varians_synchro/core.py` (435 lignes)
 **Objet (docstring source)** : Varians-Synchro: persistent inventory of documentary resources. No TEI, ALTO or remote source is ever modified by the application. Version 0.1 deliberately does not assert that page/image matches are verified.
 **Dépendances internes observées** : `alto_geometry`, `errors`, `imaging`, `page_xml`, `tei_binding`, `witness_ids`
-**Fonctions au premier niveau** : `new_project` (l.26), `default_mode` (l.32), `_staged_file` (l.42), `save_project` (l.65), `_is_relative_file_path` (l.110), `_map_file_paths` (l.119), `_resolve_relative_paths` (l.139), `_is_network_path` (l.152), `suspicious_paths` (l.156), `_refuse_paths` (l.181), `_with_relative_paths` (l.199), `load_project` (l.228), `validate_project` (l.248), `create_witness` (l.279), `add_image_source` (l.299), `add_alto_source` (l.307), `lname` (l.315), `inspect_line_source` (l.319), `add_line_source` (l.333), `inspect_alto` (l.338), `import_tei` (l.380), `inspect_manifest` (l.402), `diagnostic` (l.408), `check_alto_files` (l.417)
+**Fonctions au premier niveau** : `new_project` (l.23), `default_mode` (l.29), `_staged_file` (l.39), `save_project` (l.62), `_is_relative_file_path` (l.107), `_map_file_paths` (l.116), `_resolve_relative_paths` (l.136), `_is_network_path` (l.149), `suspicious_paths` (l.153), `_refuse_paths` (l.178), `_with_relative_paths` (l.196), `load_project` (l.225), `validate_project` (l.245), `create_witness` (l.276), `add_image_source` (l.296), `add_alto_source` (l.304), `lname` (l.312), `inspect_line_source` (l.316), `add_line_source` (l.330), `inspect_alto` (l.335), `import_tei` (l.377), `inspect_manifest` (l.399), `diagnostic` (l.405), `check_alto_files` (l.414)
 
 ## `varians_synchro/correspondence_navigation.py` (62 lignes)
 **Objet (docstring source)** : Read-only reciprocal navigation over a physical ALTO pair session. This module never changes line selection or alignment data. Links with confirmed absences have no target lines, and can be reported to the researcher without manufacturing a fictitious counterpart. Direct links only: no transitive inference and no assumption that HTR is reliable.
@@ -83,11 +83,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : Varians-Synchro localization: XML catalogs, same schema as Varians. The files ``i18n/fr.xml`` and ``i18n/en.xml`` live beside ``run.py``. All UI message values (including the French defaults) come from these files. Application state, source texts, folio labels and manuscripts are NEVER translated.
 **Fonctions au premier niveau** : `_load_one` (l.21), `_parameters` (l.39), `reload_catalogs` (l.43), `available_languages` (l.71), `language_labels` (l.75), `set_language` (l.80), `get_language` (l.87), `tr` (l.91), `is_catalog_text` (l.104), `french` (l.110), `translate_template` (l.117)
 
-## `varians_synchro/imaging.py` (433 lignes)
+## `varians_synchro/imaging.py` (432 lignes)
 **Objet (docstring source)** : IIIF/local page registry, ALTO-to-page mapping, export for external HTR. Images and ALTO are immutable external inputs. An export is a temporary working copy.
 **Dépendances internes observées** : `core`, `errors`, `line_scope`, `page_order`, `witness_ids`
-**Classes déclarées au premier niveau** : `_HTTPOnlyRedirect` (l.23)
-**Fonctions au premier niveau** : `urlopen` (l.36), `_open` (l.42), `_read_until` (l.48), `_http_bytes` (l.59), `_label` (l.72), `_first` (l.83), `parse_manifest` (l.89), `fetch_manifest` (l.128), `create_pages` (l.132), `bind_alto` (l.177), `mapped_alto_page` (l.190), `bind_line_source` (l.197), `mapped_line_page` (l.201), `suggest_alto_bindings` (l.205), `suggest_line_bindings` (l.224), `image_request_url` (l.228), `image_bytes` (l.237), `export_iiif_htr_zip` (l.247), `import_htr_results` (l.286), `iiif_hd_url` (l.332), `export_iiif_hd_images` (l.352)
+**Classes déclarées au premier niveau** : `_HTTPOnlyRedirect` (l.22)
+**Fonctions au premier niveau** : `urlopen` (l.35), `_open` (l.41), `_read_until` (l.47), `_http_bytes` (l.58), `_label` (l.71), `_first` (l.82), `parse_manifest` (l.88), `fetch_manifest` (l.127), `create_pages` (l.131), `bind_alto` (l.176), `mapped_alto_page` (l.189), `bind_line_source` (l.196), `mapped_line_page` (l.200), `suggest_alto_bindings` (l.204), `suggest_line_bindings` (l.223), `image_request_url` (l.227), `image_bytes` (l.236), `export_iiif_htr_zip` (l.246), `import_htr_results` (l.285), `iiif_hd_url` (l.331), `export_iiif_hd_images` (l.351)
 
 ## `varians_synchro/interpolation.py` (376 lignes)
 **Objet (docstring source)** : Geometry-first manuscript column matching between confirmed 1:1 anchors. This module never assumes a transcription is correct. A physical ALTO column can be aligned between its first and last confirmed lines even when the ALTO reading-order list is interleaved with other columns, text lines are ragged, or OCR order contains small vertical inversions. The output is *suggestions*, not validated textual equivalence; no source or confirmed link is modified.
@@ -136,10 +136,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : One QApplication per process, with Spyder/IPython-friendly window lifetime. This module deliberately has no Qt dependency so lifecycle logic is unit-testable without a graphical display. `QApplication` and the main window are injected by `gui.main()` after importing PySide6.
 **Fonctions au premier niveau** : `launch` (l.11)
 
-## `varians_synchro/rapid_review.py` (119 lignes)
+## `varians_synchro/rapid_review.py` (117 lignes)
 **Objet (docstring source)** : V0.7.2 — rapid, non-destructive human review of physical correspondences. This module never auto-validates machine suggestions. Display sorting and filtering have no effect on .vsynch storage order or Varians JSON export.
 **Dépendances internes observées** : `physical_alignment`, `reading_stream`
-**Fonctions au premier niveau** : `ordered_links` (l.20), `review_counts` (l.53), `pending_ids` (l.60), `following_anchor_interval` (l.64), `verify_before_review` (l.80), `validate_checked` (l.102), `suggestions_for_interval` (l.108)
+**Fonctions au premier niveau** : `ordered_links` (l.20), `review_counts` (l.53), `pending_ids` (l.60), `following_anchor_interval` (l.64), `verify_before_review` (l.78), `validate_checked` (l.100), `suggestions_for_interval` (l.106)
 
 ## `varians_synchro/reading_stream.py` (218 lignes)
 **Objet (docstring source)** : V0.7: continuous documentary reading streams and human anchor intervals. This layer never infers textual equivalence. It only orders physical lines and extracts *every active line* strictly between user-confirmed homologous anchors. No ALTO/PAGE, saved line UID, fingerprint, or existing pair link is rewritten. Overrides are stored in the documentary witness's page dictionaries: ``reading_order`` (all pages), ``reading_region_order`` (region identifiers), ``reading_line_order`` (the line UIDs of one page). The last takes precedence.
@@ -157,10 +157,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `imaging`, `line_scope`, `physical_alignment`, `varians_export`
 **Fonctions au premier niveau** : `_witness` (l.27), `_line_ids` (l.34), `_drop_resource` (l.38), `_drop_witness` (l.81), `_staged` (l.96), `removal_impact` (l.105), `_replace` (l.142), `remove_resource` (l.148), `remove_witness` (l.154)
 
-## `varians_synchro/resource_workflow.py` (161 lignes)
+## `varians_synchro/resource_workflow.py` (160 lignes)
 **Objet (docstring source)** : Witness-centered project resources, with non-destructive staged import. The physical-line alignment model is deliberately not touched. Source files are only inspected, never rewritten. GUI dialogs collect selections first; ``apply_witness_draft`` commits them as one coherent project change.
 **Dépendances internes observées** : `core`, `errors`, `imaging`, `page_order`, `tei_binding`
-**Fonctions au premier niveau** : `_local_key` (l.22), `_manifest_key` (l.26), `_xml_kind` (l.31), `store_tei_reference` (l.38), `set_project_pivot` (l.63), `unavailable_manifests` (l.69), `resource_summary` (l.75), `apply_witness_draft` (l.88)
+**Fonctions au premier niveau** : `_local_key` (l.21), `_manifest_key` (l.25), `_xml_kind` (l.30), `store_tei_reference` (l.37), `set_project_pivot` (l.62), `unavailable_manifests` (l.68), `resource_summary` (l.74), `apply_witness_draft` (l.87)
 
 ## `varians_synchro/review.py` (96 lignes)
 **Objet (docstring source)** : Review policy and batch operations for line alignment sessions (v0.5). Confidence is a heuristic matching score, NEVER a scholarly verification. All operations preserve immutable link identity and never modify source files.
@@ -180,20 +180,20 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : Safe Spyder entrypoint: start the Qt GUI in a separate Python process. No Qt imports are permitted here. A single Spyder kernel may load a different Qt binding or platform plugin; creating Qt widgets in that same native process can terminate the kernel without raising a Python exception.
 **Fonctions au premier niveau** : `in_spyder_kernel` (l.20), `isolated_environment` (l.42), `log_directory` (l.53), `launch_isolated` (l.63)
 
-## `varians_synchro/tei_binding.py` (284 lignes)
+## `varians_synchro/tei_binding.py` (283 lignes)
 **Objet (docstring source)** : Safe, witness-specific TEI extraction and explicit TEI↔physical line bindings. TEI is read only. Bindings are *not* witness-to-witness correspondence links. No '<lb/>' without the exact target @edRef is silently assigned. Unresolved apparatus readings block bulk linking, never fabricate witness text.
 **Dépendances internes observées** : `errors`, `reading_stream`, `witness_ids`
-**Fonctions au premier niveau** : `_local` (l.25), `_refs` (l.29), `_digest` (l.33), `_stamp` (l.37), `extract_witness_tei` (l.42), `_resource` (l.159), `preview_tei_binding` (l.169), `apply_tei_binding` (l.209), `refresh_tei_source` (l.229), `tei_binding_status` (l.250), `linked_tei_texts` (l.266)
+**Fonctions au premier niveau** : `_local` (l.24), `_refs` (l.28), `_digest` (l.32), `_stamp` (l.36), `extract_witness_tei` (l.41), `_resource` (l.158), `preview_tei_binding` (l.168), `apply_tei_binding` (l.208), `refresh_tei_source` (l.228), `tei_binding_status` (l.249), `linked_tei_texts` (l.265)
 
 ## `varians_synchro/tei_visual.py` (159 lignes)
 **Objet (docstring source)** : Read-only visual review model for TEI↔physical-line proposals. This module deliberately has no PySide6 dependency. It never changes project sources, correspondence groups, TEI bindings, or the TEI XML. All coordinates are expressed in the XML page coordinate system, then projected to the actual image/IIIF Canvas dimensions for fetching and rendering.
 **Dépendances internes observées** : `alto_geometry`, `imaging`, `physical_alignment`, `reading_stream`
 **Fonctions au premier niveau** : `_positive` (l.17), `review_pairs` (l.27), `line_preview_descriptor` (l.35), `fetch_preview_bytes` (l.126), `render_transform` (l.133)
 
-## `varians_synchro/textual_progress.py` (344 lignes)
+## `varians_synchro/textual_progress.py` (342 lignes)
 **Objet (docstring source)** : V0.7.1: linear, multi-folio text-quantity alignment between human anchors. The two streams are *declared homologous by the editor*: this module never tries to prove equivalence through geometry or OCR. Weight-based cuts are only *tentative* estimates of manuscript line segmentation. No source, existing link, line UID, or TEI is changed by previewing. Protected links (manual / validated / absence) form immutable obstacles. Automatic groups may be recalculated after explicit confirmation with the existing atomic writer.
 **Dépendances internes observées** : `physical_alignment`, `reading_stream`
-**Fonctions au premier niveau** : `_chars` (l.23), `_length` (l.28), `_weights` (l.48), `_cumulative` (l.107), `_partition` (l.116), `_method` (l.164), `_segments` (l.172), `suggest_textual_progress` (l.270)
+**Fonctions au premier niveau** : `_chars` (l.23), `_length` (l.28), `_weights` (l.48), `_cumulative` (l.107), `_partition` (l.116), `_method` (l.164), `_segments` (l.172), `suggest_textual_progress` (l.268)
 
 ## `varians_synchro/ui_batch_binding.py` (212 lignes)
 **Objet (docstring source)** : Fenêtre « Associer automatiquement les images et les ALTO/PAGE » : propositions par lot, que l’utilisateur peut modifier.
@@ -258,10 +258,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `core`, `page_xml`, `physical_alignment`, `reading_stream`, `tei_binding`, `varians_export`
 **Fonctions au premier niveau** : `_item` (l.17), `_read_otherwise` (l.26), `audit_project` (l.47)
 
-## `varians_synchro/varians_export.py` (466 lignes)
+## `varians_synchro/varians_export.py` (465 lignes)
 **Objet (docstring source)** : Export physical-line sessions to the Varians alignment JSON schema. Opening the exported project in Varians 0.9.4.6 is checked by tests/test_varians_094_compat.py (the real Varians code reads it). Lines are written in the witness's reading order (reading_stream). One explicit technical reference witness is used for these export files. This DOES NOT magically create an editorial TEI line mapping. The TEI XML <lb/> line IDs must still be reconciled with the physical reference's page::ordinal keys before manuscript-to-edition synchronization is guaranteed. No network, Qt, or local source-image files are required for the export.
 **Dépendances internes observées** : `core`, `errors`, `imaging`, `page_order`, `physical_alignment`, `reading_stream`, `witness_ids`
-**Fonctions au premier niveau** : `_get_witness` (l.33), `_image_block` (l.37), `_build_witness_cache` (l.54), `_line_fingerprint` (l.108), `_shared_pero_uuid` (l.115), `_safe_same_segmentation_after_format_change` (l.128), `_reference_health` (l.158), `witness_file_names` (l.170), `links_kept_by_uuid_continuity` (l.188), `_pair_for_base` (l.214), `make_varians_alignments` (l.222), `inspect_varians_export` (l.318), `verify_export_payloads` (l.365), `export_varians_alignments` (l.409)
+**Fonctions au premier niveau** : `_get_witness` (l.33), `_image_block` (l.37), `_build_witness_cache` (l.54), `_line_fingerprint` (l.108), `_shared_pero_uuid` (l.115), `_safe_same_segmentation_after_format_change` (l.128), `_reference_health` (l.158), `witness_file_names` (l.170), `links_kept_by_uuid_continuity` (l.188), `_pair_for_base` (l.214), `make_varians_alignments` (l.222), `inspect_varians_export` (l.317), `verify_export_payloads` (l.364), `export_varians_alignments` (l.408)
 
 ## `varians_synchro/varians_project_export.py` (373 lignes)
 **Objet (docstring source)** : Build a directly openable Varians project.xml bundle from Synchro resources. Target syntax: Varians's documented teiManuscriptProject format with one TEI edition. This is a physical mapping export; it does NOT assert that line links have been reconciled with TEI <lb/> unless the editor independently confirms it. The caller must run a final integration test against their installed Varians.

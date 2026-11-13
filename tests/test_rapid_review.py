@@ -8,7 +8,7 @@ from varians_synchro.physical_alignment import (create_pair_session, physical_li
     add_pair_link, replace_revisable_pair_proposals)
 from varians_synchro.rapid_review import (
     ordered_links, review_counts, pending_ids, following_anchor_interval,
-    suggestions_for_interval, verify_before_review, validate_checked)
+    suggestions_for_interval, validate_checked)
 from varians_synchro.textual_progress import suggest_textual_progress
 
 

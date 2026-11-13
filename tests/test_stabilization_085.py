@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import ast
-import copy
 import json
 import os
 import stat
@@ -14,7 +13,7 @@ from varians_synchro import core
 from varians_synchro.core import (create_witness, load_project, new_project,
                                   save_project)
 from varians_synchro.i18n import (_ALIASES, _CATALOGS,
-                                  reload_catalogs, tr)
+                                  tr)
 
 
 def _stages(folder):
@@ -48,7 +47,8 @@ def test_write_failure_leaves_original_file_and_backup_untouched(tmp_path, monke
     out = tmp_path/'test.vsynch'
     p = new_project('Un'); save_project(p, out)
     p['name'] = 'Deux'; save_project(p, out)
-    before, backup = out.read_bytes(), (tmp_path/'test.vsynch.bak').read_bytes()
+    before = out.read_bytes()
+    assert load_project(tmp_path/'test.vsynch.bak')['name'] == 'Un'
     original_replace = core.os.replace
     def reject_new_project(source, destination):
         if Path(destination) == out:

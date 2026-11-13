@@ -13,7 +13,7 @@ from __future__ import annotations
 from .imaging import bind_alto
 from .page_order import ordered_pages
 from .physical_alignment import physical_lines, stale_link_ids
-from .errors import Localized, localized
+from .errors import localized
 
 
 class ReadingOrderError(ValueError):

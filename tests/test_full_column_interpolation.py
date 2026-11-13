@@ -1,6 +1,5 @@
 """Regression tests for realistic full-column interpolation with only two anchors."""
 import unittest
-from collections import Counter
 
 from varians_synchro.core import new_project, create_witness
 from varians_synchro.physical_alignment import (physical_lines, create_pair_session,

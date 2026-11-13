@@ -13,7 +13,7 @@ from datetime import datetime, timezone
 
 from .imaging import mapped_alto_page
 from .page_order import ordered_pages
-from .errors import Localized, localized
+from .errors import Localized
 
 STATES = {'proposed', 'uncertain', 'validated'}
 KINDS = {'correspondence', 'absence'}

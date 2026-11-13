@@ -1,5 +1,5 @@
-import json
-from varians_synchro.core import *
+from varians_synchro.core import (add_image_source, create_witness, import_tei, inspect_alto, load_project,
+                                  new_project, save_project)
 
 def test_project_roundtrip(tmp_path):
     p = new_project('Test')

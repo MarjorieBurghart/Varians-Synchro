@@ -1,0 +1,18 @@
+# Vérification du code par ruff ; voir README.md et tests/test_code_check.py.
+# Des règles minimales, qui ne visent que de vrais défauts, comme pour
+# Varians : pyflakes (F : import ou variable inutilisés, nom non défini…),
+# erreurs de syntaxe (E9), argument par défaut modifiable (B006), fonction
+# créée dans une boucle qui voit la variable de la dernière itération (B023).
+# Pas de règles de style.
+
+# La CI récupère le code de Varians dans varians-source/ (tests de
+# compatibilité) : il n'est pas soumis à ces règles.
+extend-exclude = ["varians-source"]
+
+[lint]
+select = ["F", "E9", "B006", "B023"]
+
+[lint.per-file-ignores]
+# Une fixture importée d'un autre fichier de tests, puis reçue en paramètre,
+# n'est pas une redéfinition.
+"tests/**" = ["F811"]

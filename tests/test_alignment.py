@@ -1,7 +1,7 @@
 import json
 import pytest
 from varians_synchro.core import new_project, create_witness
-from varians_synchro.alignment import create_session, add_link, remove_link, export_varians, target_lines
+from varians_synchro.alignment import create_session, add_link, remove_link, export_varians
 
 
 def fixture_project():

@@ -9,7 +9,7 @@ from varians_synchro.viewer import LineImagePanel, ClickableLine
 
 
 def test_sloping_polygon_hit_region_is_not_bbox():
-    app = QApplication.instance() or QApplication([])
+    _app = QApplication.instance() or QApplication([])      # gardée en vie pendant le test
     panel = LineImagePanel({'id':'A', 'pages': []})
     panel._current_page = {'id':'p1'}
     panel._page_lines = [{},{}]

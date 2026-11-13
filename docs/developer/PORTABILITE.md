@@ -15,7 +15,7 @@ par PyInstaller et vérifiée sur chacun de ces systèmes, fenêtre comprise, pa
 [`packaging/LISEZMOI.md`](../../packaging/LISEZMOI.md). Sous Linux, elle
 demande glibc 2.35 ou plus récent (Ubuntu 22.04, Debian 12, Fedora 36…).
 
-Les installations ci-dessous, avec Python, restent celles du développement.
+Les installations ci-dessous, avec Python, restent celles du développement. Elles prennent les dernières versions permises par `requirements.txt` ; pour les versions testées (celles de la CI et des archives), ajouter `-c constraints.txt` à la commande `pip install`.
 
 ## Installation sur Windows
 

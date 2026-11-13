@@ -11,7 +11,7 @@ from varians_synchro.overlay_filters import FILTER_UNLINKED, FILTER_AUTOMATIC_RE
 
 
 def test_visual_filters_keep_data_zoom_and_selection():
-    app = QApplication.instance() or QApplication([])
+    _app = QApplication.instance() or QApplication([])      # gardée en vie pendant le test
     panel = LineImagePanel({'id': 'A', 'pages': []})
     panel._current_page = {'id': 'p1'}
     panel._page_lines = [{}, {}, {}]

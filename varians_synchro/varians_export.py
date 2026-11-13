@@ -251,7 +251,6 @@ def make_varians_alignments(project, base_witness_id, *, include_uncertain=False
         wid = witness['id']
         if wid == base_witness_id:
             continue
-        target = caches[wid]
         pair = _pair_for_base(project, base_witness_id, wid)
         info = Counter()
         if pair is None:
