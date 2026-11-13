@@ -41,4 +41,4 @@ python -m pytest -q
 python tools/check_maintenance.py
 ```
 
-Les tests de l'interface pilotent les fenêtres Qt (sans écran : `QT_QPA_PLATFORM=offscreen`). Les tests de compatibilité ouvrent les projets exportés avec le vrai code de Varians : placer son code source à côté (`../Varians`) ou indiquer son dossier dans `VARIANS_SOURCE`. La CI GitHub rejoue l'ensemble sous Linux et Windows, avec Varians 0.9.4.0.
+Les tests de l'interface pilotent les fenêtres Qt (sans écran : `QT_QPA_PLATFORM=offscreen`). Les tests de compatibilité ouvrent les projets exportés avec le vrai code de Varians : placer son code source à côté (`../Varians`) ou indiquer son dossier dans `VARIANS_SOURCE`. La CI GitHub rejoue l'ensemble sous Linux et Windows, avec Varians 0.9.4.6 ; le projet exporté y est aussi ouvert dans la vraie fenêtre de Varians.

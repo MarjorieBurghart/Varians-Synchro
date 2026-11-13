@@ -1,3 +1,7 @@
+## Non publié
+
+- Export du projet pour Varians vérifié avec Varians 0.9.4.6 (la CI le récupère ; `VARIANS_REF`) : le projet exporté s'ouvre avec le vrai code de Varians et, désormais, dans sa vraie fenêtre (sans écran ni réseau), avec ses témoins, l'édition dans l'éditeur et aucune boîte. La version vérifiée (`VARIANS_VERIFIED_VERSION`) est citée par `RAPPORT_EXPORT_VARIANS.txt` ; un test la compare à celle de la CI.
+
 ## V0.8.6.0 — version prête à l'emploi (04/11/2026)
 
 - Version prête à l'emploi, sans Python à installer, comme pour Varians : une archive par système (Windows x64, macOS Apple Silicon et Intel, Linux x64), construite par PyInstaller (`packaging/`) et jointe automatiquement à chaque release publiée par le workflow « Binaries », avec son empreinte SHA-256. À côté du programme : le LISEZMOI dans les sept langues (installation et premier lancement d'un logiciel non signé, premier essai, mise à jour, vérification, composants), les textes des licences et le projet d'exemple `demo_local_ALTO`. L'aide (« Présentation → Installer et lancer », sept langues) et le README l'expliquent.

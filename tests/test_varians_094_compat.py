@@ -157,3 +157,12 @@ def test_the_ci_opens_the_exports_with_the_version_the_report_names(exported):
     report = (destination / 'RAPPORT_EXPORT_VARIANS.txt').read_text(encoding='utf-8')
     assert f'vérifié avec Varians {VARIANS_VERIFIED_VERSION}' in report
 
+
+@pytest.mark.parametrize('document', [
+    'README.md', 'docs/developer/EXPORT_VARIANS.md', 'docs/developer/ARCHITECTURE.md',
+    'MAINTENANCE_PASSATION_V0856/08_EXPORT_VERS_VARIANS.md',
+    'MAINTENANCE_PASSATION_V0856/12_RISQUES_ET_LIMITES.md', 'varians_synchro/varians_export.py'])
+def test_the_documentation_names_the_verified_version(document):
+    text = (ROOT / document).read_text(encoding='utf-8').replace('**', '')
+    assert f'Varians {VARIANS_VERIFIED_VERSION}' in text
+    assert 'Varians 0.9.4.0' not in text

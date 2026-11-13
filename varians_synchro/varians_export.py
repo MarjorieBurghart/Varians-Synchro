@@ -1,6 +1,6 @@
 """Export physical-line sessions to the Varians alignment JSON schema.
 
-Opening the exported project in Varians 0.9.4.0 is checked by
+Opening the exported project in Varians 0.9.4.6 is checked by
 tests/test_varians_094_compat.py (the real Varians code reads it). Lines are
 written in the witness's reading order (reading_stream).
 

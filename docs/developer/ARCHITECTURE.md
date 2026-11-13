@@ -125,7 +125,7 @@ La fenêtre `PairDialog` offre désormais trois parcours non ambigus : **Associe
 
 ## Export vers Varians et audit (V0.6.15, V0.7.4)
 
-`varians_synchro.varians_export` fabrique les fichiers de synchronisation que lit Varians (page, bbox, polygones, source image, `base_keys` ; contrat vérifié avec Varians 0.9.4.0), sans dépendance Qt ni réseau. Le témoin de base est **technique/physique**, et une TEI ne peut pas être présumée. Les `fingerprints` historiques peuvent être confrontés aux données ALTO conservées pour démontrer une migration PERO `line_UUID` → PAGE `id_UUID`. Les équivalences non prouvées sont exclues. Voir [`EXPORT_VARIANS.md`](EXPORT_VARIANS.md).
+`varians_synchro.varians_export` fabrique les fichiers de synchronisation que lit Varians (page, bbox, polygones, source image, `base_keys` ; contrat vérifié avec Varians 0.9.4.6), sans dépendance Qt ni réseau. Le témoin de base est **technique/physique**, et une TEI ne peut pas être présumée. Les `fingerprints` historiques peuvent être confrontés aux données ALTO conservées pour démontrer une migration PERO `line_UUID` → PAGE `id_UUID`. Les équivalences non prouvées sont exclues. Voir [`EXPORT_VARIANS.md`](EXPORT_VARIANS.md).
 
 - `varians_synchro/validation.py` : diagnostic des ordres de lecture et des paires sans modification du projet ; l'absence est locale à une paire.
 - `varians_synchro/varians_export.py` : `verify_export_payloads` valide les clés actives du pivot ; `export_varians_alignments` prépare les deux politiques dans un dossier temporaire avant publication.
