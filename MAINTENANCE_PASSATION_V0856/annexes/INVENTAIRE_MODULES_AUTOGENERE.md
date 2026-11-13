@@ -52,11 +52,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `i18n`, `ui_widgets`
 **Fonctions au premier niveau** : `describe` (l.18), `show` (l.25), `install` (l.49)
 
-## `varians_synchro/errors.py` (53 lignes)
-**Objet (docstring source)** : Messages des moteurs, traduisibles. Les moteurs (sans Qt) écrivent leurs erreurs et avertissements en français : c'est le texte des journaux, des tests et de ``str(exc)``. L'interface les montre dans sa langue : - un message fixe est la valeur française d'une clé du catalogue ; ``tr(texte)`` le traduit par l'alias français ; - un message avec des valeurs (un sigle, un fichier…) est un ``Localized`` : une chaîne française qui garde sa clé et ses valeurs, pour que ``localized_text`` le traduise avec les mêmes valeurs. ``localized(ValueError, 'clé', sigle=…)`` construit l'exception ; ``localized_text(exc_ou_texte)`` donne le texte à afficher.
+## `varians_synchro/errors.py` (68 lignes)
+**Objet (docstring source)** : Messages des moteurs, traduisibles. Les moteurs (sans Qt) écrivent leurs erreurs et avertissements en français : c'est le texte des journaux, des tests et de ``str(exc)``. L'interface les montre dans sa langue : - un message fixe est la valeur française d'une clé du catalogue ; ``tr(texte)`` le traduit par l'alias français ; - un message avec des valeurs (un sigle, un fichier…) est un ``Localized`` : une chaîne française qui garde sa clé et ses valeurs, pour que ``localized_text`` le traduise avec les mêmes valeurs. ``localized(ValueError, 'clé', sigle=…)`` construit l'exception ; ``localized_text(exc_ou_texte)`` donne le texte à afficher, et
 **Dépendances internes observées** : `i18n`
-**Classes déclarées au premier niveau** : `Localized` (l.21)
-**Fonctions au premier niveau** : `_rebuild` (l.34), `localized` (l.38), `localized_text` (l.43)
+**Classes déclarées au premier niveau** : `Localized` (l.23)
+**Fonctions au premier niveau** : `_rebuild` (l.36), `localized` (l.40), `localized_text` (l.45), `_text` (l.60)
 
 ## `varians_synchro/exceptions.py` (166 lignes)
 **Objet (docstring source)** : V0.7.3: safe, explicit, pair-local confirmed textual absences. No inference of omission from geometry or HTR. A selected passage in ONE witness is asserted to lack a counterpart in the other witness of this pair. Existing *uncertain automatic* groups can be partially peeled away; manual or validated groups are never silently rewritten. Preview and commit are separate, checked, all-or-nothing operations.
@@ -161,10 +161,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `imaging`, `line_scope`, `physical_alignment`, `varians_export`
 **Fonctions au premier niveau** : `_witness` (l.27), `_line_ids` (l.34), `_drop_resource` (l.38), `_drop_witness` (l.81), `_staged` (l.96), `removal_impact` (l.105), `_replace` (l.142), `remove_resource` (l.148), `remove_witness` (l.154)
 
-## `varians_synchro/resource_workflow.py` (160 lignes)
+## `varians_synchro/resource_workflow.py` (164 lignes)
 **Objet (docstring source)** : Witness-centered project resources, with non-destructive staged import. The physical-line alignment model is deliberately not touched. Source files are only inspected, never rewritten. GUI dialogs collect selections first; ``apply_witness_draft`` commits them as one coherent project change.
 **Dépendances internes observées** : `core`, `errors`, `imaging`, `page_order`, `tei_binding`
-**Fonctions au premier niveau** : `_local_key` (l.21), `_manifest_key` (l.25), `_xml_kind` (l.30), `store_tei_reference` (l.37), `set_project_pivot` (l.62), `unavailable_manifests` (l.68), `resource_summary` (l.74), `apply_witness_draft` (l.87)
+**Fonctions au premier niveau** : `_local_key` (l.22), `_manifest_key` (l.26), `_xml_kind` (l.31), `store_tei_reference` (l.38), `set_project_pivot` (l.63), `unavailable_manifests` (l.69), `resource_summary` (l.75), `apply_witness_draft` (l.88)
 
 ## `varians_synchro/review.py` (96 lignes)
 **Objet (docstring source)** : Review policy and batch operations for line alignment sessions (v0.5). Confidence is a heuristic matching score, NEVER a scholarly verification. All operations preserve immutable link identity and never modify source files.

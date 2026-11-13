@@ -15,6 +15,7 @@ from .core import (create_witness, add_image_source, add_line_source,
                    inspect_manifest, validate_project)
 from .imaging import create_pages
 from .page_order import _natural
+from . import error_log
 from .errors import localized
 
 
@@ -136,6 +137,9 @@ def apply_witness_draft(project: dict, *, identifier: str, label: str = '',
         except Exception as exc:
             entry['status'] = 'unavailable'
             entry['error'] = str(exc)
+            # Gardé dans le projet sans autre trace de l'erreur : noté ici.
+            error_log.logger('iiif').warning('Manifest IIIF sans réponse pour le témoin %r : %s (%s)',
+                                             identifier, url, exc, exc_info=exc)
         image_inventory_changed = True
 
     existing_xml = {_local_key(src['path']) for src in w['alto_sources']}
