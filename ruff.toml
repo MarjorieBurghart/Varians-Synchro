@@ -5,6 +5,10 @@
 # créée dans une boucle qui voit la variable de la dernière itération (B023).
 # Pas de règles de style.
 
+# La CI récupère le code de Varians dans varians-source/ (tests de
+# compatibilité) : il n'est pas soumis à ces règles.
+extend-exclude = ["varians-source"]
+
 [lint]
 select = ["F", "E9", "B006", "B023"]
 
