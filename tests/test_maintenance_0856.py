@@ -25,3 +25,19 @@ class MaintenanceDocumentationTests(unittest.TestCase):
         self.assertGreater(sum(len(p.read_text('utf-8')) for p in DOC.rglob('*.md')), 55000)
 
 if __name__=='__main__':unittest.main()
+
+
+def test_a_missing_french_catalog_is_reported_not_a_crash(tmp_path, monkeypatch):
+    """Sans fr.xml, le contrôle disait « NameError » (catalogue de
+    référence jamais lu) ; il dit désormais le catalogue absent, et compare
+    les autres au premier qu'il lit."""
+    import shutil
+    import check_maintenance
+    shutil.copytree(ROOT/'i18n', tmp_path/'i18n')
+    (tmp_path/'i18n'/'fr.xml').unlink()
+    (tmp_path/'varians_synchro').mkdir()
+    shutil.copy(ROOT/'varians_synchro'/'core.py', tmp_path/'varians_synchro'/'core.py')
+    monkeypatch.setattr(check_maintenance, 'ROOT', tmp_path)
+    errors = check_maintenance.check()
+    assert 'Catalogue absent : fr' in errors
+    assert not [error for error in errors if error.startswith('Couverture')]
