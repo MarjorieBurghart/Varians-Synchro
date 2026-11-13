@@ -333,6 +333,14 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li><strong>Con Spyder</strong>: avviate <code>run.py</code>; il programma si apre in un processo a parte, per non disturbare la console di Spyder. Il registro di avvio si trova in <code>~/.varians_synchro/logs</code>.</li>
 </ul>
 
+<h3 id="journal-erreurs">Registro degli errori</h3>
+<p>Quando qualcosa non riesce, Varians-Synchro lo annota nel suo registro degli errori, il file <code>varians-synchro.log</code>: gli errori imprevisti con i loro dettagli tecnici, gli errori mostrati sullo schermo e i Manifest IIIF che non hanno risposto, insieme alle versioni del programma, di Python, di Qt e del sistema. Contiene nomi di file, indirizzi e messaggi di errore, mai il testo delle trascrizioni. Occupa al massimo 1 MB, più due file più vecchi (<code>.1</code>, <code>.2</code>).</p>
+<ul>
+<li>Per aprirne la cartella: il pulsante <b class="ui" data-tr="error_log.title">Registro degli errori</b>, in fondo alla finestra di questo manuale, oppure quello della finestra <b class="ui" data-tr="error.unexpected.title">Azione non riuscita</b>, che indica anche dove sono annotati i dettagli.</li>
+<li>La sua cartella: <code>%LOCALAPPDATA%\Varians-Synchro\logs</code> su Windows, <code>~/Library/Logs/Varians-Synchro</code> su macOS, <code>~/.local/state/varians-synchro/logs</code> su Linux.</li>
+<li>Per segnalare un problema, allegate <code>varians-synchro.log</code> al vostro messaggio: <a href="https://github.com/MarjorieBurghart/Varians-Synchro/issues">https://github.com/MarjorieBurghart/Varians-Synchro/issues</a>.</li>
+</ul>
+
 <h2 id="raccourcis">13. Scorciatoie</h2>
 <table>
 <tr><th>Tasto</th><th>Azione</th></tr>

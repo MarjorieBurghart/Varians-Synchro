@@ -333,6 +333,14 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li><strong>With Spyder</strong>: run <code>run.py</code>; the software opens in a separate process, so as not to disturb the Spyder console. The startup log is in <code>~/.varians_synchro/logs</code>.</li>
 </ul>
 
+<h3 id="journal-erreurs">Error log</h3>
+<p>When something fails, Varians-Synchro writes it to its error log, the file <code>varians-synchro.log</code>: unexpected errors with their technical details, errors shown on screen and IIIF Manifests that did not answer, together with the versions of the software, Python, Qt and the system. It contains file names, addresses and error messages, never the text of the transcriptions. It keeps at most 1 MB, plus two older files (<code>.1</code>, <code>.2</code>).</p>
+<ul>
+<li>To open its folder: the <b class="ui" data-tr="error_log.title">Error Log</b> button at the bottom of the window of this guide, or the one in the <b class="ui" data-tr="error.unexpected.title">Action failed</b> box, which also says where the details are written.</li>
+<li>Its folder: <code>%LOCALAPPDATA%\Varians-Synchro\logs</code> on Windows, <code>~/Library/Logs/Varians-Synchro</code> on macOS, <code>~/.local/state/varians-synchro/logs</code> on Linux.</li>
+<li>To report a problem, attach <code>varians-synchro.log</code> to your message: <a href="https://github.com/MarjorieBurghart/Varians-Synchro/issues">https://github.com/MarjorieBurghart/Varians-Synchro/issues</a>.</li>
+</ul>
+
 <h2 id="raccourcis">13. Shortcuts</h2>
 <table>
 <tr><th>Key</th><th>Action</th></tr>

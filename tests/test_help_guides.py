@@ -160,3 +160,17 @@ def test_the_guide_explains_how_to_install_and_check(path):
                   'https://github.com/MarjorieBurghart/Varians-Synchro/issues'):
         assert words in section, (path.stem, words)
     assert (ROOT / 'packaging' / 'readme' / README_OF[path.stem]).is_file()
+
+
+@pytest.mark.parametrize('path', GUIDES, ids=lambda p: p.stem)
+def test_the_guide_explains_the_error_log(path):
+    """Section « Journal des erreurs » : ce qu'il contient, sa taille, son
+    dossier sous chaque système, les deux boutons qui l'ouvrent, et où
+    l'envoyer."""
+    text = path.read_text(encoding='utf-8')
+    start = text.index('id="journal-erreurs"')
+    section = text[start:text.index('<h2', start)]
+    for words in ('varians-synchro.log', r'%LOCALAPPDATA%\Varians-Synchro\logs', '~/Library/Logs/Varians-Synchro',
+                  '~/.local/state/varians-synchro/logs', 'data-tr="error_log.title"',
+                  'data-tr="error.unexpected.title"', 'https://github.com/MarjorieBurghart/Varians-Synchro/issues'):
+        assert words in section, (path.stem, words)

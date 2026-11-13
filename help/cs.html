@@ -333,6 +333,14 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li><strong>Ve Spyderu</strong>: spusťte <code>run.py</code>; program se otevře v samostatném procesu, aby nenarušoval konzoli Spyderu. Protokol spuštění je v <code>~/.varians_synchro/logs</code>.</li>
 </ul>
 
+<h3 id="journal-erreurs">Protokol chyb</h3>
+<p>Když se něco nezdaří, Varians-Synchro to zapíše do svého protokolu chyb, souboru <code>varians-synchro.log</code>: nečekané chyby s technickými podrobnostmi, chyby zobrazené na obrazovce a manifesty IIIF, které neodpověděly, spolu s verzemi programu, Pythonu, Qt a systému. Obsahuje názvy souborů, adresy a chybová hlášení, nikdy text přepisů. Má nejvýše 1 MB, k tomu dva starší soubory (<code>.1</code>, <code>.2</code>).</p>
+<ul>
+<li>Jak otevřít jeho složku: tlačítkem <b class="ui" data-tr="error_log.title">Protokol chyb</b> dole v okně této příručky, nebo tlačítkem v okně <b class="ui" data-tr="error.unexpected.title">Akce se nezdařila</b>, které také uvádí, kam jsou podrobnosti zapsány.</li>
+<li>Jeho složka: <code>%LOCALAPPDATA%\Varians-Synchro\logs</code> ve Windows, <code>~/Library/Logs/Varians-Synchro</code> v macOS, <code>~/.local/state/varians-synchro/logs</code> v Linuxu.</li>
+<li>Při hlášení problému přiložte ke zprávě soubor <code>varians-synchro.log</code>: <a href="https://github.com/MarjorieBurghart/Varians-Synchro/issues">https://github.com/MarjorieBurghart/Varians-Synchro/issues</a>.</li>
+</ul>
+
 <h2 id="raccourcis">13. Klávesové zkratky</h2>
 <table>
 <tr><th>Klávesa</th><th>Účinek</th></tr>

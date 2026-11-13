@@ -333,6 +333,14 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li><strong>Работа со Spyder</strong>: запускайте <code>run.py</code>; программа открывается в отдельном процессе, чтобы не мешать консоли Spyder. Журнал запуска находится в <code>~/.varians_synchro/logs</code>.</li>
 </ul>
 
+<h3 id="journal-erreurs">Журнал ошибок</h3>
+<p>Когда что-то не удаётся, Varians-Synchro записывает это в свой журнал ошибок — файл <code>varians-synchro.log</code>: непредвиденные ошибки с техническими подробностями, ошибки, показанные на экране, и манифесты IIIF, которые не ответили, а также версии программы, Python, Qt и системы. В нём есть имена файлов, адреса и сообщения об ошибках, но никогда — текст транскрипций. Он занимает не более 1 МБ, плюс два более старых файла (<code>.1</code>, <code>.2</code>).</p>
+<ul>
+<li>Чтобы открыть его папку: кнопка <b class="ui" data-tr="error_log.title">Журнал ошибок</b> внизу окна этого руководства или такая же кнопка в окне <b class="ui" data-tr="error.unexpected.title">Действие не выполнено</b>, где также сказано, куда записаны подробности.</li>
+<li>Его папка: <code>%LOCALAPPDATA%\Varians-Synchro\logs</code> в Windows, <code>~/Library/Logs/Varians-Synchro</code> в macOS, <code>~/.local/state/varians-synchro/logs</code> в Linux.</li>
+<li>Сообщая о проблеме, приложите к сообщению файл <code>varians-synchro.log</code>: <a href="https://github.com/MarjorieBurghart/Varians-Synchro/issues">https://github.com/MarjorieBurghart/Varians-Synchro/issues</a>.</li>
+</ul>
+
 <h2 id="raccourcis">13. Сочетания клавиш</h2>
 <table>
 <tr><th>Клавиша</th><th>Действие</th></tr>

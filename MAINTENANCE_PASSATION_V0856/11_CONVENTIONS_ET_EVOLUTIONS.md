@@ -7,6 +7,7 @@
 - Préserver les dictionnaires JSON pour compatibilité avec les projets existants. Ne pas ajouter de champs éphémères non sérialisables (QObjects, `Path`, ensembles) dans les structures persistées.
 - UTF-8, JSON `ensure_ascii=False`, identifiants XML/TEI non traduits ; séparer données scientifiques et messages d'interface.
 - Échecs explicites (`ValueError` ou diagnostics) plutôt que succès partiel silencieux lorsqu'il s'agit de liens, migration ou export.
+- Une erreur montrée à l'utilisateur passe par `errors.localized_text`, qui la note dans le journal des erreurs. Un nouveau bloc `except Exception` qui la garde sans la montrer (dans un fil, ou dans le projet comme un Manifest indisponible) la note lui-même : `error_log.logger('partie').warning(…, exc_info=exc)`.
 - Conserver les commentaires portant sur les « raisons » et invariants historiques, pas seulement le « comment ».
 - Respecter les formats de chemins Windows et Unix ; stages atomiques dans le même volume que leur destination.
 

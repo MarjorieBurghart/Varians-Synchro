@@ -333,6 +333,14 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li><strong>Spyder を使う場合</strong>：<code>run.py</code> を実行してください。Spyder のコンソールを乱さないよう、ソフトウェアは別のプロセスで起動します。起動ログは <code>~/.varians_synchro/logs</code> にあります。</li>
 </ul>
 
+<h3 id="journal-erreurs">エラーログ</h3>
+<p>何かが失敗すると、Varians-Synchro はそれをエラーログ（ファイル <code>varians-synchro.log</code>）に記録します。記録されるのは、予期しないエラーとその技術的な詳細、画面に表示されたエラー、応答しなかった IIIF Manifest で、ソフトウェア・Python・Qt・システムのバージョンも記録されます。ファイル名・アドレス・エラーメッセージは含まれますが、翻刻のテキストは決して含まれません。サイズは最大 1 MB で、これに古いファイルが 2 つ（<code>.1</code>、<code>.2</code>）加わります。</p>
+<ul>
+<li>フォルダーを開くには：このガイドのウィンドウ下部にある<b class="ui" data-tr="error_log.title">エラーログ</b>ボタン、または<b class="ui" data-tr="error.unexpected.title">操作を完了できませんでした</b>のダイアログにある同じボタンを使います。このダイアログには、詳細の記録先も表示されます。</li>
+<li>フォルダーの場所：Windows では <code>%LOCALAPPDATA%\Varians-Synchro\logs</code>、macOS では <code>~/Library/Logs/Varians-Synchro</code>、Linux では <code>~/.local/state/varians-synchro/logs</code>。</li>
+<li>問題を報告するときは、<code>varians-synchro.log</code> をメッセージに添付してください：<a href="https://github.com/MarjorieBurghart/Varians-Synchro/issues">https://github.com/MarjorieBurghart/Varians-Synchro/issues</a></li>
+</ul>
+
 <h2 id="raccourcis">13. ショートカット</h2>
 <table>
 <tr><th>キー</th><th>動作</th></tr>

@@ -333,6 +333,14 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li><strong>Mit Spyder</strong>: Starten Sie <code>run.py</code>; die Software öffnet sich in einem eigenen Prozess, um die Konsole von Spyder nicht zu stören. Das Startprotokoll liegt in <code>~/.varians_synchro/logs</code>.</li>
 </ul>
 
+<h3 id="journal-erreurs">Fehlerprotokoll</h3>
+<p>Wenn etwas fehlschlägt, schreibt Varians-Synchro es in sein Fehlerprotokoll, die Datei <code>varians-synchro.log</code>: unerwartete Fehler mit ihren technischen Einzelheiten, auf dem Bildschirm angezeigte Fehler und IIIF-Manifeste, die nicht geantwortet haben, zusammen mit den Versionen der Software, von Python, Qt und des Systems. Es enthält Dateinamen, Adressen und Fehlermeldungen, niemals den Text der Transkriptionen. Es umfasst höchstens 1 MB, dazu zwei ältere Dateien (<code>.1</code>, <code>.2</code>).</p>
+<ul>
+<li>Zum Öffnen seines Ordners: die Schaltfläche <b class="ui" data-tr="error_log.title">Fehlerprotokoll</b> unten im Fenster dieses Handbuchs oder die im Fenster <b class="ui" data-tr="error.unexpected.title">Aktion fehlgeschlagen</b>, das auch angibt, wo die Einzelheiten stehen.</li>
+<li>Sein Ordner: <code>%LOCALAPPDATA%\Varians-Synchro\logs</code> unter Windows, <code>~/Library/Logs/Varians-Synchro</code> unter macOS, <code>~/.local/state/varians-synchro/logs</code> unter Linux.</li>
+<li>Um ein Problem zu melden, fügen Sie <code>varians-synchro.log</code> Ihrer Nachricht bei: <a href="https://github.com/MarjorieBurghart/Varians-Synchro/issues">https://github.com/MarjorieBurghart/Varians-Synchro/issues</a>.</li>
+</ul>
+
 <h2 id="raccourcis">13. Tastenkürzel</h2>
 <table>
 <tr><th>Taste</th><th>Wirkung</th></tr>
