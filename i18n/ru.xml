@@ -713,9 +713,14 @@
   <string key="ui.pages.htr.cancelled">Экспорт отменён. Неполный архив не записан.</string>
   <string key="error.unexpected.title">Действие не выполнено</string>
   <string key="error.unexpected.text">Не удалось выполнить действие:
-{error}
-
-Технические подробности — в консоли или в журнале запуска.</string>
+{error}</string>
+  <string key="error.unexpected.console">Технические подробности — в консоли или в журнале запуска.</string>
+  <string key="error_log.title">Журнал ошибок</string>
+  <string key="error_log.open.tip">Открывает папку журнала ошибок (varians-synchro.log), чтобы приложить его к сообщению о проблеме.</string>
+  <string key="error_log.noted">Подробности записаны в журнал ошибок:
+{file}</string>
+  <string key="error_log.unavailable">Не удаётся создать папку журнала ошибок:
+{folder}</string>
   <string key="alignment.error.duplicate_line_ids">Повторяющиеся идентификаторы строк ALTO</string>
   <string key="alignment.error.same_witness">Выберите двух разных свидетелей</string>
   <string key="alignment.error.unknown_witness">Неизвестный свидетель</string>

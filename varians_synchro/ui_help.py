@@ -89,6 +89,11 @@ class HelpDialog(QDialog):
         layout.addWidget(splitter, 1)
         # Bouton à nous : celui de Qt (« Close ») n'est pas traduit.
         buttons = QDialogButtonBox(parent=self)
+        # Le dossier du journal des erreurs, à joindre à un signalement.
+        self.error_log_button = QPushButton(tr('error_log.title'), self)
+        self.error_log_button.setToolTip(tr('error_log.open.tip'))
+        self.error_log_button.clicked.connect(self._open_error_log)
+        buttons.addButton(self.error_log_button, QDialogButtonBox.ButtonRole.ActionRole)
         buttons.addButton(QPushButton(tr('common.close'), self), QDialogButtonBox.ButtonRole.RejectRole)
         buttons.rejected.connect(self.close)
         layout.addWidget(buttons)
@@ -115,6 +120,10 @@ class HelpDialog(QDialog):
         QShortcut(QKeySequence('Ctrl+F'), self, self._focus_search)
         QShortcut(QKeySequence('F3'), self, self.next_occurrence)
         QShortcut(QKeySequence('Shift+F3'), self, self.previous_occurrence)
+
+    def _open_error_log(self):
+        from .error_log_ui import open_log_folder
+        open_log_folder(self)
 
     def show_anchor(self, anchor):
         """Fait défiler le guide jusqu'à l'élément ``id="anchor"``."""

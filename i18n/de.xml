@@ -713,9 +713,14 @@ Warnung: Die Serie konnte nicht im Projekt erfasst werden ({error}). Verwenden S
   <string key="ui.pages.htr.cancelled">Export abgebrochen. Es wurde kein unvollständiges Archiv geschrieben.</string>
   <string key="error.unexpected.title">Aktion fehlgeschlagen</string>
   <string key="error.unexpected.text">Die Aktion konnte nicht abgeschlossen werden:
-{error}
-
-Technische Details stehen in der Konsole oder im Startprotokoll.</string>
+{error}</string>
+  <string key="error.unexpected.console">Technische Details stehen in der Konsole oder im Startprotokoll.</string>
+  <string key="error_log.title">Fehlerprotokoll</string>
+  <string key="error_log.open.tip">Öffnet den Ordner des Fehlerprotokolls (varians-synchro.log), um es einer Fehlermeldung beizufügen.</string>
+  <string key="error_log.noted">Die Einzelheiten stehen im Fehlerprotokoll:
+{file}</string>
+  <string key="error_log.unavailable">Der Ordner des Fehlerprotokolls kann nicht angelegt werden:
+{folder}</string>
   <string key="alignment.error.duplicate_line_ids">Doppelte ALTO-Zeilenkennungen</string>
   <string key="alignment.error.same_witness">Wählen Sie zwei verschiedene Textzeugen</string>
   <string key="alignment.error.unknown_witness">Unbekannter Textzeuge</string>

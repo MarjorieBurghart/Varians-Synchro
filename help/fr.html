@@ -333,6 +333,14 @@ ul,ol{padding-left:1.4em}.toc a{text-decoration:none}
 <li><strong>Avec Spyder</strong> : lancez <code>run.py</code> ; le logiciel s’ouvre dans un processus à part, pour ne pas troubler la console de Spyder. Le journal de démarrage est dans <code>~/.varians_synchro/logs</code>.</li>
 </ul>
 
+<h3 id="journal-erreurs">Journal des erreurs</h3>
+<p>Quand quelque chose échoue, Varians-Synchro le note dans son journal des erreurs, le fichier <code>varians-synchro.log</code> : les erreurs imprévues avec leur détail technique, les erreurs montrées à l’écran et les Manifests IIIF qui n’ont pas répondu, avec les versions du logiciel, de Python, de Qt et du système. Il contient des noms de fichiers, des adresses et des messages d’erreur, jamais le texte des transcriptions. Il garde au plus 1 Mo, plus deux fichiers plus anciens (<code>.1</code>, <code>.2</code>).</p>
+<ul>
+<li>Pour ouvrir son dossier : le bouton <b class="ui" data-tr="error_log.title">Journal des erreurs</b>, en bas de la fenêtre de ce guide, ou celui de la boîte <b class="ui" data-tr="error.unexpected.title">Action impossible</b>, qui dit aussi où le détail est noté.</li>
+<li>Son dossier : <code>%LOCALAPPDATA%\Varians-Synchro\logs</code> sous Windows, <code>~/Library/Logs/Varians-Synchro</code> sous macOS, <code>~/.local/state/varians-synchro/logs</code> sous Linux.</li>
+<li>Pour signaler un problème, joignez <code>varians-synchro.log</code> à votre message : <a href="https://github.com/MarjorieBurghart/Varians-Synchro/issues">https://github.com/MarjorieBurghart/Varians-Synchro/issues</a>.</li>
+</ul>
+
 <h2 id="raccourcis">13. Raccourcis</h2>
 <table>
 <tr><th>Touche</th><th>Effet</th></tr>

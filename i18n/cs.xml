@@ -713,9 +713,14 @@ Varování: dávku se nepodařilo zaznamenat do projektu ({error}). Po kontrole 
   <string key="ui.pages.htr.cancelled">Export zrušen. Žádný neúplný archiv nebyl zapsán.</string>
   <string key="error.unexpected.title">Akce se nezdařila</string>
   <string key="error.unexpected.text">Akci nebylo možné dokončit:
-{error}
-
-Technické podrobnosti najdete v konzoli nebo ve spouštěcím protokolu.</string>
+{error}</string>
+  <string key="error.unexpected.console">Technické podrobnosti najdete v konzoli nebo ve spouštěcím protokolu.</string>
+  <string key="error_log.title">Protokol chyb</string>
+  <string key="error_log.open.tip">Otevře složku s protokolem chyb (varians-synchro.log), který můžete přiložit k hlášení problému.</string>
+  <string key="error_log.noted">Podrobnosti jsou zapsány v protokolu chyb:
+{file}</string>
+  <string key="error_log.unavailable">Složku protokolu chyb nelze vytvořit:
+{folder}</string>
   <string key="alignment.error.duplicate_line_ids">Duplicitní identifikátory řádků ALTO</string>
   <string key="alignment.error.same_witness">Vyberte dva různé svědky</string>
   <string key="alignment.error.unknown_witness">Neznámý svědek</string>

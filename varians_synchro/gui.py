@@ -30,6 +30,10 @@ def main():
     lang = QSettings('Varians', 'Varians-Synchro').value('language', 'fr')
     set_language(lang if lang in available_languages() else 'fr')
     from .guided_ui import make_guided_window
+    # Journal des erreurs : exceptions non rattrapées et erreurs montrées. Il
+    # est ouvert avant le crochet du message, qui l'appelle d'abord.
+    from .error_log_ui import install_for_application
+    install_for_application()
     # An unexpected error in a click is shown, not only written to the console.
     from .error_report import install
     install()

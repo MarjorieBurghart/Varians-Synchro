@@ -146,6 +146,7 @@ Issus de la red team (voir [`../RED_TEAM.md`](../RED_TEAM.md)) ; chaque règle a
 - **Images.** Seuls JPEG, PNG, TIFF, WebP et JPEG 2000 sont décodés comme images de page (`decode_page_image`, `page_image_reader_ok`) : un SVG pouvait charger des fichiers locaux ou réseau. Les miniatures IIIF ne sont demandées qu'en http/https et abandonnées au-delà de 2 Mo.
 - **Réseau.** Les téléchargements (`imaging._http_bytes`) refusent une redirection hors http/https, plafonnent la taille et ont une échéance totale (120 s ; 600 s pour une copie HD), lue par blocs.
 - **Sigles.** `witness_ids.py` reprend la règle de Varians (`witness_id_for_siglum`) et nomme fichiers et entrées d'archive (« Exporter pour HTR ») ; un sigle ne sert jamais tel quel de nom de fichier.
+- **Journal des erreurs.** `error_log` (sans Qt) écrit `varians-synchro.log` (1 Mo, plus deux fichiers plus anciens) : exceptions non rattrapées, erreurs montrées (`errors.localized_text`), Manifests IIIF sans réponse ; des noms de fichiers, des adresses et des messages, jamais le texte des transcriptions. S'il ne peut pas être écrit, rien ne change. La boîte « Action impossible » et la fenêtre d'aide ouvrent son dossier (`error_log_ui`).
 - **Moteurs.** Enregistrer des propositions se fait en temps linéaire (`physical_alignment._link_context`, calculé une fois par lot) ; la proposition HTR–HTR suit l'ordre de lecture corrigé (`reading_stream`) ; la réimportation HTR est tout ou rien.
 
 ## Limites connues

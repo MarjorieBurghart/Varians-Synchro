@@ -4,7 +4,9 @@ Sans ce crochet, une exception levée dans un clic (slot Qt) n'allait qu'à la
 console ou au journal de démarrage : pour l'utilisateur, rien ne se passait.
 Le crochet garde ce comportement (le détail technique reste dans la console)
 et montre en plus un message, traduit quand le texte de l'erreur est connu
-des catalogues.
+des catalogues. Quand le journal des erreurs est ouvert (``error_log``), le
+message dit où le détail est noté, et un bouton « Journal des erreurs » ouvre
+son dossier.
 """
 from __future__ import annotations
 
@@ -39,9 +41,22 @@ def show(exc) -> None:
     try:
         # Texte brut : l'erreur cite souvent une donnée reçue (sigle, chemin,
         # réponse d'un serveur), que Qt aurait lue comme du HTML.
-        from .ui_widgets import _answer, message_box
-        _answer(message_box(app.activeWindow(), QMessageBox.Icon.Warning, tr('error.unexpected.title'),
-                            tr('error.unexpected.text', error=describe(exc))))
+        from . import error_log
+        from .ui_widgets import message_box
+        journal = error_log.journal_path()
+        text = tr('error.unexpected.text', error=describe(exc)) + '\n\n' + (
+            tr('error_log.noted', file=str(journal)) if journal is not None else tr('error.unexpected.console'))
+        parent = app.activeWindow()
+        box = message_box(parent, QMessageBox.Icon.Warning, tr('error.unexpected.title'), text)
+        journal_button = (box.addButton(tr('error_log.title'), QMessageBox.ButtonRole.ActionRole)
+                          if journal is not None else None)
+        try:
+            box.exec()
+            if journal_button is not None and box.clickedButton() is journal_button:
+                from .error_log_ui import open_log_folder
+                open_log_folder(parent)
+        finally:
+            box.deleteLater()
     finally:
         _showing = False
 
