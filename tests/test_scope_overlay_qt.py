@@ -10,7 +10,7 @@ from varians_synchro.viewer import LineImagePanel
 
 
 def test_palette_is_distinct_and_ignores_have_dashed_grey_box():
-    app = QApplication.instance() or QApplication([])
+    _app = QApplication.instance() or QApplication([])      # gardée en vie pendant le test
     panel = LineImagePanel.__new__(LineImagePanel)
     purple = panel._style_parameters('default')
     green = panel._style_parameters('manual_validated')

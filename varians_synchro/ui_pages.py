@@ -4,7 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from PySide6.QtCore import QSize, Qt, QThread, QUrl, Signal
-from PySide6.QtGui import QIcon, QImage, QImageReader, QPixmap
+from PySide6.QtGui import QIcon, QImageReader, QPixmap
 from PySide6.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
 from PySide6.QtWidgets import (QAbstractItemView, QGroupBox, QHBoxLayout, QListWidgetItem,
                                QProgressDialog, QVBoxLayout)

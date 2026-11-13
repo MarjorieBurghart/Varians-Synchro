@@ -67,8 +67,6 @@ def following_anchor_interval(project, session, first_anchor_id):
     A crossing or duplicate anchor is not an eligible local recalculation.
     Only an explicit validated anchor can create a fresh segment boundary.
     """
-    links = [l for l in session.get('links', [])
-             if l.get('state') == 'validated' and l.get('kind') == 'correspondence']
     from .reading_stream import anchor_intervals
     pairs = anchor_intervals(project, session)['intervals']
     candidates = [i for i in pairs if i['start_link_id'] == first_anchor_id]

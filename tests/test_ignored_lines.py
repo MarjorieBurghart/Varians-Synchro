@@ -9,7 +9,7 @@ from test_full_column_interpolation import witness_page
 from varians_synchro.core import new_project, create_witness, save_project, load_project
 from varians_synchro.line_scope import ignored_ids, linked_scope_conflicts, update_ignored_lines
 from varians_synchro.physical_alignment import (
-    physical_lines, create_pair_session, add_pair_link, extend_pair_link, pair_progress,
+    physical_lines, create_pair_session, add_pair_link, pair_progress,
     suggest_htr_pair_alignment,
 )
 from varians_synchro.interpolation import suggest_between_anchors
@@ -62,8 +62,8 @@ def test_atomic_confirm_remove_links_in_all_pairs():
     ab = create_pair_session(project,'A','B')
     ac = create_pair_session(project,'A','C')
     la,lb,lc = (physical_lines(w) for w in (a,b,c))
-    ab_link=add_pair_link(project,ab,[la[1]['id']],[lb[1]['id'],lb[2]['id']])
-    ac_link=add_pair_link(project,ac,[la[1]['id']],[lc[1]['id']])
+    add_pair_link(project,ab,[la[1]['id']],[lb[1]['id'],lb[2]['id']])
+    add_pair_link(project,ac,[la[1]['id']],[lc[1]['id']])
     existing=[deepcopy(ab['links']),deepcopy(ac['links'])]
     changes={'A':[la[1]['id']]}
     assert sum(linked_scope_conflicts(project,changes).values()) == 2

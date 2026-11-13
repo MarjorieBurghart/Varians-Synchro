@@ -4,7 +4,7 @@ import unittest
 from varians_synchro.core import new_project, create_witness, add_image_source
 from varians_synchro.imaging import create_pages, bind_alto
 from varians_synchro.page_order import folio_key, ordered_pages
-from varians_synchro.physical_alignment import physical_lines, line_uid, create_pair_session, add_pair_link
+from varians_synchro.physical_alignment import physical_lines, line_uid
 
 
 class PageOrderTests(unittest.TestCase):

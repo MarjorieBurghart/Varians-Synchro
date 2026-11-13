@@ -57,7 +57,6 @@ class CompleteCatalogV0855(unittest.TestCase):
             self.assertFalse((ROOT/'i18n'/('FALLBACK_'+lang+'.txt')).exists())
 
     def test_structural_markup_and_technical_tokens_not_translated(self):
-        en = load('en')
         for lang in LANGS:
             values = load(lang)
             for key in ('ui.h3.ressources.du.projet.h3', 'ui.h3.verifier.les.images.et.les.alto',

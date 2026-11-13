@@ -85,7 +85,6 @@ def test_open_real_project_updates_visible_inventory(app, monkeypatch, tmp_path)
 
 
 def test_create_new_project_updates_visible_inventory(app, monkeypatch, tmp_path):
-    from varians_synchro.core import save_project
     window = make_guided_window()()
     project_path = tmp_path / 'new.vsynch'
     try:

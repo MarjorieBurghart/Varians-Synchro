@@ -39,7 +39,10 @@ Pour un premier essai, le dossier `demo_local_ALTO/` contient un petit projet d'
 python -m pip install -r requirements-dev.txt -c constraints.txt
 python -m pytest -q
 python tools/check_maintenance.py
+python -m ruff check .
 ```
+
+`python -m ruff check .` vérifie le code avec des règles minimales, qui ne visent que de vrais défauts (`ruff.toml`) : import ou variable inutilisés, nom non défini, erreur de syntaxe, argument par défaut modifiable, fonction créée dans une boucle qui voit la variable de la dernière itération. Le style n'est pas vérifié. La CI le lance avant les tests.
 
 `constraints.txt` fixe les versions testées des dépendances (PySide6, pytest ; lxml et Saxon pour les tests de compatibilité avec Varians ; outils de construction des archives). La CI et la construction des archives l'emploient : une nouvelle version de PySide6 ne change pas une release sans qu'on l'ait voulu. Sans `-c constraints.txt`, pip prend les dernières versions permises. Pour monter une version : l'installer, lancer toute la suite des tests et la vérification d'une installation construite (`packaging/build.py`), puis changer `constraints.txt` dans un commit à part.
 

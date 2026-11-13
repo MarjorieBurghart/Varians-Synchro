@@ -2,7 +2,7 @@
 import copy
 import unittest
 from varians_synchro.core import new_project,create_witness,save_project,load_project
-from varians_synchro.physical_alignment import (physical_lines,create_pair_session,add_pair_link)
+from varians_synchro.physical_alignment import (create_pair_session,add_pair_link)
 from varians_synchro.residual_alignment import (suggest_residual_extensions,
                                                 apply_residual_extensions)
 from test_full_column_interpolation import witness_page

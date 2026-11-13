@@ -1,5 +1,4 @@
 """Regression tests without installing PySide6 or starting GUI loops."""
-from pathlib import Path
 from varians_synchro.spyder_launch import (CHILD_MARKER, in_spyder_kernel,
                                           isolated_environment, launch_isolated)
 

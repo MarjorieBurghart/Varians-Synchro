@@ -3,7 +3,6 @@ import copy
 import tempfile
 import unittest
 from pathlib import Path
-from xml.etree import ElementTree as ET
 
 from varians_synchro.core import (new_project, create_witness, save_project,
     load_project, inspect_alto, inspect_line_source, add_image_source)
@@ -11,7 +10,7 @@ from varians_synchro.imaging import create_pages
 from varians_synchro.physical_alignment import physical_lines, add_pair_link, create_pair_session
 from varians_synchro.reading_stream import (reading_stream, anchor_intervals,
     set_page_order, set_region_order, set_line_order, reset_page_line_order,
-    ReadingOrderError, page_regions)
+    ReadingOrderError)
 
 
 def add_test_page(w, folio, page_id, regions):
@@ -117,8 +116,8 @@ class ContinuousReadingTests(unittest.TestCase):
             reading_stream(self.a)
 
     def test_crossed_anchor_conflict_is_diagnosed_not_modified(self):
-        first=add_pair_link(self.project,self.s,[self.ma[0]['id']],[self.fb[7]['id']])
-        second=add_pair_link(self.project,self.s,[self.ma[7]['id']],[self.fb[0]['id']])
+        add_pair_link(self.project,self.s,[self.ma[0]['id']],[self.fb[7]['id']])
+        add_pair_link(self.project,self.s,[self.ma[7]['id']],[self.fb[0]['id']])
         before=copy.deepcopy(self.s['links'])
         data=anchor_intervals(self.project,self.s)
         self.assertEqual(len(data['intervals']),0)

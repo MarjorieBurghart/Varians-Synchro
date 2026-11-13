@@ -9,7 +9,6 @@ import os
 import platform
 import sys
 import traceback
-from pathlib import Path
 
 
 def check():

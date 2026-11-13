@@ -1,6 +1,5 @@
 """Documentation-only release tests: no Qt, I/O mutations or network."""
 from pathlib import Path
-import subprocess
 import sys
 import unittest
 

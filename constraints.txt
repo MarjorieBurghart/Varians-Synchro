@@ -19,6 +19,7 @@ shiboken6==6.12.0
 
 # Tests (requirements-dev.txt).
 pytest==9.2.0
+ruff==0.16.9
 
 # Tests de compatibilité : dépendances de Varians, dont la CI ouvre les projets
 # exportés avec le vrai code (varians-source/requirements.txt). Les mêmes

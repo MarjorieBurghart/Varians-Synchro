@@ -13,13 +13,13 @@ from .errors import localized_text
 from .i18n import tr
 from .physical_alignment import line_uid
 from .overlay_filters import FILTER_ALL, FILTERS, overlay_visible
-from .overlay_selection import choose_line_at, choose_line_geometry
+from .overlay_selection import choose_line_geometry
 from .alto_geometry import page_line_polygons
 from .reading_stream import reading_stream
 from .selection_policy import update_line_selection
 from .ui_widgets import call_soon, decode_page_image
 from PySide6.QtCore import Qt, QRectF, QPointF, QThread, Signal, QItemSelectionModel
-from PySide6.QtGui import QPixmap, QPen, QColor, QBrush, QImage, QPainter, QPolygonF, QPainterPath
+from PySide6.QtGui import QPixmap, QPen, QColor, QBrush, QPainter, QPolygonF, QPainterPath
 from shiboken6 import isValid
 from PySide6.QtWidgets import (
     QWidget, QDialog, QVBoxLayout, QLabel, QGraphicsView, QGraphicsScene,

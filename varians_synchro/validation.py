@@ -6,11 +6,11 @@ Hard errors mark contradictions that must not be silently treated as reliable.
 """
 from __future__ import annotations
 
-from collections import Counter, defaultdict
+from collections import Counter
 from pathlib import Path
 from .physical_alignment import physical_lines, STATES, KINDS
 from .reading_stream import reading_stream, anchor_intervals, ReadingOrderError
-from .varians_export import inspect_varians_export, _pair_for_base
+from .varians_export import inspect_varians_export
 from .core import validate_project
 
 

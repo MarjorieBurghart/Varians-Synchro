@@ -2,8 +2,8 @@
 from pathlib import Path
 from varians_synchro.alto_geometry import (
     parse_alto_points, polygon_contains, page_line_polygons, textline_polygon)
-from varians_synchro.core import inspect_alto, new_project, create_witness, add_alto_source
-from varians_synchro.imaging import bind_alto, mapped_alto_page
+from varians_synchro.core import new_project, create_witness, add_alto_source
+from varians_synchro.imaging import bind_alto
 from varians_synchro.overlay_selection import choose_line_geometry
 import xml.etree.ElementTree as ET
 

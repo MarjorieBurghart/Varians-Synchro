@@ -4,10 +4,8 @@ import os
 os.environ.setdefault('QT_QPA_PLATFORM','offscreen')
 import pytest
 PySide6=pytest.importorskip('PySide6')
-from PySide6.QtWidgets import QApplication, QPushButton, QComboBox
+from PySide6.QtWidgets import QApplication, QPushButton
 from varians_synchro.guided_ui import make_guided_window
-from varians_synchro.core import new_project, create_witness
-from varians_synchro.project_state import ProjectChangeTracker
 
 @pytest.fixture(scope='module')
 def qt_app():

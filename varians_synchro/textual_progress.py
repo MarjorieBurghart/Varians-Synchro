@@ -195,8 +195,6 @@ def _segments(project, session):
         first_b = [bi[uid] for uid in interval['target_ids']]
         if not first_a and not first_b:
             continue
-        bounds_a = (min(first_a), max(first_a)) if first_a else None
-        bounds_b = (min(first_b), max(first_b)) if first_b else None
         # We know the edge anchor indexes because every interval has valid ends.
         left_anchor = next(x for x in base['anchors'] if x['id'] == interval['start_link_id'])
         right_anchor = next(x for x in base['anchors'] if x['id'] == interval['end_link_id'])

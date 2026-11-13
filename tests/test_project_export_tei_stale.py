@@ -4,7 +4,6 @@ Red team A2 : la liaison TEI ↔ lignes du pivot validée, puis rendue périmée
 (par exemple par une fausse manœuvre dans « Ordre de lecture »), l'export
 réussissait et mettait les <lb/> de la TEI en face des mauvaises lignes,
 sans que Varians puisse le voir. Décision : refuser, avec le motif."""
-from pathlib import Path
 
 import pytest
 

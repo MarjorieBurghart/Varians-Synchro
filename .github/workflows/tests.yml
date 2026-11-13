@@ -77,6 +77,10 @@ jobs:
       - name: Contrôle de maintenance
         run: python tools/check_maintenance.py
 
+      - name: Vérification du code (ruff)
+        # Règles minimales, qui ne visent que de vrais défauts (ruff.toml).
+        run: python -m ruff check .
+
       - name: Tests
         # -rfE : les tests en échec nommés en fin de passe ; un test qui
         # dépasse 5 minutes : pile d'appels affichée (faulthandler).

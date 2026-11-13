@@ -1,7 +1,5 @@
 """PAGE-XML / ALTO interoperability and project persistence."""
-from pathlib import Path
 import json
-import xml.etree.ElementTree as ET
 
 import pytest
 
