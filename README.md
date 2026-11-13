@@ -36,9 +36,11 @@ Pour un premier essai, le dossier `demo_local_ALTO/` contient un petit projet d'
 ## Tests
 
 ```sh
-python -m pip install -r requirements-dev.txt
+python -m pip install -r requirements-dev.txt -c constraints.txt
 python -m pytest -q
 python tools/check_maintenance.py
 ```
+
+`constraints.txt` fixe les versions testées des dépendances (PySide6, pytest ; lxml et Saxon pour les tests de compatibilité avec Varians ; outils de construction des archives). La CI et la construction des archives l'emploient : une nouvelle version de PySide6 ne change pas une release sans qu'on l'ait voulu. Sans `-c constraints.txt`, pip prend les dernières versions permises. Pour monter une version : l'installer, lancer toute la suite des tests et la vérification d'une installation construite (`packaging/build.py`), puis changer `constraints.txt` dans un commit à part.
 
 Les tests de l'interface pilotent les fenêtres Qt (sans écran : `QT_QPA_PLATFORM=offscreen`). Les tests de compatibilité ouvrent les projets exportés avec le vrai code de Varians : placer son code source à côté (`../Varians`) ou indiquer son dossier dans `VARIANS_SOURCE`. La CI GitHub rejoue l'ensemble sous Linux, Windows et macOS, avec Varians 0.9.4.6 ; le projet exporté y est aussi ouvert dans la vraie fenêtre de Varians.

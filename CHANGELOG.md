@@ -1,5 +1,6 @@
 ## Non publié
 
+- Versions testées des dépendances : `constraints.txt` fixe PySide6 (6.12.0), pytest, lxml et Saxon (tests de compatibilité avec Varians) et les outils de construction des archives ; les tests de GitHub Actions et le workflow « Binaries » installent ces versions (`-c constraints.txt`). Une nouvelle version de PySide6 ne change plus une release sans qu'on l'ait voulu.
 - Export du projet pour Varians vérifié avec Varians 0.9.4.6 (la CI le récupère ; `VARIANS_REF`) : le projet exporté s'ouvre avec le vrai code de Varians et, désormais, dans sa vraie fenêtre (sans écran ni réseau), avec ses témoins, l'édition dans l'éditeur et aucune boîte. La version vérifiée (`VARIANS_VERIFIED_VERSION`) est citée par `RAPPORT_EXPORT_VARIANS.txt` ; un test la compare à celle de la CI.
 - macOS : le titre des boîtes de message, que Qt n'y affiche pas (« Fichier introuvable », « Projet modifié »…), en devient le message principal, le texte passant dessous, comme une alerte du Mac ; Entrée ouvre l'élément choisi d'une liste (page, fiche d'un témoin, lien de la synchronisation), ce que Qt n'y faisait pas, comme le dit l'aide.
 - CI : la suite des tests passe aussi sous macOS ; un test bloqué ne retient plus le job (30 minutes au plus, pile d'appels au-delà de 5 minutes), les tests en échec sont nommés en fin de passe.
