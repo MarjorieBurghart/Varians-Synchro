@@ -1,6 +1,6 @@
 # Varians-Synchro — Dossier autonome de maintenance et de passation
 
-**État du dossier : 4 novembre 2026 — application v0.8.6.0.** Dossier créé pour la v0.8.5.6 (d'où son nom) ; les changements depuis sont résumés dans `CHANGELOG.md`.
+**État du dossier : 13 novembre 2026 — application v0.8.6.1.** Dossier créé pour la v0.8.5.6 (d'où son nom) ; les changements depuis sont résumés dans `CHANGELOG.md`.
 
 Ce répertoire est le **point d'entrée unique pour une reprise du code par une autre équipe**. Il ne remplace ni le guide utilisateur (`help/<langue>.html`, affiché dans le logiciel par F1), ni les manuels développeur traduits (`docs/developer/`) : il décrit les contrats à préserver et la manière de travailler sur le logiciel. Les notes de livraison des versions 0.6 à 0.8.5.6 (journaux, recettes, anciens guides) ont été retirées du dépôt ; elles restent dans l'historique Git, recensées dans [`docs/HISTORIQUE.md`](../docs/HISTORIQUE.md). Elles témoignent des choix antérieurs et ne doivent pas être prises pour une spécification plus récente que le code.
 
@@ -32,6 +32,6 @@ Ce répertoire est le **point d'entrée unique pour une reprise du code par une 
 
 ## Identification du livrable
 
-Version applicative dans `varians_synchro/core.py` : `VERSION = '0.8.6.0'` ; format persistant distinct : `format = "varians-synchro-project"`, `version = 1` — ce dernier **ne change pas**. Version v0.8.5.6 **documentaire**, sans modification de l'algorithme ni des catalogues de traduction. Les captures d'environnement et compteurs de tests de cette livraison se trouvent dans [`TESTS_V0856.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/TESTS_V0856.md) et la liste de ses modifications dans [`CHANGELOG_V0856.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/CHANGELOG_V0856.md) (historique Git) ; les changements suivants sont dans `CHANGELOG.md`.
+Version applicative dans `varians_synchro/core.py` : `VERSION = '0.8.6.1'` ; format persistant distinct : `format = "varians-synchro-project"`, `version = 1` — ce dernier **ne change pas**. Version v0.8.5.6 **documentaire**, sans modification de l'algorithme ni des catalogues de traduction. Les captures d'environnement et compteurs de tests de cette livraison se trouvent dans [`TESTS_V0856.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/TESTS_V0856.md) et la liste de ses modifications dans [`CHANGELOG_V0856.md`](https://github.com/MarjorieBurghart/Varians-Synchro/blob/f09a9b75b252114b5f416335d0f19cdd6162eaae/CHANGELOG_V0856.md) (historique Git) ; les changements suivants sont dans `CHANGELOG.md`.
 
 **Règle d'or** : ne jamais transformer une suggestion algorithmique, une ligne physiquement correspondante, ou un JSON structurellement compatible en attestation éditoriale vérifiée sans contrôle humain explicite.

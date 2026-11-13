@@ -2,7 +2,7 @@
 
 ## Deux numéros de version indépendants
 
-- Version de l'application : `core.VERSION == '0.8.6.0'`.
+- Version de l'application : `core.VERSION == '0.8.6.1'`.
 - Version persistée `.vsynch` : `format: "varians-synchro-project"`, `version: 1` (`core.SCHEMA`, `new_project`, `validate_project`). Ne pas incrémenter le format pour une version **de documentation**.
 
 ## Schéma JSON (exemple minimal illustratif)
