@@ -4,7 +4,7 @@ Génération reproductible : `python tools/generate_module_inventory.py` depuis 
 Inspection statique AST : **aucun module applicatif n’est importé ni exécuté**.
 Les numéros de ligne sont ceux de **cette livraison uniquement**.
 
-**55 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
+**56 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
 
 ## `varians_synchro/__init__.py` (3 lignes)
 **Dépendances internes observées** : `core`
@@ -42,6 +42,10 @@ Pas de fonction ou classe déclarée au premier niveau.
 ## `varians_synchro/correspondence_navigation.py` (62 lignes)
 **Objet (docstring source)** : Read-only reciprocal navigation over a physical ALTO pair session. This module never changes line selection or alignment data. Links with confirmed absences have no target lines, and can be reported to the researcher without manufacturing a fictitious counterpart. Direct links only: no transitive inference and no assumption that HTR is reliable.
 **Fonctions au premier niveau** : `build_pair_navigation_index` (l.11), `combined_counterparts` (l.38)
+
+## `varians_synchro/error_log.py` (137 lignes)
+**Objet (docstring source)** : Journal des erreurs de Varians-Synchro, sans Qt (comme celui de Varians). Quand quelque chose échoue chez un utilisateur, il en reste une trace, qu'il peut envoyer : le fichier ``varians-synchro.log``, dans le dossier de ``log_dir`` (bouton « Journal des erreurs » de la fenêtre d'aide, ou de la boîte « Action impossible »). Il garde au plus ``MAX_BYTES`` octets, plus ``BACKUPS`` fichiers plus anciens (``varians-synchro.log.1``, ``.2``). ``install`` (appelé au démarrage de l'interface, voir ``error_log_ui``) ouvre le journal, y écrit une ligne d'en-tête (versions de Varians-Synchro, de Python, de Qt et du système) et y note les exceptions non 
+**Fonctions au premier niveau** : `log_dir` (l.49), `logger` (l.69), `installed` (l.75), `journal_path` (l.80), `install` (l.85), `uninstall` (l.111), `_excepthook` (l.125), `_thread_excepthook` (l.132)
 
 ## `varians_synchro/error_report.py` (61 lignes)
 **Objet (docstring source)** : Erreur imprévue dans une action de l'interface : un message à l'écran. Sans ce crochet, une exception levée dans un clic (slot Qt) n'allait qu'à la console ou au journal de démarrage : pour l'utilisateur, rien ne se passait. Le crochet garde ce comportement (le détail technique reste dans la console) et montre en plus un message, traduit quand le texte de l'erreur est connu des catalogues.
