@@ -16,7 +16,7 @@ from pathlib import Path, PurePosixPath, PureWindowsPath
 from datetime import datetime, timezone
 from .errors import Localized, localized
 
-VERSION = '0.8.6.0'
+VERSION = '0.8.6.1'
 SCHEMA = 'varians-synchro-project'
 
 
