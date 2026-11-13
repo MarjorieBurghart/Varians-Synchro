@@ -22,8 +22,8 @@ from .ui_pair import PairDialog
 from .ui_resources import WitnessResourceDialog
 from .ui_scope import SingleWitnessScopeDialog
 from .ui_tei_binding import TEIPhysicalBindingDialog
-from .ui_widgets import (_run_modal, plain_tip, QComboBox, QDialog, QFileDialog, QInputDialog, QLabel,
-                         QListWidget, QMainWindow, QMessageBox, QPushButton, QTreeWidget)
+from .ui_widgets import (_run_modal, plain_tip, set_alert_texts, QComboBox, QDialog, QFileDialog, QInputDialog,
+                         QLabel, QListWidget, QMainWindow, QMessageBox, QPushButton, QTreeWidget)
 
 
 class _PairList(QListWidget):
@@ -143,9 +143,9 @@ class GuidedWindow(QMainWindow):
         prompt = QtMessageBox(self)
         prompt.setTextFormat(Qt.TextFormat.PlainText)     # the project's name is data
         prompt.setIcon(QtMessageBox.Icon.Warning)
-        prompt.setWindowTitle(tr('project.unsaved.title'))
-        prompt.setText(tr('project.unsaved.question', name=self.project.get('name', '')))
-        prompt.setInformativeText(tr('project.unsaved.explanation'))
+        set_alert_texts(prompt, tr('project.unsaved.title'),        # titre visible sous macOS
+                        tr('project.unsaved.question', name=self.project.get('name', '')),
+                        tr('project.unsaved.explanation'))
         prompt.setStandardButtons(QtMessageBox.StandardButton.Save |
                                   QtMessageBox.StandardButton.Discard |
                                   QtMessageBox.StandardButton.Cancel)

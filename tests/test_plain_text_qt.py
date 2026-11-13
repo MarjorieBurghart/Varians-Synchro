@@ -57,7 +57,8 @@ def test_message_boxes_show_received_text_as_plain_text(app):
     box = ui_widgets.message_box(QApplication.activeWindow(), ui_widgets.QMessageBox.Icon.Warning,
                                  'Titre', HOSTILE)
     try:
-        assert box.textFormat() == Qt.TextFormat.PlainText and box.text() == HOSTILE
+        # Sous macOS, le texte est sous le titre (texte informatif, brut aussi).
+        assert box.textFormat() == Qt.TextFormat.PlainText and HOSTILE in (box.text(), box.informativeText())
     finally:
         _free(box)
 
@@ -89,6 +90,7 @@ def test_the_unexpected_error_box_shows_the_error_as_plain_text(app, monkeypatch
     from varians_synchro import error_report
     seen = []
     monkeypatch.setattr(QtBox, 'warning', staticmethod(lambda *a, **k: seen.append('AutoText')))
-    monkeypatch.setattr(QtBox, 'exec', lambda self: seen.append((self.textFormat(), self.text())) or 0)
+    monkeypatch.setattr(QtBox, 'exec',
+                        lambda self: seen.append((self.textFormat(), self.text() + self.informativeText())) or 0)
     error_report.show(KeyError(HOSTILE))
     assert len(seen) == 1 and seen[0][0] == Qt.TextFormat.PlainText and HOSTILE in seen[0][1]

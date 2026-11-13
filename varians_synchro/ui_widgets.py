@@ -4,8 +4,15 @@ appels différés liés à une fenêtre.
 Les fenêtres de l'interface utilisent ces classes à la place de celles de
 PySide6 : un texte passé à ``QLabel``, ``setWindowTitle`` ou
 ``QMessageBox.warning`` est une clé de traduction (ou un texte français
-connu des catalogues) et s'affiche dans la langue choisie."""
+connu des catalogues) et s'affiche dans la langue choisie.
+
+Sous macOS, deux comportements de Qt sont compensés ici : le titre d'une
+boîte de message, que Qt n'y affiche pas, en devient le message principal
+(``set_alert_texts``) ; Entrée ouvre l'élément choisi d'une liste, ce que Qt
+n'y fait pas (``_ReturnOpens``)."""
 from __future__ import annotations
+
+import sys
 
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import Qt as QtGuiNamespace, QKeySequence, QShortcut
@@ -197,7 +204,32 @@ class QPushButton(QtButton):
         super().setToolTip(tr(text))
 
 
-class QListWidget(QtListWidget):
+def on_macos() -> bool:
+    """Vrai sous macOS."""
+    return sys.platform == 'darwin'
+
+
+class _ReturnOpens:
+    """Entrée (ou Entrée du pavé numérique) ouvre l'élément courant d'une
+    liste, comme un double-clic (``itemActivated``). Qt le fait sous Linux et
+    Windows, pas sous macOS, où il réserve Entrée à l'édition d'un élément :
+    la liste le fait donc elle-même, une seule fois, partout. Sans élément
+    courant, rien."""
+
+    def keyPressEvent(self, event):
+        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
+            item = self.currentItem()
+            if item is not None:
+                self._open(item)
+            event.accept()
+            return
+        super().keyPressEvent(event)
+
+
+class QListWidget(_ReturnOpens, QtListWidget):
+    def _open(self, item):
+        self.itemActivated.emit(item)
+
     def addItem(self, item):
         return super().addItem(tr(item) if isinstance(item, str) else item)
 
@@ -214,7 +246,10 @@ class QTabWidget(QtTabWidget):
         return super().addTab(widget, tr(label))
 
 
-class QTreeWidget(QtTreeWidget):
+class QTreeWidget(_ReturnOpens, QtTreeWidget):
+    def _open(self, item):
+        self.itemActivated.emit(item, max(self.currentColumn(), 0))
+
     def setHeaderLabels(self, labels):
         return super().setHeaderLabels([tr(t) for t in labels])
 
@@ -283,12 +318,39 @@ class QMainWindow(QtMainWindow):
         return super().setWindowTitle(tr(title))
 
 
+TITLE_PROPERTY = 'synchroTitle'
+
+
+def title_of(box) -> str:
+    """Titre d'une boîte de message, même sous macOS, où Qt ne le retient pas."""
+    title = box.property(TITLE_PROPERTY)
+    return str(title) if title else box.windowTitle()
+
+
+def set_alert_texts(box, title, text, more=''):
+    """Titre, texte et texte informatif (``more``) d'une boîte de message.
+
+    Sous macOS, Qt n'affiche pas le titre d'une boîte de message, selon les
+    règles d'Apple (``setWindowTitle`` n'y fait rien) : le titre devient le
+    message principal, et le texte passe dessous, comme une alerte du Mac.
+    Ailleurs, rien ne change. Le titre est retenu dans une propriété de la
+    boîte (``title_of``)."""
+    box.setProperty(TITLE_PROPERTY, title)
+    box.setWindowTitle(title)
+    if on_macos():
+        text, more = title, '\n\n'.join(part for part in (text, more) if part)
+    box.setText(text)
+    box.setInformativeText(more)
+
+
 def message_box(parent, icon, title, text, buttons=QtMessageBox.StandardButton.Ok,
                 default=QtMessageBox.StandardButton.NoButton):
-    """A message box translating its texts and showing ``text`` as plain
-    text (it often carries a file name, a siglum or a server's answer)."""
-    box = QtMessageBox(icon, tr(title), tr(text), buttons, parent)
+    """A message box translating its texts and showing them as plain text
+    (``text`` often carries a file name, a siglum or a server's answer).
+    Under macOS, its title is its main message (``set_alert_texts``)."""
+    box = QtMessageBox(icon, '', '', buttons, parent)
     box.setTextFormat(Qt.TextFormat.PlainText)
+    set_alert_texts(box, tr(title), tr(text))
     if default != QtMessageBox.StandardButton.NoButton:
         box.setDefaultButton(default)
     return box
