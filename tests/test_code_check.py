@@ -34,6 +34,12 @@ def test_the_rules_aim_at_real_defects_only():
     assert lint['per-file-ignores'] == {'tests/**': ['F811']}
 
 
+def test_the_code_of_varians_fetched_by_the_ci_is_not_checked():
+    """La CI récupère le code de Varians dans varians-source/, à l'intérieur
+    du dépôt : il n'est pas soumis aux règles de Varians-Synchro."""
+    assert 'varians-source' in _config()['extend-exclude']
+
+
 def test_ruff_is_a_development_dependency_with_a_tested_version():
     requirements = (ROOT / 'requirements-dev.txt').read_text(encoding='utf-8').split()
     assert 'ruff' in requirements
