@@ -713,9 +713,14 @@ Attenzione: non è stato possibile registrare il lotto nel progetto ({error}). D
   <string key="ui.pages.htr.cancelled">Esportazione annullata. Nessun archivio parziale è stato scritto.</string>
   <string key="error.unexpected.title">Azione non riuscita</string>
   <string key="error.unexpected.text">Non è stato possibile completare l’azione:
-{error}
-
-I dettagli tecnici sono nella console o nel registro di avvio.</string>
+{error}</string>
+  <string key="error.unexpected.console">I dettagli tecnici sono nella console o nel registro di avvio.</string>
+  <string key="error_log.title">Registro degli errori</string>
+  <string key="error_log.open.tip">Apre la cartella del registro degli errori (varians-synchro.log), da allegare a una segnalazione.</string>
+  <string key="error_log.noted">I dettagli sono annotati nel registro degli errori:
+{file}</string>
+  <string key="error_log.unavailable">Impossibile creare la cartella del registro degli errori:
+{folder}</string>
   <string key="alignment.error.duplicate_line_ids">Identificatori di riga ALTO duplicati</string>
   <string key="alignment.error.same_witness">Scegliere due testimoni diversi</string>
   <string key="alignment.error.unknown_witness">Testimone sconosciuto</string>

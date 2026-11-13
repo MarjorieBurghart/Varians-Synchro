@@ -4,7 +4,7 @@ Génération reproductible : `python tools/generate_module_inventory.py` depuis 
 Inspection statique AST : **aucun module applicatif n’est importé ni exécuté**.
 Les numéros de ligne sont ceux de **cette livraison uniquement**.
 
-**56 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
+**57 fichiers Python** dans `varians_synchro/` (dont `__init__.py`).
 
 ## `varians_synchro/__init__.py` (3 lignes)
 **Dépendances internes observées** : `core`
@@ -47,10 +47,15 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Objet (docstring source)** : Journal des erreurs de Varians-Synchro, sans Qt (comme celui de Varians). Quand quelque chose échoue chez un utilisateur, il en reste une trace, qu'il peut envoyer : le fichier ``varians-synchro.log``, dans le dossier de ``log_dir`` (bouton « Journal des erreurs » de la fenêtre d'aide, ou de la boîte « Action impossible »). Il garde au plus ``MAX_BYTES`` octets, plus ``BACKUPS`` fichiers plus anciens (``varians-synchro.log.1``, ``.2``). ``install`` (appelé au démarrage de l'interface, voir ``error_log_ui``) ouvre le journal, y écrit une ligne d'en-tête (versions de Varians-Synchro, de Python, de Qt et du système) et y note les exceptions non 
 **Fonctions au premier niveau** : `log_dir` (l.49), `logger` (l.69), `installed` (l.75), `journal_path` (l.80), `install` (l.85), `uninstall` (l.111), `_excepthook` (l.125), `_thread_excepthook` (l.132)
 
-## `varians_synchro/error_report.py` (61 lignes)
-**Objet (docstring source)** : Erreur imprévue dans une action de l'interface : un message à l'écran. Sans ce crochet, une exception levée dans un clic (slot Qt) n'allait qu'à la console ou au journal de démarrage : pour l'utilisateur, rien ne se passait. Le crochet garde ce comportement (le détail technique reste dans la console) et montre en plus un message, traduit quand le texte de l'erreur est connu des catalogues.
-**Dépendances internes observées** : `i18n`, `ui_widgets`
-**Fonctions au premier niveau** : `describe` (l.18), `show` (l.25), `install` (l.49)
+## `varians_synchro/error_log_ui.py` (47 lignes)
+**Objet (docstring source)** : Le journal des erreurs dans l'interface (voir ``error_log``). ``install_for_application`` l'ouvre au démarrage (``gui.main``), avec les versions de Varians-Synchro, de PySide6 et de Qt. ``open_log_folder`` ouvre son dossier dans le gestionnaire de fichiers du système, pour joindre ``varians-synchro.log`` à un signalement : bouton « Journal des erreurs » de la fenêtre d'aide et de la boîte « Action impossible » (``error_report``).
+**Dépendances internes observées** : `core`, `i18n`, `ui_widgets`
+**Fonctions au premier niveau** : `install_for_application` (l.20), `log_folder` (l.29), `open_log_folder` (l.36)
+
+## `varians_synchro/error_report.py` (76 lignes)
+**Objet (docstring source)** : Erreur imprévue dans une action de l'interface : un message à l'écran. Sans ce crochet, une exception levée dans un clic (slot Qt) n'allait qu'à la console ou au journal de démarrage : pour l'utilisateur, rien ne se passait. Le crochet garde ce comportement (le détail technique reste dans la console) et montre en plus un message, traduit quand le texte de l'erreur est connu des catalogues. Quand le journal des erreurs est ouvert (``error_log``), le message dit où le détail est noté, et un bouton « Journal des erreurs » ouvre son dossier.
+**Dépendances internes observées** : `error_log_ui`, `i18n`, `ui_widgets`
+**Fonctions au premier niveau** : `describe` (l.20), `show` (l.27), `install` (l.64)
 
 ## `varians_synchro/errors.py` (68 lignes)
 **Objet (docstring source)** : Messages des moteurs, traduisibles. Les moteurs (sans Qt) écrivent leurs erreurs et avertissements en français : c'est le texte des journaux, des tests et de ``str(exc)``. L'interface les montre dans sa langue : - un message fixe est la valeur française d'une clé du catalogue ; ``tr(texte)`` le traduit par l'alias français ; - un message avec des valeurs (un sigle, un fichier…) est un ``Localized`` : une chaîne française qui garde sa clé et ses valeurs, pour que ``localized_text`` le traduise avec les mêmes valeurs. ``localized(ValueError, 'clé', sigle=…)`` construit l'exception ; ``localized_text(exc_ou_texte)`` donne le texte à afficher, et
@@ -63,9 +68,9 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `physical_alignment`, `reading_stream`
 **Fonctions au premier niveau** : `_digest` (l.20), `_selection` (l.25), `_runs` (l.47), `preview_confirmed_absence` (l.58), `confirm_absence` (l.94), `pair_exception_summary` (l.151)
 
-## `varians_synchro/gui.py` (40 lignes)
+## `varians_synchro/gui.py` (44 lignes)
 **Objet (docstring source)** : Minimal PySide6 application shell for witness-centered Varians-Synchro. The historical V0.5 editor and its TXT interface were retired in V0.8.0. The legacy project *data* are still readable: no project migration discards older text resources or alignment sessions. The historical algorithm modules remain in the package for backwards-compatible project introspection.
-**Dépendances internes observées** : `app_icon`, `error_report`, `guided_ui`, `i18n`, `qt_lifecycle`
+**Dépendances internes observées** : `app_icon`, `error_log_ui`, `error_report`, `guided_ui`, `i18n`, `qt_lifecycle`
 **Fonctions au premier niveau** : `main` (l.18)
 
 ## `varians_synchro/guided_ui.py` (23 lignes)
@@ -204,11 +209,11 @@ Pas de fonction ou classe déclarée au premier niveau.
 **Dépendances internes observées** : `bulk_binding`, `errors`, `i18n`, `ui_widgets`
 **Classes déclarées au premier niveau** : `ProtectedBindingComboBox` (l.14), `BatchBindingDialog` (l.26)
 
-## `varians_synchro/ui_help.py` (283 lignes)
+## `varians_synchro/ui_help.py` (292 lignes)
 **Objet (docstring source)** : Aide intégrée de Varians-Synchro : le guide ``help/<langue>.html`` affiché dans une fenêtre du logiciel (et non plus un fichier ouvert par une autre application). La fenêtre n'est pas modale : on lit l'aide en travaillant. ``open_help`` en garde une par fenêtre parente ; ouverte depuis la fenêtre de synchronisation (elle-même modale), elle en est l'enfant et reste donc utilisable. Recherche reprise de Varians (``help_search``) : un champ (Ctrl+F), la liste des sections qui contiennent tous les mots, avec un extrait, et les occurrences surlignées, parcourues par ◀ ▶ (F3, Maj+F3). Le sommaire, fait de liens, n'est pas une section.
-**Dépendances internes observées** : `errors`, `help_search`, `i18n`, `ui_widgets`
+**Dépendances internes observées** : `error_log_ui`, `errors`, `help_search`, `i18n`, `ui_widgets`
 **Classes déclarées au premier niveau** : `HelpDialog` (l.41)
-**Fonctions au premier niveau** : `help_path` (l.31), `open_help` (l.265)
+**Fonctions au premier niveau** : `help_path` (l.31), `open_help` (l.274)
 
 ## `varians_synchro/ui_main_window.py` (729 lignes)
 **Objet (docstring source)** : Fenêtre principale de Varians-Synchro : projet et témoins, pages, synchronisation, avancement et exports.

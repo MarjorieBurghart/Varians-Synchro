@@ -9,9 +9,24 @@ réussissait, puis le processus s'arrêtait sur une erreur de segmentation
 Les tests libèrent les fenêtres qu'ils ouvrent ; ce filet libère, par le
 mécanisme ordinaire de Qt (``deleteLater``), celles qui resteraient. Rien
 n'est montré ni demandé : ``closeEvent`` n'est pas appelé.
+
+Le journal des erreurs d'un test (``error_log``, ouvert par ``gui.main``)
+va dans un dossier temporaire, jamais dans celui de l'utilisateur, et il est
+refermé après le test.
 """
 import gc
 import sys
+
+import pytest
+
+
+@pytest.fixture(autouse=True)
+def _isolated_error_log(tmp_path_factory, monkeypatch):
+    monkeypatch.setenv('VARIANS_SYNCHRO_LOG_DIR', str(tmp_path_factory.getbasetemp() / 'journal-des-erreurs'))
+    yield
+    error_log = sys.modules.get('varians_synchro.error_log')
+    if error_log is not None:
+        error_log.uninstall()
 
 
 def pytest_sessionfinish(session, exitstatus):

@@ -720,9 +720,14 @@ Warning: the batch could not be registered in the project ({error}). Use “Atta
   <string key="ui.pages.htr.cancelled">Export cancelled. No partial archive was written.</string>
   <string key="error.unexpected.title">Action failed</string>
   <string key="error.unexpected.text">The action could not be completed:
-{error}
-
-Technical details are in the console or the startup log.</string>
+{error}</string>
+  <string key="error.unexpected.console">Technical details are in the console or the startup log.</string>
+  <string key="error_log.title">Error Log</string>
+  <string key="error_log.open.tip">Opens the folder of the error log (varians-synchro.log), to attach to a report.</string>
+  <string key="error_log.noted">The details are written to the error log:
+{file}</string>
+  <string key="error_log.unavailable">The error log folder cannot be created:
+{folder}</string>
   <string key="alignment.error.duplicate_line_ids">Duplicate ALTO line identifiers</string>
   <string key="alignment.error.same_witness">Choose two different witnesses</string>
   <string key="alignment.error.unknown_witness">Unknown witness</string>
