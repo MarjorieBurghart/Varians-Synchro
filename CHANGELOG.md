@@ -1,6 +1,8 @@
 ## Non publié
 
 - Export du projet pour Varians vérifié avec Varians 0.9.4.6 (la CI le récupère ; `VARIANS_REF`) : le projet exporté s'ouvre avec le vrai code de Varians et, désormais, dans sa vraie fenêtre (sans écran ni réseau), avec ses témoins, l'édition dans l'éditeur et aucune boîte. La version vérifiée (`VARIANS_VERIFIED_VERSION`) est citée par `RAPPORT_EXPORT_VARIANS.txt` ; un test la compare à celle de la CI.
+- macOS : le titre des boîtes de message, que Qt n'y affiche pas (« Fichier introuvable », « Projet modifié »…), en devient le message principal, le texte passant dessous, comme une alerte du Mac ; Entrée ouvre l'élément choisi d'une liste (page, fiche d'un témoin, lien de la synchronisation), ce que Qt n'y faisait pas, comme le dit l'aide.
+- CI : la suite des tests passe aussi sous macOS ; un test bloqué ne retient plus le job (30 minutes au plus, pile d'appels au-delà de 5 minutes), les tests en échec sont nommés en fin de passe.
 
 ## V0.8.6.0 — version prête à l'emploi (04/11/2026)
 

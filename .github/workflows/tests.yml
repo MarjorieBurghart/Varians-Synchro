@@ -9,10 +9,12 @@ jobs:
   tests:
     name: ${{ matrix.os }} / Python ${{ matrix.python }}
     runs-on: ${{ matrix.os }}
+    # Un test bloqué ne retient pas le job jusqu'à la limite de GitHub (6 h).
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         python: ["3.12"]
     env:
       # Qt sans écran : les tests de l'interface pilotent les fenêtres.
@@ -50,6 +52,12 @@ jobs:
           "TMP=$env:RUNNER_TEMP" >> $env:GITHUB_ENV
           "TEMP=$env:RUNNER_TEMP" >> $env:GITHUB_ENV
 
+      - name: Dossier temporaire sans lien symbolique (macOS)
+        # /var/folders/… est un lien vers /private/var/… : un chemin résolu
+        # (Path.resolve) ne serait plus égal au chemin du test.
+        if: runner.os == 'macOS'
+        run: echo "TMPDIR=$RUNNER_TEMP" >> "$GITHUB_ENV"
+
       - name: Bibliothèques système pour Qt (Linux)
         if: runner.os == 'Linux'
         run: |
@@ -70,4 +78,6 @@ jobs:
         run: python tools/check_maintenance.py
 
       - name: Tests
-        run: python -m pytest -q --disable-warnings -rs tests
+        # -rfE : les tests en échec nommés en fin de passe ; un test qui
+        # dépasse 5 minutes : pile d'appels affichée (faulthandler).
+        run: python -m pytest -q --disable-warnings -rs -rfE -o faulthandler_timeout=300 tests
