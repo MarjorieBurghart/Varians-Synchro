@@ -24,7 +24,7 @@ from .witness_ids import witness_id_for_siglum
 # Version de Varians avec laquelle l'ouverture d'un projet exporté est vérifiée :
 # la CI récupère celle-ci (VARIANS_REF) et l'ouvre avec le vrai code de Varians,
 # fenêtre comprise (tests/test_varians_094_compat.py). Le rapport d'export la cite.
-VARIANS_VERIFIED_VERSION = '0.9.4.6'
+VARIANS_VERIFIED_VERSION = '0.9.4.7'
 
 
 def _varians_safe_id(witness_id):

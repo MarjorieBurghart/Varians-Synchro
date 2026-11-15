@@ -153,7 +153,7 @@ def test_the_ci_opens_the_exports_with_the_version_the_report_names(exported):
     _project_, destination = exported
     workflow = (ROOT / '.github' / 'workflows' / 'tests.yml').read_text(encoding='utf-8')
     ref = re.search(r'^ +VARIANS_REF: v(\S+)$', workflow, re.MULTILINE).group(1)
-    assert ref == VARIANS_VERIFIED_VERSION == '0.9.4.6'
+    assert ref == VARIANS_VERIFIED_VERSION == '0.9.4.7'
     report = (destination / 'RAPPORT_EXPORT_VARIANS.txt').read_text(encoding='utf-8')
     assert f'vérifié avec Varians {VARIANS_VERIFIED_VERSION}' in report
 

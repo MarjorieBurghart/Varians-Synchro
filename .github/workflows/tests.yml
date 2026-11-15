@@ -23,7 +23,7 @@ jobs:
       # Version de Varians avec laquelle les projets exportés doivent s'ouvrir
       # (tests/test_varians_094_compat.py) : sans elle, ces tests échouent.
       # La même que VARIANS_VERIFIED_VERSION (varians_project_export.py).
-      VARIANS_REF: v0.9.4.6
+      VARIANS_REF: v0.9.4.7
       VARIANS_REQUIRED: "1"
     steps:
       - uses: actions/checkout@v5
