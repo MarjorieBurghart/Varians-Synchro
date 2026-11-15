@@ -1,6 +1,7 @@
-## Non publié
+## V0.8.6.2 — compatibilité avec Varians fondée sur le format (15/11/2026)
 
 - Compatibilité avec Varians fondée sur le format, et non plus sur un numéro de Varians : le `project.xml` exporté est au format `teiManuscriptProject` en version 1 (celui qu'écrit Varians pour un nouveau projet), les synchronisations au format `tei-manuscript-alignment` en version 1 ; `RAPPORT_EXPORT_VARIANS.txt` cite ces formats au lieu d'une version de Varians. La CI ouvre le projet exporté avec la dernière version publiée de Varians (son résumé dit laquelle), à chaque envoi et chaque lundi, ou avec la version demandée en lançant le workflow à la main ; un test vérifie que Varians écrit toujours le même format de `project.xml`. Une nouvelle version de Varians ne demande donc plus de modifier Varians-Synchro, tant que le format ne change pas. Vérifié avec Varians 0.9.4.7.
+- Version 0.8.6.2 (`core.VERSION`).
 
 ## V0.8.6.1 — macOS, Varians 0.9.4.6, journal des erreurs (13/11/2026)
 
