@@ -1,3 +1,7 @@
+## Non publié
+
+- Compatibilité avec Varians fondée sur le format, et non plus sur un numéro de Varians : le `project.xml` exporté est au format `teiManuscriptProject` en version 1 (celui qu'écrit Varians pour un nouveau projet), les synchronisations au format `tei-manuscript-alignment` en version 1 ; `RAPPORT_EXPORT_VARIANS.txt` cite ces formats au lieu d'une version de Varians. La CI ouvre le projet exporté avec la dernière version publiée de Varians (son résumé dit laquelle), à chaque envoi et chaque lundi, ou avec la version demandée en lançant le workflow à la main ; un test vérifie que Varians écrit toujours le même format de `project.xml`. Une nouvelle version de Varians ne demande donc plus de modifier Varians-Synchro, tant que le format ne change pas. Vérifié avec Varians 0.9.4.7.
+
 ## V0.8.6.1 — macOS, Varians 0.9.4.6, journal des erreurs (13/11/2026)
 
 - macOS : le titre des boîtes de message, que Qt n'y affiche pas (« Fichier introuvable », « Projet modifié »…), en devient le message principal, le texte passant dessous, comme une alerte du Mac ; Entrée ouvre l'élément choisi d'une liste (page, fiche d'un témoin, lien de la synchronisation), ce que Qt n'y faisait pas, comme le dit l'aide.

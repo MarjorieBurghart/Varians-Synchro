@@ -1,7 +1,10 @@
 """Export physical-line sessions to the Varians alignment JSON schema.
 
-Opening the exported project in Varians 0.9.4.6 is checked by
-tests/test_varians_094_compat.py (the real Varians code reads it). Lines are
+The files follow the alignment format ALIGNMENT_FORMAT, version
+ALIGNMENT_FORMAT_VERSION; compatibility rests on that format, not on a Varians
+release number. Opening the exported project in the
+latest published Varians release is checked by tests/test_varians_094_compat.py
+(the real Varians code reads it), on every push and every week. Lines are
 written in the witness's reading order (reading_stream).
 
 One explicit technical reference witness is used for these export files. This
@@ -28,6 +31,11 @@ from .page_order import ordered_pages
 from .physical_alignment import physical_lines, line_uid
 from .reading_stream import reading_stream
 from .errors import Localized, localized
+
+# Format des fichiers de synchronisation lus par Varians (meta.format,
+# meta.format_version). Il ne change que si le format change.
+ALIGNMENT_FORMAT = 'tei-manuscript-alignment'
+ALIGNMENT_FORMAT_VERSION = 1
 
 
 def _get_witness(project, wid):
@@ -96,7 +104,7 @@ def _build_witness_cache(witness, *, base_id, base=False):
         pages.append({'id': page['id'], 'label': page.get('label') or page['id'],
                       'alto_width': source.get('width'), 'alto_height': source.get('height'),
                       'image': _image_block(page), 'lines': rows})
-    obj = {'meta': {'format': 'tei-manuscript-alignment', 'format_version': 1,
+    obj = {'meta': {'format': ALIGNMENT_FORMAT, 'format_version': ALIGNMENT_FORMAT_VERSION,
                     'witness': witness['id'], 'base_witness': base_id,
                     'role': 'base' if base else 'secondary',
                     'source': 'Varians-Synchro', 'reference_basis': 'physical-lines-in-study-scope',
