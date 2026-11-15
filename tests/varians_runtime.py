@@ -203,6 +203,26 @@ def _run(script, *args, home=None):
     return json.loads(lines[-1])
 
 
+def varians_project_format():
+    """Version du format de project.xml qu'écrit Varians pour un nouveau
+    projet (``project_management.write_project_xml`` : attribut ``version``
+    de ``<teiManuscriptProject>``), lue dans son code source."""
+    import ast
+    source = (require_varians() / 'project_management.py').read_text(encoding='utf-8')
+    for node in ast.walk(ast.parse(source)):
+        if (isinstance(node, ast.Call) and node.args and isinstance(node.args[0], ast.Constant)
+                and node.args[0].value == 'teiManuscriptProject'):
+            for extra in node.args[1:]:
+                if isinstance(extra, ast.Dict):
+                    for key, value in zip(extra.keys, extra.values):
+                        if isinstance(key, ast.Constant) and key.value == 'version':
+                            return value.value
+            for keyword in node.keywords:
+                if keyword.arg == 'version':
+                    return keyword.value.value
+    raise AssertionError('format de project.xml introuvable dans le code de Varians')
+
+
 def open_in_varians(project_xml):
     """Ce que Varians lit en ouvrant ``project_xml`` : pour chaque témoin, ses
     pages, ses clés de lignes (``page::ligne``) dans l'ordre où Varians les

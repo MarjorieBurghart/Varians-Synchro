@@ -15,16 +15,20 @@ import tempfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from .varians_export import make_varians_alignments, verify_export_payloads, witness_file_names
+from .varians_export import (ALIGNMENT_FORMAT, ALIGNMENT_FORMAT_VERSION, make_varians_alignments,
+                             verify_export_payloads, witness_file_names)
 from .core import validate_project
 from .hd_registry import local_copy_plan, varians_offline_index
 from .errors import localized
 from .witness_ids import witness_id_for_siglum
 
-# Version de Varians avec laquelle l'ouverture d'un projet exporté est vérifiée :
-# la CI récupère celle-ci (VARIANS_REF) et l'ouvre avec le vrai code de Varians,
-# fenêtre comprise (tests/test_varians_094_compat.py). Le rapport d'export la cite.
-VARIANS_VERIFIED_VERSION = '0.9.4.7'
+# Format du project.xml exporté : celui qu'écrit Varians pour un nouveau projet
+# (racine teiManuscriptProject, attribut version). La compatibilité repose sur
+# ce format et sur celui des synchronisations (varians_export), non sur un
+# numéro de Varians : la CI ouvre l'export avec la dernière version publiée de
+# Varians, fenêtre comprise, à chaque envoi et chaque semaine
+# (tests/test_varians_094_compat.py). Le rapport d'export cite les formats.
+VARIANS_PROJECT_FORMAT = '1'
 
 
 def _varians_safe_id(witness_id):
@@ -203,7 +207,7 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
     hd_plans = {w['id']: local_copy_plan(w) for w in witnesses
                 if any(p.get('image_kind') == 'iiif' for p in w.get('pages', []))}
     title = str(project.get('name') or 'Édition Varians')
-    root = ET.Element('teiManuscriptProject', version='1')
+    root = ET.Element('teiManuscriptProject', version=VARIANS_PROJECT_FORMAT)
     ET.SubElement(root, 'title').text = title
     ET.SubElement(root, 'edition', file='xml/edition.xml')
     ET.SubElement(root, 'schema', type='relaxng', source='xml-model')
@@ -324,8 +328,10 @@ def export_varians_project(project, pivot_id, destination, *, include_uncertain=
                                    xml_declaration=True)
         (stage / 'RAPPORT_EXPORT_VARIANS.txt').write_text(
             'Projet généré par Varians-Synchro.\n'
-            'Format du fichier project.xml : teiManuscriptProject (vérifié avec Varians '
-            + VARIANS_VERIFIED_VERSION + ').\n'
+            'Format du fichier project.xml : teiManuscriptProject, version '
+            + VARIANS_PROJECT_FORMAT + ' ; synchronisations : ' + ALIGNMENT_FORMAT
+            + ', version ' + str(ALIGNMENT_FORMAT_VERSION) + '.\n'
+            'Varians-Synchro vérifie que ce format s\u2019ouvre dans la dernière version publiée de Varians.\n'
             'Vérifiez la compatibilité avec votre version courante de Varians.\n'
             'Les images locales restent à leur emplacement original. Les lignes (géométrie,\n'
             'texte HTR, ordre de lecture) sont dans les JSON d\u2019alignement ; les fichiers\n'

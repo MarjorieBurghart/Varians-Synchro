@@ -4,6 +4,15 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+    inputs:
+      varians_ref:
+        description: "Version de Varians à tester (tag ou branche) ; vide : la dernière release publiée"
+        required: false
+        default: ""
+  schedule:
+    # Chaque lundi, même sans modification de Varians-Synchro : l'export est
+    # rouvert avec la dernière release de Varians.
+    - cron: "17 6 * * 1"
 
 jobs:
   tests:
@@ -20,15 +29,35 @@ jobs:
       # Qt sans écran : les tests de l'interface pilotent les fenêtres.
       QT_QPA_PLATFORM: offscreen
       PYTHONUTF8: "1"
-      # Version de Varians avec laquelle les projets exportés doivent s'ouvrir
-      # (tests/test_varians_094_compat.py) : sans elle, ces tests échouent.
-      # La même que VARIANS_VERIFIED_VERSION (varians_project_export.py).
-      VARIANS_REF: v0.9.4.7
+      # Les projets exportés doivent s'ouvrir avec le vrai code de Varians
+      # (tests/test_varians_094_compat.py) : sans lui, ces tests échouent.
       VARIANS_REQUIRED: "1"
     steps:
       - uses: actions/checkout@v5
 
-      - name: Varians (code source de la version visée)
+      - name: Version de Varians à tester
+        # La compatibilité repose sur le format du projet, non sur un numéro
+        # de Varians : la dernière release publiée est testée, sans rien
+        # changer ici quand Varians en publie une nouvelle (ou la version
+        # demandée en lançant le workflow à la main).
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REQUESTED: ${{ inputs.varians_ref }}
+        run: |
+          ref="$REQUESTED"
+          if [ -z "$ref" ]; then
+            ref=$(gh release view --repo MarjorieBurghart/Varians --json tagName --jq .tagName)
+          fi
+          if [ -z "$ref" ]; then
+            echo "::error::Aucune release de Varians trouvée"
+            exit 1
+          fi
+          echo "Varians testé : $ref"
+          echo "Varians testé : $ref" >> "$GITHUB_STEP_SUMMARY"
+          echo "VARIANS_REF=$ref" >> "$GITHUB_ENV"
+
+      - name: Varians (code source de la version testée)
         uses: actions/checkout@v5
         with:
           repository: MarjorieBurghart/Varians

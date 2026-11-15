@@ -23,7 +23,8 @@ ruff==0.16.9
 
 # Tests de compatibilité : dépendances de Varians, dont la CI ouvre les projets
 # exportés avec le vrai code (varians-source/requirements.txt). Les mêmes
-# versions que dans constraints.txt de Varians 0.9.4.7.
+# versions que dans constraints.txt de Varians (si Varians en change, la CI
+# hebdomadaire, qui prend sa dernière release, le signale).
 lxml==6.1.3
 saxonche==13.1.1
 

@@ -1,6 +1,10 @@
-"""Projet exporté pour Varians : il s'ouvre dans Varians (version
-``VARIANS_VERIFIED_VERSION``, celle que la CI récupère), dans sa vraie fenêtre
-aussi, et Varians y lit exactement les lignes que Varians-Synchro a préparées.
+"""Projet exporté pour Varians : il s'ouvre dans Varians, dans sa vraie
+fenêtre aussi, et Varians y lit exactement les lignes que Varians-Synchro a
+préparées. La compatibilité repose sur le format, non sur un numéro de
+Varians : project.xml au format ``VARIANS_PROJECT_FORMAT`` (celui qu'écrit
+Varians pour un nouveau projet), synchronisations au format
+``ALIGNMENT_FORMAT`` / ``ALIGNMENT_FORMAT_VERSION``. La CI ouvre l'export avec
+la dernière version publiée de Varians, à chaque envoi et chaque semaine.
 
 Le projet d'essai est réaliste :
 - le pivot Mu (images locales, PAGE XML) a une ligne hors périmètre et une
@@ -12,8 +16,10 @@ Le projet est ouvert avec le vrai code de Varians (``varians_runtime``).
 """
 from __future__ import annotations
 
+import json
 import os
 import re
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import pytest
@@ -24,9 +30,10 @@ from varians_synchro.line_scope import update_ignored_lines
 from varians_synchro.physical_alignment import create_pair_session, add_pair_link, physical_lines
 from varians_synchro.reading_stream import reading_stream, set_line_order
 from varians_synchro.resource_workflow import store_tei_reference
-from varians_synchro.varians_project_export import (VARIANS_VERIFIED_VERSION, export_varians_project,
+from varians_synchro.varians_export import ALIGNMENT_FORMAT, ALIGNMENT_FORMAT_VERSION
+from varians_synchro.varians_project_export import (VARIANS_PROJECT_FORMAT, export_varians_project,
                                                     _cache_varians_manifest)
-from varians_runtime import open_in_varians, open_in_varians_window
+from varians_runtime import open_in_varians, open_in_varians_window, varians_project_format
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -141,28 +148,69 @@ def test_the_project_opens_in_the_varians_window(exported):
     _cache_varians_manifest(f['image_sources'][0], destination, 'F')
     opened = open_in_varians_window(destination / 'project.xml')
     assert 'error' not in opened, opened.get('trace')
-    if os.environ.get('VARIANS_REF'):                    # la CI : la version récupérée
-        assert 'v' + opened['version'] == os.environ['VARIANS_REF']
+    ref = os.environ.get('VARIANS_REF', '')
+    if re.fullmatch(r'v\d+(\.\d+)+', ref):              # la CI : la release récupérée
+        assert 'v' + opened['version'] == ref
     assert 'Essai' in opened['title'] and 'edition.xml' in opened['title']
     assert opened['panels'] == ['F', 'Mu']
     assert opened['edition'].count('<lb edRef="#Mu"/>') == 4      # l'édition est dans l'éditeur
     assert opened['dialogs'] == []                       # aucune boîte à l'ouverture
 
 
-def test_the_ci_opens_the_exports_with_the_version_the_report_names(exported):
+def test_the_export_writes_the_declared_formats(exported):
     _project_, destination = exported
-    workflow = (ROOT / '.github' / 'workflows' / 'tests.yml').read_text(encoding='utf-8')
-    ref = re.search(r'^ +VARIANS_REF: v(\S+)$', workflow, re.MULTILINE).group(1)
-    assert ref == VARIANS_VERIFIED_VERSION == '0.9.4.7'
+    root = ET.parse(destination / 'project.xml').getroot()
+    assert root.tag == 'teiManuscriptProject' and root.get('version') == VARIANS_PROJECT_FORMAT
+    alignments = sorted((destination / 'alignments').glob('*.json'))
+    assert alignments
+    for path in alignments:
+        meta = json.loads(path.read_text(encoding='utf-8'))['meta']
+        assert (meta['format'], meta['format_version']) == (ALIGNMENT_FORMAT, ALIGNMENT_FORMAT_VERSION)
+
+
+def test_varians_still_writes_the_same_project_format():
+    """Varians écrit, pour un nouveau projet, le format de project.xml que
+    Varians-Synchro exporte : s'il en change, ce test le signale."""
+    assert varians_project_format() == VARIANS_PROJECT_FORMAT
+
+
+def test_the_report_names_the_formats_not_a_varians_release(exported):
+    _project_, destination = exported
     report = (destination / 'RAPPORT_EXPORT_VARIANS.txt').read_text(encoding='utf-8')
-    assert f'vérifié avec Varians {VARIANS_VERIFIED_VERSION}' in report
+    assert f'teiManuscriptProject, version {VARIANS_PROJECT_FORMAT}' in report
+    assert f'{ALIGNMENT_FORMAT}, version {ALIGNMENT_FORMAT_VERSION}' in report
+    assert 'dernière version publiée de Varians' in report
+    assert not re.search(r'Varians \d+\.\d+', report)
 
 
-@pytest.mark.parametrize('document', [
-    'README.md', 'docs/developer/EXPORT_VARIANS.md', 'docs/developer/ARCHITECTURE.md',
-    'MAINTENANCE_PASSATION_V0856/08_EXPORT_VERS_VARIANS.md',
-    'MAINTENANCE_PASSATION_V0856/12_RISQUES_ET_LIMITES.md', 'varians_synchro/varians_export.py'])
-def test_the_documentation_names_the_verified_version(document):
+def test_the_ci_opens_the_exports_with_the_latest_varians_release():
+    """Aucune version de Varians n'est écrite dans la CI : elle prend la
+    dernière release publiée (ou celle qu'on demande en la lançant à la main),
+    la note dans son résumé, et tourne aussi chaque semaine."""
+    workflow = (ROOT / '.github' / 'workflows' / 'tests.yml').read_text(encoding='utf-8')
+    assert not re.search(r'VARIANS_REF: *v?\d', workflow)
+    assert 'gh release view --repo MarjorieBurghart/Varians' in workflow
+    assert 'echo "VARIANS_REF=$ref" >> "$GITHUB_ENV"' in workflow
+    assert 'GITHUB_STEP_SUMMARY' in workflow
+    assert 'ref: ${{ env.VARIANS_REF }}' in workflow
+    assert re.search(r'^  schedule:\n(?:    #.*\n)*    - cron: ', workflow, re.MULTILINE)
+    assert re.search(r'^      varians_ref:$', workflow, re.MULTILINE)
+
+
+DOCUMENTS = {
+    'README.md': 'dernière version publiée de Varians',
+    'docs/developer/EXPORT_VARIANS.md': 'dernière version publiée de Varians',
+    'docs/developer/ARCHITECTURE.md': 'dernière version publiée de Varians',
+    'MAINTENANCE_PASSATION_V0856/08_EXPORT_VERS_VARIANS.md': 'dernière version publiée de Varians',
+    'MAINTENANCE_PASSATION_V0856/12_RISQUES_ET_LIMITES.md': 'dernière version publiée de Varians',
+    'varians_synchro/varians_export.py': 'latest published Varians release',
+}
+
+
+@pytest.mark.parametrize('document, rule', DOCUMENTS.items())
+def test_the_documentation_names_the_format_not_a_varians_release(document, rule):
     text = (ROOT / document).read_text(encoding='utf-8').replace('**', '')
-    assert f'Varians {VARIANS_VERIFIED_VERSION}' in text
-    assert 'Varians 0.9.4.0' not in text
+    assert rule in text
+    assert not re.search(r'(vérifiée? avec|checked with|Opening the exported project in) Varians \d', text)
+    if document.endswith('.md'):
+        assert 'tei-manuscript-alignment' in text and 'format' in text

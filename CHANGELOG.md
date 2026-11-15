@@ -1,6 +1,6 @@
 ## Non publié
 
-- Export du projet pour Varians vérifié avec Varians 0.9.4.7 (la CI le récupère ; `VARIANS_REF`), au lieu de la 0.9.4.6 : le projet exporté s'ouvre avec le vrai code de Varians et dans sa vraie fenêtre, avec ses témoins, l'édition dans l'éditeur et aucune boîte. Varians 0.9.4.7 ne change rien de visible (code réorganisé et vérifié) ; `RAPPORT_EXPORT_VARIANS.txt` cite la nouvelle version vérifiée (`VARIANS_VERIFIED_VERSION`).
+- Compatibilité avec Varians fondée sur le format, et non plus sur un numéro de Varians : le `project.xml` exporté est au format `teiManuscriptProject` en version 1 (celui qu'écrit Varians pour un nouveau projet), les synchronisations au format `tei-manuscript-alignment` en version 1 ; `RAPPORT_EXPORT_VARIANS.txt` cite ces formats au lieu d'une version de Varians. La CI ouvre le projet exporté avec la dernière version publiée de Varians (son résumé dit laquelle), à chaque envoi et chaque lundi, ou avec la version demandée en lançant le workflow à la main ; un test vérifie que Varians écrit toujours le même format de `project.xml`. Une nouvelle version de Varians ne demande donc plus de modifier Varians-Synchro, tant que le format ne change pas. Vérifié avec Varians 0.9.4.7.
 
 ## V0.8.6.1 — macOS, Varians 0.9.4.6, journal des erreurs (13/11/2026)
 
